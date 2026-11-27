@@ -67,6 +67,13 @@ describe("degrade() collector (audit rank 6)", () => {
     expect(plain).not.toHaveProperty("kind");
   });
 
+  test("a fallback reason carries the error's cause code; a cause-less error's reason is its bare message", async () => {
+    const refused = new TypeError("fetch failed", { cause: Object.assign(new Error("x"), { code: "ECONNREFUSED" }) });
+    await degrade("[cc] feed", "trace", 0, async () => Promise.reject(refused));
+    await degrade("[cc2] feed", "trace", 0, async () => Promise.reject(new TypeError("fetch failed")));
+    expect(drainDegradeLog().map((e) => e.reason)).toEqual(["fetch failed [ECONNREFUSED]", "fetch failed"]);
+  });
+
   test("an event recorded after drainDegradeLog lands in drainLateDegrades as trace, `late` keeping its recorded effect; resetDegradeLog clears both logs", async () => {
     drainDegradeLog();
     recordDegrade("[late] seed after recordRun", "boom", "notify");

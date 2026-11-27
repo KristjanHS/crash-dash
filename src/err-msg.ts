@@ -1,3 +1,7 @@
-/** A caught value's message — `Error.message`, else its string form. Shared so the catch
- *  sites don't each carry an inline ternary whose non-Error arm never runs under test. */
-export const errMsg = (err: unknown): string => (err instanceof Error ? err.message : String(err));
+/** A caught value's message — `Error.message` + ` [<cause.code>]` when the cause carries one (undici's
+ *  `fetch failed` hides ECONNREFUSED/UND_ERR_* there), else its string form. */
+export const errMsg = (err: unknown): string => {
+  if (!(err instanceof Error)) return String(err);
+  const code: unknown = (err.cause as { code?: unknown } | undefined)?.code;
+  return typeof code === "string" && !err.message.includes(code) ? `${err.message} [${code}]` : err.message;
+};

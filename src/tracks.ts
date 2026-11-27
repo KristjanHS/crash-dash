@@ -46,6 +46,7 @@ import { confirmClosesFor } from "./family-table.js";
 import type { SeriesById } from "./run-seeds.js";
 import type { Env } from "./config.js";
 import { isNoFreeSource } from "./no-free-source.js";
+import { errMsg } from "./err-msg.js";
 
 /** Group rows into a `SeriesById`, each id's rows in input order. */
 function seriesById(rows: readonly StoredReading[]): SeriesById {
@@ -68,7 +69,7 @@ export async function degrade<T>(warning: string, effect: DegradeEffect, fallbac
   try {
     return await fn();
   } catch (err) {
-    const reason = err instanceof Error ? err.message : String(err);
+    const reason = errMsg(err);
     console.warn(`${warning}: ${reason}`);
     // Audit rank 6 — persisted degrade trace: record this fallback so a calm-ward band
     // caused by a non-live feed is recoverable from the alert row (Vercel keeps no logs).
