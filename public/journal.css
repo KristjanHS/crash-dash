@@ -1,0 +1,302 @@
+/* Journal-page-scoped tokens. Externalized from journal.html's inline <style> so the
+   CSP can drop style-src 'unsafe-inline' (rung 5). Loaded ONLY by journal.html,
+   immediately after styles.css, so the cascade order is unchanged; reuses its color
+   vars. EVERY `.jr-*` class the journal-view.js seam emits must have a rule HERE —
+   journal-view.test.js pins that parity against THIS file, because a markup test
+   proves a class is EMITTED, never STYLED. */
+      .journal {
+        max-width: 720px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+      }
+
+      /* The page h1. Was a `style=` attribute until rung 5 dropped style-src 'unsafe-inline'. */
+      .journal-title {
+        margin: 0;
+        font-size: 1.15rem;
+      }
+      .jr-card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 16px 18px;
+      }
+      .jr-h {
+        margin: 0 0 10px;
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink-dim);
+      }
+      /* Card-level lead paragraph (the signed-out auth card's short description, J0.1). */
+      .jr-lead {
+        margin: 0 0 12px;
+        font-size: 0.85rem;
+        line-height: 1.5;
+        color: var(--ink-dim);
+      }
+      .jr-fields {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 10px;
+      }
+      .jr-field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 0.78rem;
+        color: var(--ink-dim);
+      }
+      .jr-field input,
+      .jr-field select,
+      .jr-field textarea {
+        background: var(--surface-2);
+        color: var(--ink);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 7px 9px;
+        font: inherit;
+        font-size: 0.9rem;
+        width: 100%;
+      }
+      .jr-wide {
+        grid-column: 1 / -1;
+      }
+      .jr-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 12px;
+        flex-wrap: wrap;
+      }
+      .jr-btn {
+        background: var(--accent);
+        color: #0d0f11;
+        border: 0;
+        border-radius: 6px;
+        padding: 8px 14px;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .jr-btn[disabled] {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+      /* J0.5.2: the erasure card is the one irreversible control on the page - it reads as a
+         warning, and its button never borrows the accent the ordinary Save button uses. */
+      .jr-danger {
+        border-color: var(--state-red);
+      }
+      .jr-danger .jr-btn {
+        background: var(--state-red);
+        color: #fff;
+      }
+      .jr-link {
+        background: none;
+        border: 0;
+        color: var(--ink-dim);
+        font: inherit;
+        font-size: 0.78rem;
+        text-decoration: underline;
+        cursor: pointer;
+        padding: 0;
+      }
+      .jr-msg {
+        font-size: 0.82rem;
+        color: var(--ink-dim);
+        margin: 0;
+      }
+      .jr-msg[data-tone="bad"] {
+        color: var(--state-red);
+      }
+      .jr-msg[data-tone="good"] {
+        color: var(--state-green);
+      }
+      .jr-msg:empty {
+        display: none;
+      }
+      .jr-snapshot {
+        font-size: 0.82rem;
+        color: var(--ink-dim);
+        margin: 0;
+      }
+
+      /* --- List (journal-view.js entryList/entryLine) -------------------------- */
+      .jr-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .jr-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 10px;
+        padding: 8px 10px;
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+      }
+      .jr-date {
+        font-variant-numeric: tabular-nums;
+        color: var(--ink-dim);
+        font-size: 0.82rem;
+      }
+      .jr-held {
+        font-weight: 600;
+      }
+      .jr-cash {
+        font-size: 0.85rem;
+        color: var(--ink-dim);
+      }
+      .jr-dial {
+        margin-left: auto;
+        font-size: 0.8rem;
+        color: var(--ink-dim);
+      }
+      /* The disagreement is the signal: a row held RISKIER than the dial suggested is
+         the one worth re-reading, so it is the only one that gets a colour. */
+      .jr-dial[data-gap="over"] {
+        color: var(--state-amber);
+      }
+      .jr-dial[data-gap="none"] {
+        opacity: 0.6;
+      }
+      .jr-note {
+        flex-basis: 100%;
+        margin: 2px 0 0;
+        font-size: 0.85rem;
+        line-height: 1.45;
+      }
+      .jr-empty {
+        margin: 0;
+        font-size: 0.85rem;
+        color: var(--ink-dim);
+      }
+
+      /* --- Drawdown card (journal-view.js drawdownCardHtml, J1.5) ---------------
+         Band colours are JOURNAL-LOCAL (J1 ruling #3): styles.css's `.pension-*`
+         names live only inside compound selectors there, never as standalone tokens,
+         so this page defines its own `.dd-dip/-correction/-bear`. */
+      .dd-empty {
+        margin: 0;
+        font-size: 0.85rem;
+        color: var(--ink-dim);
+      }
+      .dd-head {
+        margin: 0 0 6px;
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+      }
+      .dd-band {
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+      .dd-band.dd-dip {
+        color: var(--state-amber);
+      }
+      .dd-band.dd-correction {
+        color: var(--state-amber);
+      }
+      .dd-band.dd-bear {
+        color: var(--state-red);
+      }
+      .dd-val {
+        font-variant-numeric: tabular-nums;
+        color: var(--ink-dim);
+        font-size: 0.9rem;
+      }
+      .dd-meta {
+        margin: 0 0 10px;
+        font-size: 0.8rem;
+        color: var(--ink-dim);
+        font-variant-numeric: tabular-nums;
+      }
+      .dd-segs {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .dd-seg {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 10px;
+        font-size: 0.82rem;
+      }
+      .dd-seg-leg {
+        font-weight: 600;
+      }
+      .dd-seg-cash {
+        color: var(--ink-dim);
+      }
+      .dd-seg-dd {
+        margin-left: auto;
+        font-variant-numeric: tabular-nums;
+        color: var(--ink-dim);
+      }
+
+      /* --- Trading-rules card (rules-view.js ruleListHTML/ruleCardHTML, slice 1) -----
+         The owner-only rule list below "Recent entries". Minimal tokens, reusing the
+         page's colour vars; the `.tr-*` prefix keeps them off the `.jr-*`/`.dd-*` sets.
+         Class parity is pinned by rules-view.test.js against THIS file. */
+      .tr-empty {
+        margin: 0;
+        font-size: 0.85rem;
+        color: var(--ink-dim);
+      }
+      .tr-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .tr-row {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .tr-rule {
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.45;
+      }
+      .tr-mistake {
+        margin: 0;
+        font-size: 0.82rem;
+        color: var(--ink-dim);
+      }
+      .tr-cost {
+        margin: 0;
+        font-size: 0.82rem;
+        color: var(--ink-dim);
+      }
+      .tr-tags {
+        list-style: none;
+        margin: 2px 0 0;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .tr-tag {
+        font-size: 0.72rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--ink-dim);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 1px 7px;
+      }

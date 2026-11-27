@@ -1,0 +1,449 @@
+{
+  "generated": "2026-07-22",
+  "series": "BAMLH0A0HYM2",
+  "units": "percentage points (bps = ×100)",
+  "percentiles": {
+    "amber": 0.66,
+    "red": 0.9
+  },
+  "velocity": {
+    "shippedLookbackDays": 10,
+    "reportOnlyLookbackDays": 20,
+    "note": "20d is emitted for reporting continuity only and is NOT selectable (EW-4)."
+  },
+  "method": "Unconditional distribution; trailing-5y re-rolled at PUBLISH cadence, NOT per close. No event conditioning.",
+  "sources": {
+    "vintage": {
+      "file": "data/BAMLH0A0HYM2-vintage.csv",
+      "n": 7382,
+      "start": "1996-12-31",
+      "end": "2025-04-10"
+    },
+    "live": {
+      "n": 786,
+      "start": "2023-07-24",
+      "end": "2026-07-21"
+    },
+    "spliceRule": "vintage wins on shared dates; live supplies dates > vintage end",
+    "overlapLiveDays": 450,
+    "overlapAgreement": {
+      "tolerancePp": 0.02,
+      "matched": 450,
+      "maxAbsDiffPp": 0,
+      "maxAbsDiffDate": null,
+      "breaches": 0
+    }
+  },
+  "spliced": {
+    "asOf": "2026-07-21",
+    "n": 7718,
+    "primary": {
+      "window": "trailing-5y",
+      "start": "2021-07-21",
+      "end": "2026-07-21",
+      "level": {
+        "n": 1310,
+        "p66": 3.7994,
+        "p90": 4.69,
+        "p66_bps": 379.94,
+        "p90_bps": 469
+      },
+      "velocity10d": {
+        "n": 1310,
+        "p66": 0.0694,
+        "p90": 0.291,
+        "p66_bps": 6.94,
+        "p90_bps": 29.1
+      },
+      "velocity20d_reportOnly": {
+        "n": 1310,
+        "p66": 0.09,
+        "p90": 0.45,
+        "p66_bps": 9,
+        "p90_bps": 45
+      },
+      "velocity30d": {
+        "n": 1310,
+        "p66": 0.07,
+        "p90": 0.54,
+        "p66_bps": 7,
+        "p90_bps": 54
+      }
+    },
+    "diagnostics": {
+      "fullExpanding": {
+        "window": "full-expanding",
+        "start": "1996-12-31",
+        "end": "2026-07-21",
+        "level": {
+          "n": 7718,
+          "p66": 5.36,
+          "p90": 8.05,
+          "p66_bps": 536,
+          "p90_bps": 805
+        },
+        "velocity10d": {
+          "n": 7708,
+          "p66": 0.07,
+          "p90": 0.39,
+          "p66_bps": 7,
+          "p90_bps": 39
+        },
+        "velocity20d_reportOnly": {
+          "n": 7698,
+          "p66": 0.1,
+          "p90": 0.6,
+          "p66_bps": 10,
+          "p90_bps": 60
+        },
+        "velocity30d": {
+          "n": 7688,
+          "p66": 0.11,
+          "p90": 0.81,
+          "p66_bps": 11,
+          "p90_bps": 81
+        }
+      },
+      "trailing10y": {
+        "window": "trailing-10y",
+        "start": "2016-07-21",
+        "end": "2026-07-21",
+        "level": {
+          "n": 2615,
+          "p66": 4.02,
+          "p90": 5.05,
+          "p66_bps": 402,
+          "p90_bps": 505
+        },
+        "velocity10d": {
+          "n": 2615,
+          "p66": 0.05,
+          "p90": 0.31,
+          "p66_bps": 5,
+          "p90_bps": 31
+        },
+        "velocity20d_reportOnly": {
+          "n": 2615,
+          "p66": 0.06,
+          "p90": 0.4,
+          "p66_bps": 6,
+          "p90_bps": 40
+        },
+        "velocity30d": {
+          "n": 2615,
+          "p66": 0.05,
+          "p90": 0.48,
+          "p66_bps": 5,
+          "p90_bps": 48
+        }
+      }
+    },
+    "asOfLadder": [
+      {
+        "window": "trailing-5y @ 2026-07-21",
+        "start": "2021-07-21",
+        "end": "2026-07-21",
+        "level": {
+          "n": 1310,
+          "p66": 3.7994,
+          "p90": 4.69,
+          "p66_bps": 379.94,
+          "p90_bps": 469
+        },
+        "velocity10d": {
+          "n": 1310,
+          "p66": 0.0694,
+          "p90": 0.291,
+          "p66_bps": 6.94,
+          "p90_bps": 29.1
+        },
+        "velocity20d_reportOnly": {
+          "n": 1310,
+          "p66": 0.09,
+          "p90": 0.45,
+          "p66_bps": 9,
+          "p90_bps": 45
+        },
+        "velocity30d": {
+          "n": 1310,
+          "p66": 0.07,
+          "p90": 0.54,
+          "p66_bps": 7,
+          "p90_bps": 54
+        }
+      },
+      {
+        "window": "trailing-5y @ 2015-12-31",
+        "start": "2010-12-31",
+        "end": "2015-12-31",
+        "level": {
+          "n": 1303,
+          "p66": 5.5532,
+          "p90": 6.95,
+          "p66_bps": 555.32,
+          "p90_bps": 695
+        },
+        "velocity10d": {
+          "n": 1303,
+          "p66": 0.09,
+          "p90": 0.4,
+          "p66_bps": 9,
+          "p90_bps": 40
+        },
+        "velocity20d_reportOnly": {
+          "n": 1303,
+          "p66": 0.14,
+          "p90": 0.61,
+          "p66_bps": 14,
+          "p90_bps": 61
+        },
+        "velocity30d": {
+          "n": 1303,
+          "p66": 0.17,
+          "p90": 0.75,
+          "p66_bps": 17,
+          "p90_bps": 75
+        }
+      },
+      {
+        "window": "trailing-5y @ 2019-12-31",
+        "start": "2014-12-31",
+        "end": "2019-12-31",
+        "level": {
+          "n": 1305,
+          "p66": 4.6564,
+          "p90": 6.296,
+          "p66_bps": 465.64,
+          "p90_bps": 629.6
+        },
+        "velocity10d": {
+          "n": 1305,
+          "p66": 0.06,
+          "p90": 0.35,
+          "p66_bps": 6,
+          "p90_bps": 35
+        },
+        "velocity20d_reportOnly": {
+          "n": 1305,
+          "p66": 0.12,
+          "p90": 0.49,
+          "p66_bps": 12,
+          "p90_bps": 49
+        },
+        "velocity30d": {
+          "n": 1305,
+          "p66": 0.12,
+          "p90": 0.61,
+          "p66_bps": 12,
+          "p90_bps": 61
+        }
+      }
+    ]
+  },
+  "vintageOnly": {
+    "asOf": "2025-04-10",
+    "n": 7382,
+    "primary": {
+      "window": "trailing-5y",
+      "start": "2020-04-13",
+      "end": "2025-04-10",
+      "level": {
+        "n": 1307,
+        "p66": 4.26,
+        "p90": 5.18,
+        "p66_bps": 426,
+        "p90_bps": 518
+      },
+      "velocity10d": {
+        "n": 1307,
+        "p66": 0.05,
+        "p90": 0.32,
+        "p66_bps": 5,
+        "p90_bps": 32
+      },
+      "velocity20d_reportOnly": {
+        "n": 1307,
+        "p66": 0.05,
+        "p90": 0.45,
+        "p66_bps": 5,
+        "p90_bps": 45
+      },
+      "velocity30d": {
+        "n": 1307,
+        "p66": 0.03,
+        "p90": 0.534,
+        "p66_bps": 3,
+        "p90_bps": 53.4
+      }
+    },
+    "diagnostics": {
+      "fullExpanding": {
+        "window": "full-expanding",
+        "start": "1996-12-31",
+        "end": "2025-04-10",
+        "level": {
+          "n": 7382,
+          "p66": 5.47,
+          "p90": 8.11,
+          "p66_bps": 547,
+          "p90_bps": 811
+        },
+        "velocity10d": {
+          "n": 7372,
+          "p66": 0.08,
+          "p90": 0.4,
+          "p66_bps": 8,
+          "p90_bps": 40
+        },
+        "velocity20d_reportOnly": {
+          "n": 7362,
+          "p66": 0.1,
+          "p90": 0.61,
+          "p66_bps": 10,
+          "p90_bps": 61
+        },
+        "velocity30d": {
+          "n": 7352,
+          "p66": 0.12,
+          "p90": 0.82,
+          "p66_bps": 12,
+          "p90_bps": 82
+        }
+      },
+      "trailing10y": {
+        "window": "trailing-10y",
+        "start": "2015-04-10",
+        "end": "2025-04-10",
+        "level": {
+          "n": 2613,
+          "p66": 4.4192,
+          "p90": 6.02,
+          "p66_bps": 441.92,
+          "p90_bps": 602
+        },
+        "velocity10d": {
+          "n": 2613,
+          "p66": 0.07,
+          "p90": 0.37,
+          "p66_bps": 7,
+          "p90_bps": 37
+        },
+        "velocity20d_reportOnly": {
+          "n": 2613,
+          "p66": 0.09,
+          "p90": 0.5,
+          "p66_bps": 9,
+          "p90_bps": 50
+        },
+        "velocity30d": {
+          "n": 2613,
+          "p66": 0.09,
+          "p90": 0.61,
+          "p66_bps": 9,
+          "p90_bps": 61
+        }
+      }
+    },
+    "asOfLadder": [
+      {
+        "window": "trailing-5y @ 2025-04-10",
+        "start": "2020-04-13",
+        "end": "2025-04-10",
+        "level": {
+          "n": 1307,
+          "p66": 4.26,
+          "p90": 5.18,
+          "p66_bps": 426,
+          "p90_bps": 518
+        },
+        "velocity10d": {
+          "n": 1307,
+          "p66": 0.05,
+          "p90": 0.32,
+          "p66_bps": 5,
+          "p90_bps": 32
+        },
+        "velocity20d_reportOnly": {
+          "n": 1307,
+          "p66": 0.05,
+          "p90": 0.45,
+          "p66_bps": 5,
+          "p90_bps": 45
+        },
+        "velocity30d": {
+          "n": 1307,
+          "p66": 0.03,
+          "p90": 0.534,
+          "p66_bps": 3,
+          "p90_bps": 53.4
+        }
+      },
+      {
+        "window": "trailing-5y @ 2015-12-31",
+        "start": "2010-12-31",
+        "end": "2015-12-31",
+        "level": {
+          "n": 1303,
+          "p66": 5.5532,
+          "p90": 6.95,
+          "p66_bps": 555.32,
+          "p90_bps": 695
+        },
+        "velocity10d": {
+          "n": 1303,
+          "p66": 0.09,
+          "p90": 0.4,
+          "p66_bps": 9,
+          "p90_bps": 40
+        },
+        "velocity20d_reportOnly": {
+          "n": 1303,
+          "p66": 0.14,
+          "p90": 0.61,
+          "p66_bps": 14,
+          "p90_bps": 61
+        },
+        "velocity30d": {
+          "n": 1303,
+          "p66": 0.17,
+          "p90": 0.75,
+          "p66_bps": 17,
+          "p90_bps": 75
+        }
+      },
+      {
+        "window": "trailing-5y @ 2019-12-31",
+        "start": "2014-12-31",
+        "end": "2019-12-31",
+        "level": {
+          "n": 1305,
+          "p66": 4.6564,
+          "p90": 6.296,
+          "p66_bps": 465.64,
+          "p90_bps": 629.6
+        },
+        "velocity10d": {
+          "n": 1305,
+          "p66": 0.06,
+          "p90": 0.35,
+          "p66_bps": 6,
+          "p90_bps": 35
+        },
+        "velocity20d_reportOnly": {
+          "n": 1305,
+          "p66": 0.12,
+          "p90": 0.49,
+          "p66_bps": 12,
+          "p90_bps": 49
+        },
+        "velocity30d": {
+          "n": 1305,
+          "p66": 0.12,
+          "p90": 0.61,
+          "p66_bps": 12,
+          "p90_bps": 61
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+[Unit]
+Description=crash-dash ladder run failed — push one ntfy alert
+# Fired by crash-dash-eufin.service's OnFailure=. Symlinked into ~/.config/systemd/user/ like the others.
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/projects/crash-dash
+ExecStart=%h/projects/crash-dash/scripts/ladder-alert.sh crash-dash-eufin.service
+# NTFY_TOPIC may live here; else the script falls back to the repo's .env.local.
+EnvironmentFile=-%h/.config/crash-dash/eufin.env
+TimeoutStartSec=60

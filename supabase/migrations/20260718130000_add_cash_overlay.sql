@@ -1,0 +1,43 @@
+-- crash-dash — W5-a Stage 2.1: persist the Tier-1 CASH OVERLAY
+-- (UD-1 = (c) dial acceleration, UD-2 = (ii) enum).
+--
+-- ADDITIVE ONLY: four `add column if not exists` statements, no DROP / ALTER TYPE / DELETE /
+-- UPDATE, so this is safe on the direct-to-main path (.claude/rules/migrations.md taxonomy) and
+-- `scripts/check-destructive-migrations.ts` needs no `-- destructive: reviewed` marker.
+--
+-- No `record_run` re-create is needed: since 20260716180000 the function inserts via
+-- `jsonb_populate_record(null::alert_log, ...)`, so a new column is picked up BY NAME from the
+-- `p_alert` jsonb (`store.ts:alertRow`). An unknown key raises loudly rather than NULL-dropping.
+--
+-- Behaviour-neutral on landing (the deploy ordering constraint): the migration applies before the
+-- code that writes these columns, and `cash_overlay` defaults to 'off' — the exact value the
+-- overlay's own dial-less/degraded branch produces — so a pre-migration row and a post-migration
+-- row read identically through `rowToAlert`.
+--
+--   cash_overlay        — UD-2(ii) three-state enum, persisted as the OVERLAY's OWN level, i.e.
+--                         'off' | 'partial' only. 'full' is R4's terminal cash and is reachable
+--                         solely through `resolveCash(r4, overlay)` at render time; folding it in
+--                         here would write R4 state into the overlay's column and destroy the
+--                         orthogonality the plan's §3 precedence function exists to keep. The
+--                         merge stays recoverable from history because BOTH inputs (`r4_phase`
+--                         and this column) are persisted on the same row.
+--                         NOT NULL DEFAULT 'off': the overlay is emitted every run, and a
+--                         dial-less/degraded run means 'off' (fail-safe: absent inputs drop
+--                         toward under-reaction, never a false cash call), never NULL and never
+--                         a fabricated state. No CHECK constraint — the enum is owned by
+--                         `src/cash-overlay.ts`'s `CashLevel`, and a DB-side enum would need a
+--                         second (destructive) migration every time W5-b widens it.
+--   cash_overlay_since  — ISO stamp of the close the overlay went ACTIVE, preserved across a
+--                         continuously-active run so it records the ENTRY, not the latest close.
+--                         NULL while off (CASH_EXIT_CLOSES = 1 clears it with the level).
+--   cash_overlay_reason — the legible trigger string for /lab (Stage 3.1). Display-only.
+--   dial_target_rung    — the column the architecture overview named as MISSING: "an
+--                         exact prior target needs a persisted `targetRung` column". UD-1(c)'s
+--                         trigger is stateful (a rise in `targetRung` over a window), and the
+--                         existing proxy `LADDER.indexOf(held_sleeve)+1` is the HELD leg, not the
+--                         dial target — the two diverge exactly when the hold gate binds.
+--                         NULL on pre-migration rows and on a dial-less/degraded run.
+alter table alert_log add column if not exists cash_overlay text not null default 'off';
+alter table alert_log add column if not exists cash_overlay_since timestamptz;
+alter table alert_log add column if not exists cash_overlay_reason text;
+alter table alert_log add column if not exists dial_target_rung integer;

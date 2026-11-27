@@ -1,0 +1,174 @@
+{
+  "_note": "Pension band calibration \u2014 candidate thresholds pending user sign-off (not yet in pension.ts).",
+  "overlap_start": "2007-07-26",
+  "overlap_end": "2026-06-18",
+  "trading_days": 4708,
+  "holdings": [
+    {
+      "from": "1900-01-01",
+      "weights": {
+        "SPY": 0.5,
+        "VEA": 0.5
+      }
+    },
+    {
+      "from": "2026-07-21",
+      "weights": {
+        "SP500IT": 1
+      }
+    }
+  ],
+  "recommended": {
+    "c1_dip": -0.15,
+    "c2_correction": -0.2,
+    "c3_bear": -0.35
+  },
+  "n_dip_plus_episodes": 8,
+  "n_bear_episodes": 1,
+  "nearest_cut_to_trough_margin": 0.0078,
+  "calibration_year_max_band": {
+    "2008": "BEAR",
+    "2020": "CORRECTION",
+    "2022": "DIP"
+  },
+  "current_book_from": "2026-07-21",
+  "current_book_trading_days_in_window": 0,
+  "counterfactual_current_book_throughout": {
+    "weights": {
+      "SP500IT": 1
+    },
+    "c1_dip": -0.15,
+    "c2_correction": -0.2,
+    "c3_bear": -0.35,
+    "n_dip_plus_episodes": 11,
+    "n_bear_episodes": 1,
+    "meets_objective": true,
+    "calibration_year_max_band": {
+      "2008": "BEAR",
+      "2020": "CORRECTION",
+      "2022": "CORRECTION"
+    }
+  },
+  "episodes": [
+    {
+      "onset_date": "2008-01-15",
+      "trough_date": "2009-03-09",
+      "max_dd_eur": -0.5263857062739963,
+      "max_dd_sleeve": {
+        "SP500IT": -0.45816160474284173,
+        "SPY": -0.5002607265977449,
+        "VEA": -0.5523109043222629
+      },
+      "weights_at_trough": {
+        "SPY": 0.5,
+        "VEA": 0.5
+      },
+      "band": "BEAR"
+    },
+    {
+      "onset_date": "2011-03-14",
+      "trough_date": "2011-08-19",
+      "max_dd_eur": -0.28131188197345935,
+      "max_dd_sleeve": {
+        "SP500IT": -0.21247497008327,
+        "SPY": -0.2367906892587004,
+        "VEA": -0.33110125082756114
+      },
+      "weights_at_trough": {
+        "SPY": 0.5,
+        "VEA": 0.5
+      },
+      "band": "CORRECTION"
+    },
+    {
+      "onset_date": "2015-08-24",
+      "trough_date": "2015-08-24",
+      "max_dd_eur": -0.18171757955695245,
+      "max_dd_sleeve": {
+        "SP500IT": -0.18469213021657405,
+        "SPY": -0.17197750986939642,
+        "VEA": -0.1965721706950223
+      },
+      "weights_at_trough": {
+        "SPY": 0.5,
+        "VEA": 0.5
+      },
+      "band": "DIP"
+    },
+    {
+      "onset_date": "2016-01-15",
+      "trough_date": "2016-02-11",
+      "max_dd_eur": -0.20853786935633167,
+      "max_dd_sleeve": {
+        "SP500IT": -0.17964931833214215,
+        "SPY": -0.1839024430712678,
+        "VEA": -0.2573145961344141
+      },
+      "weights_at_trough": {
+        "SPY": 0.5,
+        "VEA": 0.5
+      },
+      "band": "CORRECTION"
+    },
+    {
+      "onset_date": "2018-12-21",
+      "trough_date": "2018-12-21",
+      "max_dd_eur": -0.15393221363934229,
+      "max_dd_sleeve": {
+        "SP500IT": -0.20850349010384273,
+        "SPY": -0.16112247239401323,
+        "VEA": -0.1565780691843559
+      },
+      "weights_at_trough": {
+        "SPY": 0.5,
+        "VEA": 0.5
+      },
+      "band": "DIP"
+    },
+    {
+      "onset_date": "2020-03-06",
+      "trough_date": "2020-03-23",
+      "max_dd_eur": -0.33610066186740206,
+      "max_dd_sleeve": {
+        "SP500IT": -0.3159583903713902,
+        "SPY": -0.335078273447185,
+        "VEA": -0.34327333051067055
+      },
+      "weights_at_trough": {
+        "SPY": 0.5,
+        "VEA": 0.5
+      },
+      "band": "CORRECTION"
+    },
+    {
+      "onset_date": "2022-06-16",
+      "trough_date": "2022-06-16",
+      "max_dd_eur": -0.16621311738160183,
+      "max_dd_sleeve": {
+        "SP500IT": -0.2465718265747725,
+        "SPY": -0.17461073010794992,
+        "VEA": -0.14846330672896801
+      },
+      "weights_at_trough": {
+        "SPY": 0.5,
+        "VEA": 0.5
+      },
+      "band": "DIP"
+    },
+    {
+      "onset_date": "2025-04-03",
+      "trough_date": "2025-04-21",
+      "max_dd_eur": -0.20779351225969234,
+      "max_dd_sleeve": {
+        "SP500IT": -0.29727051951691463,
+        "SPY": -0.23960492289230673,
+        "VEA": -0.15254916142021724
+      },
+      "weights_at_trough": {
+        "SPY": 0.5,
+        "VEA": 0.5
+      },
+      "band": "CORRECTION"
+    }
+  ]
+}

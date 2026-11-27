@@ -1,0 +1,15 @@
+[Unit]
+Description=Once-a-weekday headless ladder runs (default LEGS=semis) (07:40 local, Europe/Kiev)
+
+[Timer]
+# 07:40 by user choice (2026-11-20): its ship pushes before the 08:00 push-policy window opens (eufin.env SHIP_PUSH_HORIZON_S=0).
+# Every LEGS leg runs in sequence in the one slot (default semis).
+OnCalendar=Mon..Fri 07:40:00
+# WSL is not always up at those instants; run the missed occurrence at the next start.
+# (Restored 2026-11-04 — an earlier commit dropped this, Persistent= and [Install] with the schedule edit.)
+Persistent=true
+# Jitter the start by up to 2 min so a resume's catch-up does not fire with every other caught-up timer at once.
+RandomizedDelaySec=120
+
+[Install]
+WantedBy=timers.target

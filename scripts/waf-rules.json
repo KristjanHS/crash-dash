@@ -1,0 +1,14 @@
+{
+  "name": "rate-limit-lab-replay",
+  "description": "Rate-limit the abuse-exposed read endpoints in one OR-grouped rule (Hobby caps rate-limit rules at 1): /api/lab + /api/replay (param-selectable, uncached). `name` is the live-rule handle apply-waf-rules.sh matches on and must NOT be renamed or the published rule is orphaned. ACCEPTED RISK, ruled 2026-08-20: the bulk time-series download (the redistribution surface, legal audit §4.3) was added here on 2026-08-20 and is REMOVED again because it can never be published — `vercel firewall rules add` returns 401 'Rate limiting is not available for this plan' and the live rule survives from an earlier entitlement, so it cannot be widened. This file now records what the WAF ACTUALLY covers, not what it should cover. The gap is filed in docs/backlog.md §OWED[USER]. Re-add the path ONLY together with a verified entitlement — api/security-waf.test.ts reds on a bare re-add.",
+  "paths": [
+    "/api/lab",
+    "/api/replay"
+  ],
+  "requests": 60,
+  "windowSeconds": 60,
+  "keys": [
+    "ip"
+  ],
+  "rateLimitAction": "rate_limit"
+}

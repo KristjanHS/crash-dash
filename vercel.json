@@ -1,0 +1,135 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "git": {
+    "deploymentEnabled": false
+  },
+  "crons": [
+    {
+      "path": "/api/cron/run",
+      "schedule": "0 22 * * 1-5"
+    },
+    {
+      "path": "/api/cron/run",
+      "schedule": "0 5 * * 6"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/health",
+      "destination": "/api/meta?view=health"
+    },
+    {
+      "source": "/api/history",
+      "destination": "/api/meta?view=history"
+    },
+    {
+      "source": "/api/families",
+      "destination": "/api/meta?view=families"
+    },
+    {
+      "source": "/api/danger-model",
+      "destination": "/api/meta?view=danger-model"
+    },
+    {
+      "source": "/api/config",
+      "destination": "/api/meta?view=config"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://configrefplaceholder.supabase.co; frame-ancestors 'none'; base-uri 'none'; form-action 'none'; object-src 'none'"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "accelerometer=(), autoplay=(), bluetooth=(), camera=(), display-capture=(), encrypted-media=(), geolocation=(), gyroscope=(), idle-detection=(), magnetometer=(), microphone=(), midi=(), payment=(), screen-wake-lock=(), serial=(), usb=(), xr-spatial-tracking=()"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        },
+        {
+          "key": "Cross-Origin-Resource-Policy",
+          "value": "same-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Permitted-Cross-Domain-Policies",
+          "value": "none"
+        }
+      ]
+    },
+    {
+      "source": "/(.*).(js|css)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=600, stale-while-revalidate=3000"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "X-Data-Terms",
+          "value": "Derived indicator values for personal, non-commercial use. No redistribution, republication or automated collection. Values are derived and transformed by crash-dash, not published by the sources. Sources: FRED (Federal Reserve Bank of St. Louis), ECB, US Treasury, Federal Reserve Board, Deutsche Bundesbank."
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        }
+      ]
+    },
+    {
+      "source": "/(index|overview|lab|exposure|journal|subscribe|signin)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        }
+      ]
+    },
+    {
+      "source": "/(.*).html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        }
+      ]
+    }
+  ],
+  "functions": {
+    "api/*.ts": {
+      "maxDuration": 60
+    },
+    "api/cron/*.ts": {
+      "maxDuration": 300
+    }
+  }
+}

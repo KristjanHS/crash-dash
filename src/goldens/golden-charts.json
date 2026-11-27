@@ -1,0 +1,3550 @@
+{
+  "AMAT": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "$"
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "AT1": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "XAT1/EXHA % vs MA50",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": -0.004
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": -0.012
+      }
+    ],
+    "lead": 200,
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived"
+      },
+      {
+        "axis": "primary",
+        "compute": "ma200",
+        "style": "trend"
+      }
+    ]
+  },
+  "BBB": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "%"
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "BONOS": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "bp"
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "velocity z (worst of Δ5/Δ20 bp · 750d σ)",
+        "side": "right",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "secondary",
+        "label": "amber 1.5σ",
+        "level": "amber",
+        "source": "displayBand",
+        "value": 1.5
+      },
+      {
+        "axis": "secondary",
+        "label": "red 2.5σ",
+        "level": "red",
+        "source": "displayBand",
+        "value": 2.5
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "velZ",
+        "style": "primary"
+      }
+    ]
+  },
+  "BRENT": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "20-day return",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": 0.15
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": 0.25
+      }
+    ],
+    "gates": [
+      {
+        "appliesTo": "red",
+        "key": "atTrailingPeak",
+        "label": "Brent at/above its trailing 3-year peak"
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "gatedBy": [
+          "atTrailingPeak"
+        ],
+        "style": "derived"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "rollingMax",
+        "label": "trailing 3-year peak",
+        "style": "trend"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "rollingMax",
+        "label": "amber proximity (95% of peak)",
+        "scale": 0.95,
+        "style": "trend"
+      }
+    ]
+  },
+  "BUND": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "Bund 10y−2y Δ20d",
+        "side": "right",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "label": "amber <0.35 (level caps at amber)",
+        "level": "amber",
+        "source": "displayBand",
+        "value": 0.35
+      },
+      {
+        "axis": "secondary",
+        "label": "amber ≥+0.20",
+        "level": "amber",
+        "source": "displayBand",
+        "value": 0.2
+      },
+      {
+        "axis": "secondary",
+        "label": "amber ≤−0.20",
+        "level": "amber",
+        "source": "displayBand",
+        "value": -0.2
+      },
+      {
+        "axis": "secondary",
+        "label": "red ≥+0.30",
+        "level": "red",
+        "source": "displayBand",
+        "value": 0.3
+      },
+      {
+        "axis": "secondary",
+        "label": "red ≤−0.30",
+        "level": "red",
+        "source": "displayBand",
+        "value": -0.3
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "delta20",
+        "style": "derived"
+      }
+    ]
+  },
+  "CCC": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "%"
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "CCC OAS Δ20d",
+        "side": "right",
+        "unit": "pp"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "metric": "velocity",
+        "source": "threshold"
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "metric": "velocity",
+        "source": "threshold"
+      }
+    ],
+    "lead": 200,
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "delta20",
+        "style": "derived"
+      },
+      {
+        "axis": "primary",
+        "compute": "delta",
+        "fit": true,
+        "label": "Δ5d",
+        "style": "trend",
+        "window": 5
+      },
+      {
+        "axis": "primary",
+        "compute": "ma200",
+        "readout": true,
+        "style": "trend",
+        "toggle": true,
+        "tone": "alt"
+      }
+    ]
+  },
+  "CG": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "20d ratio return",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "fromPoint": "levelAmber",
+        "label": "amber <p30 of own dev from 80d trend",
+        "level": "amber",
+        "source": "perPoint"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "levelRed",
+        "label": "red <p10 of own dev from 80d trend",
+        "level": "red",
+        "source": "perPoint"
+      },
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": -0.01
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": -0.03
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived"
+      }
+    ]
+  },
+  "COPPER": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "$"
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "CQS": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "fromPoint": "cqsAmber",
+        "label": "amber 1.25σ of same-horizon Δ",
+        "level": "amber",
+        "source": "perPoint"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "cqsRed",
+        "label": "red 2σ of same-horizon Δ",
+        "level": "red",
+        "source": "perPoint"
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "DB_SMH": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "label": "drawdown from 3-mo high",
+        "side": "left",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "label": "amber ≤-5%",
+        "level": "amber",
+        "source": "displayBand",
+        "value": -5
+      },
+      {
+        "axis": "primary",
+        "label": "red ≤-8%",
+        "level": "red",
+        "source": "displayBand",
+        "value": -8
+      }
+    ],
+    "gates": [
+      {
+        "appliesTo": "both",
+        "key": "belowMA50",
+        "label": "SMH below its 50-day MA"
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "gatedBy": [
+          "belowMA50"
+        ],
+        "style": "primary"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "gateLine",
+        "label": "SMH 50-day MA (as drawdown) - below it, the gate is on",
+        "style": "trend"
+      }
+    ]
+  },
+  "DB_XLK": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "label": "drawdown from 3-mo high",
+        "side": "left",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "label": "amber ≤-5%",
+        "level": "amber",
+        "source": "displayBand",
+        "value": -5
+      },
+      {
+        "axis": "primary",
+        "label": "red ≤-8%",
+        "level": "red",
+        "source": "displayBand",
+        "value": -8
+      }
+    ],
+    "gates": [
+      {
+        "appliesTo": "both",
+        "key": "belowMA50",
+        "label": "XLK below its 50-day MA"
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "gatedBy": [
+          "belowMA50"
+        ],
+        "style": "primary"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "gateLine",
+        "label": "XLK 50-day MA (as drawdown) - below it, the gate is on",
+        "style": "trend"
+      }
+    ]
+  },
+  "DEXUSEU": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "DISP": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "20d basket return",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "label": "amber <0% · corr>0.75",
+        "level": "amber",
+        "source": "displayBand",
+        "value": 0
+      },
+      {
+        "axis": "secondary",
+        "label": "red <−2.5% · corr>0.75",
+        "level": "red",
+        "source": "displayBand",
+        "value": -0.025
+      },
+      {
+        "axis": "primary",
+        "label": "corr>0.75 confirms",
+        "level": "amber",
+        "source": "displayBand",
+        "value": 0.75
+      }
+    ],
+    "fromDays": 739,
+    "gates": [
+      {
+        "appliesTo": "both",
+        "key": "corrAtOrAboveCut",
+        "label": "global correlation at/above its confirm cut"
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "corrP90",
+        "label": "rolling p90 corr deepener (756d)",
+        "style": "trend"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "gatedBy": [
+          "corrAtOrAboveCut"
+        ],
+        "style": "derived"
+      }
+    ]
+  },
+  "EBP": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold"
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "ECISS": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "CISS Δ20d",
+        "side": "right",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "metric": "velocity",
+        "source": "threshold"
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "metric": "velocity",
+        "source": "threshold"
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "delta20",
+        "style": "derived"
+      }
+    ]
+  },
+  "ECY": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "fromPoint": "ecyAmber",
+        "label": "amber ≤p2 of own history (red only if GT trend breaks)",
+        "level": "amber",
+        "source": "perPoint"
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "EPATH": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "label": "amber ≥0.25",
+        "level": "amber",
+        "source": "displayBand",
+        "value": 0.25
+      },
+      {
+        "axis": "primary",
+        "label": "red >0.75",
+        "level": "red",
+        "source": "displayBand",
+        "value": 0.75
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "ESTR": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "%"
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "60-day Δ (pp)",
+        "side": "right",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": -0.5
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": -0.75
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived"
+      }
+    ]
+  },
+  "EURC": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "label": "amber <0.50",
+        "level": "amber",
+        "source": "displayBand",
+        "value": 0.5
+      },
+      {
+        "axis": "primary",
+        "label": "red <0.00",
+        "level": "red",
+        "source": "displayBand",
+        "value": 0
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "EURGBP": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "20-day move",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": 0.03
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": 0.05
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived"
+      }
+    ]
+  },
+  "EXSH_GATE": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "% vs MA200",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": 0
+      }
+    ],
+    "lead": 200,
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived",
+        "tone": "trend"
+      },
+      {
+        "axis": "primary",
+        "compute": "ma50",
+        "style": "trend",
+        "tone": "white"
+      },
+      {
+        "axis": "primary",
+        "compute": "ma200",
+        "style": "trend",
+        "tone": "alt"
+      }
+    ]
+  },
+  "F1": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "%"
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "OAS Δ30d",
+        "side": "right",
+        "unit": "pp"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "metric": "velocity",
+        "source": "threshold"
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "metric": "velocity",
+        "source": "threshold"
+      }
+    ],
+    "fromDays": 739,
+    "lead": 200,
+    "legBands": true,
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "compute": "roc30",
+        "style": "derived"
+      },
+      {
+        "axis": "primary",
+        "compute": "delta",
+        "fit": true,
+        "label": "Δ5d",
+        "style": "trend",
+        "window": 5
+      },
+      {
+        "axis": "primary",
+        "compute": "ma200",
+        "readout": true,
+        "style": "trend",
+        "toggle": true,
+        "tone": "alt"
+      }
+    ],
+    "window": 504
+  },
+  "F10": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold"
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "F11": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "label": "Δ60d",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "fromPoint": "velSigmaAmber",
+        "label": "amber 1σ",
+        "level": "amber",
+        "source": "perPoint"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "velSigmaRed",
+        "label": "red 1.15σ",
+        "level": "red",
+        "source": "perPoint"
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "delta20",
+        "style": "primary"
+      }
+    ]
+  },
+  "F13": {
+    "axes": [
+      {
+        "format": "derived",
+        "id": "primary",
+        "label": "Δ20d",
+        "side": "left",
+        "unit": "%"
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "HYG/LQD vs MA50",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "label": "amber vs MA50 ≤0.0%",
+        "level": "amber",
+        "source": "derived",
+        "value": 0
+      },
+      {
+        "axis": "secondary",
+        "label": "red vs MA50 ≤-0.6%",
+        "level": "red",
+        "source": "derived",
+        "value": -0.006
+      },
+      {
+        "axis": "primary",
+        "label": "amber Δ20d ≤-0.5%",
+        "level": "amber",
+        "source": "derived",
+        "value": -0.005
+      },
+      {
+        "axis": "primary",
+        "label": "red Δ20d ≤-0.9%",
+        "level": "red",
+        "source": "derived",
+        "value": -0.009
+      }
+    ],
+    "fromDays": 739,
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "compute": "trailingReturn",
+        "label": "HYG/LQD Δ20d",
+        "style": "primary",
+        "window": 20
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived"
+      }
+    ]
+  },
+  "F17": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "label": "Δ60d",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "% off 60-close high",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "fromPoint": "velSigmaAmber",
+        "label": "amber 0.9σ",
+        "level": "amber",
+        "source": "perPoint"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "velSigmaRed",
+        "label": "red 1.1σ",
+        "level": "red",
+        "source": "perPoint"
+      },
+      {
+        "axis": "secondary",
+        "label": "spit yen gate −3% (display only)",
+        "level": "amber",
+        "source": "derived",
+        "style": "evt",
+        "value": -3
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "delta20",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "compute": "offHigh",
+        "label": "off 60-close high",
+        "scale": 100,
+        "style": "derived",
+        "window": 60
+      }
+    ]
+  },
+  "F2": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "%"
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "IG OAS Δ20d",
+        "side": "right",
+        "unit": "pp"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "metric": "velocity",
+        "source": "threshold"
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "metric": "velocity",
+        "source": "threshold"
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "delta20",
+        "style": "derived"
+      }
+    ]
+  },
+  "F3": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "NFCI Risk Δ4w",
+        "side": "right",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "fromPoint": "levelAmber",
+        "label": "amber >p85 of own history",
+        "level": "amber",
+        "source": "perPoint"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "levelRed",
+        "label": "red >p95 of own history",
+        "level": "red",
+        "source": "perPoint"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "velAmber",
+        "label": "amber >p85 of |Δ|",
+        "level": "amber",
+        "source": "perPoint"
+      }
+    ],
+    "fromDays": 739,
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "delta20",
+        "style": "derived"
+      }
+    ]
+  },
+  "F4": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "6-mo return",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": -0.15
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": -0.25
+      }
+    ],
+    "gates": [
+      {
+        "appliesTo": "amber",
+        "key": "smhBelowMA200",
+        "label": "SMH below its 200-day MA"
+      },
+      {
+        "appliesTo": "red",
+        "key": "nvdaBelowMA200",
+        "label": "NVDA below its 200-day MA"
+      }
+    ],
+    "lead": 200,
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "gatedBy": [
+          "smhBelowMA200",
+          "nvdaBelowMA200"
+        ],
+        "style": "derived"
+      },
+      {
+        "axis": "primary",
+        "compute": "ma200",
+        "style": "trend",
+        "tone": "alt"
+      }
+    ]
+  },
+  "F5": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "QQQ/QQQE % from 12-mo high",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "fromPoint": "breadthAmber",
+        "label": "amber >p88 of own history",
+        "level": "amber",
+        "source": "perPoint"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "breadthRed",
+        "label": "red >p98.5 of own history",
+        "level": "red",
+        "source": "perPoint"
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived"
+      }
+    ]
+  },
+  "F6": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "SMH/SPY % vs MA200",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": 0
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived"
+      }
+    ]
+  },
+  "F7": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "F8": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "6-mo return",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": 1.2
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": 1
+      }
+    ],
+    "gates": [
+      {
+        "appliesTo": "both",
+        "key": "belowMA200",
+        "label": "MU below its 200-day MA +10%"
+      }
+    ],
+    "lead": 200,
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "gatedBy": [
+          "belowMA200"
+        ],
+        "style": "derived"
+      },
+      {
+        "axis": "primary",
+        "compute": "ma200",
+        "label": "MU's 200-day MA +10%",
+        "scale": 1.1,
+        "style": "trend",
+        "tone": "alt"
+      },
+      {
+        "axis": "primary",
+        "compute": "ma50",
+        "readout": true,
+        "style": "trend",
+        "toggle": true,
+        "tone": "white"
+      }
+    ]
+  },
+  "F9": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "label": "Δ60d",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "S⁺ (sustained drift)",
+        "side": "right",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "fromPoint": "velSigmaAmber",
+        "label": "amber 0.7σ",
+        "level": "amber",
+        "source": "perPoint"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "velSigmaRed",
+        "label": "red 0.9σ",
+        "level": "red",
+        "source": "perPoint"
+      },
+      {
+        "axis": "secondary",
+        "label": "h 2.00",
+        "level": "amber",
+        "source": "derived",
+        "value": 2
+      },
+      {
+        "axis": "secondary",
+        "label": "red 2.70",
+        "level": "red",
+        "source": "derived",
+        "value": 2.7
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "delta20",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "cusum",
+        "style": "primary"
+      }
+    ]
+  },
+  "FXH": {
+    "axes": [
+      {
+        "format": "derived",
+        "id": "primary",
+        "side": "left",
+        "unit": "%"
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "Haven FX price",
+        "side": "right",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "source": "effective"
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "source": "effective"
+      }
+    ],
+    "renderer": "fx",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "havenLegs.eur",
+        "style": "leg"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "havenLegs.chf",
+        "style": "leg"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "havenLegs.jpy",
+        "style": "leg"
+      },
+      {
+        "axis": "primary",
+        "compute": "havenEnvelope",
+        "style": "envelope"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "value",
+        "style": "derived"
+      }
+    ]
+  },
+  "G1": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "20-day return",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": 0.2
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": 0.4
+      }
+    ],
+    "gates": [
+      {
+        "appliesTo": "red",
+        "key": "atTrailingPeak",
+        "label": "WTI at/above its trailing 3-year peak"
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "gatedBy": [
+          "atTrailingPeak"
+        ],
+        "style": "derived"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "rollingMax",
+        "label": "trailing 3-year peak",
+        "style": "trend"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "rollingMax",
+        "label": "amber proximity (95% of peak)",
+        "scale": 0.95,
+        "style": "trend"
+      }
+    ]
+  },
+  "GB": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "label": "amber <0.72",
+        "level": "amber",
+        "source": "displayBand",
+        "value": 0.72
+      },
+      {
+        "axis": "primary",
+        "label": "red <0.58",
+        "level": "red",
+        "source": "displayBand",
+        "value": 0.58
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "GT": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "% vs MA200",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": 0.059
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": 0.026
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived"
+      }
+    ]
+  },
+  "HICP": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold"
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "HYNIX": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "INS_RS": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "EXH5/EXSA % vs MA50",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": -0.03
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": -0.06
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived"
+      }
+    ]
+  },
+  "JPT": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "% vs MA200",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": 0.059
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": 0.026
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived"
+      }
+    ]
+  },
+  "KBE": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "$"
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "worst 21-close drop",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": -0.15000000000000002
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": -0.2
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived"
+      }
+    ]
+  },
+  "KBE_RS": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "KBE/SPY % vs MA50",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": -0.03
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": -0.06
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived"
+      }
+    ]
+  },
+  "KRW": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "LEGP_COMMOD": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "€"
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "LEGP_EM": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "€"
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "LEGP_EUFIN": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "€"
+      }
+    ],
+    "bands": "context-only",
+    "lead": 200,
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "primary",
+        "compute": "rv10",
+        "fit": true,
+        "label": "RV10",
+        "style": "trend"
+      },
+      {
+        "axis": "primary",
+        "compute": "rv20",
+        "fit": true,
+        "label": "RV20",
+        "readout": true,
+        "style": "trend",
+        "tone": "cyan"
+      },
+      {
+        "axis": "primary",
+        "compute": "ma50",
+        "readout": true,
+        "style": "trend",
+        "toggle": true,
+        "tone": "white"
+      },
+      {
+        "axis": "primary",
+        "compute": "ma200",
+        "readout": true,
+        "style": "trend",
+        "toggle": true,
+        "tone": "alt"
+      }
+    ]
+  },
+  "LEGP_EXUS": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "€"
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "LEGP_HEALTH": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "€"
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "LEGP_RAFI": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "€"
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "LEGP_SEMIS": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "€"
+      }
+    ],
+    "bands": "context-only",
+    "lead": 200,
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "primary",
+        "compute": "ma200",
+        "readout": true,
+        "style": "trend",
+        "toggle": true,
+        "tone": "alt"
+      }
+    ]
+  },
+  "LEGP_SPIT": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "€"
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "LEGP_SPX": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "€"
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "LEGP_STAPLES": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "€"
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "MU_RS": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "MU/SMH % vs MA50",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": 0
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": -0.03
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived"
+      }
+    ]
+  },
+  "NG": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "20-day return",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": 0.25
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": 0.5
+      }
+    ],
+    "gates": [
+      {
+        "appliesTo": "red",
+        "key": "atTrailingPeak",
+        "label": "Henry Hub at/above its trailing 3-year peak"
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "gatedBy": [
+          "atTrailingPeak"
+        ],
+        "style": "derived"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "rollingMax",
+        "label": "trailing 3-year peak",
+        "style": "trend"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "rollingMax",
+        "label": "amber proximity (95% of peak)",
+        "scale": 0.95,
+        "style": "trend"
+      }
+    ]
+  },
+  "NVDA": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "% vs MA200",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": 0
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived"
+      }
+    ]
+  },
+  "OVX": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "5-day return",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": 0.24
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": 0.35
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived"
+      }
+    ]
+  },
+  "R1": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "label": "63-obs mean < 0",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "postInvAmber",
+        "label": "post-inversion amber floor on the 21-obs mean (releases on 10 above)",
+        "level": "amber",
+        "source": "perPoint"
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "redMean",
+        "label": "63-obs mean",
+        "style": "scored-mean"
+      }
+    ]
+  },
+  "R2": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "%"
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "10y Δ20d",
+        "side": "right",
+        "unit": "pp"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "metric": "velocity",
+        "source": "threshold"
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "metric": "velocity",
+        "source": "threshold"
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "delta20",
+        "style": "derived"
+      }
+    ]
+  },
+  "R3": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "label": "Δ20d",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "velocity",
+        "source": "threshold"
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "velocity",
+        "source": "threshold"
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "delta20",
+        "style": "primary"
+      }
+    ]
+  },
+  "R4": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "%"
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "10y RY Δ20d",
+        "side": "right",
+        "unit": "pp"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "metric": "velocity",
+        "source": "threshold"
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "metric": "velocity",
+        "source": "threshold"
+      }
+    ],
+    "lead": 120,
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "delta20",
+        "style": "derived"
+      },
+      {
+        "axis": "primary",
+        "compute": "delta",
+        "fit": true,
+        "label": "Δ63d",
+        "style": "trend",
+        "window": 63
+      },
+      {
+        "axis": "primary",
+        "compute": "delta",
+        "fit": true,
+        "label": "Δ120d",
+        "readout": true,
+        "ref": {
+          "label": "spit esc +75bp",
+          "value": 0.75
+        },
+        "style": "trend",
+        "tone": "alt",
+        "window": 120
+      }
+    ]
+  },
+  "R5": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold"
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "R6": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "velocity z (Δlog5 · 250d σ)",
+        "side": "right",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold",
+        "style": "evt"
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold",
+        "style": "evt"
+      },
+      {
+        "axis": "secondary",
+        "label": "amber 1.5σ",
+        "level": "amber",
+        "source": "displayBand",
+        "value": 1.5
+      },
+      {
+        "axis": "secondary",
+        "label": "red 2.5σ",
+        "level": "red",
+        "source": "displayBand",
+        "value": 2.5
+      }
+    ],
+    "lead": 250,
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "velZ",
+        "style": "primary"
+      },
+      {
+        "axis": "primary",
+        "compute": "median",
+        "label": "1.3× 250d median",
+        "readout": true,
+        "scale": 1.3,
+        "style": "trend",
+        "toggle": true,
+        "window": 250
+      }
+    ]
+  },
+  "R7": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "label": "T10Y3M",
+        "side": "left",
+        "unit": "pp"
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "Δ20 2y / steepening",
+        "side": "right",
+        "unit": "pp"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "fromPoint": "r7DropAmber",
+        "label": "2y drop amber p15",
+        "level": "amber",
+        "pair": "drop",
+        "shortLabel": "2A",
+        "source": "perPoint"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "r7DropRed",
+        "label": "2y drop red p3",
+        "level": "red",
+        "pair": "drop",
+        "shortLabel": "2R",
+        "source": "perPoint"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "r7SteepAmber",
+        "label": "steepening amber p15",
+        "level": "amber",
+        "pair": "steep",
+        "shortLabel": "sA",
+        "source": "perPoint"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "r7SteepRed",
+        "label": "steepening red p3",
+        "level": "red",
+        "pair": "steep",
+        "shortLabel": "sR",
+        "source": "perPoint"
+      }
+    ],
+    "gates": [
+      {
+        "appliesTo": "both",
+        "key": "shortEndDriven",
+        "label": "the 2y drop drives the steepening"
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "bullLegs.drop",
+        "gatedBy": [
+          "shortEndDriven"
+        ],
+        "label": "Δ20 2y",
+        "pair": "drop",
+        "style": "leg"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "bullLegs.steep",
+        "gatedBy": [
+          "shortEndDriven"
+        ],
+        "label": "Δ20 steepening",
+        "pair": "steep",
+        "style": "leg"
+      }
+    ],
+    "window": 756
+  },
+  "R8": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "label": "NTFS avg",
+        "side": "left",
+        "unit": "%"
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "recession prob (12m)",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "fromPoint": "r8CutAmber",
+        "label": "amber <p40 of anchored mean pool (armed)",
+        "level": "amber",
+        "source": "perPoint"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "r8CutRed",
+        "label": "red <p35 of anchored mean pool (armed)",
+        "level": "red",
+        "source": "perPoint"
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "compute": "probit",
+        "label": "modelled 12m recession probability",
+        "style": "derived"
+      }
+    ]
+  },
+  "RS_SMH": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "SMH/SPY % vs MA50",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": 0
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": -0.03
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived"
+      }
+    ]
+  },
+  "RS_XLK": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "XLK/SPY % vs MA50",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": 0
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": -0.03
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived"
+      }
+    ]
+  },
+  "SP500IT": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "$"
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "SPCONC": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "SPY/RSP % from 12-mo high",
+        "side": "right",
+        "unit": "%"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "fromPoint": "breadthAmber",
+        "label": "amber >p85 of own history",
+        "level": "amber",
+        "source": "perPoint"
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "breadthRed",
+        "label": "red >p98 of own history",
+        "level": "red",
+        "source": "perPoint"
+      }
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived"
+      }
+    ]
+  },
+  "SPY": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "$"
+      }
+    ],
+    "bands": "context-only",
+    "fromDays": 739,
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "T10YIE": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "%"
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "10y breakeven Δ20d",
+        "side": "right",
+        "unit": "pp"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "metric": "velocity",
+        "source": "threshold"
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "metric": "velocity",
+        "source": "threshold"
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "delta20",
+        "style": "derived"
+      }
+    ]
+  },
+  "T5YIFR": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "%"
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "5y5y forward Δ20d",
+        "side": "right",
+        "unit": "pp"
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold"
+      },
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "metric": "velocity",
+        "source": "threshold"
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "metric": "velocity",
+        "source": "threshold"
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "delta20",
+        "style": "derived"
+      }
+    ]
+  },
+  "VGK": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "$"
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "VIX": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "VIX3M": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "VT": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "label": "amber ≥0.93",
+        "level": "amber",
+        "source": "displayBand",
+        "value": 0.93
+      },
+      {
+        "axis": "primary",
+        "label": "red >0.97",
+        "level": "red",
+        "source": "displayBand",
+        "value": 0.97
+      }
+    ],
+    "fromDays": 739,
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "VWO": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "$"
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "XDEV": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "€"
+      }
+    ],
+    "bands": "context-only",
+    "lead": 65,
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      },
+      {
+        "axis": "primary",
+        "compute": "rv10",
+        "fit": true,
+        "label": "RV10",
+        "style": "trend"
+      },
+      {
+        "axis": "primary",
+        "compute": "high60",
+        "style": "step",
+        "toggle": true,
+        "tone": "alt"
+      },
+      {
+        "axis": "primary",
+        "compute": "high60",
+        "cut": {
+          "level": "amber",
+          "style": "approach"
+        },
+        "label": "T1 zone (0.97 × 60-close high)",
+        "scale": 0.97,
+        "style": "step",
+        "toggle": true
+      },
+      {
+        "axis": "primary",
+        "compute": "high60",
+        "cut": {
+          "level": "amber"
+        },
+        "label": "T2 zone (0.95 × 60-close high)",
+        "scale": 0.95,
+        "style": "step",
+        "toggle": true
+      },
+      {
+        "axis": "primary",
+        "compute": "high60",
+        "cut": {
+          "level": "red"
+        },
+        "label": "T3 zone (0.92 × 60-close high)",
+        "scale": 0.92,
+        "style": "step",
+        "toggle": true
+      },
+      {
+        "axis": "primary",
+        "compute": "vetoBreach",
+        "cut": {
+          "level": "red"
+        },
+        "label": "veto day (daily log return under −3σ)",
+        "style": "dots",
+        "toggle": true
+      }
+    ]
+  },
+  "complacency-duration": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": "context-only",
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "complacency-high": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "label": "amber ≥0.98 (15 of 21d)",
+        "level": "amber",
+        "source": "displayBand",
+        "value": 0.98
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "complacency-vix": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "label": "amber ≤0.10",
+        "level": "amber",
+        "source": "displayBand",
+        "value": 0.1
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  },
+  "price-accel": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": ""
+      }
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "label": "amber ≥0.80",
+        "level": "amber",
+        "source": "displayBand",
+        "value": 0.8
+      },
+      {
+        "axis": "primary",
+        "label": "red ≥0.95",
+        "level": "red",
+        "source": "displayBand",
+        "value": 0.95
+      }
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary"
+      }
+    ]
+  }
+}

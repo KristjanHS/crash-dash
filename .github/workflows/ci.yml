@@ -1,0 +1,178 @@
+name: CI
+
+# `check` is UNIT-ONLY: the same Node a laptop uses runs tsc + vitest here, with the
+# integration half self-skipping (no DB_TESTS=1 + local-Supabase creds → the `hasDb`
+# gate in src/store.test-helpers.ts skips it). No Supabase lifecycle keeps every push at ~1
+# billed min. The DB-backed integration suite runs in .github/workflows/integration.yml
+# against a persistent crash-dash-ci stack (dispatch-gated until a runner registers).
+
+on:
+  # push only on main — the branch that must always be green (the `deploy` job runs only when the repo sets CI_DEPLOY=true; otherwise `make ship` deploys).
+  # Feature branches are covered by their PR; running BOTH push and pull_request on the
+  # same commit double-billed every job (GitHub bills each job, rounded up per job).
+  push:
+    branches: [main]
+    # Skip prose-only pushes: markdown/docs/rules never affect tsc/vitest/sim:notify, yet
+    # each still billed a full CI minute (~37% of commits are prose-only). A mixed
+    # code+docs push still runs — paths-ignore only skips when EVERY changed path matches.
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
+      - ".claude/**"
+      - "LICENSE"
+  pull_request:
+
+# Cancel a superseded in-flight CI run on the same ref: a burst of rapid pushes to main
+# (15-46/day here) previously ran EVERY superseded run to completion. Keyed
+# per-ref so parallel branches/PRs never cancel each other. Latest commit always finishes.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Neither job writes to the repo: `check` runs the suite; `deploy` (opt-in via CI_DEPLOY)
+# uses its own Vercel token. Read-only keeps a compromised step from pushing.
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    # Without this, GitHub's DEFAULT job ceiling is 6 HOURS — one hung npm ci / vitest step
+    # would eat 360 of the 2000 free min/mo on a single push. The suite outgrew the old 3m cap:
+    # last green job 2m20s (run 44127241223, Test step 1m39s); full-suite (red) runs by
+    # 2026-11-22 took 2m51s-3m00s with Test at 2m02s-2m13s (45056481413, 44787541979,
+    # 44683735127); five runs 2026-11-21..23 were then CANCELLED at the 3m cap mid-Test
+    # (e.g. 45120134995: Test still running at 2m19s, job killed at 3m17s). Steps before
+    # Test take ~50-60s on a WARM npm cache (`Install deps` 6-11s); a cache miss adds 30-60s.
+    # 8m is ~2.5x the ~3m15s job now, room for suite growth while still capping a hang.
+    # If this ever fires, check where the log ends: inside `Install deps` (cold cache) or
+    # mid-vitest — then compare vitest's `Duration` on recent green runs: steady growth
+    # toward the cap → re-measure and raise; a sudden stall → a real hang, fix that. Never
+    # remove the cap: an uncapped job inherits GitHub's 6h default, the 360-min failure mode above.
+    # Does NOT cover queue time: a job waiting for a hosted runner (the 2026-08-06 Actions
+    # outage sat one 15m before GitHub failed it) is unbilled and untouched by this knob.
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        # No job token in .git/config: nothing here pushes, and a persisted
+        # credential is readable by every later step and by any artifact
+        # that captures .git/ (zizmor artipacked).
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version-file: ".nvmrc" # single source of truth (Node 24 — Vercel runtime + native WebSocket)
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      # AFTER `npm ci` (it wipes node_modules). Entries are content-hashed, so a stale restore only misses.
+      - name: Restore vitest module cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: node_modules/.experimental-vitest-cache
+          key: vitest-fsmc-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('tsconfig.json') }}-${{ github.sha }}
+          restore-keys: vitest-fsmc-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('tsconfig.json') }}-
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Lint (type-aware ESLint — plain `eslint`, a stale suppression fails)
+        run: npm run lint:ts
+
+      - name: Ladder-reads clone groups (strict — a group not in ACCEPTED, a stale entry, or an untagged read fails)
+        run: npm run -s lint:ladder-reads -- --strict
+
+      - name: Backfill-depth stale literals (a line naming BACKFILL_YEARS / EXPANDING_PERCENTILE_PREFIX_YEARS beside a year-numeral fails)
+        run: npm run -s lint:backfill-years
+
+      # `npm run coverage` (`vitest run --coverage`), NOT `npm test`. Two reasons, both
+      # load-bearing (locally the same thresholds gate at `make ship` — `$COV` in scripts/ship.sh;
+      # `npm run check` is uninstrumented):
+      #  1. vitest.config.ts's per-file coverage thresholds are the regression gate, and
+      #     they only execute when a run is instrumented — `npm test` ran without
+      #     --coverage, so every threshold there was dead (TEST-1, 2026-08-08).
+      #  2. it must stay ONE run. `npm test` = scripts/run-unit-tests.sh (today itself a
+      #     single `vitest run`); a per-project split (--project=shared, then
+      #     --project=isolated) under --coverage would both double the instrumented cost
+      #     AND gate on partial maps (pass 2 overwrites pass 1's report, so every file
+      #     only the shared pass touches would read 0%). A bare `vitest run` runs BOTH projects in one process — same
+      #     partition, same isolate settings (they live in vitest.config.ts's `projects`
+      #     since Vitest 4), one merged coverage map.
+      - name: Test (unit + coverage gate — integration half self-skips without DB_TESTS=1 + creds)
+        run: npm run coverage -- --silent
+
+      - name: Notify-band oracle (exact-band scenarios, dry run)
+        # sim:notify's oracles live outside vitest and have rotted before (audit rank 5,
+        # 2026-07-15 graded-floor incident). DRY mode: throws/exit-1 on band mismatch,
+        # never POSTs (off-prod + no NTFY_TOPIC ⇒ push suppressed).
+        run: npm run sim:notify -- all
+
+  # Prod deploy from CI — OFF unless the repo opts in. A repo that deploys from a local machine
+  # (`make ship` → scripts/deploy-prod-local.sh) leaves it off. To deploy on every green push to
+  # main instead, set in repo settings: variable CI_DEPLOY=true, variables VERCEL_ORG_ID +
+  # VERCEL_PROJECT_ID (your `.vercel/project.json` orgId / projectId), and secret VERCEL_TOKEN —
+  # plus the deploy config stamp's three keys: variables SUPABASE_URL (https://<ref>.supabase.co) and
+  # PROD_ALIAS (the production domain), and secret SUPABASE_ANON_KEY (the project's anon/publishable
+  # key — never the service key; the stamp refuses it).
+  # The repo copy holds PLACEHOLDERS for the Supabase host, anon key and alias (public/, vercel.json
+  # CSP, openapi.yaml), so a raw checkout is never deployed: like `make ship`, the job builds a
+  # separate deploy tree (bundle + minify), stamps it with scripts/stamp-deploy-config.ts — which
+  # refuses on a missing key or any placeholder left — and uploads that tree.
+  # vercel.json git.deploymentEnabled=false keeps Vercel's own Git integration from auto-deploying.
+  deploy:
+    needs: [check]
+    # Unset CI_DEPLOY → skipped before a runner starts (0 billed minutes).
+    if: vars.CI_DEPLOY == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10 # see check — caps a hung `vercel deploy` at 10m, not the 6h default
+    # VERCEL_TOKEN is step-level, on the two steps that need it (Guard, Deploy) — never job-level, where every
+    # dependency's code the install / bundle / minify / stamp steps run could read it.
+    env:
+      VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        # No job token in .git/config: nothing here pushes, and a persisted
+        # credential is readable by every later step and by any artifact
+        # that captures .git/ (zizmor artipacked).
+        with:
+          persist-credentials: false
+      - name: Guard — deploy target configured
+        run: |
+          test -n "$VERCEL_TOKEN" || { echo "::error::VERCEL_TOKEN repo secret is unset (Vercel dashboard → Account → Tokens, then gh secret set VERCEL_TOKEN)"; exit 1; }
+          test -n "$VERCEL_ORG_ID" && test -n "$VERCEL_PROJECT_ID" || { echo "::error::set repo variables VERCEL_ORG_ID + VERCEL_PROJECT_ID (gh variable set …)"; exit 1; }
+          test -n "$STAMP_SUPABASE_URL" && test -n "$STAMP_PROD_ALIAS" || { echo "::error::deploy config stamp: set repo variables SUPABASE_URL + PROD_ALIAS (gh variable set …)"; exit 1; }
+          test -n "$STAMP_SUPABASE_ANON_KEY" || { echo "::error::deploy config stamp: SUPABASE_ANON_KEY repo secret is unset (gh secret set SUPABASE_ANON_KEY)"; exit 1; }
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          STAMP_SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          STAMP_PROD_ALIAS: ${{ vars.PROD_ALIAS }}
+          STAMP_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version-file: ".nvmrc"
+          cache: npm
+      # No lifecycle scripts: the build needs only esbuild's JS API, which loads its platform binary from the
+      # @esbuild/<platform> optional dependency — its own postinstall is a bin-shim optimization this job never uses.
+      - name: Install deps (no lifecycle scripts)
+        run: npm ci --ignore-scripts
+      # The payload is a detached worktree of the pushed commit (ship.sh §5's shape), never this
+      # checkout: the bundle, minify and stamp mutate the tree they are pointed at, and the stamp
+      # refuses the checkout itself.
+      - name: Build deploy tree (checkout → bundle → minify)
+        run: |
+          git worktree add --detach --quiet "$RUNNER_TEMP/deploy" HEAD
+          npm run --silent bundle:public -- "$RUNNER_TEMP/deploy"
+          npm run --silent minify:public -- "$RUNNER_TEMP/deploy"
+      - name: Stamp deploy config
+        run: npx tsx scripts/stamp-deploy-config.ts "$RUNNER_TEMP/deploy"
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          PROD_ALIAS: ${{ vars.PROD_ALIAS }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+      - name: Deploy to Vercel Production
+        run: npx --yes vercel@latest deploy --prod --yes --cwd "$RUNNER_TEMP/deploy" --token "$VERCEL_TOKEN"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>● - crash-dash</title>
+    <meta
+      name="description"
+      content="How dangerous markets look right now, scored once a day from public data and mapped to a four-step alert ladder. Notify-only."
+    />
+    <!-- Static shell only: vanilla ES modules, no framework/bundler/build (repo charter). -->
+    <link rel="preconnect" href="https://configrefplaceholder.supabase.co" crossorigin />
+    <link rel="stylesheet" href="./styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='%235f7a5f'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <!-- Compact page-nav to the What-If Lab and the holdings Journal; always present, minimal height.
+         The Journal link is the ONLY way back to /journal after a magic-link redirect lands on "/". -->
+    <div class="pagenav-bar">
+      <a class="pagenav" href="/lab">Lab <span aria-hidden="true">↗</span></a>
+      <a class="pagenav pagenav-gap" href="/journal">Journal <span aria-hidden="true">↗</span></a>
+      <a class="pagenav pagenav-gap" href="/subscribe">✉ Email alerts <span aria-hidden="true">↗</span></a>
+      <a class="pagenav pagenav-gap" href="/signin" data-auth-nav>Sign in <span aria-hidden="true">↗</span></a>
+    </div>
+
+    <!-- Masthead — the page's one-line introduction for a first-time visitor. Static markup (never
+         re-rendered by app.js) and OUTSIDE <main id="dashboard">, so it paints before data lands and
+         survives every zone re-render. -->
+    <header class="masthead">
+      <h1 class="masthead-title">Market danger, one screen.</h1>
+      <p class="masthead-sub">
+        How dangerous markets look right now, scored once a day from public data and mapped to a
+        four-step alert ladder. It notifies, nothing more. Not investment advice.
+      </p>
+    </header>
+
+    <!-- Centered overlay for loading / empty states (one at a time). -->
+    <div id="message" class="message" role="status">Loading…</div>
+
+    <!-- Inline top banner for transient fetch errors; dashboard stays put underneath. -->
+    <div id="banner" class="banner" role="alert" hidden></div>
+
+    <main id="dashboard" class="dashboard" data-help="tap-first" hidden>
+      <!-- Zone A — verdict banner (from /status + /history). -->
+      <section id="zone-a" class="zone zone-a" aria-label="Verdict"></section>
+
+      <!-- Zone D — history charts (tabbed: alert ladder / indicator detail).
+           Leads the page's read: sits directly under the verdict banner so the
+           landing view opens on the indicator-detail history stack. -->
+      <section id="zone-d" class="zone zone-d" aria-label="History"></section>
+
+      <!-- (Zone B — the verdict-keyed per-channel roll-up bars — retired 2026-07-15,
+           O2 step 3: the family-grouped indicator cards are the channel-level read.) -->
+
+      <!-- Bottom-signal panel — contrarian off-ladder VIX capitulation read
+           (from /status verdict.bottomState + vix/vix3m/ratio). Sits below the
+           channel roll-up it counterpoints; cannot move the fast ladder. -->
+      <section id="zone-bottom" class="zone zone-bottom" aria-label="VIX bottom signal"></section>
+
+      <!-- Bubble-state panel — slow off-ladder bubble-fuel read (band from
+           /status verdict.slowScore/slowBand; continuous metrics from
+           /series per slow leg id). Grouped with the bottom panel as the
+           off-ladder reads; cannot move the fast ladder. -->
+      <section id="zone-slow" class="zone zone-slow" aria-label="Bubble-state signal"></section>
+
+      <!-- Zone C — indicator grid (from /status readings + /indicators meta). -->
+      <section id="zone-c" class="zone zone-c" aria-label="Indicators"></section>
+    </main>
+
+    <!-- Mobile help: tap any ⓘ to show that element's title text here. Lives outside
+         the zones (after </main>) so a zone re-render never wipes it. -->
+    <aside id="help-bar" class="help-bar" role="status" hidden>
+      <p class="help-bar-text"></p>
+      <button type="button" class="help-bar-close" aria-label="Close help">×</button>
+    </aside>
+
+    <!-- "New here?" footnote — the onboarding block, above the legal footer. Deliberately three
+         short rows plus a link row; the long explainer lives on /about, so this stays short enough
+         to keep true. -->
+    <section class="site-intro" aria-labelledby="site-intro-title">
+      <h2 id="site-intro-title" class="site-intro-title">New here?</h2>
+      <dl class="site-intro-rows">
+        <dt>What it is</dt>
+        <dd>A daily gauge of market danger. It watches and it notifies. It never trades.</dd>
+        <dt>How to read it</dt>
+        <dd>
+          The band is the headline: OK → WATCH → WARNING → CRITICAL. The cards below it show which
+          signals moved it.
+        </dd>
+        <dt>Where it comes from</dt>
+        <dd>Free public sources only. Nothing paid, nothing personal, no account needed.</dd>
+      </dl>
+      <nav class="site-intro-links" aria-label="About this dashboard">
+        <a href="/about">How it works</a>
+        <a href="/lab">Lab</a>
+        <a href="/journal">Journal</a>
+        <a href="/attribution">Sources</a>
+      </nav>
+    </section>
+
+    <footer class="site-footer">
+      <nav class="site-footer-links" aria-label="Legal">
+        <a href="/imprint">Imprint</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/cookies">Cookies</a>
+        <a href="/attribution">Attribution</a>
+      </nav>
+      <p class="site-footer-donate">
+        Free to use. <a href="https://paypal.me/kristjanhs" rel="noopener noreferrer external">Send a gift</a>
+        - voluntary, and it buys nothing.
+      </p>
+    </footer>
+
+    <!-- Viewport-pinned crosshair readout: the FULL detail-chart readout, shown only while
+         scrubbing a Zone D chart. Lives outside #zone-d (whose innerHTML is replaced every poll)
+         and is position:fixed, so it costs the chart stack zero layout height - that is the whole
+         point: the per-chart `.hover-strip` it replaced reserved ~55px under EVERY chart. -->
+    <p id="hover-bar" class="hover-bar" aria-live="off" hidden></p>
+
+    <script type="module" src="./disclaimer.js"></script>
+    <script type="module" src="./auth-nav.js"></script>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

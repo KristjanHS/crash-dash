@@ -1,0 +1,11 @@
+-- crash-dash — RETRACTED in place.
+--
+-- This version was applied to prod (and the local dev stack) on 2026-09-04 with a DELETE of every
+-- Fri/Sat-labelled `readings` row on the five `=X`-fed FX ids (F11, F17, CMP_FXH_DEXUSEU/DEXSZUS/
+-- DEXJPUS), on the premise that the price feed never labels an FX bar Fri/Sat. The premise was FALSE: the
+-- label set shifts with UK DST (summer Sun…Thu, winter Mon…Fri), so ~22 Friday rows/yr/id were real
+-- bars — ~1,800 rows deleted, restored from the `backups`-branch snapshot via
+-- `npm run backup:restore-rows`. The version is kept so `migration list --linked` shows no drift;
+-- the body is a no-op so no environment can ever replay the DELETE. The forward fix is a parser rule
+-- (the FX chart parser, `src/prices.ts`), not a migration.
+select 1;

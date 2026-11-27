@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Journal - crash-dash</title>
+    <meta
+      name="description"
+      content="Holdings journal - record which ladder rung is held, how much cash sits beside it, and what the dial was saying at the time."
+    />
+    <!-- Static shell only: vanilla ES modules, no framework/bundler/build (repo charter).
+         Auth is raw GoTrue REST for the same reason — no SDK, no CDN script. -->
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./journal.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='%235f7a5f'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <div class="pagenav-bar">
+      <a class="pagenav" href="/">Dashboard <span aria-hidden="true">↗</span></a>
+      <a class="pagenav pagenav-gap" href="/lab">Lab <span aria-hidden="true">↗</span></a>
+      <a class="pagenav pagenav-gap" href="/signin" data-auth-nav>Sign in <span aria-hidden="true">↗</span></a>
+    </div>
+
+    <main class="journal">
+      <h1 class="journal-title">Holdings journal</h1>
+
+      <!-- 1. Connection. The project URL + PUBLIC anon key are pasted once and kept in
+           localStorage: the anon key is a server-side env var in this repo and /api/config
+           does not serve it, and this slice adds no API handler (Hobby 12-function cap). -->
+      <section id="conn-card" class="jr-card" hidden>
+        <p class="jr-h">Supabase connection</p>
+        <div class="jr-fields">
+          <label class="jr-field"
+            >Project URL
+            <input id="conn-url" type="url" autocomplete="off" />
+          </label>
+          <label class="jr-field jr-wide"
+            >Anon (publishable) key
+            <input id="conn-key" type="text" placeholder="eyJ…" autocomplete="off" />
+          </label>
+        </div>
+        <div class="jr-actions">
+          <button id="conn-save" class="jr-btn" type="button">Save connection</button>
+          <p id="conn-msg" class="jr-msg"></p>
+        </div>
+      </section>
+
+      <!-- 2. Sign-in. Magic link, raw GoTrue REST — wired on THIS page only; the dashboard,
+           lab and exposure pages stay anon-read with no login. -->
+      <section id="auth-card" class="jr-card">
+        <p class="jr-h">Sign in</p>
+        <!-- J0.1: a SHORT description only. The account explainer, the RLS wording and the
+             drawdown promise live on /subscribe and /signin (J0.3a/J0.3b) - not repeated here. -->
+        <p class="jr-lead">
+          A private log of your own holdings decisions - which ladder leg you hold, how much cash sits beside it, the date
+          and a note. Only you can read your entries. No account? <a href="/subscribe">Sign up</a>.
+        </p>
+        <div class="jr-fields">
+          <label class="jr-field jr-wide"
+            >Email
+            <input id="auth-email" type="email" placeholder="you@example.com" autocomplete="email" />
+          </label>
+        </div>
+        <div class="jr-actions">
+          <button id="auth-send" class="jr-btn" type="button">Email me a magic link</button>
+          <button id="conn-edit" class="jr-link" type="button">Change connection</button>
+        </div>
+        <p id="auth-msg" class="jr-msg"></p>
+      </section>
+
+      <!-- 3. Write form. Hidden until signed in — the insert policy would reject it anyway. -->
+      <section id="entry-card" class="jr-card" hidden>
+        <p class="jr-h">New entry</p>
+        <div class="jr-fields">
+          <label class="jr-field"
+            >Date
+            <input id="f-date" type="date" />
+          </label>
+          <!-- J1.2: one control fills two columns - the ladder <select> IS the sleeve, and the shell
+               derives rung from its index+1. Options are populated from /api/config's `ladder`. -->
+          <label class="jr-field"
+            >Sleeve (ladder leg)
+            <select id="f-sleeve"></select>
+          </label>
+          <label class="jr-field"
+            >Cash %
+            <input id="f-cash" type="number" min="0" max="100" step="0.5" />
+          </label>
+          <label class="jr-field jr-wide"
+            >Note
+            <textarea id="f-note" rows="2" placeholder="why this move"></textarea>
+          </label>
+        </div>
+        <p id="snapshot" class="jr-snapshot"></p>
+        <div class="jr-actions">
+          <button id="f-save" class="jr-btn" type="button">Save entry</button>
+          <!-- J0.3: the one missing cross-link. /subscribe already renders a signed-in message and
+               auth-nav.js links every page, so only this direction was missing. -->
+          <a class="jr-link" href="/subscribe">Manage email alerts <span aria-hidden="true">&rarr;</span></a>
+          <button id="auth-out" class="jr-link" type="button">Sign out</button>
+        </div>
+        <p id="entry-msg" class="jr-msg"></p>
+      </section>
+
+      <!-- 4. Own-book drawdown (J1.5). One readings_latest read chains the user's own entries
+           into a blended drawdown; the headline band is the CONFIRMED one. Display-only. -->
+      <section id="dd-card" class="jr-card" hidden>
+        <p class="jr-h">Your drawdown</p>
+        <div id="dd-body"></div>
+      </section>
+
+      <!-- 5. Last N entries. -->
+      <section id="list-card" class="jr-card" hidden>
+        <p class="jr-h">Recent entries</p>
+        <div id="list"></div>
+      </section>
+
+      <!-- 6. Trading rules.
+           Per-account, append-only version history folded to the live wording by the
+           rules-view.js seam. Session-live is the ONLY gate: /journal ships to every
+           signed-in account, and inventing an owner check is the defect, not the safeguard. -->
+      <section id="rules-card" class="jr-card" hidden>
+        <p class="jr-h">Trading rules</p>
+        <div id="rules-list"></div>
+        <div class="jr-actions">
+          <button id="rule-new" class="jr-link" type="button">+ new rule</button>
+        </div>
+        <div id="rule-form" hidden>
+          <div class="jr-fields">
+            <label class="jr-field jr-wide"
+              >Mistake
+              <input id="rf-mistake" type="text" autocomplete="off" placeholder="what happened" />
+            </label>
+            <label class="jr-field jr-wide"
+              >Cost
+              <input id="rf-cost" type="text" autocomplete="off" placeholder="what it cost" />
+            </label>
+            <label class="jr-field jr-wide"
+              >Rule
+              <textarea id="rf-rule" rows="2" placeholder="the rule this taught you"></textarea>
+            </label>
+            <label class="jr-field jr-wide"
+              >Tags
+              <input id="rf-tags" type="text" autocomplete="off" placeholder="comma, separated" />
+            </label>
+          </div>
+          <div class="jr-actions">
+            <button id="rule-save" class="jr-btn" type="button">Save rule</button>
+          </div>
+          <p id="rule-msg" class="jr-msg"></p>
+        </div>
+      </section>
+
+      <!-- 5. GDPR erasure (J0.5.2). The Art. 17 self-service route: one call to the
+           `delete_my_account` definer RPC, scoped to auth.uid() - the bearer IS the scope.
+           The typed DELETE is friction against a slip, never the security boundary. -->
+      <section id="danger-card" class="jr-card jr-danger" hidden>
+        <p class="jr-h">Delete my account</p>
+        <p class="jr-lead">
+          This erases your journal entries, your email subscription and the sign-in account itself, permanently and at
+          once. There is no undo and no export step. Stopping the alert mails without losing the account is a separate,
+          smaller thing - do that on <a href="/subscribe">Email alerts</a>. What erasure does and does not reach is
+          spelled out under <a href="/privacy#your-rights">Your rights</a>.
+        </p>
+        <div class="jr-fields">
+          <label class="jr-field jr-wide"
+            >Type DELETE to confirm
+            <input id="erase-confirm" type="text" autocomplete="off" placeholder="DELETE" />
+          </label>
+        </div>
+        <div class="jr-actions">
+          <button id="erase-go" class="jr-btn" type="button">Delete my account and everything about me</button>
+        </div>
+        <p id="erase-msg" class="jr-msg"></p>
+      </section>
+
+      <!-- 6. Post-erasure terminal state (J0.5.2 [USER]). Every other card is hidden: re-showing
+           the sign-in card would invite a magic link for an address GoTrue no longer knows. -->
+      <section id="erased-card" class="jr-card" hidden>
+        <p class="jr-h">Account deleted</p>
+        <p class="jr-lead" id="erased-text"></p>
+        <p><a href="/">&larr; Back to the dashboard</a></p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <nav class="site-footer-links" aria-label="Legal">
+        <a href="/imprint">Imprint</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/cookies">Cookies</a>
+        <a href="/attribution">Attribution</a>
+      </nav>
+      <p class="site-footer-donate">
+        Free to use. <a href="https://paypal.me/kristjanhs" rel="noopener noreferrer external">Send a gift</a>
+        - voluntary, and it buys nothing.
+      </p>
+    </footer>
+
+    <script type="module" src="./disclaimer.js"></script>
+    <script type="module" src="./auth-nav.js"></script>
+    <script type="module" src="./journal.js"></script>
+  </body>
+</html>

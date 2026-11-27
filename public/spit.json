@@ -1,0 +1,1978 @@
+{
+  "run": "2026-11-09",
+  "rules": [
+    "The episode box holds every tranche when a coincident and a lead cluster both vote (a strict majority of their live members — see Episode gates), or when a hyper_capex / it_revisions / ai_funding / semi_policy sign row blocks; below quorum (70 % of members live) T2/T3 hold too; antitrust is context only and never blocks. G1 holds every tranche while QDVE is a deep bear. A gate on an unread feed reads n/a and holds. The gates and the time stop are price facts — never act on an open; the close decides. RS_XLK and RSP/SPY · QQQE/QQQ are display reads, never gates."
+  ],
+  "brief": {
+    "fund": "QDVE.DE = iShares S&P 500 Information Technology Sector UCITS (Acc), ISIN IE00B3WJKG14, € closes; served as `LEGP_SPIT`. Top-10 weights (NVDA · AAPL · MSFT · AVGO): check the issuer page — never a number from memory.",
+    "primaryTier": [
+      {
+        "name": "the hyperscaler, NVDA, AVGO and Apple IR pages",
+        "hosts": [
+          "abc.xyz",
+          "microsoft.com",
+          "atmeta.com",
+          "fb.com",
+          "aboutamazon.com",
+          "nvidia.com",
+          "broadcom.com",
+          "apple.com"
+        ]
+      },
+      {
+        "name": "FactSet Earnings Insight",
+        "hosts": [
+          "factset.com"
+        ]
+      },
+      {
+        "name": "Federal Register/BIS",
+        "hosts": [
+          "federalregister.gov",
+          "bis.gov"
+        ]
+      },
+      {
+        "name": "BoJ",
+        "hosts": [
+          "boj.or.jp"
+        ]
+      },
+      {
+        "name": "FRED",
+        "hosts": [
+          "fred.stlouisfed.org"
+        ]
+      },
+      {
+        "name": "SEC EDGAR",
+        "hosts": [
+          "sec.gov"
+        ]
+      },
+      {
+        "name": "BLS",
+        "hosts": [
+          "bls.gov"
+        ]
+      },
+      {
+        "name": "TSMC IR",
+        "hosts": [
+          "tsmc.com"
+        ]
+      }
+    ],
+    "holdsPolicy": "`holds: [\"T2\",\"T3\"]` only on FOMC and the mega-cap calls (MSFT · Alphabet · Meta · Amazon · Apple · NVDA · AVGO), never `T1`; every other event (CPI, TSMC, BoJ, the BIS 50 %-rule expiry, ORCL, MU) is sign-only, `holds: []`.",
+    "gates": "credit at T1, G1 deep-bear, the 3σ veto, the HY guard, the DFII10+HY macro veto, and the time stop",
+    "eventScope": "hyperscaler capex, the AI anchors (NVDA · AVGO) or AI funding"
+  },
+  "signs": [
+    {
+      "sign": "rates",
+      "label": "HELD until 2026-11-10",
+      "lean": "fizzle",
+      "finding": "The Fed held on 10-28 with two dissents for a hike but gave no guidance toward one (Federal Reserve 10-28), though markets now price a December hike (Admiral Markets 10-28); the 10y stays under the 5.15 % fizzle line (CNBC 4.894 % close 11-02) while edging up on midterm, jobs and oil worries (CNBC 4.929 % intraday 11-03)",
+      "why": "rates events ride the rates-shock cluster's real_yield member (a lead vote); a hot CPI or a hawkish FOMC is what trips it",
+      "measurable": "bear = 10y ≥ 5.35 % or core CPI ≥ 0.4 % m/m or Oct hike priced > 50 %; fizzle = 10y < 5.15 % and Oct hike < 25 %",
+      "block": false,
+      "checked": "2026-11-03",
+      "due": "2026-11-10",
+      "primary": [],
+      "press": [
+        "https://www.mortgagenewsdaily.com/treasury/10yr"
+      ],
+      "search": [
+        "US 10-year Treasury yield",
+        "US core CPI September m/m",
+        "FedWatch October hike probability"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-03",
+          "url": "https://www.cnbc.com/2026/11/03/us-treasury-yields-bonds.html"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://admiralmarkets.com/analytics/traders-blog/fomc-october-2026-fed-holds-rates"
+        }
+      ],
+      "leanLog": [
+        {
+          "date": "2026-10-17",
+          "lean": "neutral"
+        },
+        {
+          "date": "2026-10-23",
+          "lean": "fizzle"
+        }
+      ],
+      "extendedOn": "2026-11-03",
+      "quiet": 1
+    },
+    {
+      "sign": "credit",
+      "label": "UNCHANGED 11-05",
+      "lean": "bear",
+      "finding": "CCC still above the 12.5 % bear line on FRED's CCC & lower OAS series through 11-05, flat near its late-October level rather than rising (FRED, data to 11-05); no new BDC or private-credit redemption gate announced since 11-02, the sourced Q3 gates stay Apollo Debt Solutions (09-23) and HPS Corporate Lending Fund capping requests at its 5 % limit (Octus)",
+      "why": "credit is the verdict's live blocker (CCC ≥ 12.5 % and rising, or HY ≥ 4.0 %, trips the box's credit block); private-credit and BDC stress lead HY",
+      "measurable": "bear = CCC ≥ 12.5 % or HY OAS ≥ 4.0 % or a BDC gating Q3 redemptions; fizzle = CCC < 11.5 %",
+      "block": false,
+      "checked": "2026-11-09",
+      "due": "2026-11-12",
+      "primary": [
+        "https://fred.stlouisfed.org/series/BAMLH0A3HYC"
+      ],
+      "search": [
+        "BDC redemption gate OR private credit redemptions limited",
+        "high yield CCC spread widening"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-05",
+          "url": "https://fred.stlouisfed.org/series/BAMLH0A3HYC"
+        }
+      ],
+      "extendedOn": "2026-11-03",
+      "quiet": 1
+    },
+    {
+      "sign": "ai_funding",
+      "label": "UNCHANGED 11-02",
+      "lean": "bear",
+      "finding": "ORCL 5y CDS's last sourced print is still the new high above the 257 bp 10-08 level (stockwirex 295 bp close 10-19), with S&P still BBB- and no junk cut; Oracle filed a $10 B investment-grade notes offering (SEC 11-02), so the bond market is still open to it, while banks were still working off the $38 B Oracle-leased data-center loan (AI Weekly 10-12); no AI loan pulled, neocloud covenant event or AI-lab run-rate cut sourced",
+      "why": "Extends `ai_revenue` (value.json) to the debt side. OpenAI run-rate ~$50 B vs $68–70 B quoted took NVDA −2.94 %, MU −4.7 %, AVGO −4.1 % on 10-08 [W: financialjuice 10-08]; CoreWeave −7.8 % same day [W: tikr 10-08]; its $2.6 B loan closed at SOFR+550 (08-11) [W: energymag]; ORCL BBB- [S: E §1, C §2]; $42 B Broadcom-backstopped Anthropic loans syndicating week of 10-12 [S: E §1]",
+      "measurable": "bear = ORCL 5y CDS prints a new record above the 10-08 257 bp print, or a named AI/DC loan or bond pulled or repriced wider, or an OpenAI/Anthropic run-rate cut ; BLOCKING = ORCL cut to junk (BB+) by S&P or Moody's, or a neocloud cash-trap / covenant event, or an NVDA/AVGO guide cut tied to a customer ; fizzle = Anthropic loans clear at/inside talk and ORCL CDS < 180 bp",
+      "block": false,
+      "checked": "2026-11-09",
+      "due": "2026-11-12",
+      "primary": [],
+      "search": [
+        "Oracle CDS spread OR downgrade junk",
+        "AI data center loan syndication pulled OR repriced",
+        "OpenAI OR Anthropic run-rate revenue"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-02",
+          "url": "https://www.sec.gov/Archives/edgar/data/0001341439/000119312526443918/d87441dfwp.htm"
+        }
+      ],
+      "press": [
+        "https://techcrunch.com/category/artificial-intelligence/",
+        "https://www.datacenterknowledge.com/"
+      ],
+      "leanLog": [
+        {
+          "date": "2026-10-17",
+          "lean": "neutral"
+        },
+        {
+          "date": "2026-10-23",
+          "lean": "bear"
+        }
+      ],
+      "extendedOn": "2026-11-03",
+      "quiet": 2
+    },
+    {
+      "sign": "hyper_capex",
+      "label": "STALE 10-29",
+      "lean": "neutral",
+      "finding": "No 2027 capex number at or below +10 % and no pacing language in the 10-28/29 prints: Alphabet raised its 2026 range and expects capex to 'increase significantly in 2027' (Alphabet call 10-28), Amazon reaffirmed its 2026 spend with 2027 'meaningfully more' and AWS accelerating (Amazon 10-29), Microsoft's quarterly spend doubled y/y (Microsoft 10-28); no firm 2027 figure yet, and the tape read the spend as cash burn — Alphabet fell double digits on 10-29, reported as its worst day on record (Yahoo Finance 10-29), Amazon slid on its free-cash-flow deficit (Morningstar 10-30)",
+      "why": "MSFT/GOOGL/AMZN/META capex is the revenue line of NVDA+AVGO+MU+AMD, the fund's AI holdings; the live 2026/27 guides and any \"digestion\" language are the row's finding [S: C §2]",
+      "measurable": "bear = any one guides 2027 capex ≤ +10 % vs 2026, or uses \"digestion / pause / pacing / optimise\" for AI capex ; BLOCKING = two of four guide 2027 flat-or-down, or one CUTS 2026 ; fizzle = all four raise and ≥ 2 say 2027 \"significantly increase\"",
+      "block": false,
+      "checked": "2026-11-09",
+      "due": "2026-11-09",
+      "primary": [
+        "https://abc.xyz/investor/news/",
+        "https://www.microsoft.com/en-us/investor",
+        "https://about.fb.com/news/",
+        "https://www.aboutamazon.com/news/company-news"
+      ],
+      "search": [
+        "hyperscaler 2027 capex guidance earnings call",
+        "capex digestion OR pause OR pacing hyperscaler"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-10-29",
+          "url": "https://letsdatascience.com/news/amazon-ceo-says-2027-spending-will-be-meaningfully-higher-a176a721"
+        }
+      ],
+      "extendedOn": "2026-11-09",
+      "leanLog": [
+        {
+          "date": "2026-10-28",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-11-03",
+          "lean": "neutral"
+        }
+      ],
+      "searchNext": [
+        "Microsoft calendar-year capex trimmed analyst estimate"
+      ]
+    },
+    {
+      "sign": "ai_anchors",
+      "label": "HELD until 2026-11-10",
+      "lean": "unknown until 2026-11-17",
+      "finding": "NVDA set its FQ3-27 report for 11-17 after the close (NVIDIA 10-28), superseding the inferred 11-18; no fresh NVDA or AVGO guide item since TSMC's 10-15 call landed inside the fizzle line",
+      "why": "NVDA + AVGO guides are the fund's own AI read. Precedent: AVGO's FQ2 AI guide $16 B vs $17.2 B (06-04) started the −29 % SOX leg; its FQ3 beat-and-raise (09-02) still sold off −3 to −6 % [S: C §3]. NVDA's FQ3 guide (zero China) is the beat line [S: C §3]",
+      "measurable": "bear = NVDA FQ4 guide below consensus, or AVGO AI-semis guide below street ; BLOCKING = NVDA guides FQ4 below FQ3, or AVGO cuts its FY27 AI line of sight (~$115 B) ; fizzle = NVDA beats $108 B and guides ≥ $115 B [S: E §2]",
+      "block": false,
+      "checked": "2026-11-03",
+      "due": "2026-11-10",
+      "primary": [
+        "https://nvidianews.nvidia.com/news"
+      ],
+      "search": [
+        "Nvidia guidance fourth quarter fiscal 2027",
+        "Broadcom AI revenue guidance fiscal 2027"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-10-28",
+          "url": "https://nvidianews.nvidia.com/news/nvidia-sets-conference-call-for-third-quarter-financial-results-6928873"
+        }
+      ],
+      "extendedOn": "2026-11-03"
+    },
+    {
+      "sign": "azure_capacity",
+      "label": "HELD until 2026-11-10",
+      "lean": "neutral",
+      "finding": "Azure accelerated to +48 % from +43 % the prior quarter with a 49–50 % Q2 guide (Microsoft 10-28, CNBC 10-28), and management still put demand above supply with some third-party capacity delayed (Motley Fool transcript 10-29) — the constraint holds and nothing points to lease cancellations, but no 'through FY27' line was sourced, so the fizzle side stays one clause short",
+      "why": "MSFT: \"capacity constrained\" = demand > supply (bull); losing it while capex holds = demand-limited. No fresh Azure print fetched this run — verify on 10-28",
+      "measurable": "bear = \"capacity constrained\" dropped from the FQ1 script, or Azure growth decelerates ≥ 3 pp q/q ; BLOCKING = Azure guide below the prior quarter AND FY27 capex guided down or lease cancellations confirmed ; fizzle = constraint \"through FY27\" and Azure ≥ prior quarter",
+      "block": false,
+      "checked": "2026-11-03",
+      "due": "2026-11-10",
+      "primary": [
+        "https://www.microsoft.com/en-us/investor"
+      ],
+      "search": [
+        "Azure growth capacity constrained fiscal 2027",
+        "Microsoft data center lease cancel"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-10-29",
+          "url": "https://www.fool.com/earnings/call-transcripts/2026/10/29/microsoft-msft-q1-2027-earnings-call-transcript/"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://www.microsoft.com/en-us/investor/earnings/fy-2027-q1/press-release-webcast"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://www.cnbc.com/2026/10/28/microsoft-msft-q1-earnings-report-2027.html"
+        }
+      ],
+      "extendedOn": "2026-11-03",
+      "leanLog": [
+        {
+          "date": "2026-10-27",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-11-03",
+          "lean": "neutral"
+        }
+      ]
+    },
+    {
+      "sign": "it_revisions",
+      "label": "UNCHANGED 11-06",
+      "lean": "unknown",
+      "finding": "FactSet's 11-06 season update and its 11-04 note that analysts raised quarterly EPS estimates for a third straight quarter still print no IT estimate-revision, rising-share or CY27 IT figure, so the clauses stay unjudged (FactSet 11-06)",
+      "why": "The E side of the IT P/E: FactSet's weekly IT EPS revisions, the share of IT names raised and the positive-guide count carry it (the live read is the row's finding) [W: FactSet EI]. Valuation is a CUSHION, not the trigger",
+      "measurable": "bear = IT share of names with rising mean EPS < 50 % in a FactSet weekly, or IT CY27 EPS est down ≥ 1 % in 4 weeks ; BLOCKING = IT CY27 EPS est down ≥ 3 % in 4 weeks (the E-cut that made 2022 a bear) [M] ; fizzle = ≥ 70 % of IT names rising and CY27 IT est up",
+      "block": false,
+      "checked": "2026-11-09",
+      "due": "2026-11-16",
+      "primary": [
+        "https://insight.factset.com/topic/earnings"
+      ],
+      "search": [
+        "FactSet Earnings Insight information technology EPS estimate",
+        "S&P 500 tech earnings revisions breadth"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-06",
+          "url": "https://insight.factset.com/topic/earnings"
+        }
+      ],
+      "extendedOn": "2026-11-03",
+      "quiet": 2
+    },
+    {
+      "sign": "aapl_demand",
+      "label": "UNCHANGED 11-03",
+      "lean": "neutral",
+      "finding": "Apple guided December-quarter revenue up 7–10 % y/y, between the bear and fizzle lines and above consensus, after FQ4 revenue rose 12 % with Greater China up about 21 % (Apple 8-K 11-02); the shares fell on a gross-margin guide below consensus on memory costs (CNBC 11-02, Tradingpedia 11-03); no iPhone tariff action sourced",
+      "why": "AAPL: China iPhone sell-through, the Dec-qtr guide and tariff action carry the demand read (the live read is the row's finding); new CEO John Ternus since 09-01, first call 11-02 [W: macrumors 10-06]",
+      "measurable": "bear = Dec-qtr revenue guide < +5 % y/y, or China iPhone sell-through negative y/y two straight months (Counterpoint/CAICT), or a tariff naming iPhones/India ; BLOCKING = Dec-qtr revenue guided DOWN y/y ; fizzle = guide ≥ +10 % y/y with China up",
+      "block": false,
+      "checked": "2026-11-09",
+      "due": "2026-11-16",
+      "primary": [
+        "https://www.apple.com/newsroom/",
+        "https://www.counterpointresearch.com/insight"
+      ],
+      "search": [
+        "iPhone 18 China sell-through Counterpoint CAICT",
+        "Apple December quarter guidance revenue growth",
+        "iPhone tariff India"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-03",
+          "url": "https://www.tradingpedia.com/2026/11/03/apple-shares-fall-as-margin-outlook-china-eclipse-beat/"
+        },
+        {
+          "date": "2026-11-02",
+          "url": "https://www.sec.gov/Archives/edgar/data/0000320193/000032019326000024/a8-kex991q4202609262026.htm"
+        },
+        {
+          "date": "2026-11-02",
+          "url": "https://www.cnbc.com/2026/11/02/apple-aapl-q4-2026-earnings-live-updates.html"
+        }
+      ],
+      "extendedOn": "2026-11-03",
+      "leanLog": [
+        {
+          "date": "2026-10-28",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-11-03",
+          "lean": "neutral"
+        }
+      ],
+      "quiet": 1
+    },
+    {
+      "sign": "jpy_carry",
+      "label": "HELD until 2026-11-10",
+      "lean": "fizzle",
+      "finding": "The BoJ held on 10-30 with one dissent for a hike and the yen firmed only modestly (FXStreet 157.32 intraday 10-30); CFTC data show speculative yen longs rebuilt to a six-week high rather than a short build (FXStreet 11-02), so both fizzle clauses are met",
+      "why": "a yen carry unwind (Aug-2024) hits crowded AI/semis tech first; the yen family trips on F17 off its high or on this row's block",
+      "measurable": "bear = carry being added (CFTC JPY spec net short growing or at a record) or Oct-hike pricing > 50 %; BLOCKING = a BoJ hike + hawkish guidance (the 10-30 event's escalationIf) or MoF intervention (the price leg is the probe's F17 read); fizzle = Oct < 25 % and no spec-short build",
+      "block": false,
+      "checked": "2026-11-03",
+      "due": "2026-11-10",
+      "primary": [],
+      "press": [
+        "https://www.fxstreet.com/currencies/usdjpy"
+      ],
+      "search": [
+        "USD/JPY BoJ October hike pricing yen carry unwind"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-02",
+          "url": "https://www.fxstreet.com/analysis/cftc-report-oil-and-gold-flows-turn-defensive-while-yen-longs-rebuild-202611020950"
+        },
+        {
+          "date": "2026-10-30",
+          "url": "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2026/k261030a.pdf"
+        },
+        {
+          "date": "2026-10-30",
+          "url": "https://www.fxstreet.com/analysis/usd-jpy-falls-for-third-straight-day-yen-supported-by-boj-decision-202610300727"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://www.fxstreet.com/currencies/usdjpy"
+        }
+      ],
+      "extendedOn": "2026-11-03",
+      "leanLog": [
+        {
+          "date": "2026-10-28",
+          "lean": "neutral"
+        },
+        {
+          "date": "2026-11-03",
+          "lean": "fizzle"
+        }
+      ]
+    },
+    {
+      "sign": "crowding",
+      "label": "HELD until 2026-11-10",
+      "lean": "neutral",
+      "finding": "BofA's October FMS is still the latest: long global semis the most crowded trade but below the bear line (cryptobriefing 45 % 10-15) with cash just under the sell line (cryptobriefing 3.9 % 10-15); leveraged chip and Nasdaq ETFs drew record inflows into late October (Stocktwits 10-27), retail adding to the crowding the survey measures; the November survey is next",
+      "why": "Crowding is the fuel, not the spark. The BofA FMS \"long semis\" most-crowded share and FMS cash (≤ 4.0 % = the BofA sell signal) carry it, with US leveraged-ETF AUM (SOXL); the live read is the row's finding",
+      "measurable": "bear = FMS long semis/Mag7 ≥ 50 % most crowded AND cash ≤ 4.0 % ; BLOCKING = a sourced block trips the box's yen/positioning block (shared with `jpy_carry`) ; fizzle = most-crowded < 30 % or cash ≥ 5.0 % (BofA buy side) [M]",
+      "block": false,
+      "checked": "2026-11-03",
+      "due": "2026-11-10",
+      "primary": [],
+      "search": [
+        "BofA fund manager survey most crowded trade",
+        "SOXL TQQQ assets outflows"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-10-27",
+          "url": "https://stocktwits.com/news-articles/markets/equity/soxl-tqqq-attract-record-inflows-amid-leveraged-bets-retail-is-bullish-on-one-etf-s-ai-future/cZUIU7uRBzn"
+        }
+      ],
+      "press": [
+        "https://investinglive.com/"
+      ],
+      "extendedOn": "2026-11-03",
+      "leanLog": [
+        {
+          "date": "2026-10-12",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-10-19",
+          "lean": "neutral"
+        }
+      ],
+      "quiet": 1
+    },
+    {
+      "sign": "semi_policy",
+      "label": "CHANGED",
+      "lean": "neutral",
+      "finding": "BIS extended the 50 % affiliates-rule suspension to 2027-01-10 in a final rule published and effective 11-09, tied to the US–China truce extension, so it no longer lapses on 11-10 (Federal Register 11-09, Baker McKenzie 11-05, Nixon Peabody 11-06); still no Section 232 Phase 2 chip rate or date — the White House actions through 11-05 carry none (White House 11-05)",
+      "why": "Section 232: 25 % on narrow AI chips since 01-15; Phase 2 (all semis + equipment + derivatives) undated — Lutnick 09-03 \"build here, don't pay\" [W: thomsonreuters 01-15; S: E §1]; offset programme expires end-2026 [S: E §2, single source]. BIS Affiliates (50 %) rule suspension ends **2026-11-10** [W: Kelley Drye 2025-11]",
+      "measurable": "bear = Phase 2 rate/date announced, or the 50 % rule lapses unextended, or new China licence curbs on NVDA/AMD ; BLOCKING = Phase 2 ≥ 25 % on all semis/derivatives effective inside the window with no usable offset ; fizzle = Phase 2 deferred to 2027 or offset-dominated, and the suspension extended",
+      "block": false,
+      "checked": "2026-11-09",
+      "due": "2026-11-09",
+      "primary": [
+        "https://www.bis.gov/news-updates",
+        "https://www.whitehouse.gov/presidential-actions/"
+      ],
+      "search": [
+        "Section 232 semiconductor tariff phase 2",
+        "BIS affiliates rule suspension November 10 2026 extended",
+        "Nvidia China export licence"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-09",
+          "url": "https://www.federalregister.gov/documents/2026/11/09/2026-22793/extension-of-the-suspension-of-expansion-of-end-user-controls-for-affiliates-of-certain-listed"
+        },
+        {
+          "date": "2026-11-06",
+          "url": "https://www.nixonpeabody.com/insights/alerts/2026/11/06/bis-formally-suspends-the-affiliates-rule-until-january-10-2027"
+        },
+        {
+          "date": "2026-11-05",
+          "url": "https://sanctionsnews.bakermckenzie.com/bis-extends-suspension-of-the-affiliates-rule-through-january-10-2027/"
+        },
+        {
+          "date": "2026-11-05",
+          "url": "https://www.whitehouse.gov/presidential-actions/"
+        }
+      ],
+      "extendedOn": "2026-11-09",
+      "leanLog": [
+        {
+          "date": "2026-11-03",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-11-09",
+          "lean": "neutral"
+        }
+      ]
+    },
+    {
+      "sign": "antitrust",
+      "label": "QUIET since 11-02 https://www.law360.com/cases/6984d2e401a733fa362ddc4e/articles",
+      "lean": "fizzle",
+      "finding": "Still no ruling inside the window: Alphabet's 10-28 Q3 print passed with the DC Circuit search appeal unargued, DOJ and Google having asked for argument as early as 12-09 with no court order found (Law360 10-05, Alphabet 10-28); no Apple DOJ or EU DMA ruling found since",
+      "why": "Context only, never BLOCKING (no remedy lands with force inside the window). Google search: DOJ + states appealed the remedies 2026-02-03, Google appealed liability 01-16, brief filed May; DC Circuit argument \"later this year\" [W: bgov 02-03, ppc.land May]. AAPL's Google default payment is the AAPL channel. Apple DOJ case, Meta FTC, EU DMA: not researched this run",
+      "measurable": "bear = a DC Circuit order ending default-search payments or forcing Chrome divestiture, or a DMA ruling forcing App Store fee cuts ; fizzle = no ruling inside the window; BLOCKING = none (context row)",
+      "block": false,
+      "checked": "2026-11-09",
+      "due": "2026-11-09",
+      "primary": [
+        "https://www.law360.com/cases/6984d2e401a733fa362ddc4e/articles"
+      ],
+      "search": [
+        "Google search antitrust appeal DC Circuit oral argument",
+        "Apple DMA fine OR non-compliance decision"
+      ],
+      "seed": [],
+      "sources": [],
+      "extendedOn": "2026-11-09",
+      "leanLog": [
+        {
+          "date": "2026-10-16",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-10-17",
+          "lean": "fizzle"
+        }
+      ],
+      "quiet": 2,
+      "searchNext": [
+        "Google search appeal D.C. Circuit argument calendar"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "date": "2026-10-28",
+      "event": "Alphabet Q3 (13:30 PT; verified)",
+      "signs": [
+        "hyper_capex",
+        "antitrust"
+      ],
+      "escalationIf": "2027 capex ≤ 2026",
+      "fizzleIf": "2027 capex explicitly > 2026",
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "mixed: 2026 capex range raised and the CFO expects capex to 'increase significantly in 2027' (no figure), Q3 purchases of property and equipment $51.4 B, but the stock fell double digits on 10-29, reported as its worst day on record, 10-28 — unchecked: tape · called: hyper_capex=unknown, antitrust=fizzle",
+      "verified": true,
+      "verifyChecked": "2026-10-28",
+      "sources": [
+        {
+          "date": "2026-10-28",
+          "url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000080/googexhibit991q32026.htm"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://www.investing.com/news/transcripts/earnings-call-transcript-alphabet-q3-2026-profit-miss-sparks-10-afterhours-drop-93CH-4981037"
+        },
+        {
+          "date": "2026-10-29",
+          "url": "https://finance.yahoo.com/markets/live/stock-market-today-thursday-october-29-dow-sp-500-nasdaq-alphabet-microsoft-earnings-130305714.html"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-21",
+      "event": "Meta Q3 (est.)",
+      "signs": [
+        "hyper_capex"
+      ],
+      "escalationIf": "first 2027 capex number ≤ +10 % or \"pacing\"",
+      "fizzleIf": "2027 capex > $145 B top of 2026",
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "mixed: 2026 capex narrowed to $135–145 B (floor up from $130 B), no 2027 figure ('still developing', 'continue investing aggressively'), no pacing language, 10-21 — unchecked: first 2027 capex number ≤ +10 % · called: hyper_capex=unknown",
+      "verified": true,
+      "sources": [
+        {
+          "date": "2026-10-21",
+          "url": "https://www.sec.gov/Archives/edgar/data/0001326801/000162828026066700/meta-09302026xexhibit991.htm"
+        },
+        {
+          "date": "2026-10-21",
+          "url": "https://www.aichatdaily.com/ai-business/meta-narrows-2026-capex-135b-145b-plans-nonvoting"
+        }
+      ],
+      "verifyChecked": "2026-10-17"
+    },
+    {
+      "date": "2026-10-29",
+      "event": "Amazon Q3 (est., call ~17:00 ET)",
+      "signs": [
+        "hyper_capex"
+      ],
+      "escalationIf": "2026 capex trimmed or 2027 below +10 %",
+      "fizzleIf": "capex raised, AWS accelerates",
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "mixed: AWS +39 % accelerating from +37 %, 2026 cash capex reaffirmed near $220 B, 2027 'meaningfully more' with no figure, 10-29 — unchecked: 2027 capex vs +10 % · called: hyper_capex=unknown",
+      "verified": true,
+      "sources": [
+        {
+          "date": "2026-10-29",
+          "url": "https://www.aboutamazon.com/news/company-news/amazon-earnings-q3-2026-report"
+        },
+        {
+          "date": "2026-10-29",
+          "url": "https://www.constellationr.com/insights/news/aws-q3-revenue-growth-surges-39-capex-stings-amazons-cash-flow"
+        }
+      ],
+      "verifyChecked": "2026-10-17"
+    },
+    {
+      "date": "2026-11-10",
+      "event": "BIS 50 % (Affiliates) rule suspension expires",
+      "signs": [
+        "semi_policy"
+      ],
+      "escalationIf": "lapses or replaced by tighter China curbs",
+      "fizzleIf": "extended / folded into a truce",
+      "holds": [],
+      "secondary": false,
+      "status": "NOT DUE until 2026-11-10"
+    },
+    {
+      "date": "2026-11-17",
+      "event": "NVDA FQ3-27 (~11-18, NOT confirmed: 11-17/18/25 conflict; NVDA sets the date ~late Oct)",
+      "signs": [
+        "ai_anchors",
+        "hyper_capex"
+      ],
+      "escalationIf": "FQ4 guide < consensus or < FQ3",
+      "fizzleIf": "beat $108 B, guide ≥ $115 B",
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "NOT DUE until 2026-11-17",
+      "verifyChecked": "2026-11-03",
+      "verified": true,
+      "dateNote": "NVDA release 10-28",
+      "sources": [
+        {
+          "date": "2026-10-28",
+          "url": "https://nvidianews.nvidia.com/news/nvidia-sets-conference-call-for-third-quarter-financial-results-6928873"
+        }
+      ]
+    },
+    {
+      "date": "2026-12-09",
+      "event": "FOMC + SEP (12-08/09; decision 14:00 ET)",
+      "signs": [
+        "rates"
+      ],
+      "escalationIf": "2027 dots imply hikes",
+      "fizzleIf": "dots flat/cuts",
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "NOT DUE until 2026-12-09",
+      "preRead": "CME FedWatch hike / hold / cut odds for this meeting"
+    },
+    {
+      "date": "2026-12-10",
+      "event": "Broadcom FQ4-26 (~12-10, est.; TipRanks vs days.to conflict)",
+      "signs": [
+        "ai_anchors",
+        "ai_funding"
+      ],
+      "escalationIf": "AI guide below street or FY27 line of sight cut",
+      "fizzleIf": "AI guide ≥ $21.7 B and FY27 raised",
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "NOT DUE until 2026-12-10"
+    },
+    {
+      "date": "2026-12-10",
+      "event": "Oracle FQ2-27 (~12-10, est.; no date found)",
+      "signs": [
+        "ai_funding"
+      ],
+      "escalationIf": "capex funded by more debt, RPO conversion slips, lease deferrals",
+      "fizzleIf": "FCF guide improves, RPO ↑",
+      "holds": [],
+      "secondary": false,
+      "status": "NOT DUE until 2026-12-10"
+    },
+    {
+      "date": "2026-12-10",
+      "event": "US Nov CPI (08:30 ET, before the Xetra close)",
+      "signs": [
+        "rates"
+      ],
+      "escalationIf": "core CPI ≥ 0.4 % m/m",
+      "fizzleIf": "core CPI ≤ 0.2 % m/m",
+      "holds": [],
+      "secondary": false,
+      "status": "NOT DUE until 2026-12-10"
+    },
+    {
+      "date": "2026-12-16",
+      "event": "Micron FQ1-27 (NOT confirmed: 12-16 vs 12-23; MU 4.5 % → sign-only here)",
+      "signs": [
+        "ai_anchors"
+      ],
+      "escalationIf": "weak guide or an HBM/DRAM ASP cut",
+      "fizzleIf": "beat-and-raise",
+      "holds": [],
+      "secondary": false,
+      "status": "NOT DUE until 2026-12-16"
+    },
+    {
+      "date": "2026-12-18",
+      "event": "BoJ MPM (12-17/18; decision before the Xetra close)",
+      "signs": [
+        "jpy_carry"
+      ],
+      "escalationIf": "hike + hawkish → yen spike",
+      "fizzleIf": "hold",
+      "holds": [],
+      "secondary": false,
+      "status": "NOT DUE until 2026-12-18"
+    },
+    {
+      "date": "2027-01-13",
+      "event": "US Dec CPI (08:30 ET, before the Xetra close)",
+      "signs": [
+        "rates"
+      ],
+      "escalationIf": "core CPI ≥ 0.4 % m/m",
+      "fizzleIf": "core CPI ≤ 0.2 % m/m",
+      "holds": [],
+      "secondary": false,
+      "status": "NOT DUE until 2027-01-13"
+    },
+    {
+      "date": "2027-01-14",
+      "event": "TSMC Q4 + 2027 capex guide (~01-14, NOT confirmed: pattern)",
+      "signs": [
+        "hyper_capex"
+      ],
+      "escalationIf": "2027 capex ≤ 2026",
+      "fizzleIf": "2027 capex up",
+      "holds": [],
+      "secondary": false,
+      "status": "NOT DUE until 2027-01-14"
+    },
+    {
+      "date": "2027-01-22",
+      "event": "BoJ MPM (01-21/22; decision before the Xetra close)",
+      "signs": [
+        "jpy_carry"
+      ],
+      "escalationIf": "hike + hawkish → yen spike",
+      "fizzleIf": "hold",
+      "holds": [],
+      "secondary": false,
+      "status": "NOT DUE until 2027-01-22"
+    },
+    {
+      "date": "2027-01-27",
+      "event": "FOMC (01-26/27; decision 14:00 ET)",
+      "signs": [
+        "rates"
+      ],
+      "escalationIf": "a hike, or guidance toward one",
+      "fizzleIf": "hold with no hike bias",
+      "holds": [],
+      "secondary": false,
+      "status": "NOT DUE until 2027-01-27",
+      "preRead": "CME FedWatch hike / hold / cut odds for this meeting"
+    }
+  ],
+  "calendar": [
+    {
+      "date": "2026-11-10",
+      "sign": "hyper_capex",
+      "event": "TSMC Oct sales (~11-10)",
+      "matters": "minor: AI-capex pace",
+      "verified": false,
+      "verifyChecked": "2026-11-09"
+    },
+    {
+      "date": "2026-11-10",
+      "sign": "rates",
+      "event": "US Oct CPI (08:30 ET, before the Xetra close)",
+      "matters": "core m/m vs 0.4 %",
+      "verified": true
+    },
+    {
+      "date": "2026-11-17",
+      "sign": "crowding",
+      "event": "BofA FMS Nov (~11-17)",
+      "matters": "most-crowded %, cash vs 4.0 %",
+      "verified": false,
+      "verifyChecked": "2026-11-09"
+    },
+    {
+      "date": "2026-12-04",
+      "sign": "semi_policy",
+      "event": "Polysilicon 15 % tariff effective",
+      "matters": "minor",
+      "verified": true
+    },
+    {
+      "date": "2026-12-31",
+      "sign": "semi_policy",
+      "event": "Sec 232 offset programme expiry (end-Dec; Phase 2 undated)",
+      "matters": "Phase 2 trigger",
+      "verified": false
+    },
+    {
+      "date": "2026-12-31",
+      "sign": "antitrust",
+      "event": "Google search appeal argument, DC Cir. (H2-2026, undated)",
+      "matters": "AAPL default payment",
+      "verified": false
+    },
+    {
+      "date": "2027-01-06",
+      "sign": "ai_anchors",
+      "event": "CES 2027 (01-06/09; NVDA keynote not announced)",
+      "matters": "minor",
+      "verified": false
+    },
+    {
+      "date": "2027-01-10",
+      "sign": "semi_policy",
+      "event": "US–China truce end (conflicting)",
+      "matters": "export-control / tariff reset",
+      "verified": false
+    },
+    {
+      "date": "2027-01-28",
+      "sign": "hyper_capex",
+      "event": "MSFT/META/AAPL Q4 cycle (late Jan)",
+      "matters": "2027 capex guides",
+      "verified": false
+    },
+    {
+      "matters": "context only; no ruling inside the window either way",
+      "verified": false,
+      "date": "2026-12-09",
+      "event": "DC Circuit Google-search argument — requested slot, 'as early as' (DOJ + Google joint motion 10-05)",
+      "sign": "antitrust"
+    }
+  ],
+  "runs": [
+    {
+      "date": "2026-11-09",
+      "t1": "1/4 ✗",
+      "t2": "1/4 ✗",
+      "t3": "1/4 ✗",
+      "live": "✗✗✗ prov."
+    },
+    {
+      "date": "2026-11-03",
+      "t1": "1/4 ✗",
+      "t2": "1/4 ✗",
+      "t3": "0/4 ✗",
+      "live": "✗✗✗ prov."
+    },
+    {
+      "date": "2026-10-28",
+      "t1": "1/4 ✗",
+      "t2": "0/4 ✗",
+      "t3": "1/4 ✗",
+      "live": "✓✗✗ prov."
+    },
+    {
+      "date": "2026-10-27",
+      "t1": "1/4 ✗",
+      "t2": "0/4 ✗",
+      "t3": "1/4 ✗",
+      "live": "✗✗✗ prov."
+    },
+    {
+      "date": "2026-10-26",
+      "t1": "1/4 ✗",
+      "t2": "0/4 ✗",
+      "t3": "0/4 ✗",
+      "live": "✗✗✗"
+    }
+  ],
+  "verdict": {
+    "legs": [
+      {
+        "key": "t1-price",
+        "tranche": "T1",
+        "leg": "price QDVE €",
+        "rule": "no new low since the drawdown opened ×5",
+        "gate": false,
+        "tag": {
+          "indicator": "QDVE",
+          "series": [
+            "LEGP_SPIT"
+          ],
+          "job": "recovery",
+          "agg": "kOfN"
+        },
+        "value": "no low —/— (11-05)",
+        "verdict": "unmet",
+        "count": {
+          "got": 1,
+          "need": 5
+        },
+        "live": {
+          "value": "no low —/— (11-05) @11-06",
+          "verdict": "unmet",
+          "count": {
+            "got": 1,
+            "need": 5
+          }
+        }
+      },
+      {
+        "key": "t1-vol",
+        "tranche": "T1",
+        "leg": "vol VIX/VIX3M · QDVE",
+        "rule": "VIX/VIX3M < 1 ×3",
+        "gate": false,
+        "tag": {
+          "indicator": "VIX/VIX3M",
+          "series": [
+            "VT"
+          ],
+          "job": "level",
+          "agg": "kOfN"
+        },
+        "value": "1.04<1",
+        "verdict": "unmet",
+        "count": {
+          "got": 0,
+          "need": 3
+        },
+        "live": {
+          "value": "1.04<1 @11-06",
+          "verdict": "unmet",
+          "count": {
+            "got": 0,
+            "need": 3
+          }
+        }
+      },
+      {
+        "key": "t1-credit",
+        "tranche": "T1",
+        "leg": "gate: credit HY OAS",
+        "rule": "HY ≤ peak − ⅓·(peak − base), base = median of the 20 closes before its shock",
+        "gate": true,
+        "tag": {
+          "indicator": "HY OAS",
+          "series": [
+            "F1"
+          ],
+          "job": "recovery",
+          "agg": "allOf"
+        },
+        "value": "—/3.22 (peak — 11-05 base —)",
+        "verdict": "unmet",
+        "live": {
+          "value": "—/3.22 (peak — 11-05 base —) @11-06 est.",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t1-rates",
+        "tranche": "T1",
+        "leg": "rates 10y RY · US 10y",
+        "rule": "10y RY Δ63 ≤ +25bp ×5",
+        "gate": false,
+        "tag": {
+          "indicator": "10y RY",
+          "series": [
+            "R4"
+          ],
+          "job": "speed",
+          "agg": "kOfN",
+          "variant": "absΔ63"
+        },
+        "value": "Δ63 0.17≤0.25",
+        "verdict": "met",
+        "count": {
+          "got": 5,
+          "need": 5
+        },
+        "live": {
+          "value": "Δ63 0.23≤0.25 @11-06 est.",
+          "verdict": "met",
+          "count": {
+            "got": 5,
+            "need": 5
+          }
+        }
+      },
+      {
+        "key": "t1-capex",
+        "tranche": "T1",
+        "leg": "AI-capex SEC0 · HCX · RS_SMH",
+        "rule": "SEC0 off its shock-start high (no episode open: 60-close high) > −10%",
+        "gate": false,
+        "tag": {
+          "indicator": "SEC0",
+          "series": [
+            "LEGP_SEMIS"
+          ],
+          "job": "relative",
+          "agg": "kOfN"
+        },
+        "value": "-29.1%/-10%",
+        "verdict": "unmet",
+        "live": {
+          "value": "-29.1%/-10% @11-06",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t1-g1",
+        "tranche": "T1",
+        "leg": "gate: QDVE not deep bear",
+        "rule": "not (< 85% of 252-close high and < MA200)",
+        "gate": true,
+        "tag": {
+          "indicator": "QDVE",
+          "series": [
+            "LEGP_SPIT"
+          ],
+          "job": "composite",
+          "agg": "allOf"
+        },
+        "value": "— ≥ 41.94 (— 10-06) · ≥ MA200 —",
+        "verdict": "met",
+        "live": {
+          "value": "— ≥ 41.94 (— 10-06) · ≥ MA200 — @11-06",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t1-veto",
+        "tranche": "T1",
+        "leg": "veto: no QDVE crash day",
+        "rule": "QDVE ≥ −3σ ×5",
+        "gate": true,
+        "tag": {
+          "indicator": "QDVE",
+          "series": [
+            "LEGP_SPIT"
+          ],
+          "job": "speed",
+          "agg": "allOf",
+          "variant": "σret"
+        },
+        "value": "+0.1%/-3.8%",
+        "verdict": "unmet",
+        "count": {
+          "got": 1,
+          "need": 5
+        },
+        "live": {
+          "value": "+0.1%/-3.8% @11-06",
+          "verdict": "unmet",
+          "count": {
+            "got": 1,
+            "need": 5
+          }
+        }
+      },
+      {
+        "key": "t1-esc",
+        "tranche": "T1",
+        "leg": "gate: escalation box",
+        "rule": "holds on ≥ 1 coincident + ≥ 1 lead cluster vote, or a veto-row block · T2·T3: live ≥ ⌈0.7·n⌉",
+        "gate": true,
+        "tag": {
+          "indicator": "escalation box",
+          "series": [
+            "R4",
+            "F1",
+            "HCX",
+            "VT",
+            "RS_XLK",
+            "F17"
+          ],
+          "job": "composite",
+          "agg": "allOf"
+        },
+        "value": "votes credit · live 4/4 need 3",
+        "verdict": "met",
+        "live": {
+          "value": "votes credit · live 4/4 need 3 @11-06 est.",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t2-price",
+        "tranche": "T2",
+        "leg": "price QDVE €",
+        "rule": "no new low since the drawdown opened ×20 · > MA50, MA50 rising",
+        "gate": false,
+        "tag": {
+          "indicator": "QDVE",
+          "series": [
+            "LEGP_SPIT"
+          ],
+          "job": "composite",
+          "agg": "kOfN"
+        },
+        "value": "no low —/— (11-05)✗ · >MA50 —✗ · MA50 Δ10 0.258>0✓",
+        "verdict": "unmet",
+        "count": {
+          "got": 1,
+          "need": 20
+        },
+        "live": {
+          "value": "no low —/— (11-05)✗ · >MA50 —✗ · MA50 Δ10 0.258>0✓ @11-06",
+          "verdict": "unmet",
+          "count": {
+            "got": 1,
+            "need": 20
+          }
+        }
+      },
+      {
+        "key": "t2-vol",
+        "tranche": "T2",
+        "leg": "vol VIX/VIX3M · QDVE",
+        "rule": "no new low since the drawdown opened ×15 · VIX/VIX3M < 0.9",
+        "gate": false,
+        "tag": {
+          "indicator": "VIX/VIX3M · QDVE",
+          "series": [
+            "LEGP_SPIT",
+            "VT"
+          ],
+          "job": "composite",
+          "agg": "kOfN"
+        },
+        "value": "no low 42.07/42.01 (11-05)✗ · VT 1.04<0.9✗",
+        "verdict": "unmet",
+        "count": {
+          "got": 1,
+          "need": 15
+        },
+        "live": {
+          "value": "no low 42.07/42.01 (11-05)✗ · VT 1.04<0.9✗ @11-06",
+          "verdict": "unmet",
+          "count": {
+            "got": 1,
+            "need": 15
+          }
+        }
+      },
+      {
+        "key": "t2-credit",
+        "tranche": "T2",
+        "leg": "gate: credit HY OAS",
+        "rule": "HY ≤ peak − ½·(peak − base), base = median of the 20 closes before its shock · peak ≥ 10 closes old",
+        "gate": true,
+        "tag": {
+          "indicator": "HY OAS",
+          "series": [
+            "F1"
+          ],
+          "job": "recovery",
+          "agg": "allOf"
+        },
+        "value": "—/3.09 (peak — 11-05 base —) · 0/10 closes",
+        "verdict": "unmet",
+        "live": {
+          "value": "—/3.09 (peak — 11-05 base —) · 1/10 closes @11-06 est.",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t2-rates",
+        "tranche": "T2",
+        "leg": "rates 10y RY · US 10y",
+        "rule": "10y z(Δ20) < 1 ×5",
+        "gate": false,
+        "tag": {
+          "indicator": "US 10y",
+          "series": [
+            "R2"
+          ],
+          "job": "speed",
+          "agg": "kOfN"
+        },
+        "value": "z -2.60<1",
+        "verdict": "met",
+        "count": {
+          "got": 5,
+          "need": 5
+        },
+        "live": {
+          "value": "z -2.15<1",
+          "verdict": "met",
+          "count": {
+            "got": 5,
+            "need": 5
+          }
+        }
+      },
+      {
+        "key": "t2-capex",
+        "tranche": "T2",
+        "leg": "AI-capex SEC0 · HCX · RS_SMH",
+        "rule": "HCX state ≠ RED · RS_SMH > MA10, Δ10 > 0",
+        "gate": false,
+        "tag": {
+          "indicator": "HCX · RS_SMH",
+          "series": [
+            "HCX",
+            "RS_SMH"
+          ],
+          "job": "composite",
+          "agg": "kOfN"
+        },
+        "value": "HCX GREEN✓ · RS_SMH 0.6310>MA10 0.6852✗ · Δ10 -0.0627>0✗",
+        "verdict": "unmet",
+        "live": {
+          "value": "HCX GREEN✓ · RS_SMH 0.6310>MA10 0.6852✗ · Δ10 -0.0627>0✗ @11-06",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t2-g1",
+        "tranche": "T2",
+        "leg": "gate: QDVE not deep bear",
+        "rule": "not (< 85% of 252-close high and < MA200)",
+        "gate": true,
+        "tag": {
+          "indicator": "QDVE",
+          "series": [
+            "LEGP_SPIT"
+          ],
+          "job": "composite",
+          "agg": "allOf"
+        },
+        "value": "— ≥ 41.94 (— 10-06) · ≥ MA200 —",
+        "verdict": "met",
+        "live": {
+          "value": "— ≥ 41.94 (— 10-06) · ≥ MA200 — @11-06",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t2-veto",
+        "tranche": "T2",
+        "leg": "veto: no QDVE crash day",
+        "rule": "QDVE ≥ −3σ ×5",
+        "gate": true,
+        "tag": {
+          "indicator": "QDVE",
+          "series": [
+            "LEGP_SPIT"
+          ],
+          "job": "speed",
+          "agg": "allOf",
+          "variant": "σret"
+        },
+        "value": "+0.1%/-3.8%",
+        "verdict": "unmet",
+        "count": {
+          "got": 1,
+          "need": 5
+        },
+        "live": {
+          "value": "+0.1%/-3.8% @11-06",
+          "verdict": "unmet",
+          "count": {
+            "got": 1,
+            "need": 5
+          }
+        }
+      },
+      {
+        "key": "t2-esc",
+        "tranche": "T2",
+        "leg": "gate: escalation box",
+        "rule": "holds on ≥ 1 coincident + ≥ 1 lead cluster vote, or a veto-row block · T2·T3: live ≥ ⌈0.7·n⌉",
+        "gate": true,
+        "tag": {
+          "indicator": "escalation box",
+          "series": [
+            "R4",
+            "F1",
+            "HCX",
+            "VT",
+            "RS_XLK",
+            "F17"
+          ],
+          "job": "composite",
+          "agg": "allOf"
+        },
+        "value": "votes credit · live 4/4 need 3",
+        "verdict": "met",
+        "live": {
+          "value": "votes credit · live 4/4 need 3 @11-06 est.",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t3-price",
+        "tranche": "T3",
+        "leg": "price QDVE €",
+        "rule": "> MA50 rising · > MA200, MA200 rising",
+        "gate": false,
+        "tag": {
+          "indicator": "QDVE",
+          "series": [
+            "LEGP_SPIT"
+          ],
+          "job": "regime",
+          "agg": "kOfN"
+        },
+        "value": "—>MA50 —✗ · MA50 Δ10 0.258>0✓ · >MA200 —✓ · MA200 Δ10 0.475>0✓",
+        "verdict": "unmet",
+        "live": {
+          "value": "—>MA50 —✗ · MA50 Δ10 0.258>0✓ · >MA200 —✓ · MA200 Δ10 0.475>0✓ @11-06",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t3-vol",
+        "tranche": "T3",
+        "leg": "vol VIX/VIX3M · QDVE",
+        "rule": "no new low since the drawdown opened ×20 · VIX/VIX3M < 0.9 ×10",
+        "gate": false,
+        "tag": {
+          "indicator": "VIX/VIX3M · QDVE",
+          "series": [
+            "LEGP_SPIT",
+            "VT"
+          ],
+          "job": "composite",
+          "agg": "kOfN"
+        },
+        "value": "no low 42.07/42.01 (11-05) 1/20✗ · VT 1.04<0.9 0/10✗",
+        "verdict": "unmet",
+        "live": {
+          "value": "no low 42.07/42.01 (11-05) 1/20✗ · VT 1.04<0.9 0/10✗ @11-06",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t3-credit",
+        "tranche": "T3",
+        "leg": "gate: credit HY OAS",
+        "rule": "HY ≤ peak − ⅔·(peak − base), base = median of the 20 closes before its shock",
+        "gate": true,
+        "tag": {
+          "indicator": "HY OAS",
+          "series": [
+            "F1"
+          ],
+          "job": "recovery",
+          "agg": "allOf"
+        },
+        "value": "—/2.97 (peak — 11-05 base —)",
+        "verdict": "unmet",
+        "live": {
+          "value": "—/2.97 (peak — 11-05 base —) @11-06 est.",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t3-rates",
+        "tranche": "T3",
+        "leg": "rates 10y RY · US 10y",
+        "rule": "10y z(Δ20) < 1 ×5 · 10y RY Δ63 ≤ +25bp ×5",
+        "gate": false,
+        "tag": {
+          "indicator": "10y RY · US 10y",
+          "series": [
+            "R2",
+            "R4"
+          ],
+          "job": "speed",
+          "agg": "kOfN"
+        },
+        "value": "10y z -2.60<1 5/5✓ · 10y RY Δ63 0.17≤0.25 5/5✓",
+        "verdict": "met",
+        "live": {
+          "value": "10y z -2.15<1 5/5✓ · 10y RY Δ63 0.23≤0.25 5/5✓ @11-06 est.",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t3-capex",
+        "tranche": "T3",
+        "leg": "AI-capex SEC0 · HCX · RS_SMH",
+        "rule": "RS_SMH > MA50",
+        "gate": false,
+        "tag": {
+          "indicator": "RS_SMH",
+          "series": [
+            "RS_SMH"
+          ],
+          "job": "regime",
+          "agg": "kOfN"
+        },
+        "value": "0.6310>MA50 0.7389✗",
+        "verdict": "unmet",
+        "live": {
+          "value": "0.6310>MA50 0.7389✗ @11-06",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t3-g1",
+        "tranche": "T3",
+        "leg": "gate: QDVE not deep bear",
+        "rule": "not (< 85% of 252-close high and < MA200)",
+        "gate": true,
+        "tag": {
+          "indicator": "QDVE",
+          "series": [
+            "LEGP_SPIT"
+          ],
+          "job": "composite",
+          "agg": "allOf"
+        },
+        "value": "— ≥ 41.94 (— 10-06) · ≥ MA200 —",
+        "verdict": "met",
+        "live": {
+          "value": "— ≥ 41.94 (— 10-06) · ≥ MA200 — @11-06",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t3-veto",
+        "tranche": "T3",
+        "leg": "veto: no QDVE crash day",
+        "rule": "QDVE ≥ −3σ ×5",
+        "gate": true,
+        "tag": {
+          "indicator": "QDVE",
+          "series": [
+            "LEGP_SPIT"
+          ],
+          "job": "speed",
+          "agg": "allOf",
+          "variant": "σret"
+        },
+        "value": "+0.1%/-3.8%",
+        "verdict": "unmet",
+        "count": {
+          "got": 1,
+          "need": 5
+        },
+        "live": {
+          "value": "+0.1%/-3.8% @11-06",
+          "verdict": "unmet",
+          "count": {
+            "got": 1,
+            "need": 5
+          }
+        }
+      },
+      {
+        "key": "t3-esc",
+        "tranche": "T3",
+        "leg": "gate: escalation box",
+        "rule": "holds on ≥ 1 coincident + ≥ 1 lead cluster vote, or a veto-row block · T2·T3: live ≥ ⌈0.7·n⌉",
+        "gate": true,
+        "tag": {
+          "indicator": "escalation box",
+          "series": [
+            "R4",
+            "F1",
+            "HCX",
+            "VT",
+            "RS_XLK",
+            "F17"
+          ],
+          "job": "composite",
+          "agg": "allOf"
+        },
+        "value": "votes credit · live 4/4 need 3",
+        "verdict": "met",
+        "live": {
+          "value": "votes credit · live 4/4 need 3 @11-06 est.",
+          "verdict": "met"
+        }
+      }
+    ],
+    "asOf": {
+      "close": "2026-11-06",
+      "live": "2026-11-09",
+      "est": false
+    },
+    "escalation": {
+      "tripped": 1,
+      "need": 2,
+      "hits": [
+        "credit"
+      ],
+      "unread": [],
+      "families": [
+        {
+          "name": "earnings",
+          "rule": "RS_XLK < its since-shock 50% line (no shock open: its 60-close low)",
+          "value": "RS_XLK 0.2240/0.2215",
+          "verdict": "met",
+          "live": {
+            "value": "RS_XLK 0.2240/0.2215",
+            "verdict": "met"
+          },
+          "signs": [
+            {
+              "sign": "it_revisions",
+              "lean": "unknown",
+              "block": false
+            },
+            {
+              "sign": "aapl_demand",
+              "lean": "neutral",
+              "block": false
+            }
+          ],
+          "tag": {
+            "indicator": "RS_XLK",
+            "series": [
+              "RS_XLK"
+            ],
+            "job": "relative",
+            "agg": "box"
+          }
+        },
+        {
+          "name": "yen",
+          "rule": "USD/JPY ≤ −3% off 60-close high",
+          "value": "JPY -1.7%/-3.0%",
+          "verdict": "met",
+          "live": {
+            "value": "JPY -1.7%/-3.0%",
+            "verdict": "met"
+          },
+          "signs": [
+            {
+              "sign": "jpy_carry",
+              "lean": "fizzle",
+              "block": false
+            },
+            {
+              "sign": "crowding",
+              "lean": "neutral",
+              "block": false
+            }
+          ],
+          "tag": {
+            "indicator": "USD/JPY",
+            "series": [
+              "F17"
+            ],
+            "job": "relative",
+            "agg": "box"
+          }
+        },
+        {
+          "name": "policy",
+          "rule": "sign block only",
+          "value": "—",
+          "verdict": "met",
+          "live": {
+            "value": "—",
+            "verdict": "met"
+          },
+          "signs": [
+            {
+              "sign": "semi_policy",
+              "lean": "unknown until 2026-11-10",
+              "block": false
+            }
+          ],
+          "tag": {
+            "indicator": "policy",
+            "series": [],
+            "job": "manual",
+            "agg": "box"
+          }
+        }
+      ],
+      "clusters": [
+        {
+          "name": "rates-shock",
+          "kind": "lead",
+          "members": [
+            {
+              "id": "real_yield",
+              "cell": false,
+              "rule": "10y RY Δ120 ≥ +75bp",
+              "value": "+60bp/+75bp",
+              "tag": {
+                "indicator": "10y RY",
+                "series": [
+                  "R4"
+                ],
+                "job": "speed",
+                "agg": "box",
+                "variant": "absΔ120"
+              },
+              "signs": [
+                {
+                  "sign": "rates",
+                  "lean": "fizzle",
+                  "block": false
+                }
+              ]
+            }
+          ],
+          "hits": 0,
+          "live": 1,
+          "n": 1,
+          "vote": false
+        },
+        {
+          "name": "credit",
+          "kind": "coincident",
+          "members": [
+            {
+              "id": "credit_confirms",
+              "cell": "hit",
+              "rule": "HY ≥ 1.1× its MA200",
+              "value": "HY —/3.18 (MA200 —)",
+              "tag": {
+                "indicator": "HY OAS",
+                "series": [
+                  "F1"
+                ],
+                "job": "regime",
+                "agg": "box"
+              },
+              "signs": [
+                {
+                  "sign": "credit",
+                  "lean": "bear",
+                  "block": false
+                },
+                {
+                  "sign": "ai_funding",
+                  "lean": "bear",
+                  "block": false
+                }
+              ]
+            }
+          ],
+          "hits": 1,
+          "live": 1,
+          "n": 1,
+          "vote": true
+        },
+        {
+          "name": "cycle",
+          "kind": "lead",
+          "members": [
+            {
+              "id": "hcx_red",
+              "cell": false,
+              "rule": "HCX RED",
+              "value": "HCX GREEN",
+              "tag": {
+                "indicator": "HCX",
+                "series": [
+                  "HCX"
+                ],
+                "job": "level",
+                "agg": "box"
+              },
+              "signs": [
+                {
+                  "sign": "hyper_capex",
+                  "lean": "neutral",
+                  "block": false
+                },
+                {
+                  "sign": "ai_anchors",
+                  "lean": "unknown until 2026-11-17",
+                  "block": false
+                },
+                {
+                  "sign": "azure_capacity",
+                  "lean": "neutral",
+                  "block": false
+                }
+              ]
+            }
+          ],
+          "hits": 0,
+          "live": 1,
+          "n": 1,
+          "vote": false
+        },
+        {
+          "name": "equity-vol",
+          "kind": "coincident",
+          "members": [
+            {
+              "id": "vol_flip",
+              "cell": false,
+              "rule": "VIX/VIX3M ≥ 1 ×10",
+              "value": "VT 1.04 (≥1 2/10)",
+              "tag": {
+                "indicator": "VIX/VIX3M",
+                "series": [
+                  "VT"
+                ],
+                "job": "level",
+                "agg": "box"
+              }
+            }
+          ],
+          "hits": 0,
+          "live": 1,
+          "n": 1,
+          "vote": false
+        }
+      ],
+      "veto": [],
+      "quorum": {
+        "live": 4,
+        "n": 4,
+        "need": 3,
+        "t1Only": false
+      },
+      "hold": false
+    },
+    "sessionsSinceExit": 16,
+    "regime": {
+      "set": "entry"
+    },
+    "tranches": [
+      {
+        "id": "T1",
+        "met": 1,
+        "total": 4,
+        "need": 1,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "unmet",
+          "met",
+          "unmet",
+          "met"
+        ],
+        "filledSince": "2026-10-28"
+      },
+      {
+        "id": "T2",
+        "met": 1,
+        "total": 4,
+        "need": 2,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "unmet",
+          "met",
+          "unmet",
+          "met"
+        ],
+        "filledSince": null
+      },
+      {
+        "id": "T3",
+        "met": 1,
+        "total": 4,
+        "need": 3,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "unmet",
+          "met",
+          "unmet",
+          "met"
+        ],
+        "filledSince": null
+      }
+    ],
+    "live": [
+      {
+        "id": "T1",
+        "met": 1,
+        "total": 4,
+        "need": 1,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "unmet",
+          "met",
+          "unmet",
+          "met"
+        ],
+        "filledSince": "2026-10-28"
+      },
+      {
+        "id": "T2",
+        "met": 1,
+        "total": 4,
+        "need": 2,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "unmet",
+          "met",
+          "unmet",
+          "met"
+        ],
+        "filledSince": null
+      },
+      {
+        "id": "T3",
+        "met": 1,
+        "total": 4,
+        "need": 3,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "unmet",
+          "met",
+          "unmet",
+          "met"
+        ],
+        "filledSince": null
+      }
+    ],
+    "prov": true
+  },
+  "runAt": "2026-11-09T09:50:07.238Z",
+  "situation": {
+    "lean": "Hold off: nothing fills, because credit stress still keeps even the first entry shut and the AI-earnings season came in mixed rather than weak. The chip-rule extension and the calm Fed and BoJ holds take policy and rates off the table for now, leaving credit and Oracle's debt as the bear case.",
+    "slow": "The grind is still credit: CCC spreads sit flat above the escalation line rather than easing, and Oracle keeps funding its data-center build at investment grade one notch above junk. A renewed widening or an Oracle cut to junk keeps every entry shut however the earnings read.",
+    "fast": "The gap risk sits in the tape: the market sold Alphabet and Amazon hard after they raised spend, so data-center capex is being priced as cost without return. NVDA's print is the next one that can turn that into a guide-cut story in a day.",
+    "decides": "The 11-10 affiliates-rule expiry no longer bites now that the suspension runs into January, and moves no slot. NVDA on 11-17 decides whether the AI anchors still guide up and holds the larger entries until it passes; the 12-09 Fed meeting with new dots and Broadcom's 12-10 print then test rates and AI-funding demand. Alphabet's, Meta's and Amazon's prints stay open until a first 2027 capex figure or a calmer tape settles them, most likely with the January reports.",
+    "flips": "A first 2027 capex number at or below +10 % from any hyperscaler, an NVDA guide below consensus, or an Oracle cut to junk moves the lean to bear. CCC turning back under the fizzle line with NVDA guiding up would move it toward fizzle.",
+    "asOf": "2026-11-09"
+  },
+  "scannedOn": "2026-11-09",
+  "eventsDone": [
+    {
+      "date": "2026-10-14",
+      "event": "US Sep CPI (08:30 ET, before the Xetra close)",
+      "signs": [
+        "rates"
+      ],
+      "holds": [],
+      "secondary": false,
+      "status": "fizzle: core CPI +0.3 % m/m (headline +0.6 %), between the 0.4 % bear and 0.2 % fizzle lines — no escalation, BLS 10-14"
+    },
+    {
+      "date": "2026-10-15",
+      "event": "TSMC Q3 call (14:00 TPE, before the Xetra close)",
+      "signs": [
+        "hyper_capex",
+        "ai_anchors"
+      ],
+      "holds": [],
+      "secondary": false,
+      "status": "fizzle: 2026 USD growth raised to 44 % (from > 40 %), 2026 capex held at $60–64 B, 2026–28 capex above the prior three years, CoWoS demand strong, no digestion language; Q4 guide $52.3–54.3 B, TSMC 6-K + Focus Taiwan 10-15"
+    },
+    {
+      "date": "2026-10-28",
+      "event": "FOMC (10-27/28, no SEP; decision 14:00 ET)",
+      "signs": [
+        "rates"
+      ],
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "fizzle: hold, vote 10–2 with Cook and Hammack dissenting for +25 bp; the statement says more information will determine the stance — no hike and no guidance toward one, 10-28 · called: rates=fizzle (press only)",
+      "sources": [
+        {
+          "date": "2026-10-28",
+          "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://investinglive.com/central-banks/fomc-decision-oct-28/"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-28",
+      "event": "MSFT FY27-Q1 (after close; webcast 14:30 PT; verified, MSFT release 10-07)",
+      "signs": [
+        "hyper_capex",
+        "azure_capacity"
+      ],
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "fizzle: Azure +48 % from +43 % with a 49–50 % Q2 guide, Q1 property and equipment additions doubled y/y with Q2 spend guided higher, no digestion language, demand still above supply, stock up after hours, 10-28 · called: hyper_capex=unknown, azure_capacity=unknown",
+      "sources": [
+        {
+          "date": "2026-10-28",
+          "url": "https://www.microsoft.com/en-us/investor/earnings/fy-2027-q1/press-release-webcast"
+        },
+        {
+          "date": "2026-10-29",
+          "url": "https://www.fool.com/earnings/call-transcripts/2026/10/29/microsoft-msft-q1-2027-earnings-call-transcript/"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://www.cnbc.com/2026/10/28/microsoft-msft-q1-earnings-report-2027.html"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-30",
+      "event": "BoJ MPM (10-29/30; decision before the Xetra close)",
+      "signs": [
+        "jpy_carry"
+      ],
+      "holds": [],
+      "secondary": false,
+      "status": "fizzle: hold at 1.25 %, vote 8–1 with Takata proposing 1.5 %, no hike; the yen firmed only modestly (FXStreet 157.32 intraday 10-30), 10-30 · called: jpy_carry=neutral",
+      "sources": [
+        {
+          "date": "2026-10-30",
+          "url": "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2026/k261030a.pdf"
+        },
+        {
+          "date": "2026-10-30",
+          "url": "https://www.fxstreet.com/analysis/usd-jpy-falls-for-third-straight-day-yen-supported-by-boj-decision-202610300727"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-02",
+      "event": "Apple FQ4-26 (17:00 ET; Ternus' first call; verified)",
+      "signs": [
+        "aapl_demand"
+      ],
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "fizzle: Dec-quarter revenue guided +7–10 % y/y above consensus, FQ4 revenue +12 % with Greater China up about 21 %; gross-margin guide below consensus on memory costs, stock down pre-open 11-03, 11-02 · called: aapl_demand=unknown",
+      "sources": [
+        {
+          "date": "2026-11-02",
+          "url": "https://www.sec.gov/Archives/edgar/data/0000320193/000032019326000024/a8-kex991q4202609262026.htm"
+        },
+        {
+          "date": "2026-11-02",
+          "url": "https://www.cnbc.com/2026/11/02/apple-aapl-q4-2026-earnings-live-updates.html"
+        }
+      ]
+    }
+  ]
+}

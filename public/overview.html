@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Overview - Market Danger Board</title>
+    <meta
+      name="description"
+      content="Read-only market-danger overview: alert-band floors, the live families board, the per-leg danger ledger and per-indicator detail charts - scored once a day from public data. Notify-only, not investment advice."
+    />
+    <!-- Static shell only: vanilla ES modules, no framework/bundler/build (repo charter).
+         Same stylesheets the sections' home pages link: styles.css (index.html - detail tab,
+         charts, page chrome) + lab.css (lab.html - band panel, families board, danger ledger). -->
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./lab.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='%235f7a5f'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <!-- One-line header (P11 - anonymous visitors land here): sign in to an existing account, or
+         subscribe to the alerts (which creates one). auth-nav.js relabels the sign-in link, so the
+         static label IS the anonymous one ("Sign in") - a longer placeholder wrapped the strip on a
+         phone and its relabel shifted the whole page (CLS). -->
+    <div class="pagenav-bar">
+      <a class="pagenav" href="/subscribe"
+        >✉ Email alerts (sign up) <span aria-hidden="true">↗</span></a
+      >
+      <a class="pagenav pagenav-gap" href="/signin" data-auth-nav
+        >Sign in <span aria-hidden="true">↗</span></a
+      >
+    </div>
+
+    <!-- Masthead - the page's introduction for a first-time visitor. Static markup (never
+         re-rendered by overview.js) and OUTSIDE <main id="overview">, so it paints before data
+         lands and doubles as the page's identity during the loading state. Only the lede sentence
+         is visible by default - the rest sits in the <details> below it. The opening sentences are
+         index.html's masthead verbatim; the rest is the newcomer's read of THIS page.
+         `.fn` spans are footnote-on-a-word hosts: dotted underline + a native `title`, glyphless
+         ([USER]) - `.masthead .fn[title]` is carved into HELP_CARVEOUT_SELECTOR, so a phone tap
+         reads the title into the help bar. Keep every `title` free of double quotes. -->
+    <header class="masthead masthead-wide" id="masthead">
+      <h1 class="masthead-title">Market danger, one screen.</h1>
+      <p class="masthead-sub masthead-lede">
+        How dangerous markets look right now,
+        <span
+          class="fn"
+          title="One scored run per day, after the close: the day's public series are fetched, each indicator is scored, and the result is written once. Nothing here is live or intraday, and a number can lag its source by a day or more."
+          >scored once a day</span
+        >
+        from <a href="/attribution">public data</a> and mapped to a
+        <span
+          class="fn"
+          title="OK - nothing to do. WATCH - stress is building in at least one channel. WARNING - several channels agree, or one is severe. CRITICAL - the loudest step. The band says how LOUD to be, never what to buy or sell."
+          >four-step alert ladder</span
+        >.
+      </p>
+
+      <!-- Everything past the opening sentence is collapsed by default ([USER] 2026-09-07: a
+           first-time visitor gets ONE sentence, not a wall). Native <details>, so it needs no JS
+           and stays open/closed without state: the shell must still paint before data lands. The
+           `.fn` footnote hosts inside keep working once expanded - help-decorate.js queries the
+           live DOM on tap, and a closed <details> only hides, never removes. -->
+      <details class="masthead-more">
+        <summary class="masthead-more-summary">
+          What this page is, and how to read it
+        </summary>
+        <p class="masthead-sub">
+          It <a href="/subscribe">notifies</a>, nothing more: it holds no money,
+          places no orders and knows nothing about you.
+          <a href="/terms">Not investment advice</a>.
+        </p>
+        <p class="masthead-sub">
+          New here? The page reads top to bottom, from the verdict down to the
+          raw material.
+          <a href="#bandPanelHost">Floors</a> shows which channels lifted
+          today's band above what the
+          <span
+            class="fn"
+            title="One number from 0 (calm) to 1 (extreme), pooled from every indicator. Cut-points turn it into a regime, and the escalator floors can then only RAISE the resulting band, never lower it."
+            >danger score</span
+          >
+          alone earned. The <a href="#familiesBoard">families board</a> is the
+          signal side - the six
+          <span
+            class="fn"
+            title="Credit, rates, volatility, cross-asset, trend and geopolitics. Each family shows the WORST of the indicators reporting into it, never an average, so one bad instrument is enough to light a card."
+            >families</span
+          >
+          each showing their worst indicator, once that reading has
+          <span
+            class="fn"
+            title="A confirmation buffer: most state changes must hold for two consecutive closes before they count. It costs a day of reaction time and buys immunity to one-day spikes and bad prints."
+            >held long enough to count</span
+          >. The <a href="#dangerField">danger ledger</a> ranks the
+          <span
+            class="fn"
+            title="Nine holdings laid out by total risk, from aggressive equities at the top down to cash at the bottom. The gauge names one of them to hold; it never moves money."
+            >nine rungs of the risk ladder</span
+          >
+          by their own danger, most dangerous first, so you can see why the held
+          rung is the one held.
+          <a href="#zone-d">Indicator detail</a> plots one indicator against
+          the
+          <span
+            class="fn"
+            title="The two thresholds that turn a raw number into a state - below the first is Green (calm), between them Amber (stressed), above the second Red (dangerous). They are hand-set and visible on every detail chart."
+            >cut-points</span
+          >
+          that turn it Green, Amber or Red; licensed market feeds show their
+          state only.
+        </p>
+        <p class="masthead-sub">
+          Everything here is read-only and needs no account - nothing you click
+          changes the alert or the position. Longer explanation:
+          <a href="/about">How it works</a>. Going deeper:
+          <a href="/lab">the Lab</a> (every method and cut, on live data),
+          <a href="/journal">the Journal</a> (what the gauge actually published,
+          over time) and <a href="/exposure">Exposure</a> (a posture dial off
+          the same signals) - each needs a <a href="/signin">sign-in</a>.
+        </p>
+      </details>
+    </header>
+
+    <!-- Centered overlay for the loading / error states (one at a time). -->
+    <div id="message" class="message message-fill" role="status">Loading…</div>
+
+    <!-- Four read-only sections, nothing else (P11): floors, families board, danger ledger,
+         indicator detail. Hosts carry the exact ids/classes the shared seams expect
+         (band-panel.js / families-board.js / lab-board.js / detail-tab.js); the danger-field
+         skeleton is written by overview.js through setHTML (it embeds secTip/marketModeQuadrantHtml
+         output, which is generated markup, not hand-frozen HTML) — as is #zone-d-head's titled
+         heading, so its footnote copy stays single-sourced in section-tips.js. -->
+    <main id="overview" class="lab" data-help="tap-first" hidden>
+      <section
+        class="band-panel-host"
+        id="bandPanelHost"
+        aria-label="Alert-band escalator floors"
+      ></section>
+      <div class="bench">
+        <section
+          class="board"
+          id="familiesBoard"
+          aria-label="Families board"
+        ></section>
+      </div>
+      <section
+        class="danger-field"
+        id="dangerField"
+        aria-label="Per-leg danger field - View A"
+      ></section>
+      <section id="zone-d" class="zone zone-d" aria-label="Indicator detail">
+        <div class="zd-head" id="zone-d-head"></div>
+        <div class="tab-panel" id="zone-d-panel" role="tabpanel" tabindex="0">
+          <p class="chart-msg">Loading…</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Shared help bar: OUTSIDE #overview so a section re-render can't wipe it. Same markup
+         + styles.css .help-bar the dashboard and lab use; wired by help-bar.js. -->
+    <aside id="help-bar" class="help-bar" role="status" hidden>
+      <p class="help-bar-text"></p>
+      <button type="button" class="help-bar-close" aria-label="Close help">
+        ×
+      </button>
+    </aside>
+
+    <footer class="site-footer">
+      <nav class="site-footer-links" aria-label="Legal">
+        <a href="/imprint">Imprint</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/cookies">Cookies</a>
+        <a href="/attribution">Attribution</a>
+      </nav>
+      <p class="site-footer-donate">
+        Free to use.
+        <a
+          href="https://paypal.me/kristjanhs"
+          rel="noopener noreferrer external"
+          >Send a gift</a
+        >
+        - voluntary, and it buys nothing.
+      </p>
+    </footer>
+
+    <!-- Viewport-pinned crosshair readout: the FULL detail-chart readout, shown only while
+         scrubbing an Indicator-detail chart. Same static markup index.html carries, for the same
+         reason - it lives outside #zone-d (whose innerHTML is replaced on every render) and is
+         position:fixed, so it costs the chart stack zero layout height. Painted by
+         hover-readout.js, which overview.js wires over #zone-d. -->
+    <p id="hover-bar" class="hover-bar" aria-live="off" hidden></p>
+
+    <script type="module" src="./disclaimer.js"></script>
+    <script type="module" src="./auth-nav.js"></script>
+    <script type="module" src="./overview.js"></script>
+  </body>
+</html>

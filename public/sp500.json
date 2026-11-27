@@ -1,0 +1,2890 @@
+{
+  "run": "2026-11-05",
+  "rules": [
+    "The episode box holds every tranche when a coincident and a lead cluster both vote (a strict majority of their live members — see Episode gates), or when a hy_oas / ccc_bb / private_credit / earnings / tech_lead sign row blocks; below quorum (70 % of members live) T2/T3 hold too. The trend gate holds every tranche while SXR8 closes below a falling 200-day. A gate on an unread feed reads n/a and holds. The gates and the time stop are price facts — never act on an open; the close decides. IG OAS and QQQ/QQQE are display reads, never gates. The drawdown watch grades its measured rows only (HY · VIX · SPY trend · NFCI risk · claims), with or without a drawdown open; breadth, CCC−BB, earnings, private credit and the Fed path show their lean and never grade, and claims never holds a re-entry tranche."
+  ],
+  "brief": {
+    "fund": "SXR8.DE = iShares Core S&P 500 UCITS (Acc), ISIN IE00B5BMR087, unhedged USD, € closes; served as `LEGP_SPX`. Top-10 weights (NVDA · AAPL · MSFT · AMZN · Alphabet): check the issuer page — never a number from memory.",
+    "primaryTier": [
+      {
+        "name": "the Federal Reserve",
+        "hosts": [
+          "federalreserve.gov"
+        ]
+      },
+      {
+        "name": "the mega-cap IR pages (MSFT · Alphabet · Amazon · Apple · NVDA)",
+        "hosts": [
+          "microsoft.com",
+          "abc.xyz",
+          "aboutamazon.com",
+          "apple.com",
+          "nvidia.com"
+        ]
+      },
+      {
+        "name": "FactSet Earnings Insight",
+        "hosts": [
+          "factset.com"
+        ]
+      },
+      {
+        "name": "FRED",
+        "hosts": [
+          "fred.stlouisfed.org"
+        ]
+      },
+      {
+        "name": "BLS · BEA · DOL",
+        "hosts": [
+          "bls.gov",
+          "bea.gov",
+          "dol.gov"
+        ]
+      },
+      {
+        "name": "SEC EDGAR",
+        "hosts": [
+          "sec.gov"
+        ]
+      },
+      {
+        "name": "Chicago Fed",
+        "hosts": [
+          "chicagofed.org"
+        ]
+      },
+      {
+        "name": "CME FedWatch",
+        "hosts": [
+          "cmegroup.com"
+        ]
+      },
+      {
+        "name": "the BDC IR pages and KBRA",
+        "hosts": [
+          "arescapitalcorp.com",
+          "blueowlcapitalcorporation.com",
+          "blueowl.com",
+          "kbra.com"
+        ]
+      },
+      {
+        "name": "Cboe",
+        "hosts": [
+          "cboe.com"
+        ]
+      },
+      {
+        "name": "Agence France Trésor",
+        "hosts": [
+          "aft.gouv.fr"
+        ]
+      }
+    ],
+    "holdsPolicy": "`holds: [\"T2\",\"T3\"]` only on FOMC, the mega-cap after-close calls (MSFT · Alphabet · Amazon · Apple · NVDA) and a France rating review, never `T1`; every other event (CPI, PCE/GDP, payrolls, BDC results, the midterms, French budget votes) is sign-only, `holds: []`.",
+    "gates": "credit at every tranche (HY retrace; T2 adds the CCC half-retrace), the falling-200-day trend gate, the HY no-new-high hold, the 10y-RY + HY shock veto, the NFCI-risk gate, the MOVE gate at T2/T3, the 3σ veto, and the time stop",
+    "eventScope": "the Fed path, the mega-cap earnings and AI capex, US credit (HY · BDC / private credit) or euro-area sovereign contagion (France)"
+  },
+  "signs": [
+    {
+      "sign": "hy_oas",
+      "label": "HELD until 2026-11-08",
+      "lean": "neutral",
+      "finding": "HY OAS dipped on 10-28 to its lowest in weeks, then widened back over three sessions to near its episode high on 10-30 and held there through 11-03 (FRED) — still under the 3.60 % correction line and nowhere near a 75 bp retrace, 11-03",
+      "why": "HY OAS drives the credit gate, the box's credit member and the watch's HY row; HY peaked within ±10 days of the SPX trough in 9 of 12 episodes [B §1]",
+      "measurable": "bear = HY ≥ 3.60 % (+100 bp over its 6-mo low) or HY crosses 4.0 % from below, or a new episode high after T1 ; BLOCKING = HY ≥ 5.0 % and rising ; fizzle = HY ≥ 75 bp below its episode peak",
+      "block": false,
+      "checked": "2026-11-05",
+      "due": "2026-11-08",
+      "primary": [
+        "https://fred.stlouisfed.org/series/BAMLH0A0HYM2"
+      ],
+      "search": [
+        "high yield spread widening week"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-03",
+          "url": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2"
+        }
+      ],
+      "leanLog": [
+        {
+          "date": "2026-10-24",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-10-24",
+          "lean": "neutral"
+        }
+      ],
+      "extendedOn": "2026-11-05"
+    },
+    {
+      "sign": "ccc_bb",
+      "label": "HELD until 2026-11-08",
+      "lean": "neutral",
+      "finding": "FRED close 11-03 CCC —, off FRED — close 10-30 and still under the 10-23 episode high, while FRED close 11-03 BB — is back over 2.0 % from FRED — close 10-28 — no new CCC high, so the 'CCC new high with BB rising' clause stays unmet, BB short of 2.5 % and CCC far above the 11.5 % fizzle line, 11-03",
+      "why": "The CCC level is a default-cycle line only, so BB carries the watch: 2.5 % correction, 3.0 % bear (2025 peaked at —) [B §1–2]",
+      "measurable": "bear = BB ≥ 2.5 %, or CCC prints a new high with BB rising ; BLOCKING = BB ≥ 3.0 % ; fizzle = CCC < 11.5 % and BB < 2.0 %",
+      "block": false,
+      "checked": "2026-11-05",
+      "due": "2026-11-08",
+      "primary": [
+        "https://fred.stlouisfed.org/series/BAMLH0A1HYBB",
+        "https://fred.stlouisfed.org/series/BAMLH0A3HYC"
+      ],
+      "search": [
+        "CCC spread distressed ratio high yield"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-03",
+          "url": "https://fred.stlouisfed.org/series/BAMLH0A3HYC"
+        },
+        {
+          "date": "2026-11-03",
+          "url": "https://fred.stlouisfed.org/series/BAMLH0A1HYBB"
+        }
+      ],
+      "leanLog": [
+        {
+          "date": "2026-10-24",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-10-24",
+          "lean": "bear"
+        },
+        {
+          "date": "2026-10-28",
+          "lean": "neutral"
+        }
+      ],
+      "extendedOn": "2026-11-05"
+    },
+    {
+      "sign": "ig_oas",
+      "label": "HELD until 2026-11-08",
+      "lean": "fizzle",
+      "finding": "IG OAS eased into 10-28, widened again through 10-30 and held flat to 11-03 (FRED), still under the 1.00 % fizzle line and short of the 1.10 % held-bear line, 11-03",
+      "why": "IG OAS is a display read: the 2025 bear peaked at — and the 2023 −10 % correction at —, so the level does not separate a correction from a bear [B §1]",
+      "measurable": "bear = IG ≥ 1.10 % while held, or ≥ — (the 2025 peak) after T1 ; BLOCKING = IG ≥ 1.50 % ; fizzle = IG < 1.00 %",
+      "block": false,
+      "checked": "2026-11-05",
+      "due": "2026-11-08",
+      "primary": [
+        "https://fred.stlouisfed.org/series/BAMLC0A0CM"
+      ],
+      "search": [
+        "investment grade spreads widest since"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-03",
+          "url": "https://fred.stlouisfed.org/series/BAMLC0A0CM"
+        }
+      ],
+      "leanLog": [
+        {
+          "date": "2026-10-24",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-10-24",
+          "lean": "fizzle"
+        }
+      ],
+      "extendedOn": "2026-11-05",
+      "quiet": 1
+    },
+    {
+      "sign": "vix",
+      "label": "HELD until 2026-11-12",
+      "lean": "fizzle",
+      "finding": "VIX rose into the midterms, FRED — close 11-02 and FRED — close 11-03 after FRED — close 10-28 — over 20 for the first time in the row's window but every close still under the 25 line, 11-03",
+      "why": "5 VIX closes ≥ 25 led to a ≥ 15 % drawdown in 15 of 19 cases since 1997; ≥ 40 marks capitulation, so it sits on the re-entry side [B §1]",
+      "measurable": "bear = VIX ≥ 25 on 5 straight closes, or a new episode high after T1 ; BLOCKING = VIX ≥ 40 and still rising ; fizzle = VIX < 25",
+      "block": false,
+      "checked": "2026-11-05",
+      "due": "2026-11-12",
+      "primary": [
+        "https://fred.stlouisfed.org/series/VIXCLS"
+      ],
+      "search": [
+        "VIX close"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-03",
+          "url": "https://fred.stlouisfed.org/series/VIXCLS"
+        },
+        {
+          "date": "2026-10-30",
+          "url": "https://www.jmfinancialservices.in/market-news-and-insights/1741407"
+        }
+      ],
+      "leanLog": [
+        {
+          "date": "2026-10-24",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-10-24",
+          "lean": "fizzle"
+        }
+      ],
+      "extendedOn": "2026-11-05"
+    },
+    {
+      "sign": "vix_term",
+      "label": "HELD until 2026-11-12",
+      "lean": "neutral",
+      "finding": "Saxo's 11-03 options brief had the 3-month VIX only just above spot going into the vote, the curve flatter than its late-October contango but not inverted — the spot/3-month ratio sits between the 0.90 fizzle and 1.00 bear lines, 11-03",
+      "why": "VIX/VIX3M inversion length marks panic speed, not bear depth (the 2022 bear peaked at 1.02), so it has no bear line [B §1–2]",
+      "measurable": "bear = VIX/VIX3M ≥ 1.00 on 3 closes, or a re-inversion after T1 ; BLOCKING = ≥ 1.00 on 5 closes ; fizzle = < 0.90 on 5 closes",
+      "block": false,
+      "checked": "2026-11-05",
+      "due": "2026-11-12",
+      "primary": [
+        "https://www.cboe.com/tradable_products/vix/term_structure/"
+      ],
+      "search": [
+        "VIX term structure backwardation"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-03",
+          "url": "https://www.home.saxo/content/articles/options/the-vote-week-outprices-the-month---options-brief---3-november-2026-03112026"
+        }
+      ],
+      "leanLog": [
+        {
+          "date": "2026-10-24",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-10-24",
+          "lean": "neutral"
+        }
+      ],
+      "extendedOn": "2026-11-05",
+      "quiet": 1
+    },
+    {
+      "sign": "trend_200d",
+      "label": "HELD until 2026-11-12",
+      "lean": "fizzle",
+      "finding": "SPX closed CNBC — close 11-04, after financhill — close 10-30 against a 200-day of financhill — close 10-30 — above the line on every close, so the 'SPX > MA200 on 3 closes' fizzle clause holds and neither bear clause is near; Investing.com's 200-day of investing.com 7,717.25 close 11-02 conflicts with every other source, 11-04",
+      "why": "SPX vs its MA200: the watch's SPY trend row measures it; the price rungs own the re-entry side [B §1, D §3]",
+      "measurable": "bear = SPX < MA200 on 3 closes, or MA50 < MA200 with MA200 below its level 20 sessions back and SPX below both ; fizzle = SPX > MA200 on 3 closes",
+      "block": false,
+      "checked": "2026-11-05",
+      "due": "2026-11-12",
+      "primary": [
+        "https://financhill.com/stock-price-chart/spx-technical-analysis"
+      ],
+      "search": [
+        "S&P 500 200-day moving average"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-04",
+          "url": "https://www.cnbc.com/2026/11/03/stock-market-today-live-updates.html"
+        },
+        {
+          "date": "2026-10-30",
+          "url": "https://financhill.com/stock-price-chart/spx-technical-analysis"
+        }
+      ],
+      "extendedOn": "2026-11-05",
+      "leanLog": [
+        {
+          "date": "2026-10-24",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-10-28",
+          "lean": "fizzle"
+        }
+      ],
+      "quiet": 1
+    },
+    {
+      "sign": "nfci_risk",
+      "label": "HELD until 2026-11-12",
+      "lean": "fizzle",
+      "finding": "NFCI risk kept rising every week through the week to 10-30 (FRED), FRED -0.526 close 10-30, still below the −0.40 fizzle line but edging toward its 52-week low + 0.15 bear line, 10-30",
+      "why": "NFCI risk > −0.30 is the bear line (5 of 5 → ≥ 15 %, late); > 0 only in recessions; the NFCI gate reads it on the re-entry side [B §1–2]",
+      "measurable": "bear = NFCI risk ≥ its 52-wk low + 0.15, or > −0.30 ; fizzle = back below −0.40",
+      "block": false,
+      "checked": "2026-11-05",
+      "due": "2026-11-12",
+      "primary": [
+        "https://fred.stlouisfed.org/series/NFCIRISK"
+      ],
+      "search": [
+        "Chicago Fed NFCI risk subindex"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-10-30",
+          "url": "https://fred.stlouisfed.org/series/NFCIRISK"
+        }
+      ],
+      "leanLog": [
+        {
+          "date": "2026-10-24",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-10-24",
+          "lean": "fizzle"
+        }
+      ],
+      "extendedOn": "2026-11-05",
+      "quiet": 1
+    },
+    {
+      "sign": "claims",
+      "label": "UNCHANGED 10-29",
+      "lean": "fizzle",
+      "finding": "Initial claims fell to FRED 194,000 close 10-24 and the 4-week average to FRED 196,750 close 10-24, sitting on its 52-week low and under the 1.10× fizzle line; the next weekly print lands 11-05 and October payrolls 11-06, 10-29",
+      "why": "The ICSA 4-wk avg is measured by the watch's claims row (bear only); it never holds a re-entry tranche, as claims peaked after the SPX trough in 1991, 2009, 2010 and 2020 [B §1]",
+      "measurable": "bear = ICSA 4-wk avg ≥ 1.15 × its 52-wk low held 4 weeks, not a hurricane or fraud artefact ; fizzle = 4-wk avg < 1.10 × its 52-wk low",
+      "block": false,
+      "checked": "2026-11-05",
+      "due": "2026-11-05",
+      "primary": [
+        "https://fred.stlouisfed.org/series/ICSA",
+        "https://www.dol.gov/ui/data.pdf"
+      ],
+      "search": [
+        "initial jobless claims four-week average"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-10-29",
+          "url": "https://fred.stlouisfed.org/series/ICSA"
+        },
+        {
+          "date": "2026-10-29",
+          "url": "https://fred.stlouisfed.org/series/ic4wsa"
+        }
+      ],
+      "leanLog": [
+        {
+          "date": "2026-10-24",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-10-24",
+          "lean": "fizzle"
+        }
+      ],
+      "extendedOn": "2026-11-05",
+      "quiet": 2
+    },
+    {
+      "sign": "contagion",
+      "label": "CHANGED",
+      "lean": "neutral",
+      "finding": "The Assembly's solemn vote on the 2027 budget's revenue part, set for 11-03, was postponed again with hundreds of amendments left and no new date (LCP 11-03), with no 49.3 or censure motion reported; the first-reading deadline on the whole bill is 11-17 (LCP 11-02); France−Bund admiralmarkets 155 bp close 10-29 and EM corporate spreads widening to the top of their recent range by 11-03 (FRED) — under the 185 bp and 2.0 % bear lines, above the 150 bp fizzle line, 11-03",
+      "why": "EM OAS and the euro-periphery spreads (France, Italy and Spain over Bunds) carry it [B §1, D §6]",
+      "measurable": "bear = EM OAS ≥ 2.0 % or France−Bund ≥ 185 bp, or a France downgrade or the government falls ; BLOCKING = France−Bund ≥ 200 bp and EM OAS ≥ 2.3 % ; fizzle = France−Bund < 150 bp and EM OAS < 1.6 %",
+      "block": false,
+      "checked": "2026-11-05",
+      "due": "2026-11-05",
+      "primary": [
+        "https://fred.stlouisfed.org/series/BAMLEMCBPIOAS",
+        "https://applis.finances.gouv.fr/en/frances-credit-ratings"
+      ],
+      "search": [
+        "France Bund spread",
+        "Moody's France rating"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-03",
+          "url": "https://lcp.fr/actualites/budget-2027-le-marathon-de-la-partie-recettes-n-etant-pas-termine-le-vote-solennel-prevu"
+        },
+        {
+          "date": "2026-11-03",
+          "url": "https://fred.stlouisfed.org/series/BAMLEMCBPIOAS"
+        },
+        {
+          "date": "2026-11-02",
+          "url": "https://lcp.fr/actualites/budget-2027-calendrier-procedure-pistes-d-atterrissage-ou-en-est-on-des-debats"
+        },
+        {
+          "date": "2026-10-29",
+          "url": "https://admiralmarkets.com/de/analysen/traders-blog/oat-bund-spread-france-euro"
+        }
+      ],
+      "extendedOn": "2026-11-05",
+      "leanLog": [
+        {
+          "date": "2026-10-24",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-10-24",
+          "lean": "neutral"
+        }
+      ]
+    },
+    {
+      "sign": "tech_lead",
+      "label": "CHANGED",
+      "lean": "bear",
+      "finding": "The spit leg's AI-funding read leans bear on Oracle's credit while its hyperscaler-capex read stays neutral, so the 'ai_funding leans bear' clause is met; the 10-28/29 prints raised spend with no 2027 figure — Microsoft's Azure growth quickened and its Q1 capex doubled y/y, Alphabet's Q3 capex rose again yet the stock had its worst day on record on 10-29, AWS growth held near 40 % — and Apple guided the December quarter above estimates on 11-02; F5 still GREEN with XLK relative strength RED, 11-02",
+      "why": "F6 SMH/SPY, F5 QQQ/QQQE, RS_XLK and DB_XLK carry it. The mega-caps weigh heavily in the fund, so the spit leg's hyper_capex / ai_funding rows lead this one [B §1, D §1]",
+      "measurable": "bear = F5 AMBER or RED, or the spit leg's hyper_capex or ai_funding leans bear ; BLOCKING = either is BLOCKING in the spit leg, or F5 RED with DB_XLK RED and SPX < MA200 ; fizzle = F5 GREEN and RS_XLK back to GREEN",
+      "block": false,
+      "checked": "2026-11-05",
+      "due": "2026-11-05",
+      "primary": [
+        "https://www.microsoft.com/en-us/investor",
+        "https://abc.xyz/investor/",
+        "https://ir.aboutamazon.com/",
+        "https://investor.nvidia.com/"
+      ],
+      "search": [
+        "Magnificent 7 earnings capex guidance"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-02",
+          "url": "https://www.cnbc.com/2026/11/02/apple-aapl-q4-2026-earnings-live-updates.html"
+        },
+        {
+          "date": "2026-10-29",
+          "url": "https://finance.yahoo.com/markets/live/stock-market-today-thursday-october-29-dow-sp-500-nasdaq-alphabet-microsoft-earnings-130305714.html"
+        },
+        {
+          "date": "2026-10-29",
+          "url": "https://www.aboutamazon.com/news/company-news/amazon-earnings-q3-2026-report"
+        }
+      ],
+      "leanLog": [
+        {
+          "date": "2026-10-24",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-10-24",
+          "lean": "neutral"
+        },
+        {
+          "date": "2026-11-05",
+          "lean": "bear"
+        }
+      ],
+      "fails": {
+        "https://abc.xyz/investor/": 2,
+        "https://ir.aboutamazon.com/": 2,
+        "https://investor.nvidia.com/": 2
+      },
+      "extendedOn": "2026-11-05"
+    },
+    {
+      "sign": "breadth",
+      "label": "HELD until 2026-11-12",
+      "lean": "neutral",
+      "finding": "ChartRow 66 % close 11-04 of members above their MA200 (328 of 496), up from 56 % on 10-23, and thetrading.tools 28.9 % close 11-04 more than 20 % under their 252-session high — above the 40 % and under the 50 % bear lines, no washout, 11-04",
+      "why": "The share of members ≥ 20 % below their 52-wk high (thetrading.tools) and above their MA200 (ChartRow); press figures off 10-yr highs are not this read. A manual watch row until a member breadth feed exists [B §1–2]",
+      "measurable": "bear = ≥ 50 % of members ≥ 20 % off their 52-wk high, or < 40 % above their MA200 ; fizzle = % above MA200 washes out under 20 % then climbs back over 50 %",
+      "block": false,
+      "checked": "2026-11-05",
+      "due": "2026-11-12",
+      "primary": [
+        "https://chartrow.com/sp500/market-breadth",
+        "https://www.thetrading.tools/bear-market-breadth"
+      ],
+      "search": [
+        "S&P 500 percent above 200-day"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-04",
+          "url": "https://chartrow.com/sp500/market-breadth"
+        },
+        {
+          "date": "2026-11-04",
+          "url": "https://www.thetrading.tools/bear-market-breadth"
+        }
+      ],
+      "leanLog": [
+        {
+          "date": "2026-10-24",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-10-24",
+          "lean": "neutral"
+        }
+      ],
+      "extendedOn": "2026-11-05",
+      "quiet": 1
+    },
+    {
+      "sign": "rates",
+      "label": "UNCHANGED 11-05",
+      "lean": "neutral",
+      "finding": "FRED close 11-03 10y 4.95 %, down from FRED 5.05 % close 10-28 and under both the 5.35 % bear and 5.15 % fizzle lines, but investing.com 80.2 % intraday 11-05 odds of a December hike leave the fizzle's second clause unmet; the FOMC held on 10-28 with two dissents for a hike and no December guidance, and the 11-03 midterms passed cleanly, 11-05",
+      "why": "10y, DFII10, the funds rate and the next-meeting hike odds carry it; rates events ride the box's real_yield member (a lead vote) [B §1, D §6]",
+      "measurable": "bear = 10y ≥ 5.35 % or core CPI ≥ 0.4 % m/m or a December hike with higher 2027 dots ; fizzle = 10y < 5.15 % and the next-meeting hike priced < 25 %",
+      "block": false,
+      "checked": "2026-11-05",
+      "due": "2026-11-05",
+      "primary": [
+        "https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html",
+        "https://fred.stlouisfed.org/series/DGS10"
+      ],
+      "search": [
+        "FedWatch December hike probability",
+        "US 10-year Treasury yield"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-05",
+          "url": "https://www.investing.com/central-banks/fed-rate-monitor"
+        },
+        {
+          "date": "2026-11-04",
+          "url": "https://www.cnbc.com/2026/11/03/stock-market-today-live-updates.html"
+        },
+        {
+          "date": "2026-11-03",
+          "url": "https://fred.stlouisfed.org/series/DGS10"
+        }
+      ],
+      "leanLog": [
+        {
+          "date": "2026-10-24",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-10-24",
+          "lean": "neutral"
+        }
+      ],
+      "fails": {
+        "https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html": 2
+      },
+      "extendedOn": "2026-11-05",
+      "quiet": 1
+    },
+    {
+      "sign": "earnings",
+      "label": "UNCHANGED 11-04",
+      "lean": "fizzle",
+      "finding": "FactSet 11-04: analysts raised S&P 500 quarterly EPS estimates for a third straight quarter, while FactSet 11-03 has the Magnificent 7 now reporting slower growth than the other 493; the 10-28/29 and 11-02 mega-cap prints raised spend and Apple guided above estimates, though Alphabet's record one-day fall shows the tape docking spend — estimates still rising with the 10-23 beat rate above 75 %, 11-04",
+      "why": "FactSet's blended EPS growth, beat rate, fwd-12m and CY27 revisions and the Q4 negative-guide share vs its 5-yr avg carry it. Blind to a pure multiple-compression bear [B §1]",
+      "measurable": "bear = fwd-12m EPS falls ≥ 1 % over 4 weeks, or the Q4 estimate is cut deeper than its 5-yr average ; BLOCKING = CY27 EPS falls ≥ 3 % over 8 weeks ; fizzle = fwd EPS rising and the beat rate ≥ 75 %",
+      "block": false,
+      "checked": "2026-11-05",
+      "due": "2026-11-05",
+      "primary": [
+        "https://insight.factset.com/topic/earnings"
+      ],
+      "search": [
+        "FactSet Earnings Insight S&P 500"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-04",
+          "url": "https://insight.factset.com/topic/earnings"
+        }
+      ],
+      "leanLog": [
+        {
+          "date": "2026-10-24",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-10-24",
+          "lean": "fizzle"
+        }
+      ],
+      "extendedOn": "2026-11-05",
+      "quiet": 1
+    },
+    {
+      "sign": "private_credit",
+      "label": "CHANGED",
+      "lean": "neutral",
+      "finding": "Blue Owl's listed OBDC (SEC 8-K, 11-04) had non-accruals tick up at cost, SEC 2.9 % close 09-30 from 2.8 % at 06-30 with fair value flat, while NAV/share rose; Blue Owl's non-traded BDCs again prorated redemption requests at the 5 % cap (Citywire 10-29) after Blue Owl's 10-29 Q3; with Ares flat the Q3 fizzle clause no longer holds cleanly, and no bear clause is met — Barings reports 11-05 and the KBRA Q3 median is still owed, 11-04",
+      "why": "BDC median non-accruals at cost (KBRA) and non-traded BDC redemption requests vs their 5 % gate carry it; AI data-centre debt sits partly in private credit [B §1, D §6]",
+      "measurable": "bear = a second large BDC gates redemptions, median non-accrual ≥ 3 % at cost, or ARCC/OBDC NAV per share −5 % q/q ; BLOCKING = a forced-sale or fund wind-down headline ; fizzle = Q3 non-accruals flat or lower q/q",
+      "block": true,
+      "checked": "2026-11-05",
+      "due": "2026-11-05",
+      "primary": [
+        "https://www.arescapitalcorp.com/",
+        "https://www.blueowlcapitalcorporation.com/",
+        "https://www.kbra.com/publications/QrvqqBVr"
+      ],
+      "search": [
+        "BDC redemption gate",
+        "BDC non-accruals third quarter"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-04",
+          "url": "https://www.sec.gov/Archives/edgar/data/0001655888/000165588826000070/exhibit991pressrelease-ann.htm"
+        },
+        {
+          "date": "2026-11-04",
+          "url": "https://www.blueowlcapitalcorporation.com/"
+        },
+        {
+          "date": "2026-10-29",
+          "url": "https://citywire.com/asia/news/blue-owl-limits-redemptions-in-bdcs-as-investors-seek-to-pull-4-2bn/a2499325"
+        },
+        {
+          "date": "2026-10-29",
+          "url": "https://www.panabee.com/news/blue-owl-capital-earnings-q3-2026-report"
+        }
+      ],
+      "extendedOn": "2026-11-05",
+      "fails": {
+        "https://www.arescapitalcorp.com/": 2
+      },
+      "leanLog": [
+        {
+          "date": "2026-10-26",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-10-28",
+          "lean": "fizzle"
+        },
+        {
+          "date": "2026-11-05",
+          "lean": "neutral"
+        }
+      ],
+      "blocked": {
+        "on": "2026-11-05"
+      }
+    },
+    {
+      "sign": "oil",
+      "label": "CHANGED",
+      "lean": "neutral",
+      "finding": "Brent touched FRED 120.15 close 10-30, then fell to FRED 107.03 close 11-03 and dropped CNBC −8 % close 11-04 after the midterms, its level vs the 100 fizzle line unsourced; the 120 clause needs core CPI ≥ 0.4 % m/m (October CPI prints 11-10), no Hormuz closure sourced, 11-04",
+      "why": "Brent 126 on 04-30 came while SPX rallied, so oil alone is not a drawdown line; Iran/Hormuz is unscheduled [B §1, D §6]",
+      "measurable": "bear = Brent ≥ 120 with core CPI ≥ 0.4 % m/m, or Brent ≥ 130, or a declared Hormuz closure ; fizzle = Brent < 100",
+      "block": false,
+      "checked": "2026-11-05",
+      "due": "2026-11-05",
+      "primary": [
+        "https://fred.stlouisfed.org/series/DCOILBRENTEU"
+      ],
+      "search": [
+        "Brent crude Hormuz"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-04",
+          "url": "https://www.cnbc.com/2026/11/03/stock-market-today-live-updates.html"
+        },
+        {
+          "date": "2026-11-03",
+          "url": "https://fred.stlouisfed.org/series/DCOILBRENTEU"
+        }
+      ],
+      "leanLog": [
+        {
+          "date": "2026-10-24",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-10-24",
+          "lean": "neutral"
+        }
+      ],
+      "extendedOn": "2026-11-05"
+    },
+    {
+      "sign": "context",
+      "label": "HELD until 2026-11-12",
+      "lean": "neutral",
+      "finding": "AAII 48.4 % close 11-04 bears (bulls 34.1 %), up from AAII 41.4 % close 10-28; BofA FMS cash still at its BofA 3.9 % close 10-13 read under 4.0 %, the November survey not out — no contrarian buy signal followed by new lows, 11-04",
+      "why": "CAPE, the FactSet fwd P/E vs its 5-yr avg and AAII / Wells Fargo sentiment set the drawdown's depth, not its timing [B §1, D §6]",
+      "measurable": "bear = a contrarian buy signal followed by new SPX lows within 3 months ; fizzle = AAII bears ≥ 45 % with BofA FMS cash ≥ 4.0 %",
+      "block": false,
+      "checked": "2026-11-05",
+      "due": "2026-11-12",
+      "primary": [
+        "https://www.aaii.com/sentimentsurvey"
+      ],
+      "search": [
+        "BofA fund manager survey cash",
+        "AAII sentiment survey"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-04",
+          "url": "https://www.aaii.com/sentimentsurvey"
+        }
+      ],
+      "leanLog": [
+        {
+          "date": "2026-10-24",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-10-24",
+          "lean": "neutral"
+        }
+      ],
+      "extendedOn": "2026-11-05",
+      "quiet": 1
+    }
+  ],
+  "events": [
+    {
+      "date": "2026-11-03",
+      "event": "France PLF 2027: Assembly resumes the revenue part (evening)",
+      "signs": [
+        "contagion"
+      ],
+      "escalationIf": "49.3 plus a censure motion carried, or the government falls",
+      "fizzleIf": "revenue part voted",
+      "holds": [],
+      "secondary": false,
+      "status": "outcome unsourced",
+      "verified": true,
+      "sources": [
+        {
+          "date": "2026-10-23",
+          "url": "https://nosparlementaires.fr/actualites/budget-2027-calendrier-assemblee-cinq-semaines"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-28",
+      "event": "MSFT FQ1-27 + Alphabet Q3 (after the close)",
+      "signs": [
+        "tech_lead",
+        "earnings"
+      ],
+      "escalationIf": "2027 capex ≤ +10 % or 'digestion'; Azure/GCP deceleration",
+      "fizzleIf": "capex up, cloud growth ≥ the prior quarter",
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "mixed: Azure +48 % y/y with Microsoft's Q1 cash capex $39.4 B vs $19.4 B a year earlier and no digestion language; Alphabet's Q3 capex $51.4 B up from $44.9 B in Q2, yet Alphabet fell about 13 % on 10-29, its worst day on record; neither gave a 2027 capex figure, 10-28 — unchecked: tape, 2027 capex vs +10 % · called: tech_lead=neutral, earnings=fizzle",
+      "verified": true,
+      "sources": [
+        {
+          "date": "2026-10-28",
+          "url": "https://www.microsoft.com/en-us/investor/earnings/fy-2027-q1/press-release-webcast"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000080/googexhibit991q32026.htm"
+        },
+        {
+          "date": "2026-10-29",
+          "url": "https://finance.yahoo.com/markets/live/stock-market-today-thursday-october-29-dow-sp-500-nasdaq-alphabet-microsoft-earnings-130305714.html"
+        }
+      ],
+      "verifyChecked": "2026-10-28"
+    },
+    {
+      "date": "2026-10-29",
+      "event": "US Q3 GDP advance + Sep PCE (08:30 ET, before the Xetra close)",
+      "signs": [
+        "rates",
+        "claims"
+      ],
+      "escalationIf": "core PCE ≥ 0.4 % m/m or GDP < 0",
+      "fizzleIf": "core PCE ≤ 0.2 % m/m and GDP ≥ 1.5 %",
+      "holds": [],
+      "secondary": false,
+      "status": "outcome unsourced"
+    },
+    {
+      "date": "2026-10-29",
+      "event": "Blue Owl Capital Inc. Q3 (pre-open, before the Xetra close)",
+      "signs": [
+        "private_credit"
+      ],
+      "escalationIf": "redemptions flagged above the cap",
+      "fizzleIf": "flows positive",
+      "holds": [],
+      "secondary": false,
+      "status": "outcome unsourced"
+    },
+    {
+      "date": "2026-10-29",
+      "event": "Amazon Q3 (after the close)",
+      "signs": [
+        "tech_lead",
+        "earnings"
+      ],
+      "escalationIf": "capex cut or AWS deceleration",
+      "fizzleIf": "AWS accelerates",
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "mixed: AWS $46.0 B +39 % y/y, 2026 capex held near $220 B with no cut and AWS growth above 40 % projected for 2027–28, 10-29 — unchecked: AWS growth vs the prior quarter, tape · called: tech_lead=neutral, earnings=fizzle",
+      "verified": true,
+      "verifyChecked": "2026-10-28",
+      "sources": [
+        {
+          "date": "2026-10-29",
+          "url": "https://www.aboutamazon.com/news/company-news/amazon-earnings-q3-2026-report"
+        },
+        {
+          "date": "2026-10-29",
+          "url": "https://www.constellationr.com/insights/news/aws-q3-revenue-growth-surges-39-capex-stings-amazons-cash-flow"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-04",
+      "event": "Blue Owl Capital Corp (OBDC) Q3 (after the close)",
+      "signs": [
+        "private_credit"
+      ],
+      "escalationIf": "non-accruals up q/q, NAV −2 %, or the redemption cap hit at its non-traded sister",
+      "fizzleIf": "non-accruals and NAV flat",
+      "holds": [],
+      "secondary": false,
+      "status": "mixed: non-accruals at cost 2.9 % from 2.8 % at 06-30, a 0.1 pp tick with fair value flat at 0.8 % and NAV/share $14.32 up from $14.26, 11-04 — unchecked: materiality of the tick · called: private_credit=fizzle",
+      "sources": [
+        {
+          "date": "2026-11-04",
+          "url": "https://www.sec.gov/Archives/edgar/data/0001655888/000165588826000070/exhibit991pressrelease-ann.htm"
+        },
+        {
+          "date": "2026-11-04",
+          "url": "https://www.blueowlcapitalcorporation.com/"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-06",
+      "event": "US Oct payrolls (08:30 ET, before the Xetra close)",
+      "signs": [
+        "claims",
+        "rates"
+      ],
+      "escalationIf": "payrolls < 0 or unemployment +0.2 pp m/m",
+      "fizzleIf": "payrolls > +100 k with unemployment flat",
+      "holds": [],
+      "secondary": false,
+      "status": "NOT DUE until 2026-11-06"
+    },
+    {
+      "date": "2026-11-10",
+      "event": "US Oct CPI (08:30 ET, before the Xetra close)",
+      "signs": [
+        "rates",
+        "oil"
+      ],
+      "escalationIf": "core CPI ≥ 0.4 % m/m",
+      "fizzleIf": "core CPI ≤ 0.2 % m/m",
+      "holds": [],
+      "secondary": false,
+      "status": "NOT DUE until 2026-11-10"
+    },
+    {
+      "date": "2026-11-17",
+      "event": "NVDA FQ3-27 (after the close; NOT confirmed: ~11-18/19, the date is set ~late Oct)",
+      "signs": [
+        "tech_lead",
+        "earnings"
+      ],
+      "escalationIf": "FQ4 guide below consensus or below FQ3",
+      "fizzleIf": "beat $108 B and guide ≥ $115 B",
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "NOT DUE until 2026-11-17",
+      "verified": true,
+      "verifyChecked": "2026-11-05",
+      "dateNote": "NVDA release 10-28: results 11-17, call 17:00 ET",
+      "sources": [
+        {
+          "date": "2026-10-28",
+          "url": "https://nvidianews.nvidia.com/news/nvidia-sets-conference-call-for-third-quarter-financial-results-6928873"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-27",
+      "event": "S&P review of France (after the close; single source)",
+      "signs": [
+        "contagion"
+      ],
+      "escalationIf": "a downgrade to A or a negative outlook",
+      "fizzleIf": "A+ stable affirmed",
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "NOT DUE until 2026-11-27",
+      "verified": false
+    },
+    {
+      "date": "2026-12-04",
+      "event": "US Nov payrolls (08:30 ET, before the Xetra close)",
+      "signs": [
+        "claims",
+        "rates"
+      ],
+      "escalationIf": "payrolls < 0 or unemployment +0.2 pp m/m",
+      "fizzleIf": "payrolls > +100 k with unemployment flat",
+      "holds": [],
+      "secondary": false,
+      "status": "NOT DUE until 2026-12-04"
+    },
+    {
+      "date": "2026-12-09",
+      "event": "FOMC + SEP (12-08/09; decision 14:00 ET, after the Xetra close)",
+      "signs": [
+        "rates"
+      ],
+      "escalationIf": "a hike with higher 2027 dots",
+      "fizzleIf": "hold with flat dots",
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "NOT DUE until 2026-12-09",
+      "preRead": {
+        "text": "CME FedWatch hold/hike odds for this meeting",
+        "sources": [
+          "https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html",
+          "https://www.investing.com/central-banks/fed-rate-monitor",
+          "search: Fed rate decision odds this week"
+        ]
+      }
+    },
+    {
+      "date": "2026-12-10",
+      "event": "France: Art. 47 70-day limit on the PLF (NOT confirmed: inferred from the deposit date)",
+      "signs": [
+        "contagion"
+      ],
+      "escalationIf": "a budget by ordinance or a no-confidence vote",
+      "fizzleIf": "a voted budget",
+      "holds": [],
+      "secondary": false,
+      "status": "NOT DUE until 2026-12-10",
+      "verified": false
+    },
+    {
+      "date": "2026-12-10",
+      "event": "US Nov CPI (08:30 ET, before the Xetra close)",
+      "signs": [
+        "rates"
+      ],
+      "escalationIf": "core CPI ≥ 0.4 % m/m",
+      "fizzleIf": "core CPI ≤ 0.2 % m/m",
+      "holds": [],
+      "secondary": false,
+      "status": "NOT DUE until 2026-12-10"
+    }
+  ],
+  "calendar": [
+    {
+      "date": "2026-11-05",
+      "sign": "private_credit",
+      "event": "Barings BDC Q3",
+      "matters": "BDC marks breadth",
+      "verified": true,
+      "verifyChecked": "2026-10-24"
+    },
+    {
+      "date": "2026-11-13",
+      "sign": "rates",
+      "event": "US Oct PPI (08:30 ET)",
+      "matters": "minor",
+      "verified": true
+    },
+    {
+      "date": "2026-11-16",
+      "sign": "private_credit",
+      "event": "BDC Q3 10-Q filing window (~11-09/16)",
+      "matters": "full schedules of investments",
+      "verified": false,
+      "verifyChecked": "2026-11-05"
+    },
+    {
+      "date": "2026-11-17",
+      "sign": "context",
+      "event": "BofA FMS Nov (~11-17)",
+      "matters": "cash vs 4.0 %",
+      "verified": false,
+      "verifyChecked": "2026-11-05"
+    },
+    {
+      "date": "2026-11-25",
+      "sign": "rates",
+      "event": "US GDP Q3 second + Oct PCE (08:30 ET)",
+      "matters": "core PCE m/m",
+      "verified": true
+    },
+    {
+      "date": "2026-11-26",
+      "event": "US Thanksgiving: NYSE closed; 11-27 half day",
+      "matters": "thin US tape",
+      "verified": true,
+      "verifyChecked": "2026-11-05"
+    },
+    {
+      "date": "2026-11-29",
+      "sign": "oil",
+      "event": "OPEC+ biannual ministerial (~11-29)",
+      "matters": "supply path",
+      "verified": false
+    },
+    {
+      "date": "2026-12-10",
+      "sign": "tech_lead",
+      "event": "Broadcom FQ4 + Oracle FQ2 (~12-10, after the close)",
+      "matters": "AI-credit read",
+      "verified": false
+    },
+    {
+      "date": "2026-12-11",
+      "sign": "rates",
+      "event": "US continuing resolution expires (shutdown 00:01 12-12)",
+      "matters": "data blackout, fiscal shock",
+      "verified": true
+    },
+    {
+      "date": "2026-12-11",
+      "sign": "contagion",
+      "event": "Moody's France next review",
+      "matters": "Aa3 negative outlook",
+      "verified": false
+    },
+    {
+      "date": "2026-12-23",
+      "sign": "rates",
+      "event": "US GDP Q3 third + Nov PCE (08:30 ET)",
+      "matters": "core PCE m/m",
+      "verified": true
+    },
+    {
+      "date": "2026-12-31",
+      "sign": "contagion",
+      "event": "France: 2027 budget adoption deadline (ordinance route after 70 days)",
+      "matters": "budget by ordinance",
+      "verified": false
+    },
+    {
+      "matters": "another listed-BDC non-accrual print",
+      "verified": true,
+      "date": "2026-11-05",
+      "event": "Barings BDC Q3 (after the close)",
+      "sign": "private_credit",
+      "verifyChecked": "2026-10-28"
+    },
+    {
+      "matters": "budget adoption; a rejection reopens 49.3 or the ordinance route",
+      "verified": true,
+      "event": "France: Assembly vote on the whole 2027 budget",
+      "date": "2026-11-17",
+      "sign": "contagion",
+      "verifyChecked": "2026-11-05"
+    },
+    {
+      "matters": "non-accruals and NAV q/q",
+      "verified": false,
+      "event": "Barings BDC Q3 results",
+      "date": "2026-11-05",
+      "sign": "private_credit",
+      "dateNote": "after the close; call 11-06 08:30 ET",
+      "verifyChecked": "2026-11-05"
+    }
+  ],
+  "runs": [
+    {
+      "date": "2026-11-05",
+      "t1": "2/4 ✗",
+      "t2": "2/4 ✗",
+      "t3": "1/4 ✗",
+      "live": "✗✗✗ prov.",
+      "watch": "CALM"
+    },
+    {
+      "date": "2026-10-28",
+      "t1": "2/3 ✗",
+      "t2": "1/2 ✗",
+      "t3": "2/3 ✗",
+      "live": "✗✗✗ prov.",
+      "watch": "CALM"
+    },
+    {
+      "date": "2026-10-26",
+      "t1": "2/3 ✗",
+      "t2": "1/2 ✗",
+      "t3": "2/3 ✗",
+      "live": "✗✗✗",
+      "watch": "CALM"
+    },
+    {
+      "date": "2026-10-24",
+      "t1": "2/3 ✗",
+      "t2": "1/2 ✗",
+      "t3": "2/3 ✗",
+      "live": "✗✗✗",
+      "watch": "CALM"
+    }
+  ],
+  "situation": {
+    "lean": "CALM: a shallow drawdown opened on 10-30, but the measured danger rows stay near their lows and the latest prints mostly cleared — the Fed held without guiding to a hike, Apple guided above expectations and the midterms gave a clean result the market rallied on. Credit is still the one grind and the AI-funding read has turned bear, so the tranches stay parked rather than bought back.",
+    "slow": "Junk spreads widened back toward their episode high after a brief late-October dip, the weakest tier sits far above its calm line and better-quality junk is back over its own. Private credit is soft only at the edges — Blue Owl's listed BDC took a marginal rise in bad loans with its book value up, and its non-traded funds again rationed redemptions — with Barings tonight and the BDC filings mid-month to come.",
+    "fast": "The gap risk now sits with the December Fed meeting, where futures price a hike as likely, and with NVDA's results on 11-17 into a tape that just gave Alphabet its worst day on record despite higher spending. Payrolls on 11-06 and October CPI on 11-10 can move the hike odds within a day.",
+    "decides": "Payrolls on 11-06 and CPI on 11-10 move the Fed-path lean — a strong print firms the December hike, a soft one cools it — and NVDA on 11-17 moves the fast slot through the AI-spend read. The French Assembly's first-reading deadline on the whole budget on 11-17, the S&P France review on 11-27 and the 12-09 FOMC with new dots are the next contagion and rates tests, the last two holding T2 and T3.",
+    "flips": "HY at or over its correction line together with SPX closing below its 200-day on 3 closes moves the watch to a correction grade; a December hike with higher 2027 dots, BB through 2.5 %, a BDC forced sale or a France downgrade adds to it. HY retracing toward its September lows with earnings estimates still rising keeps it calm."
+  },
+  "verdict": {
+    "legs": [
+      {
+        "key": "t1-price",
+        "tranche": "T1",
+        "leg": "price SXR8 €",
+        "rule": "no new low since the drawdown opened ×5",
+        "gate": false,
+        "tag": {
+          "indicator": "SXR8",
+          "series": [
+            "LEGP_SPX"
+          ],
+          "job": "recovery",
+          "agg": "kOfN"
+        },
+        "value": "no low —/— (10-30)",
+        "verdict": "unmet",
+        "count": {
+          "got": 0,
+          "need": 5
+        },
+        "live": {
+          "value": "no low —/— (11-03) @11-04 est.",
+          "verdict": "unmet",
+          "count": {
+            "got": 1,
+            "need": 5
+          }
+        }
+      },
+      {
+        "key": "t1-vol",
+        "tranche": "T1",
+        "leg": "vol VIX/VIX3M · SXR8",
+        "rule": "VIX/VIX3M < 1 ×3",
+        "gate": false,
+        "tag": {
+          "indicator": "VIX/VIX3M",
+          "series": [
+            "VT"
+          ],
+          "job": "level",
+          "agg": "kOfN"
+        },
+        "value": "0.88<1",
+        "verdict": "met",
+        "count": {
+          "got": 3,
+          "need": 3
+        },
+        "live": {
+          "value": "0.88<1 @11-04",
+          "verdict": "met",
+          "count": {
+            "got": 3,
+            "need": 3
+          }
+        }
+      },
+      {
+        "key": "t1-credit",
+        "tranche": "T1",
+        "leg": "gate: credit HY OAS",
+        "rule": "HY ≤ peak − ⅓·(peak − base), base = median of the 20 closes before its shock",
+        "gate": true,
+        "tag": {
+          "indicator": "HY OAS",
+          "series": [
+            "F1"
+          ],
+          "job": "recovery",
+          "agg": "allOf"
+        },
+        "value": "—/3.20 (peak — 10-30 base —)",
+        "verdict": "unmet",
+        "live": {
+          "value": "—/3.20 (peak — 10-30 base —) @11-04 est.",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t1-rates",
+        "tranche": "T1",
+        "leg": "rates 10y RY · US 10y",
+        "rule": "10y RY Δ63 ≤ +25bp ×5",
+        "gate": false,
+        "tag": {
+          "indicator": "10y RY",
+          "series": [
+            "R4"
+          ],
+          "job": "speed",
+          "agg": "kOfN",
+          "variant": "absΔ63"
+        },
+        "value": "Δ63 0.25≤0.25",
+        "verdict": "unmet",
+        "count": {
+          "got": 4,
+          "need": 5
+        },
+        "live": {
+          "value": "Δ63 0.23≤0.25 @11-04 est.",
+          "verdict": "met",
+          "count": {
+            "got": 5,
+            "need": 5
+          }
+        }
+      },
+      {
+        "key": "t1-breadth",
+        "tranche": "T1",
+        "leg": "breadth Global breadth",
+        "rule": "not (GB < 3/7 and Δ20 ≤ 0)",
+        "gate": false,
+        "tag": {
+          "indicator": "Global breadth",
+          "series": [
+            "GB"
+          ],
+          "job": "composite",
+          "agg": "kOfN"
+        },
+        "value": "GB 0.857≥0.429 · Δ20 +0.143",
+        "verdict": "met",
+        "live": {
+          "value": "GB 0.857≥0.429 · Δ20 +0.143 @11-04",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t1-g2",
+        "tranche": "T1",
+        "leg": "gate: SXR8 not under a falling MA200",
+        "rule": "not (< MA200 and MA200 < its level 10 closes back)",
+        "gate": true,
+        "tag": {
+          "indicator": "SXR8",
+          "series": [
+            "LEGP_SPX"
+          ],
+          "job": "regime",
+          "agg": "allOf"
+        },
+        "value": "— ≥ MA200 — · MA ≥ — (10 back)",
+        "verdict": "met",
+        "live": {
+          "value": "— ≥ MA200 — · MA ≥ — (10 back) @11-04 est.",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t1-c1",
+        "tranche": "T1",
+        "leg": "gate: HY OAS no new high",
+        "rule": "no new 20-close HY high ×5",
+        "gate": true,
+        "tag": {
+          "indicator": "HY OAS",
+          "series": [
+            "F1"
+          ],
+          "job": "recovery",
+          "agg": "allOf"
+        },
+        "value": "HY — no new 20-close high",
+        "verdict": "unmet",
+        "count": {
+          "got": 2,
+          "need": 5
+        },
+        "live": {
+          "value": "HY — no new 20-close high @11-04 est.",
+          "verdict": "unmet",
+          "count": {
+            "got": 3,
+            "need": 5
+          }
+        }
+      },
+      {
+        "key": "t1-c2",
+        "tranche": "T1",
+        "leg": "gate: no rates + credit spike",
+        "rule": "not (10y RY Δ63 > +50bp and HY Δ63 > +30bp)",
+        "gate": true,
+        "tag": {
+          "indicator": "10y RY · HY OAS",
+          "series": [
+            "R4",
+            "F1"
+          ],
+          "job": "speed",
+          "agg": "allOf"
+        },
+        "value": "RY Δ63 0.25/0.50 · HY Δ63 —/0.30",
+        "verdict": "met",
+        "live": {
+          "value": "RY Δ63 0.23/0.50 · HY Δ63 —/0.30 @11-04 est.",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t1-c3",
+        "tranche": "T1",
+        "leg": "gate: NFCI risk not tight and rising",
+        "rule": "not (NFCI risk > 0 and Δ91d > -0.3)",
+        "gate": true,
+        "tag": {
+          "indicator": "NFCI Risk",
+          "series": [
+            "F3"
+          ],
+          "job": "level",
+          "agg": "allOf"
+        },
+        "value": "NFCI -0.526/0.000 · Δ91d 0.088/-0.300",
+        "verdict": "met",
+        "live": {
+          "value": "NFCI -0.526/0.000 · Δ91d 0.088/-0.300 @10-30",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t1-veto",
+        "tranche": "T1",
+        "leg": "veto: no SXR8 crash day",
+        "rule": "SXR8 ≥ −3σ ×5",
+        "gate": true,
+        "tag": {
+          "indicator": "SXR8",
+          "series": [
+            "LEGP_SPX"
+          ],
+          "job": "speed",
+          "agg": "allOf",
+          "variant": "σret"
+        },
+        "value": "-0.7%/-1.6%",
+        "verdict": "met",
+        "count": {
+          "got": 5,
+          "need": 5
+        },
+        "live": {
+          "value": "1.1%/-1.6% @11-04 est.",
+          "verdict": "met",
+          "count": {
+            "got": 5,
+            "need": 5
+          }
+        }
+      },
+      {
+        "key": "t1-esc",
+        "tranche": "T1",
+        "leg": "gate: escalation box",
+        "rule": "holds on ≥ 1 coincident + ≥ 1 lead cluster vote, or a veto-row block · T2·T3: live ≥ ⌈0.7·n⌉",
+        "gate": true,
+        "tag": {
+          "indicator": "escalation box",
+          "series": [
+            "R4",
+            "F1",
+            "VT",
+            "F2",
+            "F5"
+          ],
+          "job": "composite",
+          "agg": "allOf"
+        },
+        "value": "votes credit · veto private_credit · live 4/4 need 3",
+        "verdict": "unmet",
+        "live": {
+          "value": "votes credit · veto private_credit · live 4/4 need 3 @11-03 est.",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t2-price",
+        "tranche": "T2",
+        "leg": "price SXR8 €",
+        "rule": "no new low since the drawdown opened ×20 · > MA50, MA50 rising",
+        "gate": false,
+        "tag": {
+          "indicator": "SXR8",
+          "series": [
+            "LEGP_SPX"
+          ],
+          "job": "composite",
+          "agg": "kOfN"
+        },
+        "value": "no low —/— (10-30)✗ · >MA50 —✗ · MA50 Δ10 4.907>0✓",
+        "verdict": "unmet",
+        "count": {
+          "got": 0,
+          "need": 20
+        },
+        "live": {
+          "value": "no low —/— (11-03)✗ · >MA50 —✓ · MA50 Δ10 5.037>0✓ @11-04 est.",
+          "verdict": "unmet",
+          "count": {
+            "got": 1,
+            "need": 20
+          }
+        }
+      },
+      {
+        "key": "t2-vol",
+        "tranche": "T2",
+        "leg": "vol VIX/VIX3M · SXR8",
+        "rule": "no new low since the drawdown opened ×15 · VIX/VIX3M < 0.9",
+        "gate": false,
+        "tag": {
+          "indicator": "VIX/VIX3M · SXR8",
+          "series": [
+            "LEGP_SPX",
+            "VT"
+          ],
+          "job": "composite",
+          "agg": "kOfN"
+        },
+        "value": "no low 730.28/734.62 (10-30)✗ · VT 0.88<0.9✓",
+        "verdict": "unmet",
+        "count": {
+          "got": 0,
+          "need": 15
+        },
+        "live": {
+          "value": "no low 738.44/730.28 (11-03)✗ · VT 0.88<0.9✓ @11-04 est.",
+          "verdict": "unmet",
+          "count": {
+            "got": 1,
+            "need": 15
+          }
+        }
+      },
+      {
+        "key": "t2-credit",
+        "tranche": "T2",
+        "leg": "gate: credit HY OAS · CCC OAS",
+        "rule": "HY ≤ peak − ½·(peak − base), base = median of the 20 closes before its shock · peak ≥ 10 closes old · CCC the same at ½ (n/a passes)",
+        "gate": true,
+        "tag": {
+          "indicator": "HY OAS · CCC OAS",
+          "series": [
+            "F1",
+            "CCC"
+          ],
+          "job": "recovery",
+          "agg": "allOf"
+        },
+        "value": "HY —/3.08 (peak — 10-30 base —) · 2/10 closes · CCC —/11.38 (peak — 10-23 base —)",
+        "verdict": "unmet",
+        "live": {
+          "value": "HY —/3.08 (peak — 10-30 base —) · 3/10 closes · CCC —/11.38 (peak — 10-23 base —) @11-04 est.",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t2-rates",
+        "tranche": "T2",
+        "leg": "rates 10y RY · US 10y",
+        "rule": "10y z(Δ20) < 1 ×5",
+        "gate": false,
+        "tag": {
+          "indicator": "US 10y",
+          "series": [
+            "R2"
+          ],
+          "job": "speed",
+          "agg": "kOfN"
+        },
+        "value": "z -2.19<1",
+        "verdict": "met",
+        "count": {
+          "got": 5,
+          "need": 5
+        },
+        "live": {
+          "value": "z -2.41<1",
+          "verdict": "met",
+          "count": {
+            "got": 5,
+            "need": 5
+          }
+        }
+      },
+      {
+        "key": "t2-breadth",
+        "tranche": "T2",
+        "leg": "breadth Global breadth",
+        "rule": "not (GB < 3/7 and Δ20 ≤ 0)",
+        "gate": false,
+        "tag": {
+          "indicator": "Global breadth",
+          "series": [
+            "GB"
+          ],
+          "job": "composite",
+          "agg": "kOfN"
+        },
+        "value": "GB 0.857≥0.429 · Δ20 +0.143",
+        "verdict": "met",
+        "live": {
+          "value": "GB 0.857≥0.429 · Δ20 +0.143 @11-04",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t2-g2",
+        "tranche": "T2",
+        "leg": "gate: SXR8 not under a falling MA200",
+        "rule": "not (< MA200 and MA200 < its level 10 closes back)",
+        "gate": true,
+        "tag": {
+          "indicator": "SXR8",
+          "series": [
+            "LEGP_SPX"
+          ],
+          "job": "regime",
+          "agg": "allOf"
+        },
+        "value": "— ≥ MA200 — · MA ≥ — (10 back)",
+        "verdict": "met",
+        "live": {
+          "value": "— ≥ MA200 — · MA ≥ — (10 back) @11-04 est.",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t2-c1",
+        "tranche": "T2",
+        "leg": "gate: HY OAS no new high",
+        "rule": "no new 20-close HY high ×10",
+        "gate": true,
+        "tag": {
+          "indicator": "HY OAS",
+          "series": [
+            "F1"
+          ],
+          "job": "recovery",
+          "agg": "allOf"
+        },
+        "value": "HY — no new 20-close high",
+        "verdict": "unmet",
+        "count": {
+          "got": 2,
+          "need": 10
+        },
+        "live": {
+          "value": "HY — no new 20-close high @11-04 est.",
+          "verdict": "unmet",
+          "count": {
+            "got": 3,
+            "need": 10
+          }
+        }
+      },
+      {
+        "key": "t2-c2",
+        "tranche": "T2",
+        "leg": "gate: no rates + credit spike",
+        "rule": "not (10y RY Δ63 > +50bp and HY Δ63 > +30bp)",
+        "gate": true,
+        "tag": {
+          "indicator": "10y RY · HY OAS",
+          "series": [
+            "R4",
+            "F1"
+          ],
+          "job": "speed",
+          "agg": "allOf"
+        },
+        "value": "RY Δ63 0.25/0.50 · HY Δ63 —/0.30",
+        "verdict": "met",
+        "live": {
+          "value": "RY Δ63 0.23/0.50 · HY Δ63 —/0.30 @11-04 est.",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t2-c3",
+        "tranche": "T2",
+        "leg": "gate: NFCI risk not tight and rising",
+        "rule": "not (NFCI risk > 0 and Δ91d > -0.3)",
+        "gate": true,
+        "tag": {
+          "indicator": "NFCI Risk",
+          "series": [
+            "F3"
+          ],
+          "job": "level",
+          "agg": "allOf"
+        },
+        "value": "NFCI -0.526/0.000 · Δ91d 0.088/-0.300",
+        "verdict": "met",
+        "live": {
+          "value": "NFCI -0.526/0.000 · Δ91d 0.088/-0.300 @10-30",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t2-c4",
+        "tranche": "T2",
+        "leg": "gate: MOVE under its median band",
+        "rule": "MOVE < 1.3× its 250-close median",
+        "gate": true,
+        "tag": {
+          "indicator": "MOVE",
+          "series": [
+            "R6"
+          ],
+          "job": "level",
+          "agg": "allOf"
+        },
+        "value": "MOVE —/95.2",
+        "verdict": "met",
+        "live": {
+          "value": "MOVE —/95.2 @11-04",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t2-veto",
+        "tranche": "T2",
+        "leg": "veto: no SXR8 crash day",
+        "rule": "SXR8 ≥ −3σ ×5",
+        "gate": true,
+        "tag": {
+          "indicator": "SXR8",
+          "series": [
+            "LEGP_SPX"
+          ],
+          "job": "speed",
+          "agg": "allOf",
+          "variant": "σret"
+        },
+        "value": "-0.7%/-1.6%",
+        "verdict": "met",
+        "count": {
+          "got": 5,
+          "need": 5
+        },
+        "live": {
+          "value": "1.1%/-1.6% @11-04 est.",
+          "verdict": "met",
+          "count": {
+            "got": 5,
+            "need": 5
+          }
+        }
+      },
+      {
+        "key": "t2-esc",
+        "tranche": "T2",
+        "leg": "gate: escalation box",
+        "rule": "holds on ≥ 1 coincident + ≥ 1 lead cluster vote, or a veto-row block · T2·T3: live ≥ ⌈0.7·n⌉",
+        "gate": true,
+        "tag": {
+          "indicator": "escalation box",
+          "series": [
+            "R4",
+            "F1",
+            "VT",
+            "F2",
+            "F5"
+          ],
+          "job": "composite",
+          "agg": "allOf"
+        },
+        "value": "votes credit · veto private_credit · live 4/4 need 3",
+        "verdict": "unmet",
+        "live": {
+          "value": "votes credit · veto private_credit · live 4/4 need 3 @11-03 est.",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t3-price",
+        "tranche": "T3",
+        "leg": "price SXR8 €",
+        "rule": "> MA50 rising · > MA200, MA200 rising",
+        "gate": false,
+        "tag": {
+          "indicator": "SXR8",
+          "series": [
+            "LEGP_SPX"
+          ],
+          "job": "regime",
+          "agg": "kOfN"
+        },
+        "value": "—>MA50 —✗ · MA50 Δ10 4.907>0✓ · >MA200 —✓ · MA200 Δ10 5.201>0✓",
+        "verdict": "unmet",
+        "live": {
+          "value": "—>MA50 —✓ · MA50 Δ10 5.037>0✓ · >MA200 —✓ · MA200 Δ10 5.189>0✓ @11-04 est.",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t3-vol",
+        "tranche": "T3",
+        "leg": "vol VIX/VIX3M · SXR8",
+        "rule": "no new low since the drawdown opened ×20 · VIX/VIX3M < 0.9 ×10",
+        "gate": false,
+        "tag": {
+          "indicator": "VIX/VIX3M · SXR8",
+          "series": [
+            "LEGP_SPX",
+            "VT"
+          ],
+          "job": "composite",
+          "agg": "kOfN"
+        },
+        "value": "no low 730.28/734.62 (10-30) 0/20✗ · VT 0.88<0.9 1/10✗",
+        "verdict": "unmet",
+        "live": {
+          "value": "no low 738.44/730.28 (11-03) 1/20✗ · VT 0.88<0.9 1/10✗ @11-04 est.",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t3-credit",
+        "tranche": "T3",
+        "leg": "gate: credit HY OAS",
+        "rule": "HY ≤ peak − ⅔·(peak − base), base = median of the 20 closes before its shock",
+        "gate": true,
+        "tag": {
+          "indicator": "HY OAS",
+          "series": [
+            "F1"
+          ],
+          "job": "recovery",
+          "agg": "allOf"
+        },
+        "value": "—/2.95 (peak — 10-30 base —)",
+        "verdict": "unmet",
+        "live": {
+          "value": "—/2.95 (peak — 10-30 base —) @11-04 est.",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t3-rates",
+        "tranche": "T3",
+        "leg": "rates 10y RY · US 10y",
+        "rule": "10y z(Δ20) < 1 ×5 · 10y RY Δ63 ≤ +25bp ×5",
+        "gate": false,
+        "tag": {
+          "indicator": "10y RY · US 10y",
+          "series": [
+            "R2",
+            "R4"
+          ],
+          "job": "speed",
+          "agg": "kOfN"
+        },
+        "value": "10y z -2.19<1 5/5✓ · 10y RY Δ63 0.25≤0.25 4/5✗",
+        "verdict": "unmet",
+        "live": {
+          "value": "10y z -2.41<1 5/5✓ · 10y RY Δ63 0.23≤0.25 5/5✓ @11-04 est.",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t3-breadth",
+        "tranche": "T3",
+        "leg": "breadth Global breadth",
+        "rule": "GB ≥ 3/7",
+        "gate": false,
+        "tag": {
+          "indicator": "Global breadth",
+          "series": [
+            "GB"
+          ],
+          "job": "level",
+          "agg": "kOfN"
+        },
+        "value": "GB 0.857≥0.429",
+        "verdict": "met",
+        "live": {
+          "value": "GB 0.857≥0.429 @11-04",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t3-g2",
+        "tranche": "T3",
+        "leg": "gate: SXR8 not under a falling MA200",
+        "rule": "not (< MA200 and MA200 < its level 10 closes back)",
+        "gate": true,
+        "tag": {
+          "indicator": "SXR8",
+          "series": [
+            "LEGP_SPX"
+          ],
+          "job": "regime",
+          "agg": "allOf"
+        },
+        "value": "— ≥ MA200 — · MA ≥ — (10 back)",
+        "verdict": "met",
+        "live": {
+          "value": "— ≥ MA200 — · MA ≥ — (10 back) @11-04 est.",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t3-c1",
+        "tranche": "T3",
+        "leg": "gate: HY OAS no new high",
+        "rule": "no new 20-close HY high ×10",
+        "gate": true,
+        "tag": {
+          "indicator": "HY OAS",
+          "series": [
+            "F1"
+          ],
+          "job": "recovery",
+          "agg": "allOf"
+        },
+        "value": "HY — no new 20-close high",
+        "verdict": "unmet",
+        "count": {
+          "got": 2,
+          "need": 10
+        },
+        "live": {
+          "value": "HY — no new 20-close high @11-04 est.",
+          "verdict": "unmet",
+          "count": {
+            "got": 3,
+            "need": 10
+          }
+        }
+      },
+      {
+        "key": "t3-c2",
+        "tranche": "T3",
+        "leg": "gate: no rates + credit spike",
+        "rule": "not (10y RY Δ63 > +50bp and HY Δ63 > +30bp)",
+        "gate": true,
+        "tag": {
+          "indicator": "10y RY · HY OAS",
+          "series": [
+            "R4",
+            "F1"
+          ],
+          "job": "speed",
+          "agg": "allOf"
+        },
+        "value": "RY Δ63 0.25/0.50 · HY Δ63 —/0.30",
+        "verdict": "met",
+        "live": {
+          "value": "RY Δ63 0.23/0.50 · HY Δ63 —/0.30 @11-04 est.",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t3-c3",
+        "tranche": "T3",
+        "leg": "gate: NFCI risk not tight and rising",
+        "rule": "not (NFCI risk > 0 and Δ91d > -0.3)",
+        "gate": true,
+        "tag": {
+          "indicator": "NFCI Risk",
+          "series": [
+            "F3"
+          ],
+          "job": "level",
+          "agg": "allOf"
+        },
+        "value": "NFCI -0.526/0.000 · Δ91d 0.088/-0.300",
+        "verdict": "met",
+        "live": {
+          "value": "NFCI -0.526/0.000 · Δ91d 0.088/-0.300 @10-30",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t3-c4",
+        "tranche": "T3",
+        "leg": "gate: MOVE under its median band",
+        "rule": "MOVE < 1.3× its 250-close median",
+        "gate": true,
+        "tag": {
+          "indicator": "MOVE",
+          "series": [
+            "R6"
+          ],
+          "job": "level",
+          "agg": "allOf"
+        },
+        "value": "MOVE —/95.2",
+        "verdict": "met",
+        "live": {
+          "value": "MOVE —/95.2 @11-04",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t3-veto",
+        "tranche": "T3",
+        "leg": "veto: no SXR8 crash day",
+        "rule": "SXR8 ≥ −3σ ×5",
+        "gate": true,
+        "tag": {
+          "indicator": "SXR8",
+          "series": [
+            "LEGP_SPX"
+          ],
+          "job": "speed",
+          "agg": "allOf",
+          "variant": "σret"
+        },
+        "value": "-0.7%/-1.6%",
+        "verdict": "met",
+        "count": {
+          "got": 5,
+          "need": 5
+        },
+        "live": {
+          "value": "1.1%/-1.6% @11-04 est.",
+          "verdict": "met",
+          "count": {
+            "got": 5,
+            "need": 5
+          }
+        }
+      },
+      {
+        "key": "t3-esc",
+        "tranche": "T3",
+        "leg": "gate: escalation box",
+        "rule": "holds on ≥ 1 coincident + ≥ 1 lead cluster vote, or a veto-row block · T2·T3: live ≥ ⌈0.7·n⌉",
+        "gate": true,
+        "tag": {
+          "indicator": "escalation box",
+          "series": [
+            "R4",
+            "F1",
+            "VT",
+            "F2",
+            "F5"
+          ],
+          "job": "composite",
+          "agg": "allOf"
+        },
+        "value": "votes credit · veto private_credit · live 4/4 need 3",
+        "verdict": "unmet",
+        "live": {
+          "value": "votes credit · veto private_credit · live 4/4 need 3 @11-03 est.",
+          "verdict": "unmet"
+        }
+      }
+    ],
+    "asOf": {
+      "close": "2026-11-04",
+      "live": "2026-11-05",
+      "est": false
+    },
+    "escalation": {
+      "tripped": 1,
+      "need": 2,
+      "hits": [
+        "credit"
+      ],
+      "unread": [],
+      "families": [
+        {
+          "name": "ig",
+          "rule": "IG OAS state RED",
+          "value": "IG OAS RED",
+          "verdict": "unmet",
+          "live": {
+            "value": "IG OAS RED",
+            "verdict": "unmet"
+          },
+          "signs": [
+            {
+              "sign": "ig_oas",
+              "lean": "fizzle",
+              "block": false
+            }
+          ],
+          "tag": {
+            "indicator": "IG OAS",
+            "series": [
+              "F2"
+            ],
+            "job": "level",
+            "agg": "box"
+          }
+        },
+        {
+          "name": "tech",
+          "rule": "QQQ/QQQE state AMBER or RED",
+          "value": "QQQ/QQQE GREEN",
+          "verdict": "met",
+          "live": {
+            "value": "QQQ/QQQE GREEN",
+            "verdict": "met"
+          },
+          "signs": [
+            {
+              "sign": "tech_lead",
+              "lean": "bear",
+              "block": false
+            },
+            {
+              "sign": "earnings",
+              "lean": "fizzle",
+              "block": false
+            }
+          ],
+          "tag": {
+            "indicator": "QQQ/QQQE",
+            "series": [
+              "F5"
+            ],
+            "job": "relative",
+            "agg": "box"
+          }
+        }
+      ],
+      "clusters": [
+        {
+          "name": "rates",
+          "kind": "lead",
+          "members": [
+            {
+              "id": "real_yield",
+              "cell": false,
+              "rule": "10y RY Δ120 ≥ +75bp",
+              "value": "+66bp/+75bp",
+              "tag": {
+                "indicator": "10y RY",
+                "series": [
+                  "R4"
+                ],
+                "job": "speed",
+                "agg": "box",
+                "variant": "absΔ120"
+              },
+              "signs": [
+                {
+                  "sign": "rates",
+                  "lean": "neutral",
+                  "block": false
+                }
+              ]
+            }
+          ],
+          "hits": 0,
+          "live": 1,
+          "n": 1,
+          "vote": false
+        },
+        {
+          "name": "credit",
+          "kind": "coincident",
+          "members": [
+            {
+              "id": "credit_confirms",
+              "cell": "hit",
+              "rule": "HY ≥ 1.1× its MA200",
+              "value": "HY —/3.18 (MA200 —)",
+              "tag": {
+                "indicator": "HY OAS",
+                "series": [
+                  "F1"
+                ],
+                "job": "regime",
+                "agg": "box"
+              },
+              "signs": [
+                {
+                  "sign": "hy_oas",
+                  "lean": "neutral",
+                  "block": false
+                },
+                {
+                  "sign": "ccc_bb",
+                  "lean": "neutral",
+                  "block": false
+                },
+                {
+                  "sign": "private_credit",
+                  "lean": "neutral",
+                  "block": true
+                }
+              ]
+            }
+          ],
+          "hits": 1,
+          "live": 1,
+          "n": 1,
+          "vote": true
+        },
+        {
+          "name": "vol",
+          "kind": "coincident",
+          "members": [
+            {
+              "id": "vol_flip",
+              "cell": false,
+              "rule": "VIX/VIX3M ≥ 1 ×10",
+              "value": "VT 0.88 (≥1 0/10)",
+              "tag": {
+                "indicator": "VIX/VIX3M",
+                "series": [
+                  "VT"
+                ],
+                "job": "level",
+                "agg": "box"
+              },
+              "signs": [
+                {
+                  "sign": "vix",
+                  "lean": "fizzle",
+                  "block": false
+                },
+                {
+                  "sign": "vix_term",
+                  "lean": "neutral",
+                  "block": false
+                }
+              ]
+            }
+          ],
+          "hits": 0,
+          "live": 1,
+          "n": 1,
+          "vote": false
+        }
+      ],
+      "veto": [
+        "private_credit"
+      ],
+      "quorum": {
+        "live": 3,
+        "n": 3,
+        "need": 3,
+        "t1Only": false
+      },
+      "hold": true
+    },
+    "sessionsSinceExit": 2,
+    "regime": {
+      "set": "entry"
+    },
+    "watch": {
+      "held": false,
+      "exit": "2026-10-30",
+      "rows": [
+        {
+          "key": "hy",
+          "label": "HY OAS",
+          "cluster": "credit",
+          "now": "HY — · low —",
+          "correction": {
+            "rule": "≥ 126-close low + 1",
+            "cell": false
+          },
+          "bear": {
+            "rule": "≥ 4",
+            "cell": false
+          },
+          "signs": [
+            {
+              "sign": "hy_oas",
+              "lean": "neutral",
+              "block": false
+            }
+          ],
+          "tag": {
+            "indicator": "HY OAS",
+            "series": [
+              "F1"
+            ],
+            "job": "level",
+            "agg": "box"
+          }
+        },
+        {
+          "key": "nfci",
+          "label": "NFCI risk",
+          "cluster": "conditions",
+          "now": "NFCI -0.526 · low -0.652",
+          "correction": {
+            "rule": "≥ 364-day low + 0.15",
+            "cell": false
+          },
+          "bear": {
+            "rule": "> -0.3",
+            "cell": false
+          },
+          "signs": [
+            {
+              "sign": "nfci_risk",
+              "lean": "fizzle",
+              "block": false
+            }
+          ],
+          "tag": {
+            "indicator": "NFCI Risk",
+            "series": [
+              "F3"
+            ],
+            "job": "level",
+            "agg": "box"
+          }
+        },
+        {
+          "key": "vix",
+          "label": "VIX",
+          "cluster": "vol",
+          "now": "VIX —",
+          "correction": {
+            "rule": "≥ 25 ×5",
+            "cell": false
+          },
+          "bear": {
+            "rule": "—",
+            "cell": "none"
+          },
+          "signs": [
+            {
+              "sign": "vix",
+              "lean": "fizzle",
+              "block": false
+            }
+          ],
+          "tag": {
+            "indicator": "VIX",
+            "series": [
+              "R5"
+            ],
+            "job": "level",
+            "agg": "box"
+          }
+        },
+        {
+          "key": "trend",
+          "label": "SPY trend",
+          "cluster": "trend",
+          "now": "SPY — · MA50 — · MA200 —",
+          "correction": {
+            "rule": "< MA200 ×3",
+            "cell": false
+          },
+          "bear": {
+            "rule": "MA50 < MA200 · MA200 < its level 20 back · < both",
+            "cell": false
+          },
+          "signs": [
+            {
+              "sign": "trend_200d",
+              "lean": "fizzle",
+              "block": false
+            }
+          ],
+          "tag": {
+            "indicator": "SPY",
+            "series": [
+              "SPY"
+            ],
+            "job": "regime",
+            "agg": "box"
+          }
+        },
+        {
+          "key": "claims",
+          "label": "ICSA claims",
+          "cluster": "labor",
+          "now": "4-wk 197k · low 197k",
+          "correction": {
+            "rule": "—",
+            "cell": "none"
+          },
+          "bear": {
+            "rule": "4-wk avg ≥ 1.15× its 364-day low",
+            "cell": false
+          },
+          "signs": [
+            {
+              "sign": "claims",
+              "lean": "fizzle",
+              "block": false
+            }
+          ],
+          "tag": {
+            "indicator": "ICSA claims",
+            "series": [
+              "ICSA"
+            ],
+            "job": "level",
+            "agg": "box"
+          }
+        },
+        {
+          "key": "breadth",
+          "label": "breadth",
+          "cluster": "breadth",
+          "now": "—",
+          "correction": {
+            "rule": "manual",
+            "cell": "na"
+          },
+          "bear": {
+            "rule": "manual",
+            "cell": "na"
+          },
+          "manual": true,
+          "signs": [
+            {
+              "sign": "breadth",
+              "lean": "neutral",
+              "block": false
+            }
+          ],
+          "tag": {
+            "indicator": "breadth",
+            "series": [],
+            "job": "manual",
+            "agg": "box"
+          }
+        },
+        {
+          "key": "bb",
+          "label": "CCC−BB",
+          "cluster": "credit",
+          "now": "—",
+          "correction": {
+            "rule": "manual",
+            "cell": "na"
+          },
+          "bear": {
+            "rule": "manual",
+            "cell": "na"
+          },
+          "manual": true,
+          "signs": [
+            {
+              "sign": "ccc_bb",
+              "lean": "neutral",
+              "block": false
+            }
+          ],
+          "tag": {
+            "indicator": "CCC−BB",
+            "series": [],
+            "job": "manual",
+            "agg": "box"
+          }
+        },
+        {
+          "key": "earnings",
+          "label": "earnings",
+          "cluster": "earnings",
+          "now": "—",
+          "correction": {
+            "rule": "manual",
+            "cell": "na"
+          },
+          "bear": {
+            "rule": "manual",
+            "cell": "na"
+          },
+          "manual": true,
+          "signs": [
+            {
+              "sign": "earnings",
+              "lean": "fizzle",
+              "block": false
+            }
+          ],
+          "tag": {
+            "indicator": "earnings",
+            "series": [],
+            "job": "manual",
+            "agg": "box"
+          }
+        },
+        {
+          "key": "private_credit",
+          "label": "private credit",
+          "cluster": "credit",
+          "now": "—",
+          "correction": {
+            "rule": "manual",
+            "cell": "na"
+          },
+          "bear": {
+            "rule": "manual",
+            "cell": "na"
+          },
+          "manual": true,
+          "signs": [
+            {
+              "sign": "private_credit",
+              "lean": "neutral",
+              "block": true
+            }
+          ],
+          "tag": {
+            "indicator": "private credit",
+            "series": [],
+            "job": "manual",
+            "agg": "box"
+          }
+        },
+        {
+          "key": "rates",
+          "label": "rates / Fed path",
+          "cluster": "rates",
+          "now": "—",
+          "correction": {
+            "rule": "manual",
+            "cell": "na"
+          },
+          "bear": {
+            "rule": "manual",
+            "cell": "na"
+          },
+          "manual": true,
+          "signs": [
+            {
+              "sign": "rates",
+              "lean": "neutral",
+              "block": false
+            }
+          ],
+          "tag": {
+            "indicator": "rates / Fed path",
+            "series": [],
+            "job": "manual",
+            "agg": "box"
+          }
+        }
+      ],
+      "grade": "CALM",
+      "correction": {
+        "clusters": [
+          {
+            "name": "credit",
+            "kind": "coincident",
+            "members": [
+              {
+                "id": "hy",
+                "cell": false
+              }
+            ],
+            "hits": 0,
+            "live": 1,
+            "n": 1,
+            "vote": false
+          },
+          {
+            "name": "vol",
+            "kind": "coincident",
+            "members": [
+              {
+                "id": "vix",
+                "cell": false
+              }
+            ],
+            "hits": 0,
+            "live": 1,
+            "n": 1,
+            "vote": false
+          },
+          {
+            "name": "trend",
+            "kind": "coincident",
+            "members": [
+              {
+                "id": "trend",
+                "cell": false
+              }
+            ],
+            "hits": 0,
+            "live": 1,
+            "n": 1,
+            "vote": false
+          },
+          {
+            "name": "conditions",
+            "kind": "lead",
+            "members": [
+              {
+                "id": "nfci",
+                "cell": false
+              }
+            ],
+            "hits": 0,
+            "live": 1,
+            "n": 1,
+            "vote": false
+          },
+          {
+            "name": "labor",
+            "kind": "lead",
+            "members": [
+              {
+                "id": "claims",
+                "cell": "none"
+              }
+            ],
+            "hits": 0,
+            "live": 0,
+            "n": 0,
+            "vote": false
+          }
+        ],
+        "votes": [],
+        "hold": false,
+        "veto": [],
+        "live": 4,
+        "n": 4,
+        "quorum": 3,
+        "t1Only": false
+      },
+      "bear": {
+        "clusters": [
+          {
+            "name": "credit",
+            "kind": "coincident",
+            "members": [
+              {
+                "id": "hy",
+                "cell": false
+              }
+            ],
+            "hits": 0,
+            "live": 1,
+            "n": 1,
+            "vote": false
+          },
+          {
+            "name": "vol",
+            "kind": "coincident",
+            "members": [
+              {
+                "id": "vix",
+                "cell": "none"
+              }
+            ],
+            "hits": 0,
+            "live": 0,
+            "n": 0,
+            "vote": false
+          },
+          {
+            "name": "trend",
+            "kind": "coincident",
+            "members": [
+              {
+                "id": "trend",
+                "cell": false
+              }
+            ],
+            "hits": 0,
+            "live": 1,
+            "n": 1,
+            "vote": false
+          },
+          {
+            "name": "conditions",
+            "kind": "lead",
+            "members": [
+              {
+                "id": "nfci",
+                "cell": false
+              }
+            ],
+            "hits": 0,
+            "live": 1,
+            "n": 1,
+            "vote": false
+          },
+          {
+            "name": "labor",
+            "kind": "lead",
+            "members": [
+              {
+                "id": "claims",
+                "cell": false
+              }
+            ],
+            "hits": 0,
+            "live": 1,
+            "n": 1,
+            "vote": false
+          }
+        ],
+        "votes": [],
+        "hold": false,
+        "veto": [],
+        "live": 4,
+        "n": 4,
+        "quorum": 3,
+        "t1Only": false
+      }
+    },
+    "tranches": [
+      {
+        "id": "T1",
+        "met": 2,
+        "total": 4,
+        "need": 1,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "unmet",
+          "met",
+          "unmet",
+          "met",
+          "met",
+          "met",
+          "unmet"
+        ],
+        "filledSince": null
+      },
+      {
+        "id": "T2",
+        "met": 2,
+        "total": 4,
+        "need": 2,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "unmet",
+          "met",
+          "unmet",
+          "met",
+          "met",
+          "met",
+          "met",
+          "unmet"
+        ],
+        "filledSince": null
+      },
+      {
+        "id": "T3",
+        "met": 1,
+        "total": 4,
+        "need": 3,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "unmet",
+          "met",
+          "unmet",
+          "met",
+          "met",
+          "met",
+          "met",
+          "unmet"
+        ],
+        "filledSince": null
+      }
+    ],
+    "live": [
+      {
+        "id": "T1",
+        "met": 3,
+        "total": 4,
+        "need": 1,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "unmet",
+          "met",
+          "unmet",
+          "met",
+          "met",
+          "met",
+          "unmet"
+        ],
+        "filledSince": null
+      },
+      {
+        "id": "T2",
+        "met": 2,
+        "total": 4,
+        "need": 2,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "unmet",
+          "met",
+          "unmet",
+          "met",
+          "met",
+          "met",
+          "met",
+          "unmet"
+        ],
+        "filledSince": null
+      },
+      {
+        "id": "T3",
+        "met": 3,
+        "total": 4,
+        "need": 3,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "unmet",
+          "met",
+          "unmet",
+          "met",
+          "met",
+          "met",
+          "met",
+          "unmet"
+        ],
+        "filledSince": null
+      }
+    ],
+    "prov": true
+  },
+  "runAt": "2026-11-05T09:45:20.140Z",
+  "scannedOn": "2026-11-05",
+  "eventsDone": [
+    {
+      "date": "2026-10-27",
+      "event": "Ares Capital Q3 (pre-open, before the Xetra close)",
+      "signs": [
+        "private_credit"
+      ],
+      "holds": [],
+      "secondary": false,
+      "status": "fizzle: non-accruals 2.4 % at cost, unchanged from Q2, NAV/share $19.31 vs $19.35 at 06-30, 10-27 · called: private_credit=unknown (single-source)",
+      "sources": [
+        {
+          "date": "2026-10-27",
+          "url": "https://www.sec.gov/Archives/edgar/data/0001287750/000162828026067382/arccq3-2026exhibit991.htm"
+        },
+        {
+          "date": "2026-10-27",
+          "url": "https://www.sec.gov/Archives/edgar/data/0001287750/000162828026067383/arcc-20260930.htm"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-28",
+      "event": "FOMC (10-27/28, no SEP; decision 14:00 ET, after the Xetra close)",
+      "signs": [
+        "rates"
+      ],
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "fizzle: hold at 3.75–4.00 %, vote 10–2 with Cook and Hammack dissenting for +25 bp; the statement upgrades activity to strong and keeps inflation elevated but gives no December guidance, 10-28 · called: rates=neutral",
+      "sources": [
+        {
+          "date": "2026-10-28",
+          "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://investinglive.com/central-banks/fomc-decision-oct-28/"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-02",
+      "event": "Apple FQ4-26 (17:00 ET, after the close)",
+      "signs": [
+        "tech_lead",
+        "earnings"
+      ],
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "fizzle: December-quarter revenue guided +7 % to +10 % y/y above the LSEG 6.1 % estimate, FQ4 revenue $114.5 B +12 %; gross-margin guide below estimate, stock −3 % after hours, 11-02 · called: tech_lead=neutral, earnings=fizzle",
+      "sources": [
+        {
+          "date": "2026-11-02",
+          "url": "https://www.cnbc.com/2026/11/02/apple-aapl-q4-2026-earnings-live-updates.html"
+        },
+        {
+          "date": "2026-11-02",
+          "url": "https://www.sec.gov/Archives/edgar/data/0000320193/000032019326000024/a8-kex991q4202609262026.htm"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-03",
+      "event": "US midterms + JOLTS Sep (10:00 ET)",
+      "signs": [
+        "rates"
+      ],
+      "holds": [],
+      "secondary": false,
+      "status": "fizzle: Democrats won the House and Senate on network calls with Trump saying he would accept the results; the S&P 500 rose 1.58 % and the 10y eased to 4.93 % on 11-04; September JOLTS openings 7.5 M, 11-04 · called: rates=neutral",
+      "sources": [
+        {
+          "date": "2026-11-04",
+          "url": "https://www.cnbc.com/2026/11/03/stock-market-today-live-updates.html"
+        },
+        {
+          "date": "2026-11-03",
+          "url": "https://www.bls.gov/news.release/jolts.nr0.htm"
+        }
+      ]
+    }
+  ]
+}

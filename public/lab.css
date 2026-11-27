@@ -1,0 +1,3017 @@
+/* /lab-scoped sheet: the iter-4 "instrument bench" layout.
+   Externalized from lab.html's
+   inline <style> so the CSP can drop style-src 'unsafe-inline' (rung 5). Loaded ONLY
+   by lab.html, immediately after styles.css, so the cascade order is unchanged.
+   Colour: the R/A/G band is REMAPPED onto the shared styles.css --state-* vars; the
+   indigo app accent (--accent set here, /lab-only) stays deliberately OFF that
+   semantic band. */
+      /* ----------------------------------------------------------- TOKENS
+         Neutrals (--bg/--surface/--ink/--line) inherit the dark styles.css :root.
+         We only ADD the bench-extra tokens + remap the band bases to --state-*.
+         These live on :root but only load on /lab (inline), so the dashboard is
+         untouched. */
+      :root {
+        --panel: #191a24;
+        --panel-2: #1f2030;
+        --ink-soft: #c7c8dc;
+        --muted: #9a9cb6;
+        --faint: #6f7189;
+        --line-soft: #20212e;
+        /* app accent — indigo, deliberately OUTSIDE the red/amber/green band */
+        --accent: #8983f0;
+        --accent-ink: #a7a2f7;
+        --accent-wash: #211f3a;
+        /* T1 dial's own colour — cyan, distinct from the indigo flat-engine accent
+           AND the red/amber/green state band, so the ◆-flat vs ●-T1 divergence reads
+           at a glance. Its band-wash shades the dial's leading-selected zone. */
+        --t1: #4fd1e0;
+        --t1-ink: #7ee0ec;
+        --t1-wash: #142d34;
+        /* board semantics — REMAPPED onto the shared state ramp (data language) */
+        --calm: var(--state-green);
+        --calm-wash: #16281e;
+        --calm-line: #2b4536;
+        --elev: var(--state-amber);
+        --elev-wash: #2c2413;
+        --elev-line: #4a3c1c;
+        --danger: var(--state-red);
+        --danger-wash: #2e1817;
+        --danger-line: #4d2a27;
+        --stub: #71738c;
+        --stub-wash: #1c1d28;
+        /* FEED-LAG DIAGNOSTICS ink — a two-step NEUTRAL ramp for the right-edge `Lag` gutter.
+           Deliberately NOT aliases of --state-red/--danger (or any band token): a publisher pause
+           is a diagnostic about our sight of a feed, never an operational reading, so it must not
+           borrow the ink an F1 RED firing uses. The two steps separate by LUMINANCE on the dark
+           ground (~3:1 vs ~7:1) so they stay apart at the 0.5-0.8rem sizes the marks render at,
+           while both stay off the red/amber/green + indigo/cyan signal palette. */
+        --lag-diag: #6b6d85;
+        --lag-diag-hi: #b3b5cf;
+        /* FEED-LAG PANEL status hues (feed-lag-panel.js `fl-st-*`) — ruled 2026-09-11: distinct
+           diagnostic hues for the roster's at-a-glance read, still OFF the red/amber/green band so a
+           stale feed never reads as a market alarm. Steel blue (lag) sits below the --t1 cyan and the
+           --accent indigo in saturation; magenta (deep lag) is the one hue no signal token uses. */
+        --fl-lag: #6f9fd6;
+        --fl-lag-wash: #17233a;
+        --fl-deep: #e07ac8;
+        --fl-deep-wash: #331a2e;
+        --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, Consolas, monospace;
+        --gap: 22px;
+        --pad: 18px;
+        --radius: 12px;
+        --radius-sm: 8px;
+        --reader-pad: clamp(18px, 2.4vw, 30px); /* shared by the reader body + sticky picker strip */
+        --z-sticky: 10;
+        --z-marker: 20;
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        --dur: 0.6s;
+        --dur-fast: 0.2s;
+      }
+
+      .no-anim,
+      .no-anim * {
+        transition: none !important;
+      }
+
+      /* ----------------------------------------------------------- SHELL */
+      .lab {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 8px clamp(14px, 3vw, 30px) 60px;
+        font-family: var(--sans);
+      }
+      .bench {
+        display: grid;
+        gap: var(--gap);
+        /* Two columns: the pinned board (instrument) + the reader, which now carries
+           the method picker as a sticky chip strip at its top (the old middle "spine"
+           column is gone — picking never scrolls the board out of view). */
+        grid-template-columns: minmax(320px, 360px) minmax(0, 1fr);
+        align-items: start;
+      }
+      @media (max-width: 820px) {
+        .bench {
+          grid-template-columns: 1fr;
+        }
+        /* No board height cap on mobile (2026-07-14): the families section grows to
+           its full height and the page scrolls, rather than hiding the lower families
+           behind a local scroll area. The base rule keeps position:sticky. */
+        /* Stacked: board first, then the reader (its chip strip sits at the top,
+           directly under the board, above the long description). */
+        .board {
+          order: 1;
+        }
+        .reader {
+          order: 2;
+          position: static;
+          max-height: none;
+          overflow: visible;
+        }
+        /* The chip strip rides with the page here — the board is the pinned element. */
+        .picker {
+          position: static;
+        }
+      }
+
+      /* ----------------------------------------------------------- BOARD (the instrument) */
+      .board .stickyInner {
+        position: sticky;
+        top: 14px;
+        z-index: var(--z-sticky);
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 16px 16px 14px;
+      }
+      /* E4 (2026-07-26, supersedes F3's label-over-value columns): each header block is a
+         SINGLE row — its caption inline before its value — so the board head costs one text
+         row instead of two. `align-items: baseline` sits the small caption on the big
+         value's baseline, which is what kept F3's two-row shape looking deliberate. */
+      .board-head {
+        display: flex;
+        flex-wrap: wrap; /* the nowrap INTRADAY stamp drops to its own row on a phone instead of
+                            widening the board past the viewport (every other section is viewport-wide) */
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .regime,
+      .score {
+        display: flex;
+        align-items: baseline;
+        gap: 7px;
+      }
+      .regime {
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1;
+      }
+      .regime small {
+        font-size: 0.66rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--faint);
+        white-space: nowrap;
+      }
+      .regime small.regime-est {
+        color: var(--state-amber);
+      }
+      .score {
+        text-align: right;
+        font-family: var(--mono);
+      }
+      .score b {
+        font-size: 1.7rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        font-variant-numeric: tabular-nums;
+      }
+      .score small {
+        font-size: 0.68rem;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      /* E2 (2026-07-26) — section micro-label, for the TWO bare /lab sections only (the
+         families board and the alert-band strip). Every other section already paints a
+         visible title (`Danger ledger`, `Structure map`, `Rotation quadrant — View C`,
+         `Scoreboard`, `Historical replay`, the reader's method title) and that title IS its
+         official name — nothing was added there. HARD constraint: no section's box may grow,
+         so the tag is `position: absolute` into padding the section ALREADY has (board
+         `.stickyInner` 16px top, `.band-panel` 12px top) and is therefore out of flow —
+         it cannot reflow anything. Its host is a positioned ancestor already (`.stickyInner`
+         is `position: sticky`) or made `relative` below, which does not resize a box. */
+      .lg-sectag {
+        position: absolute;
+        top: 3px;
+        left: 16px;
+        font-size: 0.5rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        line-height: 1;
+        color: var(--faint);
+        pointer-events: none;
+      }
+      .band-panel-host {
+        position: relative;
+      }
+      .band-panel-host > .lg-sectag {
+        top: 2px;
+        left: 15px;
+      }
+      .firing {
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        color: var(--muted);
+        margin: 9px 0 2px;
+        letter-spacing: 0.02em;
+      }
+      .firing b {
+        color: var(--ink);
+      }
+      /* BUG-2 (W2-d): the "why this band" caption — one muted mono line under `firing`. */
+      .band-reason {
+        font-family: var(--mono);
+        font-size: 0.68rem;
+        color: var(--muted);
+        margin: 0 0 2px;
+        letter-spacing: 0.02em;
+        font-style: italic;
+      }
+
+      /* D2 (2026-07-15): legend + R4 knob chips share one top strip above the tiles —
+         legend left, knobs pushed right; wraps on narrow widths. */
+      .legend-row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px 14px;
+        margin: 10px 0 12px;
+      }
+      .legend {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        font-size: 0.68rem;
+        color: var(--muted);
+      }
+      .legend span {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        flex: none;
+      }
+      .dot.g {
+        background: var(--calm);
+      }
+      .dot.a {
+        background: var(--elev);
+      }
+      .dot.r {
+        background: var(--danger);
+      }
+      .dot.s {
+        background: var(--stub);
+      }
+
+      .tiles {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+      }
+      /* ≤640px: minmax(0,1fr) drops the tracks' auto minimum (the widest .t-h pinned the board
+         at 534px on a 390px phone → page zoom-out); flex-wrap keeps the shrunk header in-tile. */
+      @media (max-width: 640px) {
+        .tiles {
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        }
+        .tile .t-h {
+          flex-wrap: wrap;
+        }
+      }
+      .tile {
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        padding: 8px 9px;
+        background: var(--surface);
+        transition:
+          background var(--dur) var(--ease),
+          border-color var(--dur) var(--ease);
+      }
+      .tile .t-h {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .tile .t-h b {
+        font-size: 0.82rem;
+        font-weight: 620;
+        letter-spacing: -0.01em;
+      }
+      /* Board compaction (2026-07-15): the divider rows' super-group label moved inline —
+         full group name, dimmed + small, after the family name (same micro-label idiom as
+         .tile .st). min-width/ellipsis keep long names truncate-safe on narrow tiles. */
+      .tile .t-g {
+        font-family: var(--mono);
+        font-size: 0.58rem;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: var(--faint);
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      /* IS-7 Stage 2 — member-level diffusion count, sitting directly under the family's
+         worst-of state as a QUALIFIER on it (never a severity of its own): same quiet
+         mono/faint idiom as .tile .t-g and the leg-axis badge, one notch above the leg row so
+         it never competes with the coloured leg names. Empty on stub/feedless tiles, where it
+         collapses to nothing (no margin on an empty box: :empty below). */
+      .tile .t-diff {
+        font-family: var(--mono);
+        font-size: 0.58rem;
+        letter-spacing: 0.02em;
+        color: var(--faint);
+        margin-top: 3px;
+      }
+      .tile .t-diff:empty {
+        display: none;
+      }
+      .tile .ids {
+        font-family: var(--mono);
+        font-size: 0.62rem;
+        color: var(--faint);
+        margin-top: 4px;
+        letter-spacing: 0.02em;
+        /* Wrap freely so the leg list fits any card width on mobile (2026-07-14). */
+        white-space: normal;
+        overflow-wrap: anywhere; /* a long id (AT1_rel-strength) breaks inside a 360px phone's narrow tile */
+        line-height: 1.6;
+      }
+      /* Stage 1a: swapped-out US-legacy legs shown on trend/flight tiles as greyed
+         context, divided from the live global members by │. Not a board signal —
+         these ids no longer drive the dial or the tile's dot color. */
+      .tile .ids .ctx {
+        color: var(--faint);
+        opacity: 0.6;
+        font-style: italic;
+      }
+      /* R2-3: the trend tile's chips are sectioned into
+         the two roles the engine already enforces — band-driving (GT/GB) vs per-leg-only.
+         One tile, not a split, so the group is a BLOCK row inside the existing `.ids` strip
+         rather than a new card. `.lg-l` is a quiet lead-in label: same faint colour as a calm
+         leg, italic like the other explanatory annotations here (`.leg-axis`), so it never
+         reads as a signal of its own. */
+      .tile .ids .lg {
+        display: block;
+      }
+      .tile .ids .lg + .lg {
+        margin-top: 2px;
+      }
+      .tile .ids .lg-l {
+        color: var(--faint);
+        opacity: 0.7;
+        font-style: italic;
+        font-size: 0.82em;
+        margin-right: 5px;
+        white-space: nowrap;
+      }
+      /* Per-leg G/A/R state (design 2026-07-13, "colour name + dot, culprit only"):
+         firing legs get a coloured name + leading glyph; calm legs stay dim & bare,
+         so only the leg driving the family's amber/red draws the eye. */
+      .tile .ids .leg-r {
+        color: var(--danger);
+        font-weight: 640;
+      }
+      .tile .ids .leg-a {
+        color: var(--elev);
+        font-weight: 640;
+      }
+      .tile .ids .leg-calm {
+        color: var(--faint);
+      }
+      /* D3 (family-colour-follows-danger) — member chip TONE, orthogonal to the state colour above:
+         `mt-dead` (outside the served `pillarIds`: moves no danger pillar) fades hardest, then `mt-grey` (moves neither band nor leg), `mt-perleg` (its own leg only, never the
+         dial) next, `mt-leg` (leg danger + dial legP) dims one notch, `mt-live` (moves the band) stands at full weight. Dims via opacity so a firing member's
+         own red/amber still shows through — the tone answers "can it move danger", not "is it firing". */
+      .tile .ids .mt-leg {
+        opacity: 0.82;
+      }
+      .tile .ids .mt-perleg {
+        opacity: 0.7;
+      }
+      .tile .ids .mt-grey {
+        opacity: 0.55;
+      }
+      .tile .ids .mt-dead {
+        opacity: 0.4;
+      }
+      /* D3 Stage 2.3 — level-vs-velocity attribution badge. Deliberately QUIET: it is an
+         explanation of an already-drawn state, not a severity of its own, so it borrows the
+         calm/faint colour and never competes with the coloured leg name beside it. */
+      .tile .ids .leg-axis {
+        color: var(--faint);
+        font-size: 0.82em;
+        font-style: italic;
+        white-space: nowrap;
+      }
+      /* R2 — the declined-attribution note. Shares the axis badge's quiet idiom (it sits in the
+         same slot and is the same kind of explanation), but dims one step further and drops the
+         nowrap: it reports the ABSENCE of an axis, so it must never read as louder than the
+         badge it replaces, and never as a severity of the leg. */
+      .tile .ids .leg-declined {
+        color: var(--faint);
+        font-size: 0.82em;
+        font-style: italic;
+        opacity: 0.75;
+      }
+      /* Held word badge — the member is mid directional-fold stand-down (raw ≠ confirmed). Shares the
+         axis/declined quiet idiom; provenance for the chip's state, never a severity of its own. */
+      .tile .ids .leg-held {
+        color: var(--faint);
+        font-size: 0.82em;
+        font-style: italic;
+        white-space: nowrap;
+      }
+      /* Dead-lit `⌁` beside a chip outside the served `pillarIds` (its title says why). */
+      .tile .ids .leg-dead {
+        color: var(--faint);
+        font-size: 0.82em;
+      }
+      .tile.g {
+        background: var(--calm-wash);
+        border-color: var(--calm-line);
+      }
+      .tile.a {
+        background: var(--elev-wash);
+        border-color: var(--elev-line);
+      }
+      .tile.r {
+        background: var(--danger-wash);
+        border-color: var(--danger-line);
+      }
+      .tile.s {
+        background: var(--stub-wash);
+        border-color: var(--line);
+        opacity: 0.72;
+      }
+      /* D4 (family-colour-follows-danger) — a family that scores legs but can never arm reads a
+         distinct dashed neutral, NOT the calm green, so green keeps ONE meaning (calm AND able to arm). */
+      .tile.noarm {
+        background: var(--stub-wash);
+        border-color: var(--line);
+        border-style: dashed;
+      }
+      .tile .st {
+        margin-left: auto;
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .tile .st[title] {
+        cursor: help;
+      }
+      /* D2 — the cannot-arm secondary mark: quiet mono, but coloured by the worst state it names so a
+         RED a D1-greened tile can't seat still draws the eye. Empty ⇒ collapses (no dangling gap). */
+      .tile .t-cannot {
+        font-family: var(--mono);
+        font-size: 0.58rem;
+        letter-spacing: 0.02em;
+        margin-left: 6px;
+        color: var(--muted);
+      }
+      .tile .t-cannot.ca-red {
+        color: var(--danger);
+      }
+      .tile .t-cannot.ca-amber {
+        color: var(--elev);
+      }
+      .tile .t-cannot:empty {
+        display: none;
+      }
+      /* Scenario: tiles cycle their family state on click/keydown. */
+      .tile.clickable {
+        cursor: pointer;
+      }
+      .tile.clickable:hover {
+        border-color: var(--accent);
+      }
+      .tile.clickable:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      /* Scenario: each leg cycles its OWN indicator state (independent of the family
+         click on empty tile area) — a per-leg what-if toggle. */
+      .tile.clickable .ids [data-id] {
+        cursor: pointer;
+        border-radius: 3px;
+        padding: 0 2px;
+      }
+      .tile.clickable .ids [data-id]:hover {
+        outline: 1px solid var(--accent);
+      }
+      .tile.clickable .ids [data-id]:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+
+      /* ------------------------------------------------- R4 BREAKER KNOBS
+         A dim, dashed chip row directly under the family tiles. Reuses the .chip-m pill
+         idiom but reads DIMMER / bordered so it's clearly a set of breaker INPUTS (tail ·
+         sustained · cash-days), not family-state tiles. Chips reflect the live `scenario`;
+         `.on` lights the active accent (same accent-wash the picker's current chip uses). */
+      .r4knobs {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-left: auto;
+      }
+      .r4knobs .r4k-lbl {
+        font-family: var(--mono);
+        font-size: 0.62rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--faint);
+        margin-right: 1px;
+      }
+      .chip-k {
+        appearance: none;
+        display: inline-flex;
+        align-items: baseline;
+        gap: 5px;
+        border: 1px dashed var(--line);
+        background: transparent;
+        color: var(--muted);
+        font-family: inherit;
+        font-size: 0.7rem;
+        font-weight: 560;
+        letter-spacing: -0.01em;
+        padding: 3px 9px;
+        border-radius: 999px;
+        cursor: pointer;
+        transition:
+          background var(--dur-fast) ease,
+          border-color var(--dur-fast) ease;
+      }
+      .chip-k .ck-id {
+        font-family: var(--mono);
+        font-size: 0.62rem;
+        color: var(--faint);
+      }
+      .chip-k .ck-v {
+        font-variant-numeric: tabular-nums;
+      }
+      .chip-k:hover {
+        border-color: var(--accent);
+      }
+      .chip-k:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+      .chip-k.on {
+        background: var(--accent-wash);
+        border-style: solid;
+        border-color: color-mix(in oklab, var(--accent) 45%, transparent);
+        color: var(--accent-ink);
+      }
+      .chip-k.on .ck-id,
+      .chip-k.on .ck-v {
+        color: var(--accent-ink);
+      }
+      /* Live mode: the board ignores the knobs, so the whole row reads dimmed (chips still
+         clickable — a click enters scenario mode). */
+      .r4knobs.dim {
+        opacity: 0.5;
+      }
+
+      /* ------------------------------------------------- DIAL ATTRIBUTION (Rehome A)
+         Styling for the dial's band→depth "why" + LEADING/COINCIDENT chip rows. The ladder
+         cluster that hosted these was retired 2026-07-13; the markup now renders inside
+         the Danger ledger's held-row expandable (see .df-attrib below). */
+      .t1k {
+        color: var(--t1-ink);
+        font-weight: 600;
+      }
+      .attrib-why {
+        font-size: 0.8rem;
+        line-height: 1.45;
+        color: var(--ink-soft);
+        margin: 0;
+      }
+      .attrib-why b {
+        color: var(--ink);
+        font-weight: 640;
+      }
+      /* MOBILE CLAMP for the whole reveal ([USER] 2026-09-06). It renders in a `<td colspan>` of a
+         table that is deliberately wider than a phone, so two table defaults broke it: the
+         `white-space: nowrap` inherited from `.df-grid td` (below), and a content box sized to the
+         TABLE rather than the scrollport. `--attrib-w` is measured off `.df-grid-wrap` in
+         lab-board.js (`fitAttribWidth`) because CSS in the cell cannot see a scroll ancestor's
+         width; `min(…, 100%)` keeps it honest when the table is NARROWER than the wrapper, and
+         `sticky` holds the text at the visible left edge when the ledger is scrolled sideways. */
+      .attrib-fit {
+        position: sticky;
+        left: 0;
+        width: min(var(--attrib-w, 100%), 100%);
+      }
+      /* The rung footnote under the why-line (pick trace + one clause on what a rung is). Same
+         column, one step quieter and hairline-separated so the derivation above stays the headline. */
+      .attrib-why-foot {
+        margin-top: 6px;
+        padding-top: 6px;
+        border-top: 1px solid var(--line);
+        font-size: 0.76rem;
+        opacity: 0.9;
+      }
+      /* G2 attribution chip rows: LEADING selects the band, COINCIDENT positions the ●.
+         Sourced from the GLOBAL panel so global-only members are eyeball-visible. */
+      .attrib-tiers {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-bottom: 8px;
+      }
+      .attrib-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 8px;
+        font-size: 0.76rem;
+        line-height: 1.5;
+        color: var(--ink-soft);
+      }
+      .attrib-row .tier-label {
+        min-width: 96px;
+        font-weight: 640;
+        letter-spacing: 0.04em;
+        color: var(--ink);
+      }
+      .attrib-row .tl-sub {
+        font-weight: 400;
+        letter-spacing: 0;
+        color: var(--ink-soft);
+        opacity: 0.65;
+      }
+      .chip-f .cn {
+        color: var(--ink);
+      }
+      .attrib-row .sep {
+        color: var(--line);
+      }
+      .cs-red {
+        color: var(--danger);
+        font-weight: 640;
+      }
+      .cs-amber {
+        color: var(--elev);
+        font-weight: 640;
+      }
+      .cs-calm {
+        color: var(--ink-soft);
+        opacity: 0.5;
+      }
+
+      /* Method-cards heading ([USER] 2026-08-29): the reader had no visible section title, so its
+         `Method cards` name lived only in the Show-chip. `.reader` has padding: 0 (padding lives on
+         the sticky `.picker` + scrolling `.reader-body`), so the heading carries its own. */
+      .rd-title {
+        font-size: 1rem;
+        font-weight: 680;
+        letter-spacing: -0.01em;
+        margin: 0;
+        padding: 12px var(--reader-pad) 0;
+      }
+      /* ----------------------------------------------------------- PICKER
+         The method catalog as a sticky chip strip atop the reader (replaces the old
+         middle "spine" column). Active chips on one row, Concept-shelf dimmed on the
+         next; picking swaps the reader body below without moving the pinned board. */
+      .picker {
+        position: sticky;
+        top: 0;
+        z-index: var(--z-sticky);
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        padding: 14px var(--reader-pad) 12px;
+        background: var(--surface);
+        border-bottom: 1px solid var(--line);
+      }
+      .picker .grp {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+      }
+      .picker .grp-lbl {
+        font-size: 0.6rem;
+        font-weight: 650;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--faint);
+        margin-right: 2px;
+        flex: none;
+      }
+      .chip-m {
+        appearance: none;
+        display: inline-flex;
+        align-items: baseline;
+        gap: 6px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--ink-soft);
+        font-family: inherit;
+        font-size: 0.8rem;
+        font-weight: 560;
+        letter-spacing: -0.01em;
+        padding: 5px 11px;
+        border-radius: 999px;
+        cursor: pointer;
+        transition:
+          background var(--dur-fast) ease,
+          border-color var(--dur-fast) ease;
+      }
+      .chip-m:hover {
+        border-color: var(--accent);
+      }
+      .chip-m:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+      .chip-m[aria-current="true"] {
+        background: var(--accent-wash);
+        border-color: color-mix(in oklab, var(--accent) 45%, transparent);
+      }
+      .chip-m[aria-current="true"] .cm-t {
+        color: var(--accent-ink);
+      }
+      /* Concept-shelf chips read as "not wired": dimmed + dashed. */
+      .picker .grp.shelf .chip-m {
+        opacity: 0.82;
+        border-style: dashed;
+      }
+
+      /* ------------------------------------------------- SECTION TABS (Rung F2)
+         Row-1 page tabs switching Lab ⇄ Episode replay: underline style (active tab =
+         accent underline), NOT chips — chips are reserved for toggles. `.tab-s` replaces
+         the retired `.chip-s` pill. */
+      .section-strip {
+        display: inline-flex;
+        gap: 14px;
+        align-items: stretch;
+      }
+      .tab-s {
+        appearance: none;
+        display: inline-flex;
+        align-items: center;
+        border: 0;
+        border-bottom: 2px solid transparent;
+        background: transparent;
+        color: var(--ink-soft);
+        font-family: inherit;
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        padding: 3px 2px 6px;
+        cursor: pointer;
+        transition: color var(--dur-fast) ease;
+      }
+      .tab-s:hover {
+        color: var(--accent-ink);
+      }
+      .tab-s:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+      .tab-s[aria-current="true"] {
+        color: var(--accent-ink);
+        border-bottom-color: var(--accent);
+      }
+
+      /* --------------------------------------------- EPISODE-REPLAY VIEW (Slice E2) */
+      .episode-replay {
+        max-width: 1320px;
+        margin: 0.4rem auto 0;
+        padding: 0 clamp(14px, 3vw, 30px) 2rem;
+      }
+      .erp-picker {
+        margin-bottom: 12px;
+      }
+      .erp-chip[aria-current="true"] {
+        background: var(--accent-wash);
+        border-color: color-mix(in oklab, var(--accent) 45%, transparent);
+      }
+      /* Candidate episodes (drop-decision pending) read dimmed + dashed. */
+      .erp-chip.erp-candidate {
+        opacity: 0.82;
+        border-style: dashed;
+      }
+      /* Inline "candidate" code-badge inside an episode chip. Reproduces the mono /
+         0.7rem / muted (+ aria-current accent) treatment this span inherited from the
+         retired `.chip-m .cm-id` rule (dropped 47d615e) before it was renamed off the
+         method-card `cm-id` class it was squatting on. */
+      .erp-chip .erp-chip-cand {
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+      }
+      .erp-chip[aria-current="true"] .erp-chip-cand {
+        color: var(--accent-ink);
+      }
+      .erp-head {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .erp-title {
+        font-size: 0.9rem;
+        margin: 0;
+      }
+      .erp-sub {
+        font-family: var(--mono);
+        font-size: 0.66rem;
+        color: var(--ink-dim);
+      }
+      .erp-cand-badge {
+        font-size: 0.58rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--accent-ink);
+        border: 1px dashed color-mix(in oklab, var(--accent) 45%, transparent);
+        border-radius: 999px;
+        padding: 1px 7px;
+      }
+      .erp-rationale {
+        font-size: 0.72rem;
+        color: var(--muted);
+        margin: 4px 0 8px;
+      }
+      .erp-chart {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+      }
+      .erp-price-line {
+        stroke: var(--t1-ink);
+        stroke-width: 1.6;
+        stroke-linejoin: round;
+      }
+      .erp-defensive-line {
+        /* --ink-dim (styles.css) not --faint: dotted grey must stay readable on the
+           dark panel (dark-theme contrast sweep 2026-07-16, Rung A). */
+        stroke: var(--ink-dim);
+        stroke-width: 1.2;
+        stroke-dasharray: 3 3;
+      }
+      .erp-lane-track {
+        fill: var(--line-soft);
+        opacity: 0.5;
+      }
+      .erp-lane-label {
+        fill: var(--ink-dim);
+        font-family: var(--mono);
+        font-size: 10px;
+      }
+      .erp-xlabel,
+      .erp-ylabel-r,
+      .erp-ylabel-l {
+        fill: var(--ink-dim);
+        font-family: var(--mono);
+        font-size: 10px;
+      }
+      .erp-arm-on,
+      .erp-fire-on {
+        fill: var(--accent);
+        opacity: 0.55;
+      }
+      /* Posture colour bands — the exposure dial's Full/Core/Reduced/Defensive, a
+         monotone green→amber→red risk ladder. Full (100% equity) keeps the pure green;
+         Core (70%) shifts one step toward amber so the two never read as one colour. */
+      .erp-band.erp-full {
+        fill: var(--state-green);
+      }
+      .erp-band.erp-core {
+        fill: color-mix(in oklab, var(--state-green) 60%, var(--state-amber));
+      }
+      .erp-band.erp-reduced {
+        fill: var(--state-amber);
+      }
+      .erp-band.erp-defensive {
+        fill: var(--state-red);
+      }
+      .erp-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 8px;
+      }
+      .erp-key {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.62rem;
+        color: var(--muted);
+      }
+      .erp-swatch {
+        width: 11px;
+        height: 11px;
+        border-radius: 2px;
+        display: inline-block;
+      }
+      .erp-swatch.erp-full {
+        background: var(--state-green);
+      }
+      .erp-swatch.erp-core {
+        background: color-mix(in oklab, var(--state-green) 60%, var(--state-amber));
+      }
+      .erp-swatch.erp-reduced {
+        background: var(--state-amber);
+      }
+      .erp-swatch.erp-defensive {
+        background: var(--state-red);
+      }
+      .erp-swatch-price {
+        background: var(--t1-ink);
+        height: 3px;
+        border-radius: 0;
+      }
+      .erp-swatch-def {
+        background: var(--ink-dim);
+        height: 3px;
+        border-radius: 0;
+      }
+      .erp-swatch-comp {
+        background: var(--accent-ink);
+        height: 3px;
+        border-radius: 0;
+      }
+      .erp-note,
+      .erp-empty {
+        font-size: 0.72rem;
+        color: var(--ink-dim);
+        line-height: 1.45;
+        margin: 6px 0 0;
+      }
+      .erp-notes {
+        margin-top: 10px;
+        border-top: 1px dashed var(--line);
+        padding-top: 8px;
+      }
+      /* Companion indicator picker (Rung E1) — the picked line overlays the replay
+         chart's price panel (own left y-scale); only the picker sits below the chart. */
+      #erpCompanion {
+        margin-top: 12px;
+      }
+      .erc-picker-l {
+        font-size: 0.72rem;
+        color: var(--muted);
+      }
+      .erp-ind-picker {
+        max-width: 100%;
+        background: var(--panel);
+        color: var(--ink);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        font: inherit;
+        font-size: 0.72rem;
+        padding: 2px 6px;
+      }
+      .erc-value-line {
+        stroke: var(--accent-ink);
+        stroke-width: 1.4;
+      }
+
+      /* scrolling detail below the sticky strip; carries the reader's real padding */
+      .reader-body {
+        padding: 6px var(--reader-pad) var(--reader-pad);
+      }
+
+      /* ----------------------------------------------------------- READER (wide panel) */
+      .reader {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 0; /* padding lives on the sticky .picker + scrolling .reader-body */
+        min-width: 0;
+        /* independent scroll: the card reads on its own while the board stays pinned */
+        position: sticky;
+        top: 14px;
+        max-height: calc(100vh - 28px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-gutter: stable;
+      }
+      /* Slice 2 — collapsed reader: full-width board, tiles left / ladder right. */
+      #lab.collapsed .bench {
+        grid-template-columns: 1fr;
+      }
+      /* F4 — families board hidden (SHOW › Families off): drop the board's grid column so
+         the reader takes the full width instead of leaving an empty 320px sliver. With
+         cards ALSO hidden (.collapsed) the bench simply has no visible children and
+         collapses to zero height — the sections below move up; nothing wedges. */
+      #lab.board-hidden .bench {
+        grid-template-columns: 1fr;
+      }
+      /* Overview page (overview.html): the bench holds the families board ALONE — there is
+         no reader column — so the two-column template would pin the board to the 360px
+         instrument track and leave it reading as half-width. One full-width column, same
+         as the two #lab collapse cases above. */
+      #overview .bench {
+        grid-template-columns: 1fr;
+      }
+      /* Collapsed = method cards hidden (visibility bar): the reader article drops out
+         entirely so Families/board sit directly above the ledger with no empty sliver. */
+      #lab.collapsed #reader {
+        display: none;
+      }
+      @media (min-width: 821px) {
+        /* Collapsed board is full-width tiles now — the retired ladder cluster used to
+           occupy a second column here (removed 2026-07-13). */
+        #lab.collapsed .board .stickyInner {
+          display: grid;
+          grid-template-columns: 1fr;
+          grid-template-areas:
+            "head"
+            "firing"
+            "legend"
+            "tiles";
+          align-items: start;
+        }
+        #lab.collapsed .board-head { grid-area: head; }
+        #lab.collapsed .firing { grid-area: firing; }
+        #lab.collapsed .legend-row { grid-area: legend; }
+        #lab.collapsed #tiles { grid-area: tiles; margin: 0; }
+      }
+      .r-head {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .r-title {
+        font-size: 1rem;
+        font-weight: 680;
+        letter-spacing: -0.01em;
+        margin: 0;
+        text-wrap: balance;
+      }
+      .r-status {
+        margin-left: auto;
+        font-family: var(--mono);
+        font-size: 0.64rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 4px 10px;
+        border-radius: 999px;
+        white-space: nowrap;
+      }
+      .r-status.act {
+        background: var(--calm-wash);
+        color: var(--calm);
+        border: 1px solid var(--calm-line);
+      }
+      .r-status.shf {
+        background: var(--stub-wash);
+        color: var(--muted);
+        border: 1px solid var(--line);
+      }
+
+      .callout {
+        margin: 16px 0 6px;
+        border-radius: var(--radius-sm);
+        padding: 12px 14px;
+        font-size: 0.86rem;
+        line-height: 1.5;
+        display: flex;
+        gap: 11px;
+        align-items: flex-start;
+      }
+      .callout .ic {
+        font-size: 1rem;
+        line-height: 1.3;
+        flex: none;
+      }
+      .callout.act {
+        background: var(--accent-wash);
+        color: var(--ink);
+        border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
+      }
+      .callout.act b {
+        color: var(--accent-ink);
+      }
+      .callout.shf {
+        background: var(--stub-wash);
+        color: var(--ink-soft);
+        border: 1px solid var(--line);
+      }
+      .callout .k {
+        color: var(--danger);
+        font-weight: 600;
+      }
+      .callout code {
+        font-family: var(--mono);
+        font-size: 0.82em;
+      }
+
+      .prose {
+        max-width: 66ch;
+      }
+      .sec {
+        margin-top: 22px;
+      }
+      .sec > h3 {
+        font-size: 0.68rem;
+        font-weight: 650;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--faint);
+        margin: 0 0 7px;
+      }
+      .sec p {
+        margin: 0;
+        color: var(--ink-soft);
+      }
+      .sec.what p {
+        color: var(--ink);
+        font-size: 0.8rem;
+        line-height: 1.6;
+        text-wrap: pretty;
+      }
+
+      .inputs {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+      }
+      .inp {
+        border: 1px solid var(--line-soft);
+        border-radius: var(--radius-sm);
+        padding: 10px 12px;
+        background: var(--panel);
+      }
+      .inp .sig {
+        font-size: 0.9rem;
+        font-weight: 560;
+      }
+      .inp .feed {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-top: 4px;
+        line-height: 1.45;
+      }
+      .inp .tag {
+        font-family: var(--mono);
+        font-size: 0.58rem;
+        letter-spacing: 0.04em;
+        color: var(--accent-ink);
+        background: var(--accent-wash);
+        padding: 2px 6px;
+        border-radius: 5px;
+        margin-left: 6px;
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      /* the failure mode gets its own turn — the "honest part" */
+      .breaks {
+        margin-top: 26px;
+        border-top: 2px solid var(--line);
+        padding-top: 18px;
+      }
+      .breaks .lbl {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-family: var(--mono);
+        font-size: 0.66rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--elev);
+        margin-bottom: 9px;
+      }
+      .breaks .lbl::before {
+        content: "▲";
+        font-size: 0.7em;
+      }
+      .breaks .body {
+        background: var(--elev-wash);
+        border: 1px solid var(--elev-line);
+        border-radius: var(--radius-sm);
+        padding: 13px 15px;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: var(--ink-soft);
+        text-wrap: pretty;
+      }
+
+      .framing {
+        margin-top: 20px;
+        font-size: 0.82rem;
+        color: var(--muted);
+        font-style: italic;
+        line-height: 1.5;
+        border-left: 0;
+        padding: 11px 0 0;
+        border-top: 1px dashed var(--line);
+      }
+      .framing b {
+        font-style: normal;
+        color: var(--ink-soft);
+      }
+
+      /* Control strip (Rung F2) — lives OUTSIDE #lab so it stays reachable even when #lab
+         is hidden by a loading/empty/error message (Scenario needs no store). Two stacked
+         rows: tabs+links, then the Lab-only toolbar. */
+      .modebar-outer {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 0.45rem clamp(14px, 3vw, 30px) 0;
+      }
+      .strip-row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.4rem 0.5rem;
+      }
+      /* Row 1: tabs left, cross-page links far right, on a shared baseline rule. */
+      .strip-tabs-row {
+        align-items: flex-end;
+        border-bottom: 1px solid var(--line);
+      }
+      .strip-links {
+        margin-left: auto;
+        display: inline-flex;
+        gap: 12px;
+        align-items: center;
+        padding-bottom: 6px; /* sit on the tabs' text line, above the rule */
+      }
+      /* Row 2: contextual toolbar — hidden entirely in the Episode-replay view (lab.js
+         toggles #labToolbar.is-hidden via applySection). */
+      .strip-toolbar {
+        padding-top: 0.45rem;
+        gap: 0.4rem 1.1rem;
+      }
+      .strip-group {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .strip-caption {
+        font-size: 0.56rem;
+        font-weight: 600;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: var(--ink-dim);
+      }
+      /* Cross-page links read as LINKS (accent + underline), never as chips/tabs.
+         Base .pagenav is single-sourced in styles.css (shared with the dashboard). */
+      .modebar-outer .pagenav {
+        font-size: 0.72rem;
+        color: var(--accent-ink);
+        text-decoration: underline;
+        text-decoration-color: color-mix(in oklab, var(--accent) 55%, transparent);
+        text-underline-offset: 3px;
+      }
+      .modeToggle {
+        display: inline-flex;
+        gap: 2px;
+        margin: 0;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 2px;
+      }
+      .modeToggle button {
+        appearance: none;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        font-size: 0.78rem; /* match the .pagenav "Dashboard" size */
+        padding: 0.22rem 0.6rem;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      /* Toolbar row (F2): mode + visibility chips stay at the compact strip type size. */
+      .modebar-outer .modeToggle button {
+        font-size: 0.64rem;
+      }
+      .modeToggle button.active {
+        background: var(--accent-wash);
+        color: var(--accent-ink);
+        font-weight: 700;
+      }
+
+      /* Per-section visibility bar now shares the .modebar-outer control row (above #lab). */
+      #visbar {
+        flex-wrap: wrap;
+      }
+      /* Hide a section wrapper without unmounting it (cheap human-paced refetch keeps rendering). */
+      .is-hidden {
+        display: none;
+      }
+
+      /* ----------------------------------------------------------- DANGER FIELD (View A · slice-3 i1)
+         Per-leg danger ledger + full 9-leg signal grid. Encoding discipline (design §4):
+         colour intensity encodes the DANGER score ONLY; RGN/SECTOR are short codes, never
+         hue; signal flags are glyph presence (·/○/◐/●), never hue; identical row layout. */
+      .danger-field {
+        margin-top: var(--gap);
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 16px 18px 14px;
+      }
+      .df-head {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .df-title {
+        font-size: 1rem;
+        font-weight: 680;
+        letter-spacing: -0.01em;
+        margin: 0;
+      }
+      /* /overview's Indicator-detail heading (overview.js) — the `.df-title` recipe plus the gap to
+         the picker row below it; the section is a `styles.css` `.zone`, which paints no heading. */
+      .zd-title {
+        font-size: 1rem;
+        font-weight: 680;
+        letter-spacing: -0.01em;
+        margin: 0 0 10px;
+      }
+      .df-toggle {
+        appearance: none;
+        border: 1px solid var(--line);
+        background: var(--panel-2);
+        color: var(--ink-soft);
+        font: inherit;
+        font-size: 0.72rem;
+        padding: 3px 10px;
+        border-radius: 999px;
+        cursor: pointer;
+      }
+      .df-toggle:hover {
+        border-color: var(--accent);
+      }
+      .df-toggle:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+      .df-note {
+        margin-left: auto;
+        font-size: 0.68rem;
+        color: var(--faint);
+      }
+      /* ── The ledger LEGEND, collapsed ([USER] 2026-08-07).
+         Was `.df-subnote`: one always-on 1100-character run-on paragraph above the grid, mixing
+         three unrelated vocabularies. It is now (a) a disclosure toggle in `.df-head`, (b) grouped
+         cards, (c) height-capped so opening it can never push the table off screen.
+
+         `.df-legend-toggle` clones `.bp-note-toggle`'s type treatment (styles.css) MINUS its
+         `position: absolute`: the band panel needed to ride its own padding because its head had no
+         flex row; `.df-head` IS a flex row with `.df-note` at `margin-left: auto`, so the toggle is
+         a normal last child and lands top-right for free. ZERO-GROWTH still binds — 0.55rem at
+         `line-height: 1` is a strictly smaller line box than `.df-title`'s 1rem/680, which sets the
+         row height, so the head cannot grow. */
+      .df-legend-toggle {
+        margin-left: 0;
+        padding: 2px 0 2px 4px;
+        font: inherit;
+        font-size: 0.55rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        line-height: 1;
+        color: var(--faint);
+        background: none;
+        border: 0;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .df-legend-toggle:hover,
+      .df-legend-toggle:active,
+      .df-legend-toggle[aria-expanded="true"] {
+        color: var(--ink);
+      }
+      .df-legend-toggle:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+      /* R1 (2026-08-07): a FIXED max height + internal scroll. The open legend is taller than the
+         first ledger rows, and a legend that pushes the table you are reading off screen defeats
+         its own purpose — so the grid slides down by at most this much, never more. */
+      .df-legend {
+        margin: 9px 0 8px;
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--panel-2);
+        font-size: 0.66rem;
+        line-height: 1.45;
+        color: var(--muted);
+        max-height: 40vh;
+        overflow-y: auto;
+      }
+      .df-lgd-lead {
+        color: var(--ink-soft);
+        margin-bottom: 8px;
+      }
+      /* Option C: one bordered block per VOCABULARY, so the reader picks the block matching the
+         mark that puzzled them. Blocks are flex children and reflow; the two wide ones (Lag, Mode)
+         take a full row of their own. */
+      .df-lgd-cards {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .df-lgd-card {
+        flex: 1 1 260px;
+        min-width: 220px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 8px 10px;
+      }
+      .df-lgd-wide {
+        flex-basis: 100%;
+      }
+      .df-lgd-t {
+        margin: 0 0 6px;
+        font-size: 0.58rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+      }
+      .df-lgd-sub {
+        font-weight: 500;
+        letter-spacing: 0;
+        text-transform: none;
+        color: var(--faint);
+      }
+      .df-lgd-row {
+        display: flex;
+        gap: 8px;
+        align-items: baseline;
+        margin: 3px 0;
+      }
+      .df-lgd-k {
+        flex: 0 0 auto;
+        min-width: 34px;
+        color: var(--ink-soft);
+      }
+      .df-lgd-card b {
+        color: var(--ink-soft);
+        font-weight: 620;
+      }
+      .df-lgd-foot {
+        margin: 7px 0 0;
+        opacity: 0.85;
+      }
+      .df-grid-wrap {
+        overflow-x: auto;
+      }
+      .df-grid {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 0.8rem;
+      }
+      .df-grid th,
+      .df-grid td {
+        padding: 5px 8px;
+        text-align: left;
+        white-space: nowrap;
+      }
+      .df-grid thead th {
+        font-size: 0.62rem;
+        font-weight: 650;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--faint);
+        border-bottom: 1px solid var(--line);
+      }
+      .df-grid .sig-h {
+        font-family: var(--mono);
+        text-align: center;
+        cursor: help;
+        text-transform: none;
+        letter-spacing: 0;
+        color: var(--muted);
+      }
+      .df-grid tbody tr {
+        border-bottom: 1px solid var(--line-soft);
+      }
+      .df-grid tbody tr.held {
+        background: var(--panel-2);
+      }
+      .df-grid .col-sleeve {
+        font-weight: 560;
+        color: var(--ink);
+      }
+      /* Sleeve name carries a title= tooltip (example buyable ETF) — cue it. */
+      .df-grid .sleeve-name[title] {
+        text-decoration: underline dotted;
+        text-underline-offset: 2px;
+        cursor: help;
+      }
+      .df-grid .col-rgn,
+      .df-grid .col-sector {
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        color: var(--muted);
+      }
+      /* [+ region/sector] toggle: the coded columns stay hidden until expanded (design §3). */
+      .df-grid:not(.show-rgn) .col-rgn,
+      .df-grid:not(.show-rgn) .col-sector {
+        display: none;
+      }
+      /* Two-pillar ledger idioms (2026-07-15 eyeball verdicts; split into four header-labelled
+         columns by the 2026-07-16 D2.3 resolutions): Danger = sort-key number (lg-glyph) + the
+         PAIRED dual thin E/S bars (lg-bars, kept in ONE cell so the E-vs-S correlation stays
+         readable) · Early-warn / Stress-now = number + speed arrow (lg-glyph) · Exo = X + weather
+         glyph (lg-exo). Each idiom keeps its OWN class scope so a prune = delete one block.
+         The stack is deliberately TIGHTER than the pre-verdict build (4px tracks, 1px gap,
+         one-letter labels) so the whole ledger row lands strictly below its old height. The row is
+         deliberately WIDE (eyeball build); mobile fit is deferred — .df-grid-wrap keeps overflow-x. */
+      .df-grid .col-danger,
+      .df-grid .col-ew,
+      .df-grid .col-sn,
+      .df-grid .col-trend,
+      .df-grid .col-mode,
+      .df-grid .col-exo {
+        width: 1%; /* shrink-to-content; the row scrolls in .df-grid-wrap rather than squeezing */
+        white-space: nowrap;
+      }
+      /* IS-8(c) (ruled 2026-07-30) — the Mode cell's arrow, and the same arrows in the Mode key.
+         Colour is RULED, one tint per mode class below (accumulation blue · markup green ·
+         distribution amber · markdown red · na muted). The GLYPHS are not restated here — they
+         live once in `MARKET_MODE_GLYPHS` (market-mode.js); these rules key off the class only.
+         ⚠ SCOPING IS LOAD-BEARING. `market-mode.js` also puts the very same `.mode-*` tokens on the
+         View-C quadrant boxes (`.rrg-leg`) and legend swatches (`.rrg-swatch`), whose tints are a
+         SEPARATE channel further down THIS file (§VIEW C, moved out of lab-board.js's injected
+         `#rrg-styles` sheet when the CSP dropped `style-src 'unsafe-inline'`). An UNSCOPED `.mode-accum { … }` here
+         would reach those elements too. Every rule below is therefore anchored to a host the RRG
+         cannot be inside — `.df-grid .col-mode` (the ledger cell) or `.df-foot-modes` (since
+         2026-08-07 the wrapper `marketModeQuadrantHtml` puts round the Mode key inside the ledger's
+         collapsed legend, KEPT under its pre-move footnote name precisely so these rules still
+         reach it). Pinned by `market-mode.test.js` §"colour selectors are SCOPED". */
+      .df-grid .col-mode .mode-glyph,
+      .df-foot-modes .mode-glyph {
+        font-weight: 700;
+        font-style: normal;
+      }
+      .df-grid .col-mode .mode-accum,
+      .df-foot-modes .mode-accum {
+        color: #4c8ee8; /* blue — off the red/amber/green state ramp on purpose */
+      }
+      .df-grid .col-mode .mode-markup,
+      .df-foot-modes .mode-markup {
+        color: var(--calm);
+      }
+      .df-grid .col-mode .mode-distrib,
+      .df-foot-modes .mode-distrib {
+        color: var(--elev);
+      }
+      .df-grid .col-mode .mode-markdown,
+      .df-foot-modes .mode-markdown {
+        color: var(--danger);
+      }
+      .df-grid .col-mode .mode-na,
+      .df-foot-modes .mode-na {
+        color: var(--faint);
+      }
+      /* The footnote itself: one key per mode, each carrying glyph · name · meaning · implication.
+         Wraps as a block list so the implication clause is readable rather than a run-on strip. */
+      .df-foot-modes {
+        display: block;
+        margin-top: 4px;
+      }
+      .df-foot-modes .mode-key {
+        display: block;
+        margin-left: 10px;
+      }
+      .df-foot-modes .mode-key .mode-glyph {
+        display: inline-block;
+        width: 12px;
+      }
+      .df-foot-modes .mode-key b {
+        color: var(--ink-soft);
+        font-weight: 620;
+      }
+      .df-foot-modes .mode-key i {
+        font-style: italic;
+        opacity: 0.85;
+      }
+      /* ── The Mode QUADRANT ([USER] 2026-08-07) — the same four parts the flat footnote carried,
+         laid on the danger×growth axes they are derived from. `marketModeQuadrantHtml` keeps the
+         `.df-foot-modes` class on the wrapper precisely so the tint rules above still reach it:
+         every `.mode-*` rule on this page must stay anchored to one of the four hosts named in the
+         SCOPING IS LOAD-BEARING note, or it bleeds into the View-C RRG stripe. Cell PLACEMENT is by
+         class, never DOM order — the frozen map's key order is the ruled table's, not the grid's. */
+      .df-mq {
+        display: grid;
+        grid-template-columns: 1.1rem 1fr 1fr;
+        gap: 5px;
+        margin-top: 6px;
+      }
+      .df-mq-x {
+        grid-column: 2 / 4;
+        text-align: center;
+        font-size: 0.58rem;
+        letter-spacing: 0.06em;
+        color: var(--faint);
+      }
+      /* The y-axis label is a COLUMN of two labels, so `writing-mode` must NOT sit on the flex
+         container: under `vertical-rl` the block axis turns horizontal and `flex-direction: column`
+         then lays the two spans SIDE BY SIDE across this 1.1rem track (they clip and overlap). The
+         container therefore stays a plain horizontal-tb column box — top label beside grid row 2,
+         bottom label beside grid row 3 — and only the SPANS turn vertical.
+         `text-orientation: upright` rather than a `rotate(180deg)` trick: a 180° rotation would also
+         invert the ▲/▼ glyphs the labels lean on, which is the one thing this axis must get right.
+         Upright keeps both labels reading top-down consistently and both arrows pointing where they
+         mean. */
+      .df-mq-y {
+        grid-column: 1;
+        grid-row: 2 / 4;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.58rem;
+        letter-spacing: 0.06em;
+        color: var(--faint);
+      }
+      .df-mq-y > span {
+        writing-mode: vertical-rl;
+        text-orientation: upright;
+        text-align: center;
+      }
+      .df-mq-hidan-logro {
+        grid-column: 2;
+        grid-row: 2;
+      }
+      .df-mq-hidan-higro {
+        grid-column: 3;
+        grid-row: 2;
+      }
+      .df-mq-lodan-logro {
+        grid-column: 2;
+        grid-row: 3;
+      }
+      .df-mq-lodan-higro {
+        grid-column: 3;
+        grid-row: 3;
+      }
+      .df-mq-cell {
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        padding: 6px 8px;
+      }
+      .df-foot-modes .df-mq-name .mode-glyph {
+        font-size: 0.85rem;
+        margin-right: 3px;
+      }
+      .df-mq-name b {
+        color: var(--ink-soft);
+        font-weight: 620;
+      }
+      .df-mq-coord {
+        font-size: 0.56rem;
+        letter-spacing: 0.05em;
+        color: var(--faint);
+        margin: 1px 0 4px;
+      }
+      .df-mq-implies {
+        margin-top: 3px;
+        opacity: 0.85;
+      }
+      .df-mq-implies i {
+        font-style: italic;
+      }
+      .df-mq-na {
+        margin-top: 7px;
+      }
+      .df-mq-na b {
+        color: var(--ink-soft);
+        font-weight: 620;
+      }
+      /* Narrow: the 2×2 stacks to ONE column, so there is no vertical axis left for the y label to
+         annotate — it would sit above the stack claiming a top/bottom split the layout no longer
+         has. It is hidden here rather than re-flowed. Nothing is lost: every cell names its own
+         quadrant coordinates (`.df-mq-coord`), so the reading survives the loss of the geometry.
+         The x label is left in place (it already spanned the full width). */
+      @media (max-width: 640px) {
+        .df-mq {
+          grid-template-columns: 1fr;
+        }
+        .df-mq-x {
+          grid-column: 1;
+        }
+        .df-mq-y {
+          display: none;
+        }
+        .df-mq-cell {
+          grid-column: 1;
+          grid-row: auto;
+        }
+      }
+      /* H2 (2026-07-26) — the bar-axis statement, made ONCE at the pillar column head instead of a
+         clause on every scored tooltip (G7 deliberately compacted those). It rides INSIDE the
+         existing `Danger` header cell, and the binding constraint is ZERO added layout height: it
+         is inline at a SMALLER font-size than the 0.62rem `th`, in the same family, so its content
+         box and its descender are both strictly smaller than the label's and the header's line box
+         cannot grow. MEASURED on the rendered page (headless, mock board), removing the span from
+         the live DOM: `thead tr` 27.19px and the whole `.df-grid` 297.27px, IDENTICAL with and
+         without it. Width DOES grow (the `.col-danger` header 188.94 → 239.28px) — the column is
+         shrink-to-content and `.df-grid-wrap` scrolls, and the D1/E-round constraint is on row
+         HEIGHT, which this does not touch.
+         Legibility (review 2026-07-26): it first shipped 0.55rem + `opacity: 0.8` over the inherited
+         `--faint`, which composites to rgb(94,96,117) on the #191a24 ground = 2.80:1 at 8.8px — below
+         its own sibling header labels (3.62:1). The opacity bought nothing (`--faint` is already the
+         dimmest text token), so it is gone and the colour is stated: `--ink-dim` at 0.58rem measures
+         9.28px and 6.76:1, re-measured the same way with `thead tr` still 27.1875px and `.df-grid`
+         still 297.265625px, with and without the span. Any further size bump must be re-measured —
+         the zero-added-row-height constraint is what bounds this rule. */
+      .df-grid thead th .col-axis {
+        margin-left: 8px;
+        font-size: 0.58rem;
+        font-weight: 400;
+        letter-spacing: 0;
+        text-transform: none;
+        color: var(--ink-dim);
+      }
+      /* Danger is the only multi-idiom cell (number + paired bars) — the others hold one idiom. */
+      .df-grid .col-danger > * + * {
+        margin-left: 12px;
+      }
+      /* D1 (2026-07-26) — the EARLY-WARN percentile leaves the trailing badge strip and stacks
+         UNDER the sort-key numeral, inside the danger cell's own `.lg-glyph`. Scoped to
+         `.col-danger`: the EW / SN / Trend glyphs keep the horizontal number+arrow idiom. The
+         numeral's slot is the SHORT one (measured 16.69px against the bar stack's 18.91px), so it
+         absorbs the percentile line at a small net row cost rather than adding a full row. */
+      .df-grid .col-danger .lg-glyph {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+      }
+      /* the badge's inline `margin-left: 5px` separated it from the track it used to follow; in the
+         stacked slot it must sit flush under the numeral. */
+      .df-grid .col-danger .lg-glyph .lg-pct {
+        margin-left: 0;
+      }
+      /* `.lg-dotv` inherits `line-height: normal`, which renders 16.69px of box for 0.72rem of
+         numeral. MEASURED: leaving it there put the stacked glyph at 25.64px against the bar
+         stack's 18.91px — a +6.69px row, past D1's "~4px and no more". Pinning line-height to 1
+         inside THIS cell only (the EW/SN/Trend numerals are untouched) costs the row +1.57px. */
+      .df-grid .col-danger .lg-glyph .lg-dotv {
+        line-height: 1;
+      }
+      /* shared band hues — glyphs colour by `color`, bar fills by `background` (na = stub) */
+      .lg-dotv.g,
+      .lg-arrow.g {
+        color: var(--calm);
+      }
+      .lg-dotv.a,
+      .lg-arrow.a {
+        color: var(--elev);
+      }
+      .lg-dotv.r,
+      .lg-arrow.r {
+        color: var(--danger);
+      }
+      .lg-dotv.na,
+      .lg-arrow.na {
+        color: var(--faint);
+      }
+      /* §5 UI — gated-off Trend numeral: present but NOT counting toward danger. Muted + already
+         parenthesized `(n)` in markup, so a calm leg's trend reads legible without looking like live
+         danger (accepted-risk mitigation). */
+      .lg-dotv.trend-gated {
+        color: var(--faint);
+        font-style: italic;
+      }
+      .lg-bar-fill.g {
+        background: var(--calm);
+      }
+      .lg-bar-fill.a {
+        background: var(--elev);
+      }
+      .lg-bar-fill.r {
+        background: var(--danger);
+      }
+      /* SN ×100 number + 5-close speed arrow (verdicts 5/7) */
+      .lg-glyph {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        vertical-align: middle;
+        font-family: var(--mono);
+        font-variant-numeric: tabular-nums;
+      }
+      .lg-dotv {
+        font-size: 0.72rem;
+      }
+      .lg-arrow {
+        font-size: 0.72rem;
+        line-height: 1;
+      }
+      /* speed-arrow ramps: worsening = warm (w1→w3), improving = cool/green (c1→c3), flat = faint */
+      .lg-spd {
+        font-size: 0.72rem;
+        line-height: 1;
+      }
+      .lg-spd.s0 {
+        color: var(--faint);
+      }
+      .lg-spd.w1 {
+        color: var(--elev);
+      }
+      .lg-spd.w2 {
+        color: color-mix(in srgb, var(--elev) 45%, var(--danger));
+      }
+      .lg-spd.w3 {
+        color: var(--danger);
+      }
+      .lg-spd.c1 {
+        color: color-mix(in srgb, var(--calm) 55%, var(--faint));
+      }
+      .lg-spd.c2 {
+        color: color-mix(in srgb, var(--calm) 80%, var(--faint));
+      }
+      .lg-spd.c3 {
+        color: var(--calm);
+      }
+      /* dual thin pillar bars (verdicts 4/8): framed track + band-cut ticks, calm sliver fill */
+      .lg-bars {
+        display: inline-flex;
+        flex-direction: column;
+        gap: 1px;
+        vertical-align: middle;
+      }
+      .lg-bar {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .lg-bar-lbl {
+        width: 9px;
+        font-family: var(--mono);
+        font-size: 0.56rem;
+        line-height: 1;
+        color: var(--faint);
+        text-align: center;
+      }
+      /* D1 (2026-07-26) — 4px → 7px. MEASURED, not derived: a `.lg-bar` row renders 8.95px (its
+         0.56rem/line-height:1 `E`/`S` label drives it) while the track spends only 4px of that
+         (`* { box-sizing: border-box }` in styles.css puts the 1px frame INSIDE the height — the
+         plan's "6px outer" arithmetic was wrong). 7px consumes existing slack; the row stays 8.95px
+         and the ledger's bar stack does not grow. */
+      .lg-bar-track {
+        position: relative;
+        display: inline-block;
+        width: 140px;
+        height: 7px;
+        border: 1px solid var(--line-soft); /* visible frame — full extent readable even on a short fill */
+        border-radius: 2px;
+        background: var(--stub-wash);
+        overflow: hidden;
+      }
+      .lg-bar-fill {
+        display: block;
+        height: 100%;
+        border-radius: 1px;
+        /* Width is applied at runtime (inline-pos.js); 0 — not auto — is the safe failure
+           direction: an unapplied fill reads "empty", never a full bar claiming the pillar is maxed. */
+        width: 0;
+      }
+      /* band-cut ticks at the ACTIVE amber/red cuts — hairline, never fill-edge-like.
+         R4/G3 (2026-07-26): contrast raised, WIDTH UNTOUCHED (the 1px bound is hard).
+         `var(--faint)` @ 0.55 was measured on the rendered PNG (headless, real seam markup on
+         the real 7px track) as a composite of rgb(150,80,93) over the red fill — WCAG 1.04
+         against rgb(198,40,40), i.e. no mark at all; 1.95 on the empty track, 1.62 on amber.
+         Opaque `var(--ink)` measures 4.66 (red) / 4.25 (green) / 13.86 (track) / 1.63 (amber) —
+         no backdrop gets WORSE than the old rule, and the one that barely moves is the amber tick
+         under an amber fill, where a bright #f9a825 backdrop caps ANY light hairline near 1.9.
+         Token only, no width change, per the rung's bound. */
+      .lg-bar-tick {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: var(--ink);
+      }
+      /* H3(1) (2026-07-26) — PER-BAND tick colour, now that `bandTicks`' `band` field reaches the
+         markup as a class (lab.js `renderPillarBars`). The amber tick was the one backdrop pairing
+         R4/G3 could not fix from a token/opacity sweep: opaque `var(--ink)` measures 1.63 on a
+         #f9a825 fill, and NO light neutral clears ~1.9 there.
+         The amber tick sits on THREE backdrops over the board's range — the empty track (fill
+         below the amber cut), the amber fill, and the red fill — and no SOLID colour clears 3:1 on
+         all three: beating the bright amber fill forces luminance ≤0.13, which is then arithmetically
+         indistinguishable from the near-black track. So the amber hairline is DUAL-TONE, a vertical
+         alternation of the light ink and the near-black page ground: whichever backdrop it lands on,
+         one of the two tones carries it (measured ≥4.6 on every one). Width is untouched at 1px —
+         this is a colour change, not a weight change.
+         GEOMETRY (corrected on review, 2026-07-26 — it is NOT a clean 2px/2px alternation): the
+         track is 7px with 1px borders and `box-sizing: border-box`, so the tick's padding box is
+         5px, and the 4px gradient period truncates to 2px ink / 2px ground / 1px ink — 3 lit rows
+         of 5, which is what resolves to the eye. ⚠ Changing `.lg-bar-track`'s height changes that
+         truncation phase, and with it the lit-row count `scripts/preview/bar-tick-check.mjs`
+         asserts on.
+         The red tick only ever sits on the track or a red fill, where plain ink already measures
+         13.86 / 4.66, so it keeps the base colour — the rule below is explicit rather than implied
+         so both emitted classes resolve to a selector (frontend.md).
+         All figures are read off the rendered PNG by `npm run preview:ticks`, which floors each
+         (tick, backdrop) pair; they are not hand arithmetic. */
+      .lg-bar-tick.a {
+        background: repeating-linear-gradient(180deg, var(--ink) 0 2px, var(--bg) 2px 4px);
+      }
+      .lg-bar-tick.r {
+        background: var(--ink);
+      }
+      /* R1 (2026-07-26): the Stage 0.3 coverage badge (`.lg-cov` / `.lg-cov.partial`, a bare
+         live/capable count after the track) is REMOVED — the fact moved into the pillar bar's tooltip
+         via `coverageClause` (lab.js), and only when `live < capable`. Its selectors are deleted with
+         its markup: a stranded selector is the "classes EMITTED, never STYLED" trap in reverse. */
+      /* EARLY-WARN percentile badge (W4 Stage 4.1): the bare rank in the faint mono register — G1
+         (2026-07-26) dropped the parentheses from the `pct` arm; the dash arms still print `(—)`.
+         D1 (2026-07-26) moved it OUT of the trailing badge strip beside the E bar — it is
+         now emitted by `renderDangerNum` and stacks under the sort-key numeral inside the danger
+         cell's `.lg-glyph`. The `margin-left: 5px` below is the leftover of the old strip position
+         (it separated the badge from the track it used to follow) and is WRONG in the stacked slot,
+         where the badge must sit flush under the numeral — hence the
+         `.df-grid .col-danger .lg-glyph .lg-pct { margin-left: 0 }` override further up. Kept here
+         because the rule is not danger-cell-scoped. */
+      /* `N/M lit` families count stacked under the EW / SN numeral, in the percentile badge's register. */
+      .lg-lit {
+        display: block;
+        font-family: var(--mono);
+        font-size: 0.56rem;
+        line-height: 1;
+        color: var(--faint);
+      }
+      .lg-pct {
+        margin-left: 5px;
+        font-family: var(--mono);
+        font-size: 0.56rem;
+        line-height: 1;
+        color: var(--faint);
+      }
+      /* The `~` (spanned-window) marker in this badge's text register.
+         D3/R3 (2026-07-26) DROPPED the `color: var(--elev)` amber lift: `--elev` is `--state-amber`,
+         so a provenance note was borrowing the band palette and reading as an alert on a calm board.
+         Single-hue commitment — band colour must mean band, and only band.
+         The replacement is the register this page ALREADY uses for "present, but not a clean live
+         number": `.lg-dotv.trend-gated`'s faint + 0.75 + italic. `color` is inherited from `.lg-pct`
+         above (already `var(--faint)`), so only the two remaining channels are restated here.
+         Two channels still mark the cell (slant + the `~` in the text), plus the hover clause. */
+      .lg-pct.est {
+        opacity: 0.75;
+        font-style: italic;
+      }
+      /* X + EXOGENOUS weather glyph (verdicts 6/7) */
+      .lg-exo {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        vertical-align: middle;
+        font-family: var(--mono);
+      }
+      .lg-exo-x {
+        font-size: 0.6rem;
+        letter-spacing: 0.02em;
+        color: var(--faint);
+      }
+      /* signal-grid glyphs — 4-level, ordinal-severity hue; matches board legSpan (·/○/◐/●).
+         Enlarged glyph (i2) with a FIXED column width + a tight line-height, so the bigger
+         glyph does NOT grow table width or row height (rows keep the 5px 8px cell padding). */
+      .df-grid .sig,
+      .df-grid .sig-h {
+        width: 2.1rem;
+      }
+      .df-grid .sig {
+        text-align: center;
+        font-family: var(--mono);
+        /* max glyph that keeps the row height constant: line box must stay under the
+           0.8rem × normal(~1.2) ≈ 0.96rem driver of the text cells */
+        font-size: 1.3rem;
+        line-height: 0.7;
+      }
+      .sg-na {
+        color: var(--faint);
+        opacity: 0.55;
+      }
+      /* OQ-5 Stage 5.4 — the cell's severity rests on an INCOMPLETE member set: ≥1 relevant
+         member carries no observation and was excluded from the max (SignalCell.observed.absent > 0).
+         A dashed underline under the glyph + a superscript absent-count, so a calm-looking ○
+         built on a dead feed is not mistaken for a measured calm. The count sits inside the
+         fixed 2.1rem column (0.5rem, faint) so the row height/width stay put. */
+      .df-grid .sig.sig-absent {
+        border-bottom: 1px dashed var(--elev);
+      }
+      /* B2 (2026-08-07) — NOT an incompleteness mark at all: every member reported, but the one the
+         cell's severity max landed on was RAISED (or resurrected) by the signal-hold window, so this
+         glyph states an EARLIER close than the family's live chips do (SignalCell.held !== null).
+         An OVERLINE, not an underline, precisely because a cell can be held AND absent at once —
+         the two rules then paint on opposite edges and stay separately readable, where a third
+         border-bottom style would silently overwrite one of them. Same 1px/`--elev` as its
+         siblings; SOLID, since nothing about the hold is partial or uncertain. Which member and how
+         many closes are in the drill-down panel (`cell-tip.js`), never in the paint. */
+      .df-grid .sig.sig-held {
+        /* An INSET BOX-SHADOW, not `border-top`, and the difference is load-bearing: the grid is
+           `border-collapse: collapse`, where two 1px solid borders meeting on one edge are resolved
+           by CSS 2.1 §17.6.2.1 — same width, same style, both from cells, so the one FURTHER UP
+           wins. On the topmost body row that opponent is `.df-grid thead th`'s
+           `border-bottom: 1px solid var(--line)`, which therefore swallowed the amber overline
+           whole: the first row could be held and paint nothing (bug, 2026-08-20 — the footnote
+           named the held member while the cell showed no mark). Rows 2..n were unaffected because
+           their opponent is `tbody tr`'s border-bottom, a ROW border, which loses to a cell's.
+           A shadow is painted, not collapsed, so it survives on every row including the first. */
+        box-shadow: inset 0 1px 0 var(--elev);
+      }
+      /* ── the signal-cell DRILL-DOWN PANEL (2026-08-07) ──────────────────────────────────────
+         Replaces the cell's native `title=`: the old one-line string put roster, census and hold
+         provenance at one visual level and printed every calm member. Markup: `cell-tip.js`;
+         open/place/fold: `wireCellTip` (lab.js). ONE panel per grid, `position: fixed` — the grid
+         scrolls horizontally inside .df-grid-wrap, which would clip an in-flow child exactly on the
+         right-hand signal columns. It carries no [title] and no ⓘ: the panel IS the tooltip. */
+      .cell-tip {
+        position: fixed;
+        /* ABOVE .help-bar's 50, deliberately — #dangerField has no z-indexed ancestor on its path to
+           the root, so these two compare directly. Under 640px both are bottom sheets in the same
+           slot, and the drill-down is the thing the reader just tapped, so it wins; dismissing it
+           (Escape, or a tap outside) reveals any help text still open underneath. The earlier
+           comment here claimed the reverse ordering — it was wrong about both the value and the
+           stacking context (review 2026-08-07). */
+        z-index: 60;
+        max-width: min(24rem, calc(100vw - 16px));
+        padding: 8px 10px;
+        font-size: 0.72rem;
+        line-height: 1.45;
+        color: var(--ink);
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: 0 4px 16px rgb(0 0 0 / 45%);
+        /* HOVER PREVIEWS, A CLICK PINS. While unpinned the panel must not swallow pointer events:
+           it sits directly below the cell, so the pointer travelling toward it crosses the next leg
+           row's signal cell and `pointerover` would swap the panel out from under the cursor — the
+           fold, and with it the only place /lab prints per-leg member weights, was unreachable with a
+           mouse (review 2026-08-07). `wireCellTip` adds `.pinned` on click/focus. */
+        pointer-events: none;
+      }
+      .cell-tip[hidden] {
+        display: none;
+      }
+      .cell-tip.pinned {
+        pointer-events: auto; /* pinned — the fold button is now clickable */
+        border-color: var(--elev);
+      }
+      .ct-head {
+        font-family: var(--mono);
+        color: var(--ink);
+        margin-bottom: 6px;
+      }
+      .ct-rows,
+      .ct-folded {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      /* Fixed glyph + weight columns so the states line up as one vertical scan and the weights as
+         another — the thing the `·`-joined string could not do. */
+      .ct-row {
+        display: grid;
+        grid-template-columns: 1.1rem 1fr auto auto;
+        gap: 6px;
+        align-items: baseline;
+      }
+      .ct-glyph {
+        font-family: var(--mono);
+        text-align: center;
+      }
+      .ct-name {
+        overflow-wrap: anywhere;
+      }
+      .ct-weight,
+      .ct-state {
+        font-family: var(--mono);
+        font-size: 0.66rem;
+        color: var(--ink-dim);
+      }
+      /* Member tones — the same ordinal severity ramp the grid glyphs use, so a row and the cell it
+         explains never read as two different vocabularies. `absent` stays distinct from `calm`. */
+      .ct-lit {
+        color: var(--danger); /* the SAME token .sg-lit paints — one ramp, two surfaces */
+      }
+      .ct-elev {
+        color: var(--elev);
+      }
+      .ct-calm {
+        color: var(--ink-dim);
+      }
+      .ct-absent {
+        color: var(--faint);
+      }
+      /* Per-member hold mark — the SAME 1px/`--elev` overline the grid cell wears (`sig-held`), on the
+         one row the hold raised, so a held member out-weighed by a live one still reads held. */
+      .ct-row-held .ct-name {
+        border-top: 1px solid var(--elev);
+      }
+      .ct-fold {
+        margin-top: 6px;
+        padding: 2px 6px;
+        font-size: 0.62rem;
+        color: var(--ink-dim);
+        background: none;
+        border: 1px dashed var(--line);
+        border-radius: 6px;
+        cursor: pointer;
+        min-height: 28px; /* tap target — this fold is the mobile path to the weights */
+      }
+      .ct-fold:hover {
+        color: var(--ink);
+      }
+      .ct-census,
+      .ct-held {
+        margin-top: 6px;
+        padding-top: 5px;
+        border-top: 1px solid var(--line);
+        font-size: 0.66rem;
+        color: var(--ink-dim);
+      }
+      .ct-held {
+        border-top: none;
+        padding-top: 0;
+        margin-top: 3px;
+      }
+      /* Phone: a floating box anchored to a 2.1rem cell is unusable, so the panel becomes a
+         bottom sheet — the same affordance .help-bar uses, which is where a /lab reader already
+         expects explanatory text to appear. `position: fixed` makes this a pure override; the JS
+         still writes left/top, and `inset` wins on specificity-free later declaration order. */
+      @media (max-width: 640px) {
+        .cell-tip {
+          inset: auto 0 0 0 !important;
+          max-width: none;
+          max-height: 45vh;
+          overflow-y: auto;
+          border-radius: 0;
+          border-top: 2px solid var(--accent);
+          font-size: 0.8rem;
+        }
+      }
+      /* Tap-readable hosts (help-bar.js capture handler); `cursor: pointer` is the iOS
+         click-delegation unblocker. Keep in sync with HELP_CARVEOUT_SELECTOR +
+         HELP_TAP_PRIORITY_SELECTOR (help-decorate.js). The `.tile .ids` entry carries the same
+         `:not([data-id])` narrowing as the carve-out (backlog #39): the member leg chips are routed
+         by the MODE-GATED entry on the next line instead. Their only other
+         `cursor: pointer` is `.tile.clickable .ids [data-id]` (the SCENARIO cycle affordance), so
+         without it the Live footnote ([USER] 2026-08-31) never registers on iOS. The phone hit-box
+         rule below stays mode-agnostic. Pinned in `help-decorate.test.js`. */
+      .lab .sec-tip[title],
+      #dangerField [title],
+      #rrgQuadrant [title],
+      .tile .ids [title]:not([data-id]),
+      .tile:not(.clickable) .ids [title][data-id],
+      .tile .t-h[title],
+      .tile .fam-lag[title],
+      #boardLag [title],
+      #bandPanelHost [title],
+      #smGridWrap [title],
+      #sbBody .sb-na[title] {
+        cursor: pointer;
+      }
+      /* The section-title tooltips ([USER] 2026-08-29) — the same two cue recipes the rest of the
+         page uses: a dotted underline on the TEXT hosts (the headings + the families tag), and the
+         faint bg tint on `.bp-chain`, which draws its own border and would collide with a dotted one.
+         `.lg-sectag` is `pointer-events: none` by default (it rides absolutely into padding the board
+         already has); the titled one takes taps back. Phone hit box: only the 0.5rem tag needs one —
+         every other host is a ≥24px heading line already — and it is padding with a compensating
+         negative margin, on an out-of-flow element, so no section's box grows. */
+      .lab h2.sec-tip[title],
+      .lab .lg-sectag.sec-tip[title] {
+        text-decoration: underline dotted var(--faint);
+        text-underline-offset: 3px;
+      }
+      .lab .bp-chain.sec-tip[title] {
+        background-image: linear-gradient(rgba(127, 127, 127, 0.06), rgba(127, 127, 127, 0.06));
+      }
+      .lab .lg-sectag.sec-tip[title] {
+        pointer-events: auto;
+      }
+      @media (max-width: 640px) {
+        /* Block-axis longhands, so `.rd-title`'s own horizontal `--reader-pad` survives (a `padding`
+           shorthand would erase it). Measured by `npm run preview:mobile-audit` §3 — the 1rem
+           headings sit at 23px and the tag at 22px without this.
+           ⚠ This rule is (0,3,0) and every heading below is (0,1,0), so it also overrides whatever
+           BLOCK padding/margin the heading declares for itself. The two headings that declare any
+           re-state theirs below, folded into the ±6px pair — a blanket rule cannot preserve them. */
+        .lab .sec-tip[title] {
+          padding-block: 6px;
+          margin-block: -6px;
+        }
+        /* `.rd-title`: padding-block 12px 0 (`.reader` has padding: 0; the heading owns that gap).
+           The pad grows DOWNWARD only — `.reader` is `overflow-y: auto`, so a negative top margin
+           would hang the hit box over its top border into a clipped region. The bottom −6 keeps the
+           sticky `.picker` exactly where it was. */
+        .lab .rd-title.sec-tip[title] {
+          padding-block: 12px 6px;
+          margin-block: 0 -6px;
+        }
+        /* `.rrg-title`: margin 0 0 4px — the gap to `.rrg-note`. */
+        .lab .rrg-title.sec-tip[title] {
+          margin-block: -6px -2px;
+        }
+        /* The tag is `position: absolute` at `top: 3px` into `.stickyInner`'s 16px pad, so it grows
+           DOWNWARD only: a symmetric pad would push its hit box above the board's own border, over
+           page content scrolling underneath, and steal taps that belong to whatever lands there. */
+        .lab .lg-sectag.sec-tip[title] {
+          padding: 3px 10px 14px;
+          margin: -3px -10px -14px;
+        }
+      }
+      /* Tap cue ([USER] 2026-08-15, the `.sleeve-name[title]` recipe as a low-contrast variant):
+         very faint dotted underline on tap-readable LABELS — /lab's tabs/links own the strong one. */
+      .tile .t-h[title] b,
+      .tile .fam-lag[title],
+      #boardLag .fam-lag[title],
+      .tile .ids .lg-l[title],
+      #sbBody .sb-na[title],
+      #bandPanelHost .bp-floor-basis[title] {
+        text-decoration: underline dotted var(--faint);
+        text-underline-offset: 2px;
+      }
+      /* …and a very faint bg tint on BOX hosts that already draw their own border (floors, member
+         rows, chips, structure-map cells) — a dotted border would collide with those borders. */
+      #smGridWrap .sm-cell[title],
+      #bandPanelHost .bp-floor[data-floor][title],
+      #bandPanelHost .bp-member[title],
+      #bandPanelHost .bp-floor-phase[title],
+      #bandPanelHost .bp-floor-fchip[title] {
+        background-image: linear-gradient(rgba(127, 127, 127, 0.06), rgba(127, 127, 127, 0.06));
+      }
+      /* Phone: grow the smallest carve-out hosts to ≥24px hit boxes — padding (the .help-i recipe),
+         never font-size, with compensating negative margins so pinned ledger column widths survive. */
+      @media (max-width: 640px) {
+        #dangerField .lg-dotv[title],
+        .df-grid .col-mode .mode-glyph[title],
+        #dangerField .lg-arrow[title],
+        #dangerField .lg-exo-x[title],
+        .tile .ids .lg-l[title],
+        .tile .fam-lag[title],
+        #boardLag .fam-lag[title],
+        #sbBody .sb-na[title] {
+          padding: 7px 10px;
+          margin: -7px -10px;
+        }
+        /* Leg chips wrap in a tight row and carry a click action in BOTH modes (cycle in
+           Scenario, footnote in Live) — ±10px horizontal would make an edge tap hit the NEIGHBOR
+           chip: a wrong state change in Scenario, the wrong footnote in Live. */
+        .tile .ids [data-id][title] {
+          padding: 7px 6px;
+          margin: -7px -6px;
+        }
+      }
+      /* the absent-member glyph class (SIG_GLYPH.absent) — paired with its glyph so the pair
+         cannot ship half-styled; today it renders inside the drill-down panel, which
+         paints its own `.ct-absent` tone, and it becomes markup the moment a cellState can read `absent`. */
+      .sg-absent {
+        color: var(--elev);
+        opacity: 0.75;
+      }
+      .df-grid .sig-abs-n {
+        font-size: 0.5rem;
+        font-family: var(--mono);
+        color: var(--elev);
+        vertical-align: super;
+        line-height: 1;
+      }
+      /* §I9.8 J1/J2 — the FEED-LAG marks. Two tiers: `sig-lag-soft` (lag — behind but still
+         reporting) and `sig-lag-deep` (deep lag — the feed broke its own published rhythm).
+         IS-8(b) (2026-07-30): BOTH marks live in the rightmost `Lag` column — they are diagnostics,
+         not operational signal, so they no longer sit inside the signal cells or beside the danger
+         numeral. `.sig-lag` survives for the legend glyphs under `.df-legend` (the collapsed ledger
+         legend since 2026-08-07 — see the `.df-legend .sig-lag` rule below).
+         COLOUR: both tiers paint from the
+         neutral `--lag-diag` / `--lag-diag-hi` ramp declared in :root — NOT `--danger`, which the
+         `sig-lag-deep` arm used to borrow. `--danger` is `--state-red`, the operational alarm ink, so
+         borrowing it made a transient publisher pause read like an F1 RED firing. The ramp separates
+         its two steps by luminance alone and is never a signal colour.
+         (The coverage `⊗` badge below stays on `--danger` deliberately — an unseeable verdict IS an
+         alarm condition and floors the band; it is not a lag mark.) */
+      .sig-lag {
+        font-family: var(--mono);
+        font-size: 0.5rem;
+        vertical-align: super;
+        line-height: 1;
+        opacity: 0.85;
+      }
+      /* the legend reads the same glyphs at running-text size, not as superscripts */
+      .df-legend .sig-lag,
+      .df-legend .sig-abs-n {
+        font-size: inherit;
+        vertical-align: baseline;
+        opacity: 1;
+      }
+      /* B1 — the legend's underline SAMPLE, so the word "dashed" is drawn as the thing it names
+         rather than left to the reader's imagination. Same 1px/`--elev` as the grid rule it stands
+         for (`.df-grid .sig.sig-absent` above). */
+      .df-legend .lg-absent {
+        border-bottom: 1px dashed var(--elev);
+      }
+      /* B2 — the legend's OVERLINE sample, same 1px/`--elev`/solid as the grid rule it stands for. */
+      .df-legend .lg-held {
+        border-top: 1px solid var(--elev);
+      }
+      /* the COVERAGE legend line (2026-08-01, R7), on its OWN always-visible line under the ledger
+         head since 2026-08-07 — it is a LIVE READING of an active degradation, so the legend
+         disclosure must never swallow it (it was previously glued to the tail of the collapsed
+         paragraph). It is its own block element now, so nothing needs a `flex-basis` to put it on a
+         row of its own; the `:empty` collapse still costs a healthy board zero height.
+         NOT a `.sig-lag` sibling: this says the band was floored because we cannot see, not that one
+         feed is merely behind.
+         The `Flip`-named ids/classes below are the pre-rename names, deliberately KEPT (see the
+         class-parity guard in `coverage-marks.test.js`). */
+      #dfFlipLegend:empty {
+        display: none;
+      }
+      .df-live-line {
+        margin: 8px 0 0;
+        font-size: 0.66rem;
+        color: var(--muted);
+      }
+      #dfFlipLegend .df-flip-legend {
+        display: flex;
+        gap: 5px;
+        align-items: baseline;
+      }
+      #dfFlipLegend .sig-flip {
+        color: var(--danger);
+        font-weight: 640;
+      }
+      /* the `⊗` badge on a non-live member chip — red because a verdict we cannot see is an alarm
+         condition (it floors the band at WATCH), and weighted so it reads against the calm/faint
+         leg name it annotates. */
+      .tile .ids .leg-flip {
+        color: var(--danger);
+        font-weight: 640;
+      }
+      /* the `Lag` column itself — a narrow diagnostics gutter at the right edge */
+      .df-grid .col-lag {
+        text-align: right;
+        white-space: nowrap;
+      }
+      /* the per-leg cell-count roll-up (`◌ⁿ`) — the `◌` marks that used to ride in the signal cells */
+      .df-grid .cell-lag {
+        margin-left: 0.25rem;
+        font-family: var(--mono);
+        font-size: 0.8rem;
+      }
+      .df-grid .cell-lag.sig-lag-soft {
+        color: var(--lag-diag);
+      }
+      .df-grid .cell-lag.sig-lag-deep {
+        color: var(--lag-diag-hi);
+      }
+      .df-grid .cell-lag-n {
+        font-size: 0.5rem;
+        vertical-align: super;
+        line-height: 1;
+      }
+      /* the per-leg roll-up (§I9.8 J2), now first mark in the `Lag` column */
+      .df-grid .leg-lag {
+        font-family: var(--mono);
+        font-size: 0.8rem;
+      }
+      .df-grid .leg-lag.sig-lag-soft {
+        color: var(--lag-diag);
+      }
+      .df-grid .leg-lag.sig-lag-deep {
+        color: var(--lag-diag-hi);
+      }
+      /* A4 — no freshness stamp behind this payload, so the column measured NOTHING
+         (`unmeasuredLagMark`, cell-observed.js). Dimmest step of the same neutral ramp: it must not
+         read as either tier of a real lag, nor as the empty happy-path cell. */
+      .df-grid .leg-lag.sig-lag-unmeasured {
+        color: var(--lag-diag);
+        opacity: 0.7;
+      }
+      /* The FAMILIES-BOARD feed-lag roll-up: one `⌁ⁿ`
+         per tile header, plus the residual in the board head for any marked feed on no family's
+         roster (so no lagging feed can vanish from the board). Same two tiers and the SAME colours as
+         the ledger's `Lag` column above — one mark, one meaning, on both surfaces.
+         Every selector is SCOPED to its host (`.tile .t-h` / `.board-head`): `.fam-lag` unscoped
+         would bleed into any future host that reuses the class (the market-mode.js gotcha). */
+      .tile .t-h .t-lag:empty,
+      .board-head .board-lag:empty {
+        display: none;
+      }
+      .tile .t-h .fam-lag,
+      .board-head .fam-lag {
+        font-family: var(--mono);
+        font-size: 0.8rem;
+        line-height: 1;
+      }
+      .tile .t-h .fam-lag.sig-lag-soft,
+      .board-head .fam-lag.sig-lag-soft {
+        color: var(--lag-diag);
+      }
+      .tile .t-h .fam-lag.sig-lag-deep,
+      .board-head .fam-lag.sig-lag-deep {
+        color: var(--lag-diag-hi);
+      }
+      .tile .t-h .fam-lag-n,
+      .board-head .fam-lag-n {
+        font-size: 0.5rem;
+        vertical-align: super;
+        line-height: 1;
+      }
+      /* the footnote justifying the marks (one clause per lagging feed) */
+      .df-foot-lags b {
+        font-weight: 600;
+      }
+      .df-foot-lag {
+        display: inline-block;
+        margin-left: 0.5rem;
+        font-family: var(--mono);
+        font-size: 0.68rem;
+      }
+      /* §4.2 — the feed-lag PANEL (feed-lag-panel.js): the whole registered roster beside the
+         footnote in #dfBelow, as a column table. Status rides the `--fl-*` diagnostic hues (pill +
+         left edge + gauge fill); fresh stays muted. NOT a signal colour. */
+      #feedLagPanel:empty {
+        display: none;
+      }
+      .fl-panel-inner {
+        margin-top: 10px;
+        padding: 10px 12px;
+        background: var(--panel-2);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+      }
+      .fl-toggle {
+        background: none;
+        border: 0;
+        padding: 0;
+        cursor: pointer;
+        font: inherit;
+        font-size: 0.7rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .fl-body {
+        margin-top: 8px;
+      }
+      .fl-note {
+        margin: 0;
+        font-size: 0.68rem;
+        color: var(--faint);
+      }
+      .fl-note.fl-err {
+        color: var(--lag-diag-hi);
+      }
+      .fl-table-wrap {
+        overflow-x: auto;
+      }
+      .fl-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.68rem;
+      }
+      .fl-table th {
+        text-align: left;
+        font-weight: 500;
+        font-size: 0.6rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--faint);
+        padding: 0 8px 4px;
+        border-bottom: 1px solid var(--line);
+        white-space: nowrap;
+      }
+      .fl-table td {
+        padding: 3px 8px;
+        border-bottom: 1px solid var(--line-soft);
+        white-space: nowrap;
+      }
+      .fl-table .fl-num {
+        text-align: right;
+        font-family: var(--mono);
+      }
+      .fl-row {
+        color: var(--muted);
+      }
+      .fl-row > td:first-child {
+        border-left: 3px solid transparent;
+      }
+      .fl-row.fl-st-lag > td:first-child {
+        border-left-color: var(--fl-lag);
+      }
+      .fl-row.fl-st-deep > td:first-child,
+      .fl-row.fl-st-nodata > td:first-child {
+        border-left-color: var(--fl-deep);
+      }
+      .fl-row.fl-st-unmeasured > td:first-child {
+        border-left: 3px dashed var(--lag-diag);
+      }
+      .fl-row.fl-st-lag,
+      .fl-row.fl-st-deep,
+      .fl-row.fl-st-nodata {
+        color: var(--ink-soft);
+      }
+      .fl-name {
+        font-weight: 600;
+      }
+      .fl-u,
+      .fl-when {
+        color: var(--faint);
+        font-size: 0.6rem;
+      }
+      .fl-when {
+        font-style: italic;
+      }
+      .fl-pill {
+        display: inline-block;
+        padding: 0 6px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        font-size: 0.6rem;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        line-height: 1.5;
+      }
+      .fl-pill.fl-st-fresh {
+        color: var(--faint);
+        font-weight: 400;
+      }
+      .fl-pill.fl-st-lag {
+        color: var(--fl-lag);
+        background: var(--fl-lag-wash);
+        border-color: var(--fl-lag);
+      }
+      .fl-pill.fl-st-deep,
+      .fl-pill.fl-st-nodata {
+        color: var(--fl-deep);
+        background: var(--fl-deep-wash);
+        border-color: var(--fl-deep);
+      }
+      .fl-pill.fl-st-unmeasured {
+        color: var(--lag-diag-hi);
+        border: 1px dashed var(--lag-diag);
+      }
+      .fl-gauge-cell {
+        width: 100%;
+        min-width: 4rem;
+      }
+      .fl-gauge {
+        position: relative;
+        display: block;
+        height: 5px;
+        background: var(--line-soft);
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      .fl-gauge-fill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 0;
+        background: var(--lag-diag);
+      }
+      .fl-gauge-fill.fl-st-lag {
+        background: var(--fl-lag);
+      }
+      .fl-gauge-fill.fl-st-deep,
+      .fl-gauge-fill.fl-st-nodata {
+        background: var(--fl-deep);
+      }
+      .fl-gauge-fill.fl-st-unmeasured {
+        background: var(--faint);
+      }
+      .fl-gauge-tick {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 2px;
+        background: var(--ink-soft);
+      }
+      .fl-src {
+        font-family: var(--mono);
+        font-size: 0.62rem;
+      }
+      .fl-src-meas {
+        color: var(--lag-diag-hi);
+      }
+      .fl-src-tier {
+        color: var(--lag-diag);
+      }
+      .fl-src-fetched {
+        color: var(--faint);
+        font-style: italic;
+      }
+      .fl-row.is-unmeasured {
+        color: var(--faint);
+      }
+      .fl-legend {
+        margin: 8px 0 0;
+        line-height: 1.8;
+        font-size: 0.62rem;
+        color: var(--faint);
+      }
+      .sg-calm {
+        color: var(--faint);
+      }
+      .sg-elev {
+        color: var(--elev);
+      }
+      .sg-lit {
+        color: var(--danger);
+      }
+      .df-grid .col-risk {
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        color: var(--faint);
+        text-align: right;
+      }
+      .df-grid .held-mk {
+        color: var(--accent-ink);
+        font-weight: 700;
+      }
+      .df-grid .held-tag {
+        color: var(--accent-ink);
+        font-size: 0.66rem;
+        letter-spacing: 0.04em;
+      }
+      /* #R2 concentration badge (i6 Task 2) — a cluster sibling is elevated; the auto-hold
+         pick skips this leg even though its own-danger bar stays unchanged. */
+      .df-grid .conc-tag {
+        color: var(--elev);
+        font-size: 0.66rem;
+        letter-spacing: 0.02em;
+      }
+      /* Held-leg trajectory — the scenario-only event log between the ledger grid and its footer
+         (`public/held-path.js`; a retired plan). Three columns,
+         `close · held · what changed`; there is deliberately NO band column (the dial is frozen
+         across a walk, so the rung band cannot move). The host collapses to nothing on the live
+         board, where the seam returns "". */
+      #heldPathHost:empty {
+        display: none;
+      }
+      .held-path {
+        overflow-x: auto;
+        margin-top: 12px;
+      }
+      .hp-log {
+        border-collapse: collapse;
+        font-size: 0.74rem;
+        color: var(--muted);
+      }
+      .hp-cap {
+        caption-side: top;
+        text-align: left;
+        padding-bottom: 6px;
+        color: var(--faint);
+        font-size: 0.7rem;
+        letter-spacing: 0.02em;
+      }
+      .hp-log th,
+      .hp-log td {
+        padding: 3px 14px 3px 0;
+        text-align: left;
+        white-space: nowrap;
+      }
+      .hp-log thead th {
+        color: var(--faint);
+        font-weight: 500;
+        border-bottom: 1px solid var(--line);
+      }
+      .hp-close {
+        font-variant-numeric: tabular-nums;
+      }
+      .hp-held {
+        color: var(--ink-soft);
+      }
+      .hp-row.hp-incumbent .hp-held {
+        color: var(--accent-ink);
+        font-weight: 640;
+      }
+      .hp-why {
+        color: var(--faint);
+      }
+      .hp-foot {
+        border-top: 1px solid var(--line);
+        padding-top: 5px;
+      }
+      /* The settled/unsettled split is the one thing this log must not blur: an unsettled walk names
+         no destination, so it reads in the elevated tint rather than as a quiet closing note. */
+      .hp-settled {
+        color: var(--muted);
+      }
+      .hp-unsettled {
+        color: var(--elev);
+      }
+
+      /* ── The UNDER-TABLE disclosure ([USER] 2026-08-29). Everything below the ledger grid — the
+         held-leg trajectory log (`#heldPathHost`) and the footer sentence (`#dfFoot`) — ships
+         COLLAPSED behind `DETAIL ▸`. The grid is the answer; the prose under it is drill-down.
+         `.df-below-toggle` clones `.df-legend-toggle`'s type treatment but sits IN FLOW under the
+         grid (left-aligned), and its small negative top margin eats part of the grid's trailing gap
+         so a closed ledger is barely taller than the table alone. Both hosts stay in the skeleton
+         inside `.df-below`, so the per-board writes into them are unaffected by the collapse. */
+      .df-below-toggle {
+        display: inline-block;
+        margin: 8px 0 0;
+        padding: 4px 6px 6px 0;
+        font: inherit;
+        font-size: 0.55rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        line-height: 1;
+        color: var(--faint);
+        background: none;
+        border: 0;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .df-below-toggle:hover,
+      .df-below-toggle:active,
+      .df-below-toggle[aria-expanded="true"] {
+        color: var(--ink);
+      }
+      .df-below-toggle:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+
+      .df-foot {
+        margin: 12px 0 0;
+        font-size: 0.76rem;
+        color: var(--muted);
+        border-top: 1px dashed var(--line);
+        padding-top: 10px;
+      }
+      .df-foot b {
+        color: var(--ink-soft);
+        font-weight: 640;
+      }
+      .df-foot .held-mk {
+        color: var(--accent-ink);
+        font-weight: 700;
+      }
+      .df-foot-note {
+        color: var(--faint);
+        font-style: italic;
+      }
+
+      /* Overlay-strip cosmetics — one footer line PER OVERLAY under the band/breaker read
+         (`public/overlay-strip.js` paints them; R4 today, R1/R5/Y1 as they land). Each row
+         is `label — headline` + labelled fields + an optional italic note.
+         These were named `.r4-*` while R4 was the only overlay wearing them; renamed generic at
+         Stage 1 (T6) — the point the DOM first showed two rows of which one was not R4. There are
+         deliberately NO `.r4-*` aliases: an alias is what let the R4-specific name survive going
+         generic in the first place. */
+      .df-foot .overlay-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 5px 6px;
+        margin-top: 8px;
+        font-size: 0.72rem;
+        color: var(--muted);
+      }
+      .df-foot .overlay-row .sep {
+        color: var(--line);
+      }
+      .df-foot .overlay-head {
+        color: var(--ink-soft);
+      }
+      .df-foot .overlay-field b {
+        color: var(--ink-soft);
+        font-variant-numeric: tabular-nums;
+      }
+      .df-foot .overlay-note {
+        font-style: italic;
+        color: var(--faint);
+      }
+      /* Danger-ledger group headers + the idle-collapse line (overlay redesign 2026-07-21). The
+         header is a block band above its section's rows; the idle line replaces the decision-now
+         rows when nothing is firing. */
+      .df-foot .overlay-group-head {
+        display: block;
+        margin-top: 10px;
+        font-size: 0.64rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--faint);
+      }
+      .df-foot .overlay-idle {
+        font-style: italic;
+        color: var(--faint);
+      }
+      /* The dd-gate probe line (small-wins §3, 2026-08-01). It is emitted ABOVE the first section
+         head and belongs to no group, so it survives the idle collapse that folds the fall-shape
+         row away on a benign v-shaped fall — which is the exact case where the gate can read
+         "would fire". Given a rule of its own so it does not read as a stray orphan row above the
+         DECISION LOGIC band: a hairline left rule, and no extra top margin. */
+      .df-foot .overlay-ddgate {
+        margin-top: 6px;
+        padding-left: 6px;
+        border-left: 2px solid var(--line);
+      }
+      .df-foot .overlay-ddgate b {
+        color: var(--ink-soft);
+      }
+      /* R1 (2026-07-18) — the re-entry emphasis restored from the deleted `.r4-reentry`/`.r4-climb`
+         rules. A `reentry` row is the ladder climbing back IN, the one direction worth catching an
+         eye on a muted footer; the ◆ carries the cyan at full weight, the row at 600. */
+      .df-foot .overlay-reentry {
+        color: var(--t1-ink);
+        font-weight: 600;
+      }
+      .df-foot .overlay-climb {
+        color: var(--t1-ink);
+        font-weight: 700;
+      }
+      /* On breaker the whole footer turns danger-red; keep every overlay row readable there. */
+      #dangerField.breaker .df-foot .overlay-row,
+      #dangerField.breaker .df-foot .overlay-note {
+        color: var(--ink-soft);
+      }
+
+      /* Rehome A — the held row's attribution expandable. Off by default; a click on the
+         held row toggles `.show-attrib` on the grid (mirrors the .show-rgn column toggle). */
+      .df-grid .df-row.held.has-attrib {
+        cursor: pointer;
+      }
+      .df-grid:not(.show-attrib) .df-attrib {
+        display: none;
+      }
+      .df-grid .df-attrib > td {
+        /* Prose, not a data cell — undo the grid-wide nowrap so it wraps inside `.attrib-fit`. */
+        white-space: normal;
+        padding: 10px 8px 12px;
+        background: var(--panel-2);
+        border-bottom: 1px solid var(--line-soft);
+      }
+      /* Rehome B — R4 breaker override: footer flips to the Cash sentence (set by applyBoard)
+         and the in-band held highlight leaves the sleeve (the hold moved off-ladder to Cash). */
+      #dangerField.breaker .df-grid tbody tr.held {
+        background: transparent;
+      }
+      #dangerField.breaker .df-grid tbody tr.held .held-mk,
+      #dangerField.breaker .df-grid tbody tr.held .held-tag {
+        display: none;
+      }
+      #dangerField.breaker .df-attrib {
+        display: none;
+      }
+      #dangerField.breaker .df-foot {
+        color: var(--danger);
+        border-top-color: var(--danger);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition-duration: 0.001ms !important;
+        }
+      }
+
+      /* ------------------------------------------------- VIEW B — STRUCTURE MAP
+         Section chrome mirrors .danger-field; cell tint reuses the --calm/--elev/--danger
+         tokens (as text + the faint *-wash backgrounds) — NO new colours. */
+      .structure-map { margin-top: var(--gap); background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px 14px; }
+      .sm-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+      .sm-title { font-size: 1rem; font-weight: 680; letter-spacing: -0.01em; margin: 0; }
+      .sm-note { margin-left: auto; font-size: 0.68rem; color: var(--faint); }
+      .sm-grid-wrap { overflow-x: auto; margin-top: 10px; }
+      .sm-grid { border-collapse: collapse; font-size: 0.8rem; }
+      .sm-grid th, .sm-grid td { padding: 5px 9px; text-align: center; white-space: nowrap; border: 1px solid var(--line-soft); }
+      .sm-grid thead th { font-size: 0.62rem; font-weight: 650; letter-spacing: 0.05em; text-transform: uppercase; color: var(--faint); }
+      .sm-grid .sm-corner { border: none; background: transparent; }
+      .sm-grid .sm-row { text-align: left; font-weight: 560; color: var(--ink); text-transform: none; letter-spacing: 0; font-size: 0.72rem; }
+      .sm-cell { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink-soft); }
+      .sm-cell.g { background: var(--calm-wash); color: var(--calm); }
+      .sm-cell.a { background: var(--elev-wash); color: var(--elev); }
+      .sm-cell.r { background: var(--danger-wash); color: var(--danger); }
+      .sm-cell.empty { background: transparent; color: var(--faint); }
+
+      /* ------------------------------------------------- VIEW C — RRG QUADRANT
+         Was injected from lab-board.js until CSP `style-src 'self'` refused the <style>
+         element; the tints are still the shared --calm/--elev/--danger tokens. */
+      #rrgQuadrant { margin-top: 18px; }
+      .rrg-title { font-size: 1rem; font-weight: 680; letter-spacing: -0.01em; margin: 0 0 4px; }
+      .rrg-note { font-size: 0.68rem; opacity: .7; margin: 0 0 8px; }
+      .rrg { position: relative; width: 360px; height: 360px; max-width: 100%; border: 1px solid var(--calm-line); background: #0e1512; }
+      .rrg-vrule { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: #333; }
+      .rrg-hrule { position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: #333; }
+      .rrg-leg { position: absolute; transform: translateY(-50%); white-space: nowrap; font-size: 0.62rem;
+        line-height: 1; font-weight: 700; padding: 0 2px; border: 1px solid #fff; border-radius: 2px; background: #0e1512; }
+      /* right-half legs END at their x (anchored by the right edge) so a near-dangerous label never
+         runs past the box — on a phone that overflow widened the whole page */
+      .rrg-leg.flip { transform: translate(-100%, -50%); }
+      .rrg-leg.g { color: var(--calm); }
+      .rrg-leg.a { color: var(--elev); }
+      .rrg-leg.r { color: var(--danger); }
+      .rrg-leg.ring { box-shadow: 0 0 0 1px #fff; }
+      /* G3 mode stripe: a 3px left colour bar as an INDEPENDENT channel (::before, NOT border/box-shadow)
+         so the white outline AND the .ring shadow both survive; data-mode present ⇒ reserve the 3px. */
+      .rrg-leg[data-mode] { padding-left: 5px; }
+      .rrg-leg[data-mode]::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+        border-radius: 2px 0 0 2px; background: transparent; }
+      /* single source per mode tint — the ::before stripe and the legend swatch share it (dataviz cat
+         slots 1/3/5/4; normal-vision worst ΔE 19.3, CVD markup↔distribution below floor by USER accept). */
+      .rrg-leg.mode-accum::before,    .rrg-swatch.mode-accum    { background: #3987e5; } /* calm accumulation — blue */
+      .rrg-leg.mode-markup::before,   .rrg-swatch.mode-markup   { background: #199e70; } /* healthy markup — aqua */
+      .rrg-leg.mode-distrib::before,  .rrg-swatch.mode-distrib  { background: #d55181; } /* euphoric distribution — magenta */
+      .rrg-leg.mode-markdown::before, .rrg-swatch.mode-markdown { background: #c98500; } /* risk-off markdown — gold */
+      .rrg-modes { font-size: 0.6rem; opacity: .85; margin: 0 0 2px; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+      .rrg-mode-key { display: inline-flex; align-items: center; gap: 3px; }
+      .rrg-swatch { display: inline-block; width: 10px; height: 4px; border-radius: 2px; flex: none; }
+      .rrg-mode-note { font-size: 0.58rem; opacity: .6; margin: 0 0 8px; }
+      .rrg-axis { position: absolute; font-size: 0.62rem; opacity: .6; pointer-events: none; }
+      .rrg-axis.ax-t { top: 2px; left: 50%; transform: translateX(-50%); }
+      .rrg-axis.ax-b { bottom: 2px; left: 50%; transform: translateX(-50%); }
+      .rrg-axis.ax-l { left: 2px; top: 50%; transform: translateY(-50%); }
+      .rrg-axis.ax-r { right: 2px; top: 50%; transform: translateY(-50%); }
+
+      /* ------------------------------------------------- SCOREBOARD (D9 live gates)
+         Section chrome mirrors .danger-field; verdict pills / flag chips reuse the
+         existing --calm/--elev/--danger washes — NO new colours. */
+      .scoreboard { margin-top: var(--gap); background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px 14px; }
+      .reentry { margin-top: var(--gap); background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px 14px; }
+      .reentry .sm-grid td { white-space: normal; text-align: left; }
+      .reentry .sm-grid { margin-top: 8px; font-size: 0.85rem; }
+      .reentry .reentry-para { font-size: 0.95rem; line-height: 1.55; color: var(--ink-soft); margin: 8px 0 0; max-width: 72ch; }
+      .reentry .reentry-para b { color: var(--ink); }
+      .reentry .reentry-detail { border-top: 1px solid var(--line-soft); padding: 6px 0; font-size: 0.85rem; color: var(--ink-soft); }
+      .reentry .reentry-crit h4, .reentry .reentry-blockers h4 { margin: 10px 0 0; font-size: 0.8rem; font-weight: 650; color: var(--ink); }
+      /* Grid: the 6-column table scrolls inside its wrap at phone width (the wrap's own 10px top gap replaces the grid's); tranche cells nowrap + tabular. */
+      .reentry .sm-grid-wrap .sm-grid { margin-top: 0; }
+      .reentry .reentry-grid .sm-grid td:nth-child(n+4) { white-space: nowrap; text-align: center; font-variant-numeric: tabular-nums; }
+      /* Blockers: tranche heads at least as large as their rows; the holding-box line reads as a blocker, not a note; the nested fold indents under the rows
+         with a faint summary so it never reads as a sibling section; both summaries carry a disclosure marker (flex drops the browser's). */
+      .reentry .reentry-blockers h4 { margin: 14px 0 0; font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+      .reentry .reentry-blockers > summary + h4 { margin-top: 8px; }
+      .reentry .reentry-blockers ul { margin: 4px 0 0; padding-left: 18px; }
+      .reentry .reentry-blockers > .sm-note { margin: 4px 0 0 18px; font-size: 0.8rem; color: var(--elev); }
+      .reentry .reentry-blockers .reentry-detail { border-top: 0; padding: 2px 0 0 18px; }
+      .reentry .reentry-blockers .reentry-detail summary { color: var(--faint); font-size: 0.78rem; }
+      .reentry .reentry-blockers summary::before, .reentry .reentry-grid > summary::before, .reentry .reentry-watch > summary::before { content: "▸"; color: var(--faint); }
+      .reentry .reentry-blockers [open] > summary::before, .reentry .reentry-blockers[open] > summary::before, .reentry .reentry-grid[open] > summary::before, .reentry .reentry-watch[open] > summary::before { content: "▾"; }
+      .reentry .reentry-detail summary { cursor: pointer; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; color: var(--ink); }
+      .reentry .reentry-detail dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; margin: 8px 0 0; }
+      .reentry .reentry-detail dt { color: var(--faint); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; }
+      .reentry .reentry-detail dd { margin: 0; line-height: 1.5; }
+      .reentry .reentry-detail a { color: var(--accent-ink); }
+      .reentry .reentry-rules { margin: 8px 0 0; padding-left: 18px; font-size: 0.85rem; line-height: 1.5; color: var(--ink-soft); max-width: 80ch; }
+      /* Signs & deciding events board: glyph · sign · one-line finding · date chips; detail lives in `title` tooltips. */
+      .reentry .reentry-sign summary { display: grid; grid-template-columns: 1.2em minmax(9em, 16em) minmax(0, 1fr) auto; gap: 10px; align-items: baseline; }
+      .reentry .reentry-glyph { font-weight: 700; }
+      .reentry .lean-0 { color: var(--danger); }
+      .reentry .lean-1 { color: var(--elev); }
+      .reentry .lean-2 { color: var(--calm); }
+      .reentry .lean-3 { color: var(--faint); }
+      .reentry .reentry-find { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink-soft); }
+      .reentry .reentry-when { display: flex; gap: 10px; justify-content: flex-end; white-space: nowrap; font-variant-numeric: tabular-nums; }
+      .reentry .reentry-held { color: var(--faint); }
+      /* The board hint: which board indicators the row feeds — dim, truncates before the chips, never a value ([USER] 2026-10-16). */
+      .reentry .reentry-board { color: var(--faint); min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+      .reentry .reentry-probe { color: var(--faint); }
+      .reentry .reentry-sign summary [title] { cursor: help; text-decoration: underline dotted var(--line); text-underline-offset: 3px; }
+      .reentry .reentry-sign summary .reentry-glyph[title] { text-decoration: none; }
+      .reentry .reentry-dates { margin: 0; padding-left: 16px; }
+      /* Footnotes (`foot`): the marker's title on hover; the numbered list only where nothing hovers. */
+      .reentry .reentry-foot { vertical-align: baseline; font-size: inherit; color: var(--faint); cursor: help; }
+      .reentry .reentry-feet { display: none; margin: 10px 0 0; padding-left: 20px; font-size: 0.72rem; color: var(--faint); }
+      @media (hover: none) { .reentry .reentry-feet { display: block; } }
+      @media (max-width: 640px) {
+        .reentry .reentry-sign summary { grid-template-columns: 1.2em minmax(0, 1fr); }
+        .reentry .reentry-find, .reentry .reentry-when { grid-column: 2; white-space: normal; justify-content: flex-start; flex-wrap: wrap; }
+      }
+      .sb-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+      .sb-title { font-size: 1rem; font-weight: 680; letter-spacing: -0.01em; margin: 0; }
+      .sb-note { margin-left: auto; font-size: 0.68rem; color: var(--faint); }
+      .sb-window, .sb-warming { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); margin: 9px 0 0; }
+      .sb-warming { font-style: italic; }
+      .sb-gates { display: flex; flex-direction: column; gap: 7px; margin-top: 12px; }
+      .sb-gate { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; border: 1px solid var(--line-soft); border-radius: var(--radius-sm); padding: 8px 11px; background: var(--surface); font-size: 0.8rem; }
+      .sb-gate-name { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--faint); min-width: 172px; }
+      .sb-gate-read { color: var(--ink-soft); }
+      .sb-gate-read b, .sb-guard b { color: var(--ink); font-variant-numeric: tabular-nums; }
+      .sb-badge { margin-left: auto; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.06em; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+      .sb-badge.pass { background: var(--calm-wash); color: var(--calm); border: 1px solid var(--calm-line); }
+      .sb-badge.fail { background: var(--danger-wash); color: var(--danger); border: 1px solid var(--danger-line); }
+      .sb-badge.na { background: var(--stub-wash); color: var(--muted); border: 1px solid var(--line); }
+      .sb-na { color: var(--faint); font-style: italic; }
+      .sb-metrics-wrap { overflow-x: auto; margin-top: 12px; }
+      .sb-metrics { border-collapse: collapse; font-size: 0.78rem; }
+      .sb-metrics th, .sb-metrics td { padding: 4px 18px 4px 0; text-align: left; white-space: nowrap; }
+      .sb-metrics thead th { font-size: 0.62rem; font-weight: 650; letter-spacing: 0.05em; text-transform: uppercase; color: var(--faint); border-bottom: 1px solid var(--line); }
+      .sb-metrics tbody th { font-weight: 560; color: var(--ink); }
+      .sb-metrics td { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink-soft); }
+      .sb-metrics td b { color: var(--ink); font-weight: 600; }
+      .sb-guard { margin: 10px 0 0; font-size: 0.76rem; color: var(--muted); }
+      .sb-guard .sep { color: var(--line); }
+      .sb-flag { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.05em; padding: 2px 7px; border-radius: 999px; margin-left: 6px; white-space: nowrap; }
+      .sb-flag.retune { background: var(--elev-wash); color: var(--elev); border: 1px solid var(--elev-line); }
+      .sb-flag.kill { background: var(--danger-wash); color: var(--danger); border: 1px solid var(--danger-line); }
+      .sb-yardstick { margin: 12px 0 0; font-size: 0.7rem; color: var(--faint); font-style: italic; border-top: 1px dashed var(--line); padding-top: 9px; }

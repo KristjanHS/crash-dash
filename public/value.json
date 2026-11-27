@@ -1,0 +1,1792 @@
+{
+  "run": "2026-11-02",
+  "rules": [
+    "The episode box holds every tranche when a coincident and a lead cluster both vote (a strict majority of their live members — see Episode gates), or when a credit or rates sign row blocks; any other BLOCK is shown and holds nothing (phl_orders is context only); below quorum (70 % of members live) T2/T3 hold too; deciding events still hold T2/T3. A gate on an unread feed reads n/a and holds. The gates and the time stop are price facts — never act on an open; the close decides. The XDEV-vs-MA50 display read is never a gate."
+  ],
+  "brief": {
+    "fund": "XDEV (EUR), tracking MSCI World Enhanced Value; MSCI index reset effective 2026-11-30. MU weight: check the 11-30 MSCI reset — never a number from memory.",
+    "primaryTier": [
+      {
+        "name": "TrendForce",
+        "hosts": [
+          "trendforce.com"
+        ]
+      },
+      {
+        "name": "Micron IR",
+        "hosts": [
+          "micron.com"
+        ]
+      },
+      {
+        "name": "the hyperscaler IR pages",
+        "hosts": [
+          "abc.xyz",
+          "microsoft.com",
+          "atmeta.com",
+          "fb.com",
+          "aboutamazon.com"
+        ]
+      },
+      {
+        "name": "BoJ",
+        "hosts": [
+          "boj.or.jp"
+        ]
+      },
+      {
+        "name": "FRED",
+        "hosts": [
+          "fred.stlouisfed.org"
+        ]
+      },
+      {
+        "name": "SEC EDGAR",
+        "hosts": [
+          "sec.gov"
+        ]
+      },
+      {
+        "name": "BLS",
+        "hosts": [
+          "bls.gov"
+        ]
+      }
+    ],
+    "holdsPolicy": "`holds: [\"T2\",\"T3\"]` only on an event landing after the Xetra close (US earnings, FOMC); one landing before the open (CPI, Samsung, BoJ, Korea exports, TSMC, Taiwan-hours mediation) is sign-only, `holds: []` — its close already prices it.",
+    "gates": "credit at T1 — one row, the T1 HY guard absorbed —, veto, HY guard at T2/T3, MU_RS guard, HCX, RSP/SPY·QQQE/QQQ trend, XDEV > MA200, and the time stop",
+    "eventScope": "Micron, DRAM pricing or hyperscaler capex"
+  },
+  "signs": [
+    {
+      "sign": "dram_contract",
+      "label": "UNCHANGED 10-29",
+      "lean": "fizzle",
+      "finding": "No 1Q27 conventional DRAM contract guide has followed TrendForce's 4Q26 +10–15 % q/q call (\"pace moderating\", 09-30); the TrendForce press page through 10-29 carries nothing on contract prices, while the two Korean memory prints came in hot on realized Q3 pricing: SK hynix's Q3 DRAM ASP rose a high-20s % q/q on about 10 % more bits with no Q4 price outlook given (TrendForce News 10-28), and Samsung's Q3 release says strong server demand lifted market prices across all applications and names no Q4 contract pace (Samsung 10-29), 10-29",
+      "why": "the contract GUIDE is the part of the DRAM lead no dash series carries; it feeds the Micron family",
+      "measurable": "bear = TrendForce next-quarter conventional DRAM contract guide ≤ 0 % q/q; neutral = positive but \"moderating\"; fizzle = ≥ +10 % q/q",
+      "block": false,
+      "checked": "2026-11-02",
+      "due": "2026-11-09",
+      "primary": [
+        "https://www.trendforce.com/presscenter/news"
+      ],
+      "search": [
+        "TrendForce DRAM contract price forecast 4Q26 OR 1Q27 QoQ"
+      ],
+      "seed": [
+        "https://www.trendforce.com/price/dram/dram_spot"
+      ],
+      "sources": [
+        {
+          "date": "2026-10-29",
+          "url": "https://news.samsungsemiconductor.com/global/samsung-electronics-announces-third-quarter-2026-results/"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://www.trendforce.com/news/?p=65818"
+        }
+      ],
+      "extendedOn": "2026-11-02"
+    },
+    {
+      "sign": "hbm",
+      "label": "CHANGED",
+      "lean": "fizzle",
+      "finding": "SK hynix finalized 2027 HBM volumes and pricing with major customers on terms reflecting HBM4's higher value, with 14 long-term-agreement customers covering more than half of 2027–28 output and HBM4 set to pass HBM3E in shipments and revenue in 4Q26 (TrendForce News 10-28); Samsung's Q3 release says HBM4 sales were significantly scaled up and 2027 AI demand will far exceed supply (Samsung 10-29); no 2027 oversupply or ASP-cut item sourced; TrendForce's 2027 blended HBM ASP +121 % y/y call (09-29) stands as the only % guide, 10-29",
+      "why": "HBM is Micron's margin engine; an oversupply call or a share loss is the AI-specific path to an MU bear",
+      "measurable": "bear = a sourced 2027 \"HBM oversupply\"/ASP-cut item, Micron share < 15 %, or HBM4 settling < 2× HBM3E; fizzle = 2027 ASP guide ≥ +50 %",
+      "block": false,
+      "checked": "2026-11-02",
+      "due": "2026-11-09",
+      "primary": [
+        "https://www.trendforce.com/presscenter/news"
+      ],
+      "search": [
+        "HBM4 price 2027 Micron SK hynix Samsung oversupply"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-10-29",
+          "url": "https://news.samsungsemiconductor.com/global/samsung-electronics-announces-third-quarter-2026-results/"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://www.trendforce.com/news/?p=65818"
+        }
+      ],
+      "extendedOn": "2026-11-02"
+    },
+    {
+      "sign": "capex",
+      "label": "CHANGED",
+      "lean": "bear (press only)",
+      "finding": "capex bear clause now met alongside the funding one: Microsoft cut its 2026 capex forecast to $170 B from $175 B after a $45.2 B quarter against a $50 B plan, blaming third-party GPU capacity delays into 1H27, not a pullback (CNBC 10-29, TechCrunch 10-30); Alphabet held 2026 at $195–205 B and said 2027 rises significantly, Amazon held 2026 near $220 B with 2027 meaningfully higher, no digestion wording — but the tape punished the spend: Alphabet −12 % on 10-29, its worst day on record, Amazon −7 %, Nasdaq −2.9 % on 10-30, three of four with negative free cash flow and $326 B of 2026 debt raised across the five AI payers (TechCrunch 10-30), 10-30",
+      "why": "a hyperscaler capex cut is the demand-destruction path for memory; AI-capex funding stress is its early form",
+      "measurable": "capex bear = any of the four lowers 2026/27 or says \"digestion/pause\" on the 10-28/29 calls; funding bear = a named AI/DC deal withdrawn, Hyperion < 85 ¢, or ORCL CDS junk-implied; fizzle = all four raise",
+      "block": false,
+      "checked": "2026-11-02",
+      "due": "2026-11-09",
+      "primary": [],
+      "press": [
+        "https://www.theregister.com/data_centre/"
+      ],
+      "search": [
+        "hyperscaler capex guidance cut OR digestion earnings call",
+        "AI data center bond pulled OR repriced",
+        "Section 232 semiconductor tariffs phase 2 date"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-10-30",
+          "url": "https://techcrunch.com/2026/10/30/cracks-are-emerging-in-the-ai-spending-boom/"
+        },
+        {
+          "date": "2026-10-29",
+          "url": "https://www.cnbc.com/2026/10/29/microsoft-google-ai-capex-estimates.html"
+        }
+      ],
+      "extendedOn": "2026-11-02",
+      "leanLog": [
+        {
+          "date": "2026-10-18",
+          "lean": "neutral"
+        },
+        {
+          "date": "2026-10-23",
+          "lean": "bear"
+        }
+      ]
+    },
+    {
+      "sign": "mu_strike",
+      "label": "UNSOURCED",
+      "lean": "bear (press only) (single-source)",
+      "finding": "Taoyuan union held a 24-hour warning strike 10-22 to 10-23 with 11 union officers, not meant to stop production, and warned more workers could join (Focus Taiwan 10-22); Micron answered on 10-23 with a global profit-sharing plan as the Taiwan union struck (Taiwan News 10-23), no Taoyuan settlement or MOU sourced; Taichung signed an agreement 10-21 and dropped mediation, 10-23",
+      "why": "the one dated Micron-specific catalyst: a strike at the Taiwan DRAM fabs hits MU supply and sentiment inside the window",
+      "measurable": "bear = a strike date set or Taichung authorizes; BLOCKING = strike begins or a 48-h ultimatum; fizzle = settlement/MOU",
+      "block": true,
+      "checked": "2026-11-02",
+      "due": "2026-11-02",
+      "primary": [],
+      "press": [
+        "https://www.taiwannews.com.tw/search?keyword=Micron"
+      ],
+      "search": [
+        "Micron Taiwan union strike Taoyuan Taichung"
+      ],
+      "seed": [],
+      "sources": [],
+      "extendedOn": "2026-11-02",
+      "searchNext": [
+        "Micron Taoyuan union profit sharing talks result"
+      ],
+      "blocked": {
+        "on": "2026-10-23"
+      }
+    },
+    {
+      "sign": "jpy_carry",
+      "label": "CHANGED",
+      "lean": "bear",
+      "finding": "BoJ held at 1.25 % on 10-30 by 8–1, Takata dissenting for 1.5 %, and raised its ETF sales pace from January 2027 (BoJ 10-30); the yen firmed only modestly, USD/JPY — intraday 10-30 on a third session of gains, with FXStreet reading core inflation at target as raising a December hike and a fresh intervention warning from Finance Minister Katayama leaving USD/JPY near — (FXStreet 10-30); no carry unwind, and the last CFTC read (week to 10-13) still shows leveraged funds adding to the yen short, 10-30",
+      "why": "a yen carry unwind (Aug-2024) hits crowded semis first; the yen family trips on F17 off its high or on this row's block",
+      "measurable": "bear = carry being added (CFTC JPY spec net short growing or at a record) or Oct-hike pricing > 50 %; BLOCKING = a BoJ hike + hawkish guidance (the 10-30 event's escalationIf) or MoF intervention (the price leg is the probe's F17 read); fizzle = Oct < 25 % and no spec-short build",
+      "block": false,
+      "checked": "2026-11-02",
+      "due": "2026-11-09",
+      "primary": [],
+      "press": [
+        "https://www.fxstreet.com/currencies/usdjpy"
+      ],
+      "search": [
+        "USD/JPY BoJ October hike pricing yen carry unwind"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-10-30",
+          "url": "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2026/k261030a.pdf"
+        },
+        {
+          "date": "2026-10-30",
+          "url": "https://www.fxstreet.com/analysis/usd-jpy-falls-for-third-straight-day-yen-supported-by-boj-decision-202610300727"
+        },
+        {
+          "date": "2026-10-27",
+          "url": "https://www.fxstreet.com/currencies/usdjpy"
+        }
+      ],
+      "extendedOn": "2026-11-02",
+      "leanLog": [
+        {
+          "date": "2026-10-26",
+          "lean": "neutral"
+        },
+        {
+          "date": "2026-10-27",
+          "lean": "bear"
+        }
+      ]
+    },
+    {
+      "sign": "ai_revenue",
+      "label": "CHANGED",
+      "lean": "bear (press only)",
+      "finding": "round cut again: OpenAI lowered its funding target to $20 B from $30 B with a first close expected lower still, led by UAE investors, after the valuation had already slipped to $1.25 T from $1.4 T; WSJ says $11 B is secured so far against a \"tepid\" response from large investors (FT/WSJ via TechCrunch 10-31); Anthropic filed to go public and is expected to draw a high-junk rating, per the FT (TechCrunch 10-30); run rate last ~$50 B end-September with a ≥ $70 B year-end target (Bloomberg 10-08/09), 10-31",
+      "why": "AI end-demand pays for the capex the memory cycle rides; 10-08's OpenAI run-rate report took MU −4.8 %, SMH −2.8 % after the Xetra close",
+      "measurable": "bear = an OpenAI/Anthropic run-rate cut, a repriced or delayed round, ORCL CDS > 203 bp or a junk cut; fizzle = OpenAI run-rate re-confirmed ≥ $65 B",
+      "block": false,
+      "checked": "2026-11-02",
+      "due": "2026-11-09",
+      "primary": [],
+      "search": [
+        "OpenAI annualized revenue run rate",
+        "Anthropic run-rate revenue OR funding round valuation",
+        "Oracle CDS spread OR rating downgrade"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-10-31",
+          "url": "https://techcrunch.com/2026/10/31/openai-reportedly-lowers-funding-target-for-new-round/"
+        },
+        {
+          "date": "2026-10-30",
+          "url": "https://techcrunch.com/2026/10/30/anthropic-expected-to-receive-high-junk-rating-from-credit-agencies-following-ipo-report-says/"
+        }
+      ],
+      "press": [
+        "https://techcrunch.com/category/artificial-intelligence/",
+        "https://www.datacenterknowledge.com/"
+      ],
+      "leanLog": [
+        {
+          "date": "2026-10-16",
+          "lean": "neutral"
+        },
+        {
+          "date": "2026-10-23",
+          "lean": "bear"
+        }
+      ],
+      "extendedOn": "2026-11-02"
+    },
+    {
+      "sign": "rates",
+      "label": "CHANGED",
+      "lean": "fizzle",
+      "finding": "FOMC held at 3.75–4.00 % on 10-28 by 10–2, Cook and Hammack dissenting for +25 bp, the statement saying inflation remains elevated and more information will set the stance, with no hike guidance (Federal Reserve 10-28); the 10y closed 4.93 % on 10-30, under the 5.15 % fizzle line (Mortgage News Daily 10-30); Sep core CPI +0.3 % m/m (BLS 10-14); markets price the next hike for December, 10-30",
+      "why": "a rates BLOCK holds every tranche alone (a box veto row); the rates-shock cluster votes on a 10y + 10y RY jump — a hot CPI or a hawkish FOMC is what trips it",
+      "measurable": "bear = 10y ≥ 5.35 % or core CPI ≥ 0.4 % m/m or Oct hike priced > 50 %; fizzle = 10y < 5.15 % and Oct hike < 25 %",
+      "block": false,
+      "checked": "2026-11-02",
+      "due": "2026-11-09",
+      "primary": [],
+      "press": [
+        "https://www.mortgagenewsdaily.com/treasury/10yr"
+      ],
+      "search": [
+        "US 10-year Treasury yield",
+        "US core CPI September m/m",
+        "FedWatch October hike probability"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-10-30",
+          "url": "https://www.mortgagenewsdaily.com/treasury/10yr"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm"
+        }
+      ],
+      "extendedOn": "2026-11-02",
+      "leanLog": [
+        {
+          "date": "2026-10-23",
+          "lean": "neutral"
+        },
+        {
+          "date": "2026-10-26",
+          "lean": "fizzle"
+        }
+      ]
+    },
+    {
+      "sign": "credit",
+      "label": "CHANGED",
+      "lean": "bear (single-source)",
+      "finding": "CCC OAS — close 10-29, still above the 12.5 % bear line but off its — 10-23 high, while broad HY sits just under its 3.5 % line (FRED BAMLH0A3HYC 10-29); Q3 non-traded BDC tenders: 19 NAV BDCs took requests for 11.5 % of NAV vs 12.7 % in Q2, filled 40 %, $8.2 B unmet, with BCRED, Blue Owl Credit Income and Apollo Debt Solutions all holding payouts to their 5 % caps (Stanger via AltsWire 10-02) — the gating clause stays met, 10-29",
+      "why": "credit is the verdict's live blocker (CCC ≥ 12 % and rising trips the box); private-credit and BDC stress lead HY",
+      "measurable": "bear = CCC ≥ 12.5 % or HY OAS ≥ 3.5 % or a BDC gating Q3 redemptions; fizzle = CCC < 11.5 %",
+      "block": true,
+      "checked": "2026-11-02",
+      "due": "2026-11-02",
+      "primary": [
+        "https://fred.stlouisfed.org/series/BAMLH0A3HYC"
+      ],
+      "search": [
+        "BDC redemption gate OR private credit redemptions limited",
+        "high yield CCC spread widening"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-10-29",
+          "url": "https://fred.stlouisfed.org/series/BAMLH0A3HYC"
+        }
+      ],
+      "extendedOn": "2026-11-02",
+      "blocked": {
+        "on": "2026-10-13"
+      }
+    },
+    {
+      "sign": "kr_chip_ex",
+      "label": "UNCHANGED 11-01",
+      "lean": "bear (press only)",
+      "finding": "Full-month Oct chip exports $56.4 B, +259 % y/y, inside a record $115.3 B total (+93.7 %) and a $42.5 B surplus (MOTIE via Korea Times 11-01); the 1st-20-day window the row scores stays a first sequential fall — Oct 1–20 chips $27.5 B over 13 working days, about $2.1 B per day against about $2.2 B in Sep 1–20 (KCS via Korea Times 10-21), 11-01",
+      "why": "Korea's 1st-20-day chip exports are the earliest hard print of memory demand (Samsung + Hynix ≈ the DRAM/HBM market); a rollover there leads Micron's guide, so it feeds the Micron family",
+      "measurable": "per working day vs the prior month's 1st-20-day window: bear = a sequential fall; BLOCKING = two straight sequential falls; fizzle = a new 1st-20-day record",
+      "block": false,
+      "checked": "2026-11-02",
+      "due": "2026-11-09",
+      "primary": [],
+      "press": [
+        "https://www.koreatimes.co.kr/economy"
+      ],
+      "search": [
+        "Korea exports first 20 days October 2026 semiconductors"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-11-01",
+          "url": "https://www.koreatimes.co.kr/economy/20261101/koreas-monthly-exports-hit-1153-bil-in-oct-on-record-chip-sales"
+        }
+      ],
+      "extendedOn": "2026-11-02",
+      "leanLog": [
+        {
+          "date": "2026-10-11",
+          "lean": "fizzle"
+        },
+        {
+          "date": "2026-10-23",
+          "lean": "bear"
+        }
+      ]
+    },
+    {
+      "sign": "phl_orders",
+      "label": "STALE 10-15",
+      "lean": "neutral",
+      "finding": "Philly Fed new orders (SA diffusion) fell sharply in October but stay just above zero, inside the 0–15 neutral band, after four expanding months (FRED, 10-15); the probe prints the last 3 off FRED NOCDFSA066MSFRBPHI",
+      "why": "context only — US factory demand behind capex orders; feeds no box family and can never block (the probe throws on a block)",
+      "measurable": "bear = below 0 two straight months; neutral = 0 to 15; fizzle = 15 or higher; BLOCKING = none (context row)",
+      "block": false,
+      "checked": "2026-11-02",
+      "due": "2026-11-09",
+      "primary": [
+        "https://fred.stlouisfed.org/series/NOCDFSA066MSFRBPHI"
+      ],
+      "search": [
+        "Philadelphia Fed manufacturing survey new orders October 2026"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-10-15",
+          "url": "https://tradingeconomics.com/united-states/philadelphia-fed-manufacturing-index/news/592373"
+        }
+      ],
+      "extendedOn": "2026-11-02",
+      "leanLog": [
+        {
+          "date": "2026-10-15",
+          "lean": "fizzle"
+        },
+        {
+          "date": "2026-10-23",
+          "lean": "neutral"
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "date": "2026-10-22",
+      "event": "Micron Taichung mediation (Taoyuan strike date any day)",
+      "signs": [
+        "mu_strike"
+      ],
+      "escalationIf": "Taichung votes to strike or Taoyuan names a date",
+      "fizzleIf": "bonus plan accepted by either union",
+      "holds": [],
+      "secondary": false,
+      "status": "escalation: Taoyuan named and held a 24-hour warning strike 10-22 (11 union officers, no production stop); Taichung signed an agreement 10-21 and the mediation was cancelled, 10-22 · called: mu_strike=bear (press only)",
+      "sources": [
+        {
+          "date": "2026-10-22",
+          "url": "https://focustaiwan.tw/business/202610220016"
+        },
+        {
+          "date": "2026-10-22",
+          "url": "https://hwbusters.com/news/micron-strike-begins-in-taoyuan-after-the-taichung-union-signs-its-own-deal/"
+        }
+      ]
+    },
+    {
+      "date": "2026-12-16",
+      "event": "Micron FQ1-27 earnings",
+      "signs": [
+        "hbm",
+        "dram_contract"
+      ],
+      "escalationIf": "weak guide or an HBM/DRAM ASP cut",
+      "fizzleIf": "beat-and-raise",
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "NOT DUE until 2026-12-16"
+    }
+  ],
+  "calendar": [
+    {
+      "date": "2026-11-17",
+      "sign": "hbm",
+      "event": "Nvidia FQ3-27 (IR 11-17 vs TradingView 11-25)",
+      "matters": "FQ4 guide, HBM mix",
+      "verified": false,
+      "verifyChecked": "2026-11-02"
+    },
+    {
+      "date": "2026-11-30",
+      "sign": "hbm",
+      "event": "MSCI Nov review effective (Enhanced Value)",
+      "matters": "MU weight resets in XDEV",
+      "verified": true
+    },
+    {
+      "date": "2026-12-09",
+      "event": "FOMC + SEP",
+      "matters": "2027 dots",
+      "verified": true,
+      "sign": "rates"
+    },
+    {
+      "date": "2026-12-16",
+      "sign": "dram_contract",
+      "event": "Micron FQ1-27 (inferred; PR due ~mid-Nov)",
+      "matters": "FQ2 guide vs $61.5 B, GM trough, capex",
+      "verified": false
+    },
+    {
+      "date": "2026-12-30",
+      "sign": "dram_contract",
+      "event": "TrendForce 1Q27 contract forecast",
+      "matters": "sign of q/q",
+      "verified": false
+    },
+    {
+      "matters": "—",
+      "verified": false,
+      "event": "TSMC Oct monthly sales",
+      "date": "2026-11-10",
+      "dateNote": "Catacal listing; TSMC posts around the 10th",
+      "verifyChecked": "2026-11-02"
+    },
+    {
+      "matters": "—",
+      "verified": false,
+      "event": "US Oct CPI",
+      "date": "2026-11-10",
+      "sign": "rates",
+      "dateNote": "Axis Intelligence listing; the last CPI before the December FOMC"
+    },
+    {
+      "matters": "—",
+      "verified": false,
+      "event": "FOMC (SEP)",
+      "date": "2026-12-09",
+      "sign": "rates",
+      "dateNote": "Admiral Markets / Axis Intelligence listing; the meeting markets price for a hike"
+    }
+  ],
+  "runs": [
+    {
+      "date": "2026-11-02",
+      "t1": "2/3 ✗",
+      "t2": "2/3 ✗",
+      "t3": "2/4 ✗",
+      "live": "✗✗✗"
+    },
+    {
+      "date": "2026-10-28",
+      "t1": "2/3 ✗",
+      "t2": "1/3 ✗",
+      "t3": "2/4 ✗",
+      "live": "✗✗✗ prov."
+    },
+    {
+      "date": "2026-10-27",
+      "t1": "2/3 ✗",
+      "t2": "1/3 ✗",
+      "t3": "1/4 ✗",
+      "live": "✗✗✗ prov."
+    },
+    {
+      "date": "2026-10-26",
+      "t1": "2/3 ✗",
+      "t2": "1/3 ✗",
+      "t3": "1/4 ✗",
+      "live": "✗✗✗ prov."
+    },
+    {
+      "date": "2026-10-23",
+      "t1": "2/3 ✗",
+      "t2": "1/3 ✗",
+      "t3": "1/4 ✗",
+      "live": "✗✗✗ prov."
+    }
+  ],
+  "verdict": {
+    "legs": [
+      {
+        "key": "t1-price",
+        "tranche": "T1",
+        "leg": "price XDEV",
+        "rule": "no new low since the drawdown opened ×5",
+        "gate": false,
+        "value": "—",
+        "verdict": "na",
+        "live": {
+          "value": "—",
+          "verdict": "na"
+        },
+        "tag": {
+          "indicator": "XDEV",
+          "series": [
+            "XDEV"
+          ],
+          "job": "recovery",
+          "agg": "kOfN"
+        }
+      },
+      {
+        "key": "t1-vol",
+        "tranche": "T1",
+        "leg": "vol XDEV realized",
+        "rule": "RV10 cooling | ≤ 1.5× base",
+        "gate": false,
+        "value": "— ≤10.2 (— 11-04)✗ <— (10-28)✗ | ≤17.9✓",
+        "verdict": "met",
+        "live": {
+          "value": "— ≤10.2 (— 11-04)✗ <— (10-29)✗ | ≤17.9✓",
+          "verdict": "met"
+        },
+        "tag": {
+          "indicator": "XDEV",
+          "series": [
+            "XDEV"
+          ],
+          "job": "composite",
+          "agg": "kOfN"
+        }
+      },
+      {
+        "key": "t1-credit",
+        "tranche": "T1",
+        "leg": "gate: credit HY OAS",
+        "rule": "HY ≤ peak − ⅓·(peak − base), base = median of the 20 closes before its shock",
+        "gate": true,
+        "value": "—",
+        "verdict": "na",
+        "live": {
+          "value": "— @11-04 est.",
+          "verdict": "na"
+        },
+        "tag": {
+          "indicator": "HY OAS",
+          "series": [
+            "F1"
+          ],
+          "job": "recovery",
+          "agg": "allOf"
+        }
+      },
+      {
+        "key": "t1-semis",
+        "tranche": "T1",
+        "leg": "semis SEC0 · RS_SMH",
+        "rule": "SEC0 off high > −10%",
+        "gate": false,
+        "value": "-20.5%/-10%",
+        "verdict": "unmet",
+        "live": {
+          "value": "-22.9%/-10% @11-04 est.",
+          "verdict": "unmet"
+        },
+        "tag": {
+          "indicator": "SEC0",
+          "series": [
+            "LEGP_SEMIS"
+          ],
+          "job": "relative",
+          "agg": "kOfN"
+        }
+      },
+      {
+        "key": "t1-rates",
+        "tranche": "T1",
+        "leg": "rates US 10y",
+        "rule": "no close past its since-shock 50% line ×5 (no shock open: no 20-close high)",
+        "gate": false,
+        "value": "4.95/5.11 (10-05)",
+        "verdict": "met",
+        "count": {
+          "got": 5,
+          "need": 5
+        },
+        "live": {
+          "value": "4.88/5.11 (10-05)",
+          "verdict": "met",
+          "count": {
+            "got": 5,
+            "need": 5
+          }
+        },
+        "tag": {
+          "indicator": "10y",
+          "series": [
+            "R2"
+          ],
+          "job": "relative",
+          "agg": "kOfN"
+        }
+      },
+      {
+        "key": "t1-veto",
+        "tranche": "T1",
+        "leg": "veto: no XDEV/MU crash day",
+        "rule": "XDEV ≥ −3σ · MU > −8% ×5",
+        "tip": "Each of the last 5 daily returns: XDEV no worse than −3σ (σ = sd of the 60 daily log returns before them), Micron no worse than −8%. One crash day in the window holds the third.",
+        "gate": true,
+        "value": "XDEV +0.6%/-2.1% · MU -7.0%/-8%",
+        "verdict": "met",
+        "count": {
+          "got": 5,
+          "need": 5
+        },
+        "live": {
+          "value": "XDEV -0.1%/-2.1% · MU -7.0%/-8% @11-04",
+          "verdict": "met",
+          "count": {
+            "got": 5,
+            "need": 5
+          }
+        },
+        "tag": {
+          "indicator": "XDEV · MU",
+          "series": [
+            "XDEV",
+            "F8"
+          ],
+          "job": "speed",
+          "agg": "allOf",
+          "variant": "σret"
+        }
+      },
+      {
+        "key": "t1-hy-guard",
+        "tranche": "T1",
+        "leg": "guard: HY OAS no new high",
+        "rule": "no close past its since-shock 50% line ×5 (no shock open: no 20-close high)",
+        "gate": true,
+        "value": "—/— (10-30)",
+        "verdict": "unmet",
+        "count": {
+          "got": 2,
+          "need": 5
+        },
+        "live": {
+          "value": "—/— (10-30) @11-04 est.",
+          "verdict": "unmet",
+          "count": {
+            "got": 3,
+            "need": 5
+          }
+        },
+        "tag": {
+          "indicator": "HY OAS",
+          "series": [
+            "F1"
+          ],
+          "job": "relative",
+          "agg": "allOf"
+        }
+      },
+      {
+        "key": "t1-esc",
+        "tranche": "T1",
+        "leg": "gate: escalation box",
+        "rule": "no coincident + lead vote · no credit/rates veto · T2·T3: live ≥ quorum",
+        "tip": "The episode box: credit (coincident), bank-funding (coincident), rates-shock (lead) each vote on a majority of their live members. A coincident and a lead vote together, or a credit or rates sign row's block alone, hold every third; under quorum (too few members readable) the second and last thirds hold too.",
+        "gate": true,
+        "value": "votes credit · veto credit · live 3/3 need 3",
+        "verdict": "unmet",
+        "live": {
+          "value": "votes credit · veto credit · live 3/3 need 3 @11-04 est.",
+          "verdict": "unmet"
+        },
+        "tag": {
+          "indicator": "escalation box",
+          "series": [
+            "KBE",
+            "F17",
+            "R2",
+            "F1",
+            "KBE_RS",
+            "R4"
+          ],
+          "job": "composite",
+          "agg": "allOf"
+        }
+      },
+      {
+        "key": "t2-price",
+        "tranche": "T2",
+        "leg": "price XDEV",
+        "rule": "no new low since the drawdown opened ×15",
+        "gate": false,
+        "value": "—",
+        "verdict": "na",
+        "live": {
+          "value": "—",
+          "verdict": "na"
+        },
+        "tag": {
+          "indicator": "XDEV",
+          "series": [
+            "XDEV"
+          ],
+          "job": "recovery",
+          "agg": "kOfN"
+        }
+      },
+      {
+        "key": "t2-vol",
+        "tranche": "T2",
+        "leg": "vol XDEV realized",
+        "rule": "RV10 ≤ 1.5× base",
+        "gate": false,
+        "value": "—/17.9",
+        "verdict": "met",
+        "live": {
+          "value": "—/17.9",
+          "verdict": "met"
+        },
+        "tag": {
+          "indicator": "XDEV",
+          "series": [
+            "XDEV"
+          ],
+          "job": "recovery",
+          "agg": "kOfN"
+        }
+      },
+      {
+        "key": "t2-credit",
+        "tranche": "T2",
+        "leg": "gate: credit HY OAS",
+        "rule": "HY ≤ peak − ½·(peak − base), base = median of the 20 closes before its shock · peak ≥ 10 closes old",
+        "gate": true,
+        "value": "—",
+        "verdict": "na",
+        "live": {
+          "value": "— @11-04 est.",
+          "verdict": "na"
+        },
+        "tag": {
+          "indicator": "HY OAS",
+          "series": [
+            "F1"
+          ],
+          "job": "recovery",
+          "agg": "allOf"
+        }
+      },
+      {
+        "key": "t2-semis",
+        "tranche": "T2",
+        "leg": "semis SEC0 · RS_SMH",
+        "rule": "RS_SMH > MA10, Δ10 > 0",
+        "gate": false,
+        "value": "0.6576 >MA10 0.6989✗ Δ10 -0.0625 >0✗",
+        "verdict": "unmet",
+        "live": {
+          "value": "0.6576 >MA10 0.6989✗ Δ10 -0.0625 >0✗ @11-04",
+          "verdict": "unmet"
+        },
+        "tag": {
+          "indicator": "RS_SMH",
+          "series": [
+            "RS_SMH"
+          ],
+          "job": "composite",
+          "agg": "kOfN"
+        }
+      },
+      {
+        "key": "t2-rates",
+        "tranche": "T2",
+        "leg": "rates US 10y",
+        "rule": "z(Δ20) < 1 ×5",
+        "gate": false,
+        "value": "z -2.19<1",
+        "verdict": "met",
+        "count": {
+          "got": 5,
+          "need": 5
+        },
+        "live": {
+          "value": "z -2.38<1",
+          "verdict": "met",
+          "count": {
+            "got": 5,
+            "need": 5
+          }
+        },
+        "tag": {
+          "indicator": "10y",
+          "series": [
+            "R2"
+          ],
+          "job": "speed",
+          "agg": "kOfN"
+        }
+      },
+      {
+        "key": "t2-veto",
+        "tranche": "T2",
+        "leg": "veto: no XDEV/MU crash day",
+        "rule": "XDEV ≥ −3σ · MU > −8% ×5",
+        "tip": "Each of the last 5 daily returns: XDEV no worse than −3σ (σ = sd of the 60 daily log returns before them), Micron no worse than −8%. One crash day in the window holds the third.",
+        "gate": true,
+        "value": "XDEV +0.6%/-2.1% · MU -7.0%/-8%",
+        "verdict": "met",
+        "count": {
+          "got": 5,
+          "need": 5
+        },
+        "live": {
+          "value": "XDEV -0.1%/-2.1% · MU -7.0%/-8% @11-04",
+          "verdict": "met",
+          "count": {
+            "got": 5,
+            "need": 5
+          }
+        },
+        "tag": {
+          "indicator": "XDEV · MU",
+          "series": [
+            "XDEV",
+            "F8"
+          ],
+          "job": "speed",
+          "agg": "allOf",
+          "variant": "σret"
+        }
+      },
+      {
+        "key": "t2-hy-guard",
+        "tranche": "T2",
+        "leg": "guard: HY OAS no new high",
+        "rule": "no close past its since-shock 50% line ×10 (no shock open: no 20-close high)",
+        "gate": true,
+        "value": "—/— (10-30)",
+        "verdict": "unmet",
+        "count": {
+          "got": 2,
+          "need": 10
+        },
+        "live": {
+          "value": "—/— (10-30) @11-04 est.",
+          "verdict": "unmet",
+          "count": {
+            "got": 3,
+            "need": 10
+          }
+        },
+        "tag": {
+          "indicator": "HY OAS",
+          "series": [
+            "F1"
+          ],
+          "job": "relative",
+          "agg": "allOf"
+        }
+      },
+      {
+        "key": "t2-mu-rs-guard",
+        "tranche": "T2",
+        "leg": "guard: MU_RS no new low",
+        "rule": "no close past its since-shock 50% line ×10 (no shock open: no 20-close low)",
+        "gate": true,
+        "value": "1.5770/1.6754 (10-14)",
+        "verdict": "unmet",
+        "count": {
+          "got": 0,
+          "need": 10
+        },
+        "live": {
+          "value": "1.5770/1.6754 (10-14) @11-04",
+          "verdict": "unmet",
+          "count": {
+            "got": 0,
+            "need": 10
+          }
+        },
+        "tag": {
+          "indicator": "MU_RS",
+          "series": [
+            "MU_RS"
+          ],
+          "job": "relative",
+          "agg": "allOf"
+        }
+      },
+      {
+        "key": "t2-hcx-gate",
+        "tranche": "T2",
+        "leg": "gate: capex basket HCX not RED",
+        "rule": "HCX registry state ≠ RED",
+        "gate": true,
+        "value": "GREEN -7.0%",
+        "verdict": "met",
+        "live": {
+          "value": "GREEN -7.0% @11-04",
+          "verdict": "met"
+        },
+        "tag": {
+          "indicator": "HCX",
+          "series": [
+            "HCX"
+          ],
+          "job": "level",
+          "agg": "allOf"
+        }
+      },
+      {
+        "key": "t2-ew-trend",
+        "tranche": "T2",
+        "leg": "confirm: equal-weight RSP/SPY · QQQE/QQQ trend",
+        "rule": "MA20 > MA50, either",
+        "tip": "Equal-weight vs cap-weight ratios RSP/SPY and QQQE/QQQ: either one's 20-close MA above its 50-close MA — breadth widening, not a rally carried by the megacaps.",
+        "gate": true,
+        "value": "RSP_SPY 0.2819/0.2802✓ · QQQE_QQQ 0.1654/0.1653✓",
+        "verdict": "met",
+        "live": {
+          "value": "RSP_SPY 0.2819/0.2802✓ · QQQE_QQQ 0.1654/0.1653✓ @11-04",
+          "verdict": "met"
+        },
+        "tag": {
+          "indicator": "RSP/SPY · QQQE/QQQ",
+          "series": [
+            "RSP_SPY",
+            "QQQE_QQQ"
+          ],
+          "job": "regime",
+          "agg": "allOf"
+        }
+      },
+      {
+        "key": "t2-esc",
+        "tranche": "T2",
+        "leg": "gate: escalation box",
+        "rule": "no coincident + lead vote · no credit/rates veto · T2·T3: live ≥ quorum",
+        "tip": "The episode box: credit (coincident), bank-funding (coincident), rates-shock (lead) each vote on a majority of their live members. A coincident and a lead vote together, or a credit or rates sign row's block alone, hold every third; under quorum (too few members readable) the second and last thirds hold too.",
+        "gate": true,
+        "value": "votes credit · veto credit · live 3/3 need 3",
+        "verdict": "unmet",
+        "live": {
+          "value": "votes credit · veto credit · live 3/3 need 3 @11-04 est.",
+          "verdict": "unmet"
+        },
+        "tag": {
+          "indicator": "escalation box",
+          "series": [
+            "KBE",
+            "F17",
+            "R2",
+            "F1",
+            "KBE_RS",
+            "R4"
+          ],
+          "job": "composite",
+          "agg": "allOf"
+        }
+      },
+      {
+        "key": "t3-price",
+        "tranche": "T3",
+        "leg": "price XDEV",
+        "rule": "> MA50, MA50 rising",
+        "gate": false,
+        "value": "— >MA50 —✗ · MA50 — >— (10-21)✓",
+        "verdict": "unmet",
+        "live": {
+          "value": "— >MA50 —✗ · MA50 — >— (10-22)✓",
+          "verdict": "unmet"
+        },
+        "tag": {
+          "indicator": "XDEV",
+          "series": [
+            "XDEV"
+          ],
+          "job": "regime",
+          "agg": "kOfN"
+        }
+      },
+      {
+        "key": "t3-vol",
+        "tranche": "T3",
+        "leg": "vol XDEV realized",
+        "rule": "RV20 ≤ 1.2× base · VIX < 1.2× pre-shock 250d median (latest 250d with no VIX shock open) ×5 or cooling (≥25% off peak, falling ×2)",
+        "gate": false,
+        "value": "RV20 —/14.3✓ · VIX —/20.70✗",
+        "verdict": "unmet",
+        "count": {
+          "got": 1,
+          "need": 5
+        },
+        "live": {
+          "value": "RV20 —/14.3✓ · VIX —/20.70✗",
+          "verdict": "unmet",
+          "count": {
+            "got": 2,
+            "need": 5
+          }
+        },
+        "tag": {
+          "indicator": "XDEV RV · VIX",
+          "series": [
+            "XDEV",
+            "R5"
+          ],
+          "job": "composite",
+          "agg": "kOfN"
+        }
+      },
+      {
+        "key": "t3-credit",
+        "tranche": "T3",
+        "leg": "gate: credit HY OAS",
+        "rule": "HY ≤ peak − ⅔·(peak − base), base = median of the 20 closes before its shock",
+        "gate": true,
+        "value": "—",
+        "verdict": "na",
+        "live": {
+          "value": "— @11-04 est.",
+          "verdict": "na"
+        },
+        "tag": {
+          "indicator": "HY OAS",
+          "series": [
+            "F1"
+          ],
+          "job": "recovery",
+          "agg": "allOf"
+        }
+      },
+      {
+        "key": "t3-semis",
+        "tranche": "T3",
+        "leg": "semis SEC0 · RS_SMH",
+        "rule": "RS_SMH > MA50",
+        "gate": false,
+        "value": "0.6576 >MA50 0.7435✗",
+        "verdict": "unmet",
+        "live": {
+          "value": "0.6576 >MA50 0.7435✗ @11-04",
+          "verdict": "unmet"
+        },
+        "tag": {
+          "indicator": "RS_SMH",
+          "series": [
+            "RS_SMH"
+          ],
+          "job": "regime",
+          "agg": "kOfN"
+        }
+      },
+      {
+        "key": "t3-rates",
+        "tranche": "T3",
+        "leg": "rates US 10y",
+        "rule": "z(Δ20) < 1 ×5",
+        "gate": false,
+        "value": "z -2.19<1",
+        "verdict": "met",
+        "count": {
+          "got": 5,
+          "need": 5
+        },
+        "live": {
+          "value": "z -2.38<1",
+          "verdict": "met",
+          "count": {
+            "got": 5,
+            "need": 5
+          }
+        },
+        "tag": {
+          "indicator": "10y",
+          "series": [
+            "R2"
+          ],
+          "job": "speed",
+          "agg": "kOfN"
+        }
+      },
+      {
+        "key": "t3-hy-guard",
+        "tranche": "T3",
+        "leg": "guard: HY OAS no new high",
+        "rule": "no close past its since-shock 50% line ×10 (no shock open: no 20-close high)",
+        "gate": true,
+        "value": "—/— (10-30)",
+        "verdict": "unmet",
+        "count": {
+          "got": 2,
+          "need": 10
+        },
+        "live": {
+          "value": "—/— (10-30) @11-04 est.",
+          "verdict": "unmet",
+          "count": {
+            "got": 3,
+            "need": 10
+          }
+        },
+        "tag": {
+          "indicator": "HY OAS",
+          "series": [
+            "F1"
+          ],
+          "job": "relative",
+          "agg": "allOf"
+        }
+      },
+      {
+        "key": "t3-mu-rs-guard",
+        "tranche": "T3",
+        "leg": "guard: MU_RS no new low",
+        "rule": "no close past its since-shock 50% line ×10 (no shock open: no 20-close low)",
+        "gate": true,
+        "value": "1.5770/1.6754 (10-14)",
+        "verdict": "unmet",
+        "count": {
+          "got": 0,
+          "need": 10
+        },
+        "live": {
+          "value": "1.5770/1.6754 (10-14) @11-04",
+          "verdict": "unmet",
+          "count": {
+            "got": 0,
+            "need": 10
+          }
+        },
+        "tag": {
+          "indicator": "MU_RS",
+          "series": [
+            "MU_RS"
+          ],
+          "job": "relative",
+          "agg": "allOf"
+        }
+      },
+      {
+        "key": "t3-hcx-gate",
+        "tranche": "T3",
+        "leg": "gate: capex basket HCX not RED",
+        "rule": "HCX registry state ≠ RED",
+        "gate": true,
+        "value": "GREEN -7.0%",
+        "verdict": "met",
+        "live": {
+          "value": "GREEN -7.0% @11-04",
+          "verdict": "met"
+        },
+        "tag": {
+          "indicator": "HCX",
+          "series": [
+            "HCX"
+          ],
+          "job": "level",
+          "agg": "allOf"
+        }
+      },
+      {
+        "key": "t3-ew-trend",
+        "tranche": "T3",
+        "leg": "confirm: equal-weight RSP/SPY · QQQE/QQQ trend",
+        "rule": "MA50 Δ10 > 0, either",
+        "tip": "Equal-weight vs cap-weight ratios RSP/SPY and QQQE/QQQ: either one's 50-close MA above where it stood 10 closes back — breadth widening, not a rally carried by the megacaps.",
+        "gate": true,
+        "value": "RSP_SPY 0.2802/0.2803 (10-21)✗ · QQQE_QQQ 0.1653/0.1661 (10-21)✗",
+        "verdict": "unmet",
+        "live": {
+          "value": "RSP_SPY 0.2802/0.2803 (10-21)✗ · QQQE_QQQ 0.1653/0.1661 (10-21)✗ @11-04",
+          "verdict": "unmet"
+        },
+        "tag": {
+          "indicator": "RSP/SPY · QQQE/QQQ",
+          "series": [
+            "RSP_SPY",
+            "QQQE_QQQ"
+          ],
+          "job": "speed",
+          "agg": "allOf",
+          "variant": "maΔ10"
+        }
+      },
+      {
+        "key": "t3-veto",
+        "tranche": "T3",
+        "leg": "veto: no XDEV/MU crash day",
+        "rule": "XDEV ≥ −3σ · MU > −8% ×5",
+        "tip": "Each of the last 5 daily returns: XDEV no worse than −3σ (σ = sd of the 60 daily log returns before them), Micron no worse than −8%. One crash day in the window holds the third.",
+        "gate": true,
+        "value": "XDEV +0.6%/-2.1% · MU -7.0%/-8%",
+        "verdict": "met",
+        "count": {
+          "got": 5,
+          "need": 5
+        },
+        "live": {
+          "value": "XDEV -0.1%/-2.1% · MU -7.0%/-8% @11-04",
+          "verdict": "met",
+          "count": {
+            "got": 5,
+            "need": 5
+          }
+        },
+        "tag": {
+          "indicator": "XDEV · MU",
+          "series": [
+            "XDEV",
+            "F8"
+          ],
+          "job": "speed",
+          "agg": "allOf",
+          "variant": "σret"
+        }
+      },
+      {
+        "key": "t3-ma200",
+        "tranche": "T3",
+        "leg": "gate: XDEV > MA200",
+        "rule": "close > MA200",
+        "gate": true,
+        "value": "—/66.76",
+        "verdict": "met",
+        "live": {
+          "value": "—/66.85",
+          "verdict": "met"
+        },
+        "tag": {
+          "indicator": "XDEV",
+          "series": [
+            "XDEV"
+          ],
+          "job": "regime",
+          "agg": "allOf"
+        }
+      },
+      {
+        "key": "t3-esc",
+        "tranche": "T3",
+        "leg": "gate: escalation box",
+        "rule": "no coincident + lead vote · no credit/rates veto · T2·T3: live ≥ quorum",
+        "tip": "The episode box: credit (coincident), bank-funding (coincident), rates-shock (lead) each vote on a majority of their live members. A coincident and a lead vote together, or a credit or rates sign row's block alone, hold every third; under quorum (too few members readable) the second and last thirds hold too.",
+        "gate": true,
+        "value": "votes credit · veto credit · live 3/3 need 3",
+        "verdict": "unmet",
+        "live": {
+          "value": "votes credit · veto credit · live 3/3 need 3 @11-04 est.",
+          "verdict": "unmet"
+        },
+        "tag": {
+          "indicator": "escalation box",
+          "series": [
+            "KBE",
+            "F17",
+            "R2",
+            "F1",
+            "KBE_RS",
+            "R4"
+          ],
+          "job": "composite",
+          "agg": "allOf"
+        }
+      }
+    ],
+    "asOf": {
+      "close": "2026-11-04",
+      "live": "2026-11-05",
+      "est": false
+    },
+    "escalation": {
+      "tripped": 1,
+      "need": 2,
+      "hits": [
+        "credit"
+      ],
+      "unread": [],
+      "near": [],
+      "families": [
+        {
+          "name": "Micron",
+          "rule": "sign block only",
+          "value": "—",
+          "verdict": "unmet",
+          "live": {
+            "value": "—",
+            "verdict": "unmet"
+          },
+          "signs": [
+            {
+              "sign": "dram_contract",
+              "lean": "fizzle",
+              "block": false
+            },
+            {
+              "sign": "hbm",
+              "lean": "fizzle",
+              "block": false
+            },
+            {
+              "sign": "mu_strike",
+              "lean": "bear (press only) (single-source)",
+              "block": true
+            },
+            {
+              "sign": "kr_chip_ex",
+              "lean": "bear (press only)",
+              "block": false
+            }
+          ],
+          "tag": {
+            "indicator": "Micron",
+            "series": [],
+            "job": "manual",
+            "agg": "box"
+          }
+        },
+        {
+          "name": "yen",
+          "rule": "USD/JPY ≤ −8% off 15-close high",
+          "value": "JPY -0.2%/-8.0%",
+          "verdict": "met",
+          "live": {
+            "value": "JPY -0.2%/-8.0% @11-04",
+            "verdict": "met"
+          },
+          "signs": [
+            {
+              "sign": "jpy_carry",
+              "lean": "bear",
+              "block": false
+            }
+          ],
+          "tag": {
+            "indicator": "USD/JPY",
+            "series": [
+              "F17"
+            ],
+            "job": "relative",
+            "agg": "box"
+          }
+        },
+        {
+          "name": "capex",
+          "rule": "sign block only",
+          "value": "—",
+          "verdict": "met",
+          "live": {
+            "value": "—",
+            "verdict": "met"
+          },
+          "signs": [
+            {
+              "sign": "capex",
+              "lean": "bear (press only)",
+              "block": false
+            },
+            {
+              "sign": "ai_revenue",
+              "lean": "bear (press only)",
+              "block": false
+            }
+          ],
+          "tag": {
+            "indicator": "capex",
+            "series": [],
+            "job": "manual",
+            "agg": "box"
+          }
+        }
+      ],
+      "clusters": [
+        {
+          "name": "credit",
+          "kind": "coincident",
+          "members": [
+            {
+              "id": "credit_confirms",
+              "cell": "hit",
+              "rule": "HY ≥ 1.1× its MA200",
+              "value": "HY —/3.18 (MA200 —)",
+              "tag": {
+                "indicator": "HY OAS",
+                "series": [
+                  "F1"
+                ],
+                "job": "regime",
+                "agg": "box"
+              },
+              "signs": [
+                {
+                  "sign": "credit",
+                  "lean": "bear (single-source)",
+                  "block": true
+                }
+              ],
+              "live": "HY —/3.18 (MA200 —) @11-04 est.",
+              "liveCell": "hit"
+            }
+          ],
+          "hits": 1,
+          "live": 1,
+          "n": 1,
+          "vote": true
+        },
+        {
+          "name": "bank-funding",
+          "kind": "coincident",
+          "members": [
+            {
+              "id": "kbe_rs_drop",
+              "cell": false,
+              "rule": "KBE/SPY ≤ −10% over 21 closes",
+              "value": "KBE/SPY +7.8%/-10.0%",
+              "tag": {
+                "indicator": "KBE/SPY",
+                "series": [
+                  "KBE_RS"
+                ],
+                "job": "speed",
+                "agg": "box",
+                "variant": "pctΔ21"
+              },
+              "live": "KBE/SPY +7.8%/-10.0% @11-04",
+              "liveCell": false
+            }
+          ],
+          "hits": 0,
+          "live": 1,
+          "n": 1,
+          "vote": false
+        },
+        {
+          "name": "rates-shock",
+          "kind": "lead",
+          "members": [
+            {
+              "id": "rates_jump",
+              "cell": false,
+              "rule": "10y ≥ +50bp ∧ 10y RY ≥ +40bp over 21 closes",
+              "value": "10y -33bp · 10y RY -27bp",
+              "tag": {
+                "indicator": "10y · 10y RY",
+                "series": [
+                  "R2",
+                  "R4"
+                ],
+                "job": "speed",
+                "agg": "box",
+                "variant": "absΔ21"
+              },
+              "signs": [
+                {
+                  "sign": "rates",
+                  "lean": "fizzle",
+                  "block": false
+                }
+              ],
+              "live": "10y -39bp · 10y RY -31bp @11-04 est.",
+              "liveCell": false
+            }
+          ],
+          "hits": 0,
+          "live": 1,
+          "n": 1,
+          "vote": false
+        }
+      ],
+      "veto": [
+        "credit"
+      ],
+      "quorum": {
+        "live": 3,
+        "n": 3,
+        "need": 3,
+        "t1Only": false
+      },
+      "hold": true
+    },
+    "regime": {
+      "set": "entry"
+    },
+    "display": {
+      "maN": 50,
+      "vsMa": -0.015928825661328028,
+      "zoneSince": "2026-10-30"
+    },
+    "tranches": [
+      {
+        "id": "T1",
+        "met": 2,
+        "total": 3,
+        "need": 1,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "na",
+          "met",
+          "unmet",
+          "unmet"
+        ],
+        "filledSince": null
+      },
+      {
+        "id": "T2",
+        "met": 2,
+        "total": 3,
+        "need": 2,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "na",
+          "met",
+          "unmet",
+          "unmet",
+          "met",
+          "met",
+          "unmet"
+        ],
+        "filledSince": null
+      },
+      {
+        "id": "T3",
+        "met": 1,
+        "total": 4,
+        "need": 3,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "na",
+          "unmet",
+          "unmet",
+          "met",
+          "unmet",
+          "met",
+          "met",
+          "unmet"
+        ],
+        "filledSince": null
+      }
+    ],
+    "live": [
+      {
+        "id": "T1",
+        "met": 2,
+        "total": 3,
+        "need": 1,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "na",
+          "met",
+          "unmet",
+          "unmet"
+        ],
+        "filledSince": null
+      },
+      {
+        "id": "T2",
+        "met": 2,
+        "total": 3,
+        "need": 2,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "na",
+          "met",
+          "unmet",
+          "unmet",
+          "met",
+          "met",
+          "unmet"
+        ],
+        "filledSince": null
+      },
+      {
+        "id": "T3",
+        "met": 1,
+        "total": 4,
+        "need": 3,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "na",
+          "unmet",
+          "unmet",
+          "met",
+          "unmet",
+          "met",
+          "met",
+          "unmet"
+        ],
+        "filledSince": null
+      }
+    ],
+    "prov": true
+  },
+  "runAt": "2026-11-02T07:07:12.979Z",
+  "situation": {
+    "lean": "Stay out: credit stress still shuts every tranche, and the late-October hyperscaler round turned the capex signal bear alongside the AI-funding one. Rates and the yen both landed on the calm side, so the bear tilt now rests on credit, capex and AI funding rather than on policy.",
+    "slow": "The grind is credit and AI-debt funding: CCC spreads sit above the bear line while broad high yield stays tight, and non-traded BDCs keep capping withdrawals. Korean chip exports per working day slipped against September for the first time this cycle, and Philly Fed new orders fell back into the neutral range.",
+    "fast": "The gap risk has moved from policy to AI-spend repricing: Alphabet's worst day on record and Amazon's drop after the late-October calls show the market punishing raised spend, and the Nvidia print in mid-November is the next after-hours trigger. Before the open, TSMC's October sales and the US October inflation print can reprice memory and rate expectations.",
+    "decides": "The FOMC, Samsung and the BoJ all landed calm on 10-28 to 10-30 and released their holds; Micron's FQ1 in December is the next event that holds the larger tranches. US October inflation on 11-10 and TSMC's October sales land before the open and are sign-only; the December FOMC with projections lands after the close.",
+    "flips": "The lean moves a group toward fizzle only on credit: a CCC spread back under the fizzle line, or a Q3 BDC tender round that fills requests in full. It moves to bear outright on a hyperscaler guiding 2027 capex flat or down, a second straight fall in Korean chip exports per working day, a December BoJ hike that snaps the carry trade, or a wider Taoyuan strike that touches production."
+  },
+  "scannedOn": "2026-10-28",
+  "eventsDone": [
+    {
+      "date": "2026-10-13",
+      "event": "US bank Q3 results",
+      "signs": [
+        "credit"
+      ],
+      "holds": [],
+      "secondary": false,
+      "status": "escalation: JPMorgan 3Q26 provision for credit losses $2,743 M vs $2,515 M in 2Q26 (+9 % q/q; CIB $663 M vs $356 M), allowance built ~$120 M; private-credit marks not disclosed in the supplement, 10-13"
+    },
+    {
+      "date": "2026-10-14",
+      "event": "US Sep CPI",
+      "signs": [
+        "rates"
+      ],
+      "holds": [],
+      "secondary": false,
+      "status": "fizzle: core CPI +0.3 % m/m (headline +0.6 %, core 2.6 % y/y), under the 0.4 % escalation line though above the 0.2 % fizzle line — no escalation, BLS 10-14"
+    },
+    {
+      "date": "2026-10-21",
+      "event": "Meta Q3 (after close)",
+      "signs": [
+        "capex"
+      ],
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "fizzle: 2026 capex narrowed to $135–145 B (floor up from $130 B), 2027 budget \"still developing\" with \"continue investing aggressively\" — no 2027 cut, no digestion, no 2027 figure, 10-21 · called: capex=neutral",
+      "sources": [
+        {
+          "date": "2026-10-21",
+          "url": "https://www.sec.gov/Archives/edgar/data/0001326801/000162828026066700/meta-09302026xexhibit991.htm"
+        },
+        {
+          "date": "2026-10-21",
+          "url": "https://www.aichatdaily.com/ai-business/meta-narrows-2026-capex-135b-145b-plans-nonvoting"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-28",
+      "event": "FOMC (no SEP)",
+      "signs": [
+        "rates"
+      ],
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "fizzle: hold at 3.75–4.00 %, vote 10–2 with Cook and Hammack dissenting for +25 bp; statement says inflation remains elevated and more information will determine the stance — no hike, no guidance toward one, 10-28 · called: rates=fizzle (press only)",
+      "sources": [
+        {
+          "date": "2026-10-28",
+          "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://investinglive.com/central-banks/fomc-decision-oct-28/"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-29",
+      "event": "Samsung Q3 final (10:00 KST)",
+      "signs": [
+        "dram_contract",
+        "hbm"
+      ],
+      "holds": [],
+      "secondary": false,
+      "status": "fizzle: DS revenue 147.1 T won and operating profit 106.5 T won (margin 72.4 %), DS sales +15 % q/q, HBM4 sales significantly scaled up; 2026 capex 84.4 T won with DS 76.8 T won up 29.3 T won y/y and 2027 AI-infra capex expected at a historic level — no DS shortfall under 100 T won, no capex cut, 10-29 · called: dram_contract=fizzle, hbm=fizzle (press only)",
+      "sources": [
+        {
+          "date": "2026-10-29",
+          "url": "https://news.samsungsemiconductor.com/global/samsung-electronics-announces-third-quarter-2026-results/"
+        },
+        {
+          "date": "2026-10-29",
+          "url": "https://www.koreatimes.co.kr/business/companies/20261029/samsung-electronics-logs-q3-operating-profit-of-804-bil"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-30",
+      "event": "BoJ MPM + Outlook",
+      "signs": [
+        "jpy_carry"
+      ],
+      "holds": [],
+      "secondary": false,
+      "status": "fizzle: hold at 1.25 %, vote 8–1 with Takata proposing 1.5 %, ETF sales pace raised from January 2027; the yen firmed only modestly (FXStreet 157.32 intraday 10-30), no hike, no spike, 10-30 · called: jpy_carry=bear",
+      "sources": [
+        {
+          "date": "2026-10-30",
+          "url": "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2026/k261030a.pdf"
+        },
+        {
+          "date": "2026-10-30",
+          "url": "https://www.fxstreet.com/analysis/usd-jpy-falls-for-third-straight-day-yen-supported-by-boj-decision-202610300727"
+        }
+      ]
+    }
+  ]
+}

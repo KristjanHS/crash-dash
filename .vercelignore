@@ -1,0 +1,8 @@
+# Test files must NEVER be deployed. Vercel turns every file under api/ into a
+# Serverless Function, so *.test.ts counted against the Hobby plan's hard cap of
+# 12 functions/deployment (6 test files = 6 wasted slots). Excluding them here
+# keeps the deployed count = real functions only. Guarded by api/deploy-budget.test.ts.
+*.test.ts
+*.test.js
+# vitest snapshots sit beside the FE suites under public/, the static deploy root.
+__snapshots__/

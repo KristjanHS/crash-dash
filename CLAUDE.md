@@ -1,0 +1,57 @@
+# crash-dash — Claude instructions
+
+Signal-driven **rotation-guidance** dashboard: a notify-only gauge of which risk-laddered legs to hold as market danger shifts, from aggressive equities down to cash. **Node 24 + TypeScript**.
+**No paid components (hard constraint):** free tiers only — never propose a paid tier/add-on; a free API key is fine (keyless is a mild preference). Caps → `docs/reference.md` §[prod] 7. Run `npm start`. Stack, deps, the verification gate and import conventions →
+`.claude/rules/dev-workflow.md` (auto-loads on `*.ts`) — it is the single source for what the gate is and
+what it does not cover; don't restate the command here.
+
+## Goal & design
+**Mission (refocused 2026-07-11):** signal-driven **rotation guidance** — turn market-danger signals into
+which of a 9-leg total-risk ladder to hold (aggressive equities → cash), notify-only. The founding US
+big-tech / nasdaq crash-detection goal is **retired**. Strategy is FORMING (spine locked D1–D5 + metric;
+opens #4–#8). **The live code
+today is still the crash-detection base** below, being evolved toward it.
+
+Canonical design (as-built): `bigtech-crash-dashboard-design-v4.md`. Durable load-bearing gotchas:
+`docs/reference.md` §[arch] 9. Cross-file design invariants — plus §[live], the standing closures and live constraints (`grep -n '^## '` is the index). Open decisions + assistant-owed follow-ups: `docs/backlog.md`; auto-memory `project_state.md` holds only the live pointer.
+**Writable `.md` targets** — `docs/plans/**`, `reference.md`, `backlog.md`, the two `*-provenance.md`, `claim-verification*`, `public/{eufin,value,semis,spit,sp500}.json` (`/eufin` / `/value` / `/semis` / `/spit` / `/sp500` only; the leg md renders locally, gitignored) (+ auto-memory `MEMORY.md`/`project_state.md` under `~/.claude/`, README §Agent tooling), plus auto-memory `<topic>.md` frozen-but-not-sealed (a mint only against a deletion in the same write); every other `.md` is read-only. Admission rows: `.claude/rules/doc-writing.md`.
+The dashboard currently fetches indicators (FRED credit spreads),
+scores each Green/Amber/Red (per-site confirmation buffers — indicator-level is same-day, the 2-close fold
+survives on the state-series folds — are enumerated in `FOLD_BY_SITE`, `src/domain-fold.ts`),
+rolls them into a FIN score, and maps
+that to an alert ladder (OK/WATCH/WARNING/CRITICAL) pushed to ntfy — this danger engine becomes the
+rotation ladder's band-selection axis.
+
+## Source map
+| File | Role |
+|---|---|
+| `src/registry-*.ts` → `scorers-*.ts` → `domain-*.ts` | The acyclic indicator stack — no barrels, import the defining file: `registry-{fred,price,composite,geo}.ts` (Indicator configs; `ALL_INDICATORS` assembly in `registry.ts`) → `scorers-core.ts` (engine: `buildReadings`/`ratioReadingSeries`/generic FRED+derived scorers) → `scorers-price.ts` (bespoke price scorers) → `scorers-composite.ts` (multi-input composites) → the one-way chain `domain-types.ts` (shared types + kernel constants, zero imports) → `domain-cuts.ts` (`resolveCuts`, calibration cuts) → `domain-legs.ts` (`evaluateLegs`/`winningLeg`, OR-leg attribution) → `domain-fold.ts` (`deriveConfirmedState`, the 2-close fold + per-day scoring loop). |
+| `src/fred.ts` | Keyless FRED CSV fetch + parse (data layer) |
+| `src/prices.ts` | Daily adjusted-close feed for price-based indicators (F4/F5/F6/F8/F13 + debug series). No free source serves daily closes, so these run on degraded inputs |
+| `src/geo.ts` + `config.json` | GEO channel (hybrid): `loadGeoActiveCount()` counts manual flags from `config.json` (static import, edit = redeploy) **+** auto G1 oil shock — `scoreOil(G1)` over live keyless FRED `DCOILWTICO` (`scorers-core.ts`), fetched via `confirmers.ts` (`FAST_CONFIRMERS`, wired from `run-cycle-confirmers.ts`). Manual count feeds `computeAlertBand` (`alert-band.ts`) as `geoFlags`; auto oil is read off `readings` |
+| `src/ladder.ts` | Alert-ladder types + notify decisions (`ALERT_RANK`, `decideNotify`); band math in `alert-band.ts`, danger model in `danger-ladder.ts` (`computeVerdict` retired 2026-07-15) |
+| `src/ntfy.ts` | Push notification (notify layer) |
+| `src/store.ts` | Persistence seam: `getStore()` → `SupabaseStore`, fails loud without `SUPABASE_URL`+`SUPABASE_SERVICE_KEY`; `InMemoryStore` fake → `store-memory.ts` (v4 §6.7). Peeled leaves it imports: `store-rows.ts` (`alert_log` column maps, `alertRow`/`rowToAlert`/`utcFiredDate`) · `store-guards.ts` (`paginateRows`/`assertNotTruncated`/`bucketShortfallIds`) |
+| `src/run.ts` | CLI entry only (`npm start`) — the loop is `run-core.ts` (pure assemble + forward walk) → `run-cycle.ts` (IO shell: fetch → assemble → push → persist; stages in `run-cycle-{confirmers,ctx,dial,estimates,exposure,feeds,fred,graft,persist,push,seed-tail}.ts`) → `run-seeds.ts` (post-persist seeds) |
+| `src/dashboard.*.test.ts` | The ex-`dashboard.test.ts` suite, split by subject 2026-08-09: `.fold` (2-close fold, series-as-primitive contracts, `FOLD_BY_SITE`) · `.score-indicator` (generic scoreIndicator legs, registry level edges, F9 σ/CUSUM, R6/R7) · `.cuts` (resolver, measured-cut swap, `resolveBands`) · `.synth-cuts` (synthesized priors, expanding-percentile cuts) · `.composites` (ratio spreads, FX haven, global trend/breadth, dispersion, oil) · `.notify` (`buildNotification` + `assembleRun`) · `.price-scorers` (F4/F5/F6/F8/F13, downside break, NVDA gate). Shared fixtures: `src/dashboard.test-helpers.ts` (NOT a `.test.ts` — vitest would collect it) |
+| `src/danger-engine.*.test.ts` | The ex-`danger-engine.test.ts` suite, split by subject 2026-08-09: `.basics` (derived pillar super-groups, held-pick knobs, `computeField` fixture parity, `familiesLit`) · `.deadband-momentum` (calmest-in-band pick, directional deadband, opt-in momentum) · `.concentration` (#R2 concentration cap, DISP-wide cluster) · `.exogenous` (the `gp` term, CONFIRMING veto, `FAMILY_MEMBERS` derivation) · `.growth-hold` (growth tiebreak, held member-state builders) · `.stand-ins` (the OQ-5 stand-in roster lint over the danger path's `??`/`|| 0` defaults). Shared fixtures: `src/danger-engine.test-helpers.ts` (NOT a `.test.ts` — vitest would collect it) |
+| `src/run.wiring.*.test.ts` | The `run.wiring.test.ts` suite, split by `run-cycle-*.ts` stage: core (`degrade()` collector + all-GREEN cross-stage smoke) · `.feeds` (fetch layer) · `.secondary-feeds` (confirmers + global feeds) · `.dial` · `.estimates` · `.intraday` (graft) · `.persist` (+ push). Shared fixtures: `src/run.test-helpers.ts` (NOT a `.test.ts`) |
+| `scripts/capture-core9-baseline.snapshot.json` | ⛔ **NEVER `Read` it** — a generated baseline, not a source of truth. Regenerate with `npm run probe:core9` and commit in the same commit; `scripts/capture-core9-baseline.test.ts` carries that command inside its own assertion message, so a drift announces its own fix. |
+| `openapi.yaml` + `src/api/types.ts` | Read-API contract + mirrored TS types |
+| `api/` | Live Vercel read-API handlers + cron (repo-root, NOT `src/api/`, which is types only). **Exactly 8, pinned by `api/deploy-budget.test.ts`** — extend an existing response, never add a 9th; new handler logic → `src/api-routes/<handler>-<view>.ts` (the handler only parses, dispatches, serializes; existing code is NOT moved); handler-less public URLs are `vercel.json` rewrites → `docs/reference.md` §[prod] Appendix (Live-endpoint inventory). |
+| `src/t1dial.ts` + `danger-engine.ts` + `danger-member-state.ts` + `families.ts` | T1 dial + family panel + 9-leg danger engine (member-obs builders = 3rd file, no barrel) — on a DIAL run the dial band is the notify band's **floor**, never equality: `run-core.ts` persists the two separately and they differ. ⚠ Dial-less runs (`reason: "no-dial"`) persist `dialBand: null` — invariant off. Pinned in `alert-band.floors.test.ts`. Also reused by `api/lab.ts` |
+| `src/danger-ladder.ts` + `docs/member-weight-provenance.md` | The hand-set weight/timing tables (`MEMBER_WEIGHT`, `FAMILY_LEG_WEIGHT`, `TIMING_CLASS`, `LEG_FIELD`) — constants only, no IO. The `.ts` file carries ONLY the invariants that bind an edit; the per-row live constraints live in the provenance doc. **Before retuning a cell, read that doc's `## Read/write protocol` and follow it** — a section-scoped read, never the whole file. |
+| `src/registry.ts` + `docs/indicator-cut-provenance.md` | Same split, one layer down (`registry.ts` = the cross-family assembly over `registry-{fred,price,composite,geo}.ts`): the split is the only source of the live cut values and carries the invariants that bind an edit. **Before moving a cut, read the provenance doc's `## Read/write protocol` and follow it** — section-scoped, never the whole file. |
+| `supabase/migrations/` | Versioned DDL (readings + alert_log, RLS-on) — single schema source |
+| `src/ladder-live.ts` + `public/lab-reentry.js` | Per-leg live re-entry state, parametrized by the `LEGS` table (`eufin` → `public/eufin.json`, likewise `value`, `semis`, `spit`, `sp500`): `LadderLive` (alias `EufinLive`) schema of the leg's JSON (the skill's ONLY input — criteria, event sides, calendar, rules and prior readings all live there since 2026-10-07; the leg's probe `--into` sets `verdict`; `src/ladder-run.ts` `planRun`/`applyRun` = the run's plan (`<leg>:state`) and only writer (`<leg>:apply`)) + `renderLadderMd(live, leg)` → the leg's local md (`docs/<leg>.md`, gitignored). **No leg field may rely on the user to hand-set, decide, prune or update it** — every field is written by apply, a vetted patch key, or derived at read [USER 2026-11-13]; the `/lab` Re-entry block renders any leg's JSON via a `REENTRY_LEGS` toggle (mirrors `LEGS`; Value default), off by default |
+| `public/lab.{html,js}` | Live `/lab` "instrument bench" front-end (board · reader, method-picker chip strip atop the reader). **This is the real `/lab`** — design mockups are throwaway HTML, not kept in the tree; edit `public/`, never a mockup. |
+
+## Workflow
+- **Triage output-visible follow-ups as bugs:** a documented follow-up / review "nice-to-have" that manifests on a notify/output-visible path (a push, an alert, a wrong number on screen) is a real bug — surface it for prioritization; don't defer it behind a "documented / intentional-conservative" label (that label describes the code's caution, not the user's experience).
+- **Drive the Vercel CLI for logs and inspection** rather than sending the user to the dashboard — but **deploys go through `make ship`** (a blocking `vercel deploy` is indistinguishable from a hang, and a `READY` deploy that never took the alias leaves prod on the old build — `deploy-prod-local.sh` exists for both), and **env vars are write-only** — a secret you didn't save is unrecoverable; rotate, never read back (→ `docs/reference.md` §[prod] Credentials).
+- **Run prod-key commands via `bash scripts/with-prod-config.sh --only FRED_API_KEY <cmd>`** (the checkout's prod config, `PROD_CONFIG_DIR`); without them the run uses degraded inputs and overwrites stored rows.
+- **New design/spec/plan docs go in `docs/plans/`**: decisions + why stay strategic; formulas, knobs, and impl steps live in the plan.
+
+## Rules
+Path-gated conventions live in `.claude/rules/`, each auto-loaded by its own `paths:` frontmatter.
+`ls .claude/rules/` for the set; grep their `paths:` blocks for what fires on a given path.

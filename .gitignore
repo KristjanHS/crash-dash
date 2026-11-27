@@ -1,0 +1,74 @@
+# Dependencies
+node_modules/
+
+# Bun
+bun.lockb
+.bun/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Local prod-writes switch (src/prod-writes.ts)
+.prod-writes
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Local dashboard preview screenshots (npm run preview:shot)
+scripts/preview/out/
+
+# Local backfill snapshot for `preview:live` (npm run seed:dump) — reloaded by
+# `supabase db reset`; local-only so CI resets stay empty/fast.
+supabase/seed.sql
+
+# Vitest coverage output (npm run coverage)
+coverage/
+
+# Last run's test timings (scripts/test-budget-reporter.ts; `npm run test:slow` prints it)
+.vitest-timings.json
+
+# DB snapshots (`npm run backup:data`) live on a data-only `backups` branch in a separate backup
+# repo, never in this one. Ignored here so a local dump doesn't land on main.
+supabase/backups/
+
+# Local state (added in later steps: SQLite confirmation buffers, etc.)
+*.db
+state/
+
+# Python (scripts/backtest harness tests)
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+.coverage
+.ruff_cache/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+
+# Vercel CLI (link config — project/org ids, may carry tokens)
+.vercel
+
+# G4 throwaway leg fixtures exported from prod (npm run g4:export-legs) — NOT the shared
+# scripts/backtest/data/ vintage set; regenerate on demand, never commit.
+scripts/backtest/data-g4/
+
+# Ladder leg mds: rendered locally from public/<leg>.json (renderLadderMd), never tracked.
+# Literal lines, not a glob — scripts/check-rule-cites.test.ts resolves a cite of a literal ignored path.
+/docs/eufin.md
+/docs/value.md
+/docs/semis.md
+/docs/spit.md
+/docs/sp500.md
+
+# Stryker (npm run mutate): sandbox + reports/incremental state, local only
+.stryker-tmp/
+reports/
+
+# Per-user skill symlink (points outside the repo), local only
+/.claude/skills/python-simplifier

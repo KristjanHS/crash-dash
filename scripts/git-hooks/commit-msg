@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#
+# commit-msg (BLOCKING) — tracked source; `make setup-hooks` installs it to .git/hooks/commit-msg.
+# A staged change that loosens a guard vs HEAD needs a `Guard-loosened: <path> — <why>` trailer;
+# scripts/guard-loosen.ts scores it.
+set -uo pipefail
+
+REPO="$(git rev-parse --show-toplevel)"
+names="$(git diff --cached --name-only --no-renames)"
+# Superset of the scorer's classes, so the common commit exits in bash.
+LC_ALL=C grep -qE '(\.json|\.test\.ts)$|^\.claude/|^scripts/git-hooks/|^scripts/guard-loosen\.ts$' <<<"$names" || exit 0
+# A code-free checkout (the `backups` DR worktree) has no scripts/ — score from the main checkout.
+lint_root="$REPO"
+[ -f "$lint_root/scripts/guard-loosen.ts" ] || lint_root="$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")"
+msg="$(realpath "$1")"
+cd "$lint_root" && exec node --import tsx scripts/guard-loosen.ts "$msg" "$REPO"

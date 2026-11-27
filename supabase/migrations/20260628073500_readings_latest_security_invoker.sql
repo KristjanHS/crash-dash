@@ -1,0 +1,11 @@
+-- crash-dash — clear the Supabase "SECURITY DEFINER view" advisor on readings_latest.
+--
+-- A Postgres view defaults to security_invoker = OFF: it runs with the VIEW OWNER's
+-- permissions and bypasses the querying user's RLS — the SECURITY DEFINER behaviour
+-- the Supabase linter flags. readings_latest is only read server-side with the
+-- service_role key (which bypasses RLS regardless) and anon/authenticated have no
+-- SELECT grant (see 20260627121259_readings_latest_view.sql), so this was not an
+-- actual exposure. But security_invoker = ON is strictly safer — the view now
+-- enforces the querying role's RLS on the base `readings` table — and silences the
+-- advisor. service_role reads are unaffected (it bypasses RLS either way).
+alter view readings_latest set (security_invoker = on);

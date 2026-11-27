@@ -1,0 +1,20 @@
+-- crash-dash — persisted band-reason column (audit rank 13).
+--
+-- The alert row persisted `alert_level` but nothing about WHY it was that value, so a WARNING push
+-- couldn't be reconstructed from /api/history a week later — was it the raw dial regime, the
+-- de-escalation lag holding a dropping dial up, or a hard escalator floor (credit/geo/r4/rate)? run.ts
+-- now emits the reason from the SAME band-derivation branch that sets the band (alert-band.ts
+-- `computeAlertBandDetail` / `escalatorFloorDetail`) and stamps it here as `floor:<src>` / `lag-hold`
+-- / `regime` / `no-dial` — no parallel re-derivation that could drift from the band it explains.
+--
+-- Additive + nullable text: `add column if not exists ... text` leaves every existing row NULL
+-- (= "pre-reason"), matching AlertRecord.bandReason's null-on-old-row default; a live run always
+-- persists a non-null reason. RLS inherited from alert_log's table-level policy (unchanged).
+-- `if not exists` keeps re-runs / `db reset` idempotent (same posture as every prior additive
+-- alert_log migration).
+--
+-- NO record_run() re-create: since 20260716180000 the atomic write goes through the
+-- jsonb_populate_record rewrite, which maps a new JSON key (`band_reason`) to its like-named column
+-- automatically (.claude/rules/migrations.md). Re-creating the function here would REVERT that rewrite
+-- back to the brittle explicit-INSERT body — so this migration is the column add alone.
+alter table alert_log add column if not exists band_reason text;

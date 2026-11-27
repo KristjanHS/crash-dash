@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+#
+# pre-commit (BLOCKING) — tracked source; `make setup-hooks` installs it to .git/hooks/pre-commit.
+#
+# Runs scripts/check-ruling-ids.ts on the STAGED diff. `npm run check`, pre-push and ship.sh run the
+# same lint, but a commit verified by targeted tests + tsc alone (impag's per-task self-verify) skips
+# `check` — and main is shippable the moment it lands (the ladder timer runs `make ship` unattended),
+# so the first gate to see a violation was the release.
+# Kept cheap: no scanned diff, or no letter+digit token on an added line (a superset of what the
+# lint's ID regex can match), exits in bash; otherwise `node --import tsx` (~0.25 s — `npx tsx`
+# costs ~0.9 s: npx resolution plus tsx's CLI re-spawning node).
+# Under `git commit -- <paths>` git points GIT_INDEX_FILE at the commit's own index, so --cached is
+# exactly what is being committed. Counting is per commit: an amend or a rebase conflict stop can flag a re-added ID — reword it.
+set -uo pipefail
+
+REPO="$(git rev-parse --show-toplevel)"
+diff="$(git diff --cached -U0 -M --no-color --no-ext-diff --src-prefix=a/ --dst-prefix=b/ -- src api scripts public)"
+# Here-string, not a pipe: `grep -q` quitting early SIGPIPEs printf, and pipefail turns that into a skip.
+LC_ALL=C grep -qE '^\+.*[A-Z][0-9]' <<<"$diff" || exit 0
+# A code-free checkout (the `backups` DR worktree) has no scripts/ — lint from the main checkout.
+lint_root="$REPO"
+[ -f "$lint_root/scripts/check-ruling-ids.ts" ] || lint_root="$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")"
+printf '%s\n' "$diff" | (cd "$lint_root" && node --import tsx scripts/check-ruling-ids.ts)

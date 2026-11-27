@@ -1,0 +1,9 @@
+{
+  "generated": "2026-08-31",
+  "stage": "6.3",
+  "shrinkForm": "linear-precision-blend: wHatUnbounded = alpha*rawSens + (1-alpha)*target, alpha = tau2/(tau2+sigma^2), sigma = standard deviation of the placebo arms about their mean, on the reach scale; wHat = clamp(wHatUnbounded, rawSens - D*sigma, rawSens + D*sigma), D = LIMITED_TRANSLATION_D (Efron-Morris limited translation)",
+  "bucket": "AMBER",
+  "horizon": 20,
+  "note": "Precision-shrunk per-cell sensitivity for whichever cr/vl/xa cells are still estimated (spec §Stage 6.3). rawSens is UNSHRUNK (no rule-4 clamp/round); tau2 and target are the variance and mean of the same familyClassTarget pool; each family reads its own pre-registered stress arm (see FAMILY_SOURCE, and its `arm` on every cell below). Regenerate: npx tsx scripts/backtest/cell-sensitivity.ts.",
+  "cells": []
+}

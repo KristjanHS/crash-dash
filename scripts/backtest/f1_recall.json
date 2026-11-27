@@ -1,0 +1,129 @@
+{
+  "generated": "2026-08-06",
+  "stage": "5.1",
+  "series": "BAMLH0A0HYM2",
+  "source": {
+    "file": "data/BAMLH0A0HYM2-vintage.csv",
+    "n": 7382
+  },
+  "note": "RESULT, never a fitting target (EW-6). The episode list is pre-registered in §1.1 and frozen; no window, percentile or lookback was swept. The proxy z-leg is not replayed offline, so recall and leads are LOWER bounds.",
+  "shippedCuts": {
+    "fold": {
+      "amber": "or",
+      "red": "and"
+    }
+  },
+  "confirmCloses": 2,
+  "leadWindowTradingDays": 63,
+  "scored": {
+    "n": 7362,
+    "start": "1997-01-29",
+    "end": "2025-04-10"
+  },
+  "baseRateAmberOrWorse": 0.9279,
+  "episodes": [
+    {
+      "id": "E1",
+      "name": "Russia / LTCM",
+      "peak": "1998-07-17",
+      "trough": "1998-08-31",
+      "peakClose": "1998-07-17",
+      "windowStart": "1998-04-22",
+      "detected": true,
+      "detectedAt": "1998-05-13",
+      "leadTradingDays": 48,
+      "alreadyFiringAtWindowOpen": false
+    },
+    {
+      "id": "E2",
+      "name": "Dot-com bust",
+      "peak": "2000-03-24",
+      "trough": "2002-10-09",
+      "peakClose": "2000-03-24",
+      "windowStart": "1999-12-28",
+      "detected": true,
+      "detectedAt": "1999-12-28",
+      "leadTradingDays": 63,
+      "alreadyFiringAtWindowOpen": true
+    },
+    {
+      "id": "E3",
+      "name": "Global financial crisis",
+      "peak": "2007-10-09",
+      "trough": "2009-03-09",
+      "peakClose": "2007-10-09",
+      "windowStart": "2007-07-13",
+      "detected": true,
+      "detectedAt": "2007-07-13",
+      "leadTradingDays": 63,
+      "alreadyFiringAtWindowOpen": true
+    },
+    {
+      "id": "E4",
+      "name": "Euro crisis / US downgrade",
+      "peak": "2011-04-29",
+      "trough": "2011-10-03",
+      "peakClose": "2011-04-29",
+      "windowStart": "2011-01-31",
+      "detected": true,
+      "detectedAt": "2011-01-31",
+      "leadTradingDays": 63,
+      "alreadyFiringAtWindowOpen": true
+    },
+    {
+      "id": "E5",
+      "name": "China deval / oil-and-credit bust",
+      "peak": "2015-05-21",
+      "trough": "2016-02-11",
+      "peakClose": "2015-05-21",
+      "windowStart": "2015-02-23",
+      "detected": true,
+      "detectedAt": "2015-02-23",
+      "leadTradingDays": 63,
+      "alreadyFiringAtWindowOpen": true
+    },
+    {
+      "id": "E6",
+      "name": "Q4-2018 tightening",
+      "peak": "2018-09-20",
+      "trough": "2018-12-24",
+      "peakClose": "2018-09-20",
+      "windowStart": "2018-06-26",
+      "detected": true,
+      "detectedAt": "2018-06-26",
+      "leadTradingDays": 63,
+      "alreadyFiringAtWindowOpen": true
+    },
+    {
+      "id": "E7",
+      "name": "COVID",
+      "peak": "2020-02-19",
+      "trough": "2020-03-23",
+      "peakClose": "2020-02-19",
+      "windowStart": "2019-11-20",
+      "detected": true,
+      "detectedAt": "2019-11-20",
+      "leadTradingDays": 63,
+      "alreadyFiringAtWindowOpen": true
+    },
+    {
+      "id": "E8",
+      "name": "2022 inflation / rates",
+      "peak": "2022-01-03",
+      "trough": "2022-10-12",
+      "peakClose": "2022-01-03",
+      "windowStart": "2021-10-06",
+      "detected": true,
+      "detectedAt": "2021-10-06",
+      "leadTradingDays": 63,
+      "alreadyFiringAtWindowOpen": true
+    }
+  ],
+  "detected": 8,
+  "total": 8,
+  "recall": 1,
+  "recallFloor": 4,
+  "clearsFloor": true,
+  "medianLeadTradingDays": 63,
+  "detectionsAtWindowOpen": 7
+}

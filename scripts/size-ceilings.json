@@ -1,0 +1,33 @@
+{
+  "LIMIT": 600,
+  "ceilings": {
+    "api/lab.ts": 750,
+    "api/series.ts": 1250,
+    "public/app.js": 1000,
+    "public/detail-chart.js": 1750,
+    "public/indicator-desc.js": 1250,
+    "public/lab-board.js": 1250,
+    "public/lab.js": 1250,
+    "src/alert-band.ts": 750,
+    "src/chart-rail.ts": 1250,
+    "src/confirmers.ts": 750,
+    "src/danger-engine.ts": 750,
+    "src/domain-fold.ts": 750,
+    "src/families.ts": 750,
+    "src/ladder-live.ts": 750,
+    "src/ladder-run.ts": 1250,
+    "src/prices.ts": 750,
+    "src/run-core.ts": 750,
+    "src/run-cycle-feeds.ts": 750,
+    "src/run-seeds.ts": 750,
+    "src/scoreboard.ts": 750,
+    "src/scorers-composite.ts": 1500,
+    "src/scorers-core.ts": 1000,
+    "src/scorers-price.ts": 750,
+    "src/store-memory.ts": 750,
+    "src/store.ts": 1250
+  },
+  "reasons": {
+    "src/ladder-run.ts": "applyRun wiring for the event-retirement change; the logic goes to new ladder-*.ts modules"
+  }
+}

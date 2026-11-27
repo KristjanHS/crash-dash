@@ -1,0 +1,2349 @@
+/*
+ * crash-dash dashboard — static styles (Zones A/B/C/D + skeletons).
+ * Single source of truth for color: state + alert ramps live as :root custom
+ * properties so app.js never hard-codes a hex (the favicon recolor reads them
+ * back via getComputedStyle). Skeleton shimmer + reduced-motion + mobile pass
+ * live at the bottom.
+ */
+
+:root {
+  /* State ramp — confirmed indicator states. */
+  --state-green: #2e7d32;
+  --state-amber: #f9a825;
+  --state-red: #c62828;
+
+  /* Alert ladder — reuses the state ramp, OK=grey-green … CRITICAL=red. */
+  --alert-ok: #5f7a5f;
+  --alert-watch: #f9a825;
+  --alert-warning: #ef6c00;
+  --alert-critical: #c62828;
+
+  /* Page accent — set per-verdict by app.js (defaults to OK). */
+  --accent: var(--alert-ok);
+
+  /* Chart overlay line — the MA200 gate (`style:"trend"`, dashed) AND R1's 63-obs mean
+     (`style:"scored-mean"`, SOLID). A FIXED hue, NOT --accent: the accent is repainted per
+     verdict, so a series colour riding it would change meaning with the alert level. Blue reads
+     as "not the primary metric" (scored-mean IS state-bearing — RED scores on it — so solid vs
+     the dashed trend is what carries scored-vs-derived). Defined HERE (:root of the shared sheet)
+     because index.html has no scoped style block — a var defined only in lab.html resolves to an
+     INVALID stroke on the dashboard and the path silently paints nothing (2026-07-23). */
+  --trend-line: #6f9dff;
+  /* SECOND trend line on one axis (`ChartSeries.tone:"alt"` — EXSH_GATE's MA200 beside its white
+     MA50; the blue there is its %-vs-MA200 decision line). Coral-orange: Machado-sim ΔE76 ≥ 20 vs --trend-line/--state-amber/--state-red/--ink/
+     --ink-dim under protan/deutan/tritan (≥ 16 vs every chart token incl. --state-green and the
+     pair hues); 7.3:1 on --bg. Dark-only sheet — no light-theme twin exists to define. */
+  --trend-line-2: #ff8060;
+  /* THIRD trend hue (`ChartSeries.tone:"white"` — EXSH_GATE's MA50, user ask 2026-10-06: every trend line
+     its own colour, starting from white). Told apart from the solid --ink price line (#e7eaee, a near-white)
+     by its DASH, not its hue — the two are not a CVD-distinct pair, the dash pattern is the cue. Dark-only
+     sheet, so white has the full --bg contrast; no light-theme twin exists to define. */
+  --trend-line-white: #ffffff;
+  /* FOURTH trend hue (`ChartSeries.tone:"cyan"` — EU-Fin EXSH's RV20 beside its blue RV10, white MA50, orange
+     MA200; user ask 2026-10-11). Same hex as --pair-drop (the two never share a chart — pair hues are R7-only).
+     Machado-sim ΔE76 vs its neighbours here: ≥ 24 vs white, ≥ 52 vs orange, but 19.2 vs --trend-line under
+     tritan — just under --trend-line-2's ≥ 20 bar; the legend's colour word is the backstop. */
+  --trend-line-cyan: #6ad4ec;
+
+  /* R7 leg↔cut pair hues (hue = LEG identity; severity rides weight/dash/label) — validator-picked
+     to stay distinct from --state-red/--state-amber/--trend-line/--ink-dim under CVD. */
+  --pair-drop: #6ad4ec;
+  --pair-steep: #c9569f;
+
+  /* (Removed 2026-08-06: `--leg-z` / `--leg-velz`, the undrawn-leg tick hues. Their only consumer
+     was detail-chart.js's UNDRAWN_LEGS tick strip, which existed solely for F1/F2's borrowed
+     Baa10y regime-z legs; those legs were retired and the whole proxy-z path deleted, so no seam
+     emits an undrawn-leg tag any more.) */
+
+  --bg: #14171a;
+  --surface: #1d2125;
+  --surface-2: #262b30;
+  --ink: #e7eaee;
+  --ink-dim: #9aa3ad;
+  --line: #333a41;
+
+  --radius: 10px;
+  --gap: 14px;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font:
+    15px/1.45 system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  padding: clamp(12px, 3vw, 28px);
+}
+
+/* --- Cross-page nav (dashboard ↔ lab) -------------------------------------- */
+
+.pagenav {
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.pagenav:hover {
+  text-decoration: underline;
+}
+
+/* The nav strip itself, and the gap between two links in it. Cross-page chrome, so it
+   lives in the shared sheet (index/exposure/journal all use it) rather than a page sheet.
+   Was three repeated `style=` attributes until rung 5 dropped style-src 'unsafe-inline'. */
+.pagenav-bar {
+  padding: 0.35rem 1rem 0;
+  text-align: right;
+}
+.pagenav-gap {
+  margin-left: 12px;
+}
+
+/* --- Masthead — static first-time-visitor introduction above the verdict banner. Paints before
+   data lands (it sits outside #dashboard, which stays hidden until /status resolves), so it also
+   doubles as the page's identity during the loading state. */
+.masthead {
+  max-width: 1100px;
+  margin: 0 auto 1.2rem;
+  padding: 0 0.25rem;
+}
+.masthead-title {
+  font-size: clamp(1.35rem, 3.2vw, 1.9rem);
+  line-height: 1.15;
+  margin: 0 0 0.35rem;
+}
+.masthead-sub {
+  margin: 0;
+  max-width: 60ch;
+  font-size: 0.9rem;
+  color: var(--ink-dim);
+}
+/* /overview stacks several — index.html carries a single one, so the gap lives on the pair. */
+.masthead-sub + .masthead-sub {
+  margin-top: 0.55rem;
+}
+
+/* /overview's masthead: full page width, no centred reading column ([USER] — the intro must fill
+   the screen and WRAP; a 60ch column on a phone left it a narrow sliver). `overflow-wrap: anywhere`
+   is the no-right-scroll guarantee: the prose carries long unbroken tokens (URLs-as-words, hyphenated
+   names) that would otherwise push the document wider than the viewport. */
+.masthead-wide {
+  max-width: none;
+  margin-inline: 0;
+  padding: 0 12px;
+}
+.masthead-wide .masthead-sub {
+  max-width: none;
+  overflow-wrap: anywhere;
+}
+
+/* Footnote-on-a-word: the dotted underline IS the whole affordance ([USER] 2026-09-06 — no ⓘ in
+   the intro prose). Same recipe as the lab.css section-title tooltips, on --ink-dim not --faint so
+   the dots stay readable. `cursor: pointer` is the iOS click-delegation unblocker for the tap that
+   reads the `title` into the help bar (`.masthead .fn[title]` is a HELP_CARVEOUT_SELECTOR member —
+   keep the two in step). text-decoration, not a border: it wraps with the sentence. */
+.fn {
+  text-decoration: underline dotted var(--ink-dim);
+  text-underline-offset: 3px;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+/* --- "New here?" onboarding footnote — sits between the page body and the legal footer. Same
+   centred reading column as the footer; the long explainer lives on /about. */
+.site-intro {
+  max-width: 900px;
+  margin: 2.5rem auto 0;
+  padding: 1rem 1rem 0;
+  border-top: 1px solid var(--line);
+}
+.site-intro-title {
+  font-size: 0.9rem;
+  margin: 0 0 0.6rem;
+}
+.site-intro-rows {
+  margin: 0;
+  padding: 0;
+  font-size: 0.82rem;
+  color: var(--ink-dim);
+}
+.site-intro-rows dt {
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 0.5rem;
+}
+.site-intro-rows dd {
+  margin: 0.1rem 0 0;
+  max-width: 70ch;
+}
+.site-intro-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  margin-top: 0.9rem;
+}
+.site-intro-links a {
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.site-intro-links a:hover {
+  text-decoration: underline;
+}
+
+/* --- Site footer — legal-page links, shared chrome on every entry + legal page.
+   Links only (no inline style, CSP style-src 'self'); prose framing lives on the pages. */
+.site-footer {
+  margin: 2.5rem auto 0;
+  max-width: 900px;
+  padding: 1rem 1rem 0.4rem;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+.site-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  justify-content: center;
+}
+.site-footer-links a {
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.site-footer-links a:hover {
+  text-decoration: underline;
+}
+/* Donation line — a gift ask, deliberately outside the aria-label="Legal" nav. */
+.site-footer-donate {
+  margin: 0.5rem 0 0;
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+}
+.site-footer-donate a {
+  color: inherit;
+  text-decoration: underline;
+}
+/* DISCLAIMER_SHORT footer line, injected below the legal nav by disclaimer.js (Stage A). */
+.site-footer-legal {
+  margin: 0.5rem 0 0;
+  font-size: 0.72rem;
+  color: var(--ink-dim);
+}
+
+/* First-visit acknowledgement — a non-blocking dismissible bar pinned to the bottom of the
+   viewport (NOT a modal: it never traps focus or blocks the page). Styled here, no inline style
+   (CSP style-src 'self'). */
+.disclaimer-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  justify-content: center;
+  padding: 0.8rem 1rem;
+  background: var(--surface-2);
+  border-top: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 0.8rem;
+}
+.disclaimer-bar:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.disclaimer-bar-text {
+  margin: 0;
+  max-width: 70ch;
+}
+.disclaimer-bar-text a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+.disclaimer-dismiss {
+  flex: none;
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.disclaimer-dismiss:hover {
+  background: var(--bg);
+}
+
+/* --- Page-level states ----------------------------------------------------- */
+
+.message {
+  max-width: 520px;
+  margin: 18vh auto;
+  text-align: center;
+  font-size: 18px;
+  color: var(--ink-dim);
+}
+/* /overview: the loading overlay fills the viewport so the footer starts below the fold — swapping
+   it for <main> otherwise yanks the visible footer off-screen (a CLS layout shift). */
+.message-fill {
+  min-height: 100svh;
+}
+
+.banner {
+  margin: 0 auto 16px;
+  max-width: 1100px;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: #3a2417;
+  border: 1px solid var(--alert-warning);
+  color: #ffd9bf;
+  font-weight: 600;
+}
+
+.dashboard {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+/* --- First-paint skeletons (shimmer until data lands) ---------------------- */
+
+.skel {
+  background: linear-gradient(
+    90deg,
+    var(--surface-2) 25%,
+    #303740 50%,
+    var(--surface-2) 75%
+  );
+  background-size: 200% 100%;
+  border-radius: 8px;
+  animation: shimmer 1.3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.skel-banner {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.skel-chip-lg {
+  width: 130px;
+  height: 48px;
+  flex: none;
+}
+
+.skel-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.skel-line {
+  height: 13px;
+  width: 60%;
+}
+
+.skel-line.short {
+  width: 35%;
+}
+
+.skel-card {
+  height: 132px;
+}
+
+.zone {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+}
+
+/* --- Zone A: verdict banner ------------------------------------------------ */
+
+.zone-a {
+  border-left: 6px solid var(--accent);
+}
+
+.verdict-head {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+/* --- Bottom-signal panel (contrarian off-ladder VIX read) ------------------ */
+
+.zone-bottom {
+  /* Left accent encodes the bottom state; defaults muted, recolored per state. */
+  border-left: 6px solid var(--line);
+}
+.zone-bottom:has(.bottom-watch) {
+  border-left-color: var(--state-amber);
+}
+.zone-bottom:has(.bottom-forming) {
+  /* Contrarian-positive — a cool teal, deliberately NOT the red/orange alarm ramp. */
+  border-left-color: #2f9e8f;
+}
+
+.bottom-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bottom-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.bottom-label {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.bottom-frame {
+  font-weight: 600;
+  color: var(--state-amber);
+}
+.bottom-forming .bottom-frame {
+  color: #4fc7b6;
+}
+
+.bottom-sub {
+  color: var(--ink-dim);
+  font-size: 14px;
+}
+
+.bottom-muted .bottom-label {
+  color: var(--ink-dim);
+  font-weight: 600;
+}
+
+/* --- Bubble-state panel (slow off-ladder bubble-fuel read) ----------------- */
+/* Escalating-alarm accent: muted → amber (ELEVATED) → red (DE-RISK). A distinct
+   track from the crash ladder, but single-sourced on the --state-* alarm vars. */
+.zone-slow {
+  border-left: 6px solid var(--line);
+}
+.zone-slow:has(.slow-elevated) {
+  border-left-color: var(--state-amber);
+}
+.zone-slow:has(.slow-derisk) {
+  border-left-color: var(--state-red);
+}
+
+.slow-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.slow-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.slow-label {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.slow-frame {
+  font-weight: 600;
+  color: var(--state-amber);
+}
+.slow-derisk .slow-frame {
+  color: var(--state-red);
+}
+
+.slow-sub {
+  color: var(--ink-dim);
+  font-size: 14px;
+}
+
+.slow-muted .slow-label {
+  color: var(--ink-dim);
+  font-weight: 600;
+}
+
+.slow-score {
+  color: var(--ink-dim);
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+/* The continuous per-leg metrics (price-accel / complacency-vix / complacency-high),
+   kept when the leg cards went (ruling 4): the 0-4 score alone is not an informative
+   read. Same dim register as .slow-score, tabular so the decimals line up. */
+.slow-metrics {
+  color: var(--ink-dim);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Zone D "Bubble tier" tab — one full detail chart per slow leg (same renderer as the
+   Indicator-detail tab), stacked flush. */
+.bubble-charts {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bubble-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.alert-chip {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 10px 22px;
+  border-radius: var(--radius);
+  color: #fff;
+  background: var(--accent);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.verdict-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.verdict-title {
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.verdict-subline {
+  color: var(--ink-dim);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.pill-fresh {
+  background: #1e3a24;
+  color: #b6e2bf;
+}
+
+.pill-lag {
+  background: #3a3418;
+  color: #f6e2a0;
+  border: 1px solid var(--state-amber);
+}
+
+.transition {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* (Zone B channel roll-up bars retired 2026-07-15, O2 step 3.) */
+
+.zone-c h2 {
+  margin: 0 0 12px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-dim);
+}
+
+/* --- Zone C: indicator grid ------------------------------------------------ */
+
+.chan-group {
+  margin-bottom: 18px;
+}
+
+.chan-group:last-child {
+  margin-bottom: 0;
+}
+
+.chan-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-dim);
+  margin: 0 0 8px;
+}
+
+/* Feed-lag marks (`feed-age-mark.js`): `⌁ⁿ` on a family heading, `⌁ Nd` on a card. ONE tier —
+   the dashboard measures `lag`/`ageDays`, never the /lab LAG-vs-DEEP-LAG grade — so there is one
+   colour, amber (the same hue as the zone-A `.pill-lag` heartbeat this claim shares), not the
+   /lab dim/red pair. Scoped to their hosts so the rules cannot bleed onto the other zones.
+   Both are declared here, in styles.css: index.html carries NO scoped <style> block, so any
+   selector or `var(--x)` these need must resolve from this file (the 2026-07-23 MA200 lesson,
+   `public/css-var-parity.test.js`). Neither uses a custom property beyond `--state-amber`, which
+   is declared at the top of this file. */
+.chan-title .chan-lag {
+  margin-left: 6px;
+  color: var(--state-amber);
+  letter-spacing: 0;
+  cursor: help;
+}
+
+/* B5/B7 INTRADAY / EST label (feed-age-mark.js `intradayMark`) — dashboard card head only; /lab member chips
+   carry the clause in their tooltip (2026-09-30). */
+.intraday-mark {
+  flex: none;
+  font-size: 0.72em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  color: var(--ink-dim);
+  cursor: help;
+}
+
+/* EST = a modelled estimate, not a live print: /lab's `.lg-pct.est` register (faint + italic). */
+.intraday-mark-est {
+  opacity: 0.75;
+  font-style: italic;
+}
+
+/* L1/L3 (a retired plan): the section-head verdict chip. */
+.intraday-verdict {
+  margin-left: 0.5em;
+  align-self: center;
+}
+
+.chan-title .chan-lag-n {
+  font-size: 10px;
+  padding-left: 1px;
+}
+
+.card-head .card-lag {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 2px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--state-amber);
+  cursor: help;
+}
+
+/* E22 `last print D-n` (feed-age-mark.js `lastPrintMark`): muted while current, amber once the feed is behind. */
+.card-head .card-last-print {
+  color: var(--ink-dim);
+}
+.card-head .card-last-print.card-last-print-behind {
+  color: var(--state-amber);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 12px;
+  /* Default `stretch` made a lone card in a row grow to its tallest sibling — which is
+     how F5 (a plain card) ended up as tall as the .card-combo bracket beside it. Every
+     card is one intrinsic height now; let it keep it. The .card-combo wrapper stays
+     taller by design (it brackets two cards under a label). */
+  align-items: start;
+}
+
+.card {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  cursor: pointer; /* every card opens its own detail chart (delegated on #dashboard) */
+  transition:
+    border-color 0.15s ease,
+    transform 0.05s ease;
+}
+
+.card:hover,
+.card:focus-visible {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.card:active {
+  transform: translateY(1px);
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  /* The marker's injected ⓘ is a 24px hit target, so a note-bearing head would grow
+     2px past a plain one. Pin the floor so ALL heads match and every card is the
+     same height — the whole point of the unified template. */
+  min-height: 24px;
+}
+
+/* A card's notes (pending / context) collapsed into one head marker.
+   It has NO content of its own: it is a `[title]` host, so decorateHelp appends the
+   ⓘ glyph and that glyph IS the marker. Tapping it opens the help bar with the full
+   note text and does not activate the card (the capture-phase handler stops the
+   event) — which is why this must never join HELP_CARVEOUT_SELECTOR.
+   `.help-i` inherits color, so the modifier tints the glyph to the first note's kind. */
+.card-marker {
+  display: inline-flex;
+  flex: none;
+  color: var(--ink-dim);
+}
+
+.card-marker--pending {
+  color: var(--state-amber);
+}
+
+.card-marker--context,
+.card-marker--lowsignal {
+  color: var(--ink-dim);
+}
+
+/* Label then id (`Bund 10y−2y BUND`): the wrapper takes the head's free space so the id sits right
+   after the label; the label alone shrinks (ellipsis) so a long label never hides the id. */
+.card-name {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+}
+
+.card-id {
+  flex: none;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.card-label {
+  flex: 0 1 auto;
+  min-width: 0;
+  color: var(--ink-dim);
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.state-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+  flex: none;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* RAG tone as a CLASS, never an inline style (`.claude/rules/frontend.md` §Inline style attributes are dead in prod). */
+.state-dot.g {
+  background: var(--state-green);
+}
+.state-dot.a {
+  background: var(--state-amber);
+}
+.state-dot.r {
+  background: var(--state-red);
+}
+
+.state-dot.unknown {
+  background: var(--surface);
+  color: var(--ink-dim);
+}
+
+.card-value {
+  font-size: 22px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  /* Empty former spark row (10px gap + 30px) — keeps the card's click target at its old height. */
+  margin-bottom: 40px;
+}
+
+/* Δ20 rides inline on the .card-value line rather than owning a block of its own —
+   it is a qualifier of the value, and folding it in is what buys the height parity. */
+.card-delta {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ink-dim);
+  font-variant-numeric: tabular-nums;
+  margin-left: 8px;
+}
+
+/* The `?mult=` what-if banner above the detail chart wears the only remaining badge — the
+   card badges collapsed into `.card-marker` when the cards were unified to one height. */
+.badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+
+/* The `?mult=` what-if overlay banner. Deliberately NOT amber/red — it qualifies the state
+   colors rather than being one, so it must not be mistaken for a reading. Warning-orange
+   border on the surface tint reads as "caution: not the real cuts". */
+.badge-whatif {
+  background: var(--surface-2);
+  color: var(--alert-warning);
+  border: 1px solid var(--alert-warning);
+}
+
+.whatif-note {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: var(--ink-dim);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* Combined-indicator bracket (e.g. F4 + NVDA = the semis Red gate). Spans two
+   card columns so its members sit side by side under one label. */
+.card-combo {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border: 1px dashed var(--accent);
+  border-radius: var(--radius);
+}
+
+.combo-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--accent);
+}
+
+.combo-cards {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.combo-plus {
+  font-weight: 700;
+  color: var(--ink-dim);
+}
+
+@media (max-width: 560px) {
+  .card-combo {
+    grid-column: span 1;
+  }
+  .combo-cards {
+    grid-template-columns: 1fr;
+  }
+  .combo-plus {
+    display: none;
+  }
+}
+
+/* --- Zone D: history charts (tabbed) --------------------------------------- */
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.tab {
+  appearance: none;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--ink-dim);
+  font: inherit;
+  font-weight: 600;
+  padding: 8px 12px;
+  cursor: pointer;
+  margin-bottom: -1px;
+  /* inline-flex + gap so a tab that renders a leading dot aligns with its label;
+     harmless for tabs that render dot-less. */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tab:hover {
+  color: var(--ink);
+}
+
+.tab[aria-selected="true"] {
+  color: var(--ink);
+  border-bottom-color: var(--accent);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.chart-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.ctl-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+  margin-right: 2px;
+}
+
+.range {
+  appearance: none;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink-dim);
+  font: inherit;
+  font-size: 13px;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+
+.range:hover {
+  color: var(--ink);
+}
+
+.range.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Detail-tab window chips — the ONE global row atop #zone-d-panel (active carried by aria-pressed). */
+.win-controls {
+  margin-bottom: 8px;
+}
+
+.range.win[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.compare-controls {
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+/* Leg picker row, directly under the indicator picker. */
+.leg-controls {
+  margin-top: -4px; /* tuck against the indicator row's 10px bottom margin */
+}
+
+.leg-note {
+  font-size: 12px;
+  color: var(--ink-dim);
+}
+
+.leg-picker:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+/* Leg-stack basis/why block — a CLOSED <details> above the chart stack (first <details> in
+   public/; app.js legDescBlock). */
+.leg-desc {
+  margin: 0 0 8px;
+  font-size: 13px;
+}
+
+.leg-desc > summary {
+  cursor: pointer;
+  color: var(--ink);
+  font-weight: 600;
+  list-style: revert; /* keep the native disclosure triangle */
+}
+
+.leg-desc .leg-basis,
+.leg-desc .leg-why {
+  margin: 6px 0 0;
+  line-height: 1.5;
+  color: var(--ink-dim);
+}
+
+.leg-desc .leg-basis {
+  color: var(--ink);
+}
+
+/* External public-chart links (ext-links.js): indicator "Live charts." + leg "Top holdings." —
+   one compact wrapping line, each holding kept on one line. */
+.ext-links {
+  margin: 0 0 6px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-dim);
+}
+
+.ext-links a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--ink-dim);
+}
+
+.ext-links .ext-holding {
+  white-space: nowrap;
+}
+
+/* Rotated left-margin chart name on stack frames (chartOpen `showHead`). 9px, not 11px
+   ([USER], 2026-08-29): the name is drawn along the plot's own height (STACK_PLOT_H = 122 user
+   units), so the smaller type is what lets a long indicator name fit without being clipped. The
+   tightened letter-spacing buys the same run of glyphs a little more room again. */
+.chart .chart-name {
+  fill: var(--ink-dim);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.ind-picker,
+.ind-picker-compare,
+.leg-picker,
+.leg-chart-pos {
+  appearance: none;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  padding: 4px 26px 4px 10px;
+  cursor: pointer;
+  /* caret */
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--ink-dim) 50%),
+    linear-gradient(135deg, var(--ink-dim) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 9px) 50%;
+  background-size:
+    5px 5px,
+    5px 5px;
+  background-repeat: no-repeat;
+}
+
+.chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* NO max-height (`[USER]`, 2026-07-23): the SVG carries a viewBox, so a height cap makes the
+     browser shrink the whole drawing to fit — width included — and the chart stops filling its
+     column (the ×1.5 CH.h made the 260px cap bind at every desktop width). Height follows from
+     width × the viewBox aspect instead. */
+  /* manipulation, not none (`[USER]`, 2026-09-13): every pan and pinch on the chart is the
+     browser's — `none` made the whole chart column a scroll dead zone on a phone, and `pan-y`
+     still trapped a pinch-zoomed chart's horizontal pan. The scrub is armed by a LONG-PRESS
+     instead (hover-readout.js), which also needs the press not to select or call out. */
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
+/* Lazy detail row: an empty viewBox svg holds the chart's height until its fetch lands. */
+.chart-ph {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.hover-layer .xhair {
+  stroke: var(--ink-dim);
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+}
+.hover-layer .hover-dot {
+  fill: var(--accent);
+  stroke: var(--bg);
+  stroke-width: 1;
+}
+.hover-layer .hover-read-bg {
+  fill: var(--bg);
+} /* opaque backdrop, sized via getBBox() at runtime */
+.hover-layer .hover-read {
+  fill: var(--ink);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The travelling two-token chip (`1.42 A`). Size is in viewBox USER UNITS, so the 560px query
+   below is the one mechanism that grows SVG text relative to a chart that is itself shrinking. */
+.hover-layer .hover-chip rect {
+  fill: var(--bg);
+} /* opaque backdrop, sized via getBBox() at runtime */
+.hover-layer .hover-chip text {
+  fill: var(--ink);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Pointer readout, VIEWPORT-PINNED (`#hover-bar` in index.html). The SVG chip is scaled by the
+   viewBox (≈0.57x on a 390px phone, so 11px renders at ~6px); this is real CSS type, and being
+   `position: fixed` it costs the chart stack ZERO layout height — the per-chart `.hover-strip`
+   it replaced reserved ~55px under every chart (~275px on a 5-stack). Shown only while scrubbing
+   (`hidden` toggled by app.js), so nothing floats over the page at rest, and it sits BELOW the
+   plots it describes rather than inside them, so it can never occlude a drawn line. */
+.hover-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  margin: 0;
+  padding: 6px 12px calc(6px + env(safe-area-inset-bottom, 0px));
+  background: var(--surface-2);
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  pointer-events: none; /* never steals the pointer mid-scrub */
+}
+
+.chart .grid {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.chart .axis-y,
+.chart .axis-x {
+  fill: var(--ink-dim);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart .axis-y {
+  text-anchor: end;
+}
+
+/* Rotated axis NAMES (`axisName`) — the primary in the left margin beside the chart name, the
+   secondary in the right. 9px like `.chart-name` (they share the same narrow margin lanes), and
+   `text-anchor: start` here rather than as a presentation attribute so the rotated text begins at
+   the plot floor (`axisNameY`) and runs bottom-up: axis names sit flush with the bottom of the
+   plot while the chart name stays vertically centred. */
+.chart .axis-name {
+  fill: var(--ink-dim);
+  font-size: 9px;
+  text-anchor: start;
+}
+
+.chart .band-label {
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.chart .band-marker {
+  font-size: 8px;
+}
+
+/* Moving-cut chip (R7's four ranked cuts): 2 glyphs in the RIGHT MARGIN, outside the plot, so a
+   cut label can never cover the newest observations. The halo keeps it readable where it crosses
+   the rotated secondary-axis label that shares the margin. Full names live in the chart legend. */
+.chart .band-chip {
+  font-size: 9px;
+  font-weight: 700;
+  paint-order: stroke fill;
+  stroke: var(--bg);
+  stroke-width: 2.5px;
+  stroke-linejoin: round;
+}
+
+.chart-msg {
+  color: var(--ink-dim);
+  text-align: center;
+  padding: 28px 0;
+}
+
+/* Paired-leg legend hues as CLASSES (the SVG lines take `stroke="var(--pair-*)"` directly).
+ * Keep in sync with `PAIR_HUES` in detail-chart.js. */
+.dc-pair-drop {
+  color: var(--pair-drop);
+}
+.dc-pair-steep {
+  color: var(--pair-steep);
+}
+
+.chart-legend {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--ink-dim);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+/* Fit lines (Δ5d, own hidden scale) — off by default; the legend's `.fit-toggle` flips `.show-fit` on
+   the root (app.js), one switch for every chart. The checkbox glyph carries the state. */
+.chart .fit-lines {
+  display: none;
+}
+.show-fit .chart .fit-lines {
+  display: inline;
+}
+/* The toggle overlays inside it (Value XDEV's 60-close high, € zone lines, veto-day dots): stroke/fill ride
+   SVG attributes; the marks never intercept the chart's hover layer. */
+.chart .line-toggle,
+.chart .toggle-dot {
+  pointer-events: none;
+}
+.fit-toggle {
+  font: inherit;
+  color: var(--trend-line);
+  background: none;
+  border: 0;
+  /* ~28px tap height on phones without growing the legend row. */
+  padding: 8px 0;
+  margin: -8px 0;
+  cursor: pointer;
+}
+/* The toggle-overlay key ("zones · veto days") names amber/red lines, so it takes neutral ink, never the blue
+   trend hue the fit-line clauses share with their own (blue) lines. */
+.fit-toggle.tog-key {
+  color: var(--ink);
+}
+.fit-toggle::before {
+  content: "\2610  ";
+}
+.show-fit .fit-toggle::before {
+  content: "\2611  ";
+}
+
+/* F4's compound-gate rule annotation under the detail chart (§3). */
+.chart-note {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--ink-dim);
+  font-style: italic;
+}
+
+.ind-about {
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.ind-about h4 {
+  margin: 0 0 6px;
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.ind-about p {
+  margin: 0 0 6px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-dim);
+}
+
+.ind-about p:last-child {
+  margin-bottom: 0;
+}
+
+.ind-about strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.dot-pushed,
+.dot-silent {
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.dot-pushed {
+  width: 9px;
+  height: 9px;
+  background: var(--accent);
+  border: 1px solid var(--bg);
+}
+
+.dot-silent {
+  width: 5px;
+  height: 5px;
+  background: var(--ink-dim);
+}
+
+/* --- Responsive: stack zones, collapse the grid to one column -------------- */
+
+@media (max-width: 560px) {
+  /* Both rules MUST live in this block, not the earlier 560px one — that one precedes the
+     .hover-layer/.hover-bar bases, and at equal specificity the later rule wins, so an
+     override written up there can never apply. */
+  /* "shrunk a little bit" ([USER], 2026-08-29): already real CSS type, it just stops
+     hogging the narrow column. */
+  .hover-bar {
+    font-size: 11px;
+  }
+  /* 680-unit viewBox at a 390px viewport is ~0.57x, so 20 USER units lands at ~11-12px CSS —
+     the same on-screen size the 11px chip has on desktop. */
+  .hover-layer .hover-chip text {
+    font-size: 20px;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .alert-chip {
+    font-size: 22px;
+  }
+
+  .tabs {
+    flex-wrap: wrap;
+  }
+
+  /* (the ≤560px `.chart { max-height: 220px }` went with the desktop cap above — same reason:
+     a height cap shrinks the whole viewBox, narrowing the chart on the narrowest screens.) */
+
+  /* Keep the verdict head from feeling cramped when it wraps. */
+  .verdict-head {
+    gap: 12px;
+  }
+}
+
+/* --- Honor reduced-motion: drop shimmer + transitions ---------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .skel {
+    animation: none;
+  }
+
+  .card,
+  * {
+    transition: none !important;
+  }
+}
+
+/* --- Mobile help: injected ⓘ glyph + fixed help bar ------------------------ */
+/* Native `title=` hover is untouched (desktop unchanged); the glyph + bar make
+   the same text reachable on touch. See app.js decorateHelp / showHelp. */
+
+.help-i {
+  /* Small visual glyph, but a ≥24px hit target via padding (not font-size) so
+     touch can land it. Inherits the host's color at reduced opacity. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 0 2px;
+  margin-left: 4px;
+  font-size: 0.85em;
+  line-height: 1;
+  vertical-align: baseline;
+  color: inherit;
+  opacity: 0.55;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  cursor: help;
+}
+
+.help-i:hover {
+  opacity: 0.9;
+}
+
+.help-i:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  opacity: 0.9;
+}
+
+.help-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50; /* above all dashboard content */
+  display: flex;
+  flex-wrap: wrap; /* the optional .help-bar-action row (help-bar.js) drops under text + close */
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--surface-2);
+  border-top: 2px solid var(--accent);
+  box-shadow: 0 -4px 16px rgb(0 0 0 / 40%);
+  max-height: 45vh;
+  overflow-y: auto; /* long pension/slow/bottom legends scroll, never clip */
+}
+
+.help-bar[hidden] {
+  display: none;
+}
+
+.help-bar-text {
+  flex: 1;
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere; /* wrap long unbroken legend strings */
+}
+
+.help-bar-close {
+  flex: none;
+  min-width: 44px;
+  min-height: 44px; /* generous tap target on the trailing edge */
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--ink-dim);
+  background: none;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.help-bar-close:hover {
+  color: var(--ink);
+}
+
+/* Chip → Indicator detail jump, appended by help-bar.js when the page resolves a target.
+ * flex-basis:100% makes it the sheet's own second row (no wrapper element, no HTML edit). */
+.help-bar-action {
+  flex: 0 0 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  text-align: left;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: var(--surface-2);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.help-bar-action:hover {
+  background: var(--surface);
+}
+
+/* ----------------------------------------------------------- HISTORICAL REPLAY (/lab mode 2b)
+ * The replay card + its range control + the pure-SVG leg-path chart (replay-chart.js). Only
+ * renders on /lab, so it reuses the lab-scoped tokens declared in public/lab.css's :root
+ * (--panel/--calm/--danger/--faint/--mono/…); the dashboard never mounts these classes. Chrome
+ * mirrors .danger-field / .scoreboard; dark-only, consistent with the rest of the lab. */
+.replay-card {
+  margin-top: var(--gap);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px 14px;
+}
+.rp-range {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-bottom: 14px;
+}
+/* Inline replay error — rendered ABOVE the still-visible range controls (never hides #lab).
+ * Reuses the lab-scoped --danger* tokens; mirrors .sb-badge.fail / .df-error washes. */
+.rp-error {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--danger);
+  background: var(--danger-wash);
+  border: 1px solid var(--danger-line);
+  border-radius: var(--radius-sm);
+  padding: 7px 10px;
+  margin: 0 0 12px;
+  line-height: 1.45;
+}
+.rp-range-lbl {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.rp-presets {
+  display: inline-flex;
+  gap: 4px;
+}
+.rp-preset {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.74rem;
+  padding: 3px 11px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.rp-preset:hover {
+  border-color: var(--accent);
+}
+.rp-preset:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.rp-preset.active {
+  background: var(--accent-wash);
+  border-color: color-mix(in oklab, var(--accent) 45%, transparent);
+  color: var(--accent-ink);
+}
+.rp-date-l {
+  font-size: 0.72rem;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.rp-date {
+  font: inherit;
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 3px 6px;
+  color-scheme: dark;
+}
+.rp-date:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+/* Card header — mirrors .df-head / .sb-head. */
+.rp-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.rp-title {
+  font-size: 1rem;
+  font-weight: 680;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.rp-sub {
+  font-size: 0.68rem;
+  color: var(--faint);
+}
+.rp-warming {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--muted);
+  margin: 9px 0 0;
+}
+/* The SVG leg-path chart. */
+.rp-chart {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  touch-action: none; /* horizontal scrub reads the chart, doesn't scroll the page */
+}
+.rp-grid {
+  stroke: var(--line-soft);
+  stroke-width: 1;
+}
+.rp-ylabel,
+.rp-xlabel {
+  fill: var(--faint);
+  font-family: var(--mono);
+  font-size: 10px;
+}
+/* Left ladder axis title (D3) — a touch bolder/brighter than the sleeve-name ticks. */
+.rp-yaxis-title {
+  fill: var(--ink-dim);
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+}
+/* Defensive-tail graded warm→danger colors (D6): only the bottom four rows carry a warm
+ * hue that deepens with danger — EU-Fin amber → Health orange → Staples deep-orange →
+ * Cash deepest red — interpolated in equal thirds between the lab `--elev` (amber) and
+ * `--danger` (red) tokens (same color-mix idiom already used in lab.html). One warm class
+ * per row (see WARM_BY_SLOT in replay-chart.js), reused on the held-leg step stroke AND its
+ * ladder tick label; the upper six rungs stay neutral so warm keeps meaning "in defense".
+ * The compound `.rp-step`/`.rp-ylabel` selectors win over the base + reentry rules on
+ * specificity (0,2,0) — reentry days keep their dashed pattern, just recolored. */
+.rp-ylabel.rp-warm-1 {
+  fill: var(--elev);
+}
+.rp-ylabel.rp-warm-2 {
+  fill: color-mix(in srgb, var(--elev) 66%, var(--danger));
+}
+.rp-ylabel.rp-warm-3 {
+  fill: color-mix(in srgb, var(--elev) 33%, var(--danger));
+}
+.rp-ylabel.rp-warm-4 {
+  fill: var(--danger);
+}
+.rp-step.rp-warm-1 {
+  stroke: var(--elev);
+}
+.rp-step.rp-warm-2 {
+  stroke: color-mix(in srgb, var(--elev) 66%, var(--danger));
+}
+.rp-step.rp-warm-3 {
+  stroke: color-mix(in srgb, var(--elev) 33%, var(--danger));
+}
+.rp-step.rp-warm-4 {
+  stroke: var(--danger);
+}
+/* Held leg-path step: one horizontal segment per trading day. */
+.rp-step {
+  fill: none;
+  stroke: var(--t1-ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+/* Re-entry-phase days: distinct dashed stroke (walking back onto the ladder). */
+.rp-reentry {
+  stroke: var(--accent-ink);
+  stroke-dasharray: 4 3;
+}
+/* Vertical riser connecting consecutive days where the held row changes. */
+.rp-riser {
+  fill: none;
+  stroke: var(--t1-ink);
+  stroke-width: 1;
+  opacity: 0.45;
+}
+/* R4 cash-breaker band: translucent danger fill while the breaker is tripped. */
+.rp-cash-band {
+  fill: var(--danger);
+  opacity: 0.12;
+}
+/* Footer — coverage chips + verbatim server notes. */
+.rp-footer {
+  margin-top: 12px;
+  border-top: 1px dashed var(--line);
+  padding-top: 10px;
+}
+/* Coverage timerange bar (D7) — one thin state-colored strip per family under a shared
+ * calendar axis; replaces the old chip pile. A faint hatched leading track marks each
+ * family's late-start (uncovered) span; the wire carries only per-member firstDate, so
+ * strips are honest start→end coverage with no invented mid-series gaps. */
+.rp-covbar {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 8px;
+}
+.rp-cov-label {
+  fill: var(--muted);
+  font-family: var(--mono);
+  font-size: 9px;
+}
+.rp-cov-gap {
+  fill: url(#rpCovHatch);
+  opacity: 0.85;
+}
+.rp-cov-hatchline {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+.rp-cov-fill {
+  fill: var(--muted);
+}
+.rp-cov-fill.rp-cov-g {
+  fill: var(--state-green);
+}
+.rp-cov-fill.rp-cov-a {
+  fill: var(--state-amber);
+}
+.rp-cov-fill.rp-cov-r {
+  fill: var(--state-red);
+}
+.rp-cov-tick {
+  stroke: var(--line-soft);
+  stroke-width: 1;
+}
+.rp-cov-ticklabel {
+  fill: var(--faint);
+  font-family: var(--mono);
+  font-size: 9px;
+}
+.rp-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.rp-note {
+  font-size: 0.72rem;
+  color: var(--faint);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.help-bar-close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  color: var(--ink);
+}
+
+/* W5-a Stage 3.1 — the single resolved cash claim in the danger-ledger footer (#dfFoot).
+   Precedence (src/cash-overlay.ts `resolveCash`)
+   guarantees at most ONE of these paints: `full` is R4's terminal off-ladder cash, `partial` is the early overlay — which is
+   notify-only and UNSIZED until W5-b, hence the muted amber rather than a full-alarm red. */
+.cash-claim {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  line-height: 1.5;
+  vertical-align: baseline;
+}
+.cash-claim-label {
+  font-weight: 600;
+}
+.cash-claim-full {
+  background: #3a1e1e;
+  color: #f0c2c2;
+  border: 1px solid var(--state-red);
+}
+.cash-claim-partial {
+  background: #3a3320;
+  color: #f0dfb2;
+  border: 1px solid var(--state-amber);
+}
+/* B-22 — a HELD-BACK overlay (v-shape or r4-reentry). A hold is the calmest of the three: not an
+   alarm, just a note that an early overlay was deferred, so it reads muted/neutral, not amber. */
+.cash-claim-suppressed {
+  background: #23262b;
+  color: #aeb6c2;
+  border: 1px solid #3a3f46;
+}
+.cash-claim-since,
+.cash-claim-reason {
+  opacity: 0.8;
+}
+
+/* ===================================================== BAND panel (role-split board, Stage 3)
+ * The LIVE-ONLY alert-band escalator column, rendered by band-panel.js into #bandPanelHost as a
+ * full-width TOP STRIP above the bench: a deduction chain (danger →cut→ REGIME →floors→ BAND)
+ * header, then the 5 escalator floors as cards, each with member rows. Scenario/replay serve no
+ * `band`, so renderBandPanel returns "" and `:empty` collapses the host entirely. */
+.band-panel-host:empty {
+  display: none;
+}
+.band-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  margin-bottom: var(--gap);
+  /* Positioning ancestor for `.bp-note-toggle` (below), which rides the top padding out of flow.
+     `position: relative` never resizes a box — same guarantee lab.html's `.lg-sectag` relies on. */
+  position: relative;
+}
+/* Top strip — the deduction chain, reads left→right as danger →cut→ REGIME →floors→ BAND. */
+.bp-chain {
+  font-family: var(--mono, ui-monospace, monospace);
+  /* Type scale ([USER] 2026-07-24): the whole panel adopts the FAMILIES board's sizes so the two
+     sections read as one system — 0.82rem is the board's tile-title size (lab.html `.tile .t-h b`),
+     the largest text either section uses. */
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink);
+  padding: 6px 10px;
+  margin-bottom: 12px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+/* R6 ([USER] 2026-07-31) — the escalation sentence directly under the chain strip: `the market read
+   is WATCH; the geo floor raised it to WARNING`. Rendered ONLY when the pre-floor dial band differs
+   from the pushed one, so on a calm day this line does not exist and the strip sits on its own
+   margin exactly as before. Prose, not mono: it is the sentence that explains the strip above it,
+   one notch quieter, with only the two BAND WORDS carrying weight so the eye reads WATCH→WARNING
+   without re-reading the clause. Pulled up under the strip (which owns the 12px gap). */
+.bp-chain-esc {
+  font-size: 0.72rem;
+  color: var(--ink-dim);
+  margin: -8px 0 12px;
+  padding: 0 10px;
+}
+.bp-esc-band {
+  font-family: var(--mono, ui-monospace, monospace);
+  font-weight: 700;
+  color: var(--ink);
+}
+/* The floors disclosure ([USER] 2026-08-29) — the bottom-LEFT counterpart of `.bp-note-toggle`'s
+ * top-right micro-label, but IN FLOW: it sits under the chain strip and opens `#bpFloors` (the
+ * escalation sentence + the five floor blocks), collapsed by default. Same type treatment as
+ * `.bp-note-toggle` so the panel carries one affordance vocabulary. Its own margin is 0 — the
+ * pull-up that eats part of the strip's 12px gap moved to `.bp-floors-head` below, which is what is
+ * in flow now; a negative margin left here would shift the button off the title's baseline. Hit box
+ * is ~90×26 (padding, not glyph height) for the ~44px touch-target rule of thumb. */
+/* The disclosure's own heading row ([USER] 2026-08-30): the `Floors` title (which carries the
+ * section footnote — see SECTION_TIP.floors) and the `show ▸` toggle on one baseline. Kept to the
+ * strip's own rhythm: the row eats part of the chain strip's 12px gap via the toggle's negative top
+ * margin, so a CLOSED panel is still barely taller than the strip alone. Title and toggle are two
+ * elements on purpose (help-bar.js taps) — the gap is the only thing between them. */
+.bp-floors-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: -6px;
+}
+.bp-floors-title {
+  margin: 0;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--ink);
+}
+.bp-floors-toggle {
+  display: inline-block;
+  margin: 0;
+  padding: 4px 6px 6px 0;
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--faint);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.bp-floors-toggle:hover,
+.bp-floors-toggle:active,
+.bp-floors-toggle[aria-expanded="true"] {
+  color: var(--ink);
+}
+/* The revealed body. The escalation sentence keeps its prose treatment but loses the pull-up margin
+   that used to tuck it under the chain strip — inside the disclosure it is the first line, not a
+   caption hanging off the strip. */
+.bp-floors {
+  margin-top: 8px;
+}
+.bp-floors > .bp-chain-esc {
+  margin-top: 0;
+}
+/* The 5 escalator floors, side by side, wrapping on narrow widths. */
+.bp-column {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+/* The footnote's disclosure toggle ([USER] 2026-07-31) — the top-RIGHT counterpart of lab.html's
+ * `.lg-sectag` (top-left "ALERT BAND"), sharing the same HARD constraint: the panel's box may not
+ * grow, so this is `position: absolute` into padding `.band-panel` already has and is out of flow.
+ * MOBILE: the visible micro-label is ~8px tall, far under the ~44px touch target, so the padding
+ * below/around it does the work — the hit box is ~110×24 and extends DOWN over the `.bp-chain`
+ * strip, which carries no interactive content, so nothing is stolen. The tap highlight is
+ * suppressed because that box is much larger than the glyph and would flash as a bare rectangle. */
+.bp-note-toggle {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  padding: 4px 6px 12px;
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--faint);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.bp-note-toggle:hover,
+.bp-note-toggle:active,
+.bp-note-toggle[aria-expanded="true"] {
+  color: var(--ink);
+}
+/* The two-list footnote under the floors (NF-2, [USER] 2026-07-26): what raises the ALERT LEVEL vs
+ * what moves the POSITION. Sits below the floor row, quieter than the member rows — it is reference
+ * copy, not a live reading, so it must not compete with the floors for attention. Collapsed by
+ * default since 2026-07-31 ([USER]) — `hidden` until `.bp-note-toggle` reveals it. */
+.bp-note {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: var(--muted, var(--ink));
+  opacity: 0.85;
+}
+.bp-note-lead {
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+/* The list key ("Raises the alert level:" / "Moves the position:") — the two machines, named. */
+.bp-note-k {
+  font-weight: 600;
+  color: var(--ink);
+}
+.bp-note-foot {
+  margin-top: 6px;
+  font-style: italic;
+}
+/* CONTENT-SIZED widths ([USER] 2026-07-24, replacing the plan-#2 asymmetric fixed bases): every
+ * floor sizes to its own content (`flex-basis: auto`) and then shares the leftover row width
+ * equally — no floor carries a hand-set px width any more. The former `0 1 130px` base plus the
+ * r4 `2 1 320px` / credit `1.4 1 220px` overrides made those two permanently wide and the other
+ * three permanently narrow, which stopped making sense once all five render the same member rows.
+ * `min-width: 0` lets a long member label ellipsis/wrap instead of forcing the row to overflow. */
+.bp-floor {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  transition: opacity 0.15s ease;
+}
+/* Binding-floor emphasis (plan #5): ring the floor whose id === band.source, dim the rest. */
+.bp-floor.bp-binding {
+  border-color: var(--accent, var(--ink));
+  box-shadow: 0 0 0 1px var(--accent, var(--ink));
+}
+.bp-floor.bp-dim {
+  opacity: 0.55;
+}
+/* The `.bp-compact` / `.bp-dot*` status-rail rules are RETIRED ([USER] 2026-07-24): geo/rate/ew now
+ * render named member rows with the same RAG left bar as credit, so the dot rail has no emitter. */
+.bp-floor-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+/* Families parity: same size/weight as a board tile's family name (`.tile .t-h b`, 0.82rem/620). */
+.bp-floor-id {
+  font-weight: 620;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--ink-dim);
+}
+/* Floor-level pill — coloured by the floor's own computed alert level. Sized to the board's
+   uppercase micro-label (`.tile .st`, 0.6rem). */
+.bp-floor-chip {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: #fff;
+  white-space: nowrap;
+}
+.bp-floor-chip.lvl-OK {
+  background: var(--alert-ok);
+}
+.bp-floor-chip.lvl-WATCH {
+  background: var(--alert-watch);
+  color: #14171a;
+}
+.bp-floor-chip.lvl-WARNING {
+  background: var(--alert-warning);
+}
+.bp-floor-chip.lvl-CRITICAL {
+  background: var(--alert-critical);
+}
+/* r4 ONLY — the breaker's phase chip on the floor head ([USER] E5, 2026-07-26). Deliberately
+   quieter than the level chip beside it (outline, not a filled pill): the phase is context, the
+   level is the verdict. Rides the existing head row, so it adds no height.
+   `margin-left:auto` eats the head's free space (the head is `display:flex` with
+   `justify-content:space-between`, which on r4's THREE children would otherwise park the level chip
+   mid-head while the other four floors keep it hard right) — id left, phase + level packed right,
+   so the level chips keep one vertical scan line down the column. */
+/* NF-1 Stage 6.1 adds `.bp-floor-fchip` — the r4 fall-shape + confidence chip pair — to the SAME
+   right-packed run, sharing the phase chip's outline look. `margin-left:auto` stays on
+   `.bp-floor-phase` ALONE (below): a second auto margin would split the head's free space between
+   the chips and push the level chip back off the scan line. */
+.bp-floor-phase,
+.bp-floor-fchip {
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 0.58rem;
+  letter-spacing: 0.02em;
+  padding: 1px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--ink-dim);
+  white-space: nowrap;
+}
+.bp-floor-phase {
+  margin-left: auto;
+}
+.bp-floor-phase.g,
+.bp-floor-fchip.g {
+  border-color: var(--state-green);
+}
+.bp-floor-phase.a,
+.bp-floor-fchip.a {
+  border-color: var(--state-amber);
+  color: var(--state-amber);
+}
+.bp-floor-phase.r,
+.bp-floor-fchip.r {
+  border-color: var(--state-red);
+  color: var(--state-red);
+}
+/* A chip with no server tone (`s`) keeps the shared base outline — "context, not a signal". Declared
+   so the emitted class resolves to a real selector (frontend.md: a markup test proves EMITTED, never
+   STYLED); `color` re-states the base so a future base change cannot silently orphan it. */
+.bp-floor-fchip.s {
+  color: var(--ink-dim);
+}
+/* R9 ([USER] 2026-07-31) — the geo floor's count, on its own line between the head and the member
+   rows: `geo base 4`, with the addends behind its ⓘ ([USER] 2026-08-05 — the full arithmetic made
+   this the widest block on the panel). A LINE, not a chip: the head's chips are `white-space:
+   nowrap` pills sized for two or three words, and the lead sits with the ⓘ hit target beside it.
+   Quiet mono, one notch under a member row — it explains the level chip, it is not a second
+   verdict. Only `geo` sends `basis`, so the other four heads are unchanged. */
+.bp-floor-basis {
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 0.58rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-dim);
+  margin-bottom: 6px;
+}
+.bp-members {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+/* One member row — its OWN-STATE-CAPPED tone as a left border (never exceeds the floor's reach). */
+.bp-member {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  /* Families parity: the board's member-leg row (`.tile .ids`, 0.62rem mono / 1.6 / 0.02em). */
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 0.62rem;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+  padding: 3px 6px;
+  border-left: 3px solid var(--line);
+  border-radius: 3px;
+  background: var(--surface);
+}
+.bp-member.g {
+  border-left-color: var(--state-green);
+}
+.bp-member.a {
+  border-left-color: var(--state-amber);
+}
+.bp-member.r {
+  border-left-color: var(--state-red);
+}
+.bp-member.s {
+  border-left-color: var(--ink-dim);
+}
+.bp-mlabel {
+  font-weight: 600;
+  color: var(--ink);
+}
+.bp-input {
+  color: var(--ink-dim);
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 0.6rem;
+}
+/* r4 margin bar (plan #6) — additive; the `value vs threshold` numbers stay in .bp-input above it.
+ * Fill width = value/threshold clamped (higher = closer to trip, plan OQ-1). */
+.bp-margin {
+  flex-basis: 100%;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+.bp-margin-fill {
+  display: block;
+  height: 100%;
+  /* NEUTRAL grey, never a RAG tone (user ruling 2026-08-20): the bar reports distance to a gate,
+   * not a fired condition. Width is applied at runtime (inline-pos.js); the 0 default is the safe
+   * failure direction. */
+  background: var(--ink-dim);
+  width: 0;
+  border-radius: 999px;
+}
+/* Firing-only fold affordance (plan #4): calm members hide until the button toggles [hidden]. */
+.bp-fold {
+  margin-top: 4px;
+  padding: 2px 6px;
+  font-size: 0.6rem;
+  color: var(--ink-dim);
+  background: none;
+  border: 1px dashed var(--line);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.bp-fold:hover {
+  color: var(--ink);
+}
+.bp-calm {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+/* Mobile (plan #7): swap the wrapping card grid for a one-row scroll-snap rail. */
+@media (max-width: 640px) {
+  .bp-column {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .bp-floor {
+    scroll-snap-align: start;
+    flex: 0 0 78%;
+  }
+}
+
+/* Dashboard tap-first help cues (2026-08-15; the /lab recipe, lab.html §Tap-readable hosts).
+   Keep in sync with help-decorate.js's #dashboard entries in the carve-out and tap-priority
+   sets (glyph-keep hosts keep their ⓘ and get NO cue here). */
+#zone-a .alert-chip[title],
+#zone-a .verdict-title[title],
+#zone-a .verdict-subline [title],
+#zone-c h2[title],
+#zone-c .chan-title[title],
+#zone-c .chan-lag[title],
+#zone-c .combo-label[title],
+#zone-d .ctl-label[title],
+#dashboard .bottom-label[title],
+#dashboard .slow-label[title],
+#dashboard .card .card-label[title],
+#dashboard .card .card-delta[title],
+#dashboard .card .card-lag[title] {
+  cursor: pointer;
+}
+/* Very faint dotted underline on tap-readable LABELS (#6f7189 = lab.html --faint, not
+   defined in this sheet's :root). */
+#zone-a .verdict-title[title],
+#zone-a .verdict-subline [title]:not(.pill),
+#zone-c h2[title],
+#zone-c .chan-title[title],
+#zone-c .chan-lag[title],
+#zone-c .combo-label[title],
+#zone-d .ctl-label[title],
+#dashboard .bottom-label[title],
+#dashboard .slow-label[title],
+#dashboard .card .card-label[title],
+#dashboard .card .card-delta[title],
+#dashboard .card .card-lag[title] {
+  text-decoration: underline dotted #6f7189;
+  text-underline-offset: 2px;
+}
+/* …and a very faint bg tint on BOX hosts that draw their own border/fill (chip + pills) —
+   a dotted underline would collide with their box styling. */
+#zone-a .alert-chip[title],
+#zone-a .verdict-subline .pill[title] {
+  background-image: linear-gradient(
+    rgba(127, 127, 127, 0.06),
+    rgba(127, 127, 127, 0.06)
+  );
+}
+/* Phone: grow the smallest tap hosts to ≥24px hit boxes — padding with compensating
+   negative margins (the lab recipe), never font-size. */
+@media (max-width: 640px) {
+  #dashboard .card .card-lag[title],
+  #dashboard .card .card-delta[title],
+  #zone-c .chan-lag[title] {
+    padding: 7px 10px;
+    margin: -7px -10px;
+  }
+}
+
+/* Masthead disclosure — /overview opens with ONE sentence ([USER] 2026-09-07); everything else is
+   behind a native <details>, closed by default. `list-style` on both the element and the WebKit
+   pseudo-element is the two-browser way to drop the default triangle and draw our own ▸/▾. The
+   summary is styled as a link-ish affordance, not a button: it is prose, and it must not read as
+   heavier than the lede it sits under. */
+.masthead-lede {
+  color: var(--ink);
+}
+.masthead-more {
+  margin-top: 0.55rem;
+}
+.masthead-more-summary {
+  display: inline-block;
+  list-style: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--ink-dim);
+  text-decoration: underline dotted var(--ink-dim);
+  text-underline-offset: 3px;
+}
+.masthead-more-summary::-webkit-details-marker {
+  display: none;
+}
+.masthead-more-summary::before {
+  content: "▸ ";
+  text-decoration: none;
+}
+.masthead-more[open] > .masthead-more-summary::before {
+  content: "▾ ";
+}
+.masthead-more[open] > .masthead-more-summary {
+  margin-bottom: 0.55rem;
+}
+
+/* The window-chip row's tail hint (`tap to read`, detail-tab.js) — coaching only a touch
+   viewport needs, so it is hidden by default and revealed only where hover is absent. It
+   inherits the chip row's small type and declares no line-height, so the row's height is
+   unchanged with or without it. */
+.touch-hint {
+  display: none;
+  color: var(--ink-dim);
+}
+@media (hover: none) {
+  .touch-hint {
+    display: inline;
+  }
+  /* Readout bar, FULL at rest ([USER] 2026-09-13): with tap-pin the bar persists, so on phones
+     it shows the whole wrapped readout and the bar itself takes a tap, which hides it until the
+     next new pin (hover-readout.js) — freeing the screen for the chart. hover-readout.js stops
+     propagation, so the tap can never reach the chart host's pin-clear path. Desktop keeps the
+     base rule's `pointer-events: none`. */
+  .hover-bar {
+    pointer-events: auto;
+    cursor: pointer;
+  }
+}
+
+/* ===================================================== Overlay strip (danger-ledger footer)
+ * Every class `public/overlay-strip.js` emits, styled here. The module builds the strip as a flat
+ * run of sibling `<span>`s joined with NO separator (`parts.join("")`), so `display: block` on the
+ * row and the group head is what makes it a strip at all rather than one wrapped paragraph.
+ *
+ * WHY here and not a scoped `<style>`: `index.html` has no scoped block and `lab.html` only
+ * `<link>`s this sheet, so a rule defined per-page would paint on one surface and not the other —
+ * the same trap `--trend-line`'s note above records.
+ *
+ * TONE is the one thing that must read at a glance: the 4 values of `OverlayView.tone`
+ * (`overlay-strip.js` `TONES`) ride a left stripe, since a coloured stripe survives the dim
+ * body text the rest of the footer uses. `reentry` takes --trend-line rather than a state hue
+ * on purpose — climbing back onto the ladder is not an alarm state, and the blue is already
+ * validator-picked to stay distinct from --state-red/--state-amber under CVD. An unknown
+ * server tone degrades to `neutral` in the module, so no row can reach an unstyled class. */
+.overlay-row {
+  display: block;
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 1px 0 1px 9px;
+  border-left: 3px solid transparent;
+  color: var(--ink-dim);
+}
+.overlay-row .sep {
+  opacity: 0.45;
+}
+.overlay-neutral {
+  border-left-color: var(--line);
+}
+.overlay-caution {
+  border-left-color: var(--state-amber);
+  color: var(--ink);
+}
+.overlay-alert {
+  border-left-color: var(--state-red);
+  color: var(--ink);
+}
+.overlay-reentry {
+  border-left-color: var(--trend-line);
+  color: var(--ink);
+}
+/* The row's identity — `label - headline`. Carries the ◆ marker on a `reentry` row. */
+.overlay-head {
+  font-weight: 600;
+  color: var(--ink);
+}
+.overlay-climb {
+  color: var(--trend-line);
+}
+/* `label <b>value</b>`; the value is pre-formatted upstream and printed verbatim, so the only
+   emphasis available is weight/colour — tabular numerals keep a column of them from jittering. */
+.overlay-field b {
+  color: var(--ink);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.overlay-note {
+  opacity: 0.8;
+}
+/* Section header (DECISION LOGIC / NOT WIRED) — printed once when a section first has content. */
+.overlay-group-head {
+  display: block;
+  margin-top: 8px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  opacity: 0.75;
+}
+.overlay-group-head:first-child {
+  margin-top: 0;
+}
+/* The all-quiet collapse line — one sentence standing in for the folded rows. Deliberately the
+   quietest thing in the strip: on most days it is the whole decision-now section. */
+.overlay-idle {
+  font-style: italic;
+  opacity: 0.85;
+}
+/* The dd-gate probe line — measurement only, steers nothing, and is pinned ABOVE the first
+   section head so no collapse branch can swallow it. Dashed stripe so it reads as
+   instrumentation rather than as a ledger row that feeds the held rung. */
+.overlay-ddgate {
+  border-left-style: dashed;
+  margin-bottom: 6px;
+}

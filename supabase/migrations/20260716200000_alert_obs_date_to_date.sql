@@ -1,0 +1,25 @@
+-- crash-dash — alert_log.obs_date text → date (audit rank 15).
+--
+-- readings.obs_date has always been `date` (init_schema), but alert_log.obs_date was declared `text`
+-- (a run's as-of date string). Storing a calendar date as text means one non-ISO write (e.g. a
+-- `MM/DD/YYYY` or zero-padded-wrong value) sorts lexicographically WRONG, silently mis-ticking the
+-- dwell / time-in-cash gates that read it via `>=` (getAlertsSince, scoreboard time-in-cash). Making
+-- the column a real `date` forces Postgres to reject a malformed write at INSERT time and to compare
+-- as a date, not a string.
+--
+-- USING obs_date::date parses every existing row's ISO `YYYY-MM-DD` text into a date; all live rows are
+-- ISO (run.ts stamps `todayIso()`), so the cast is total. `not null` is preserved by ALTER TYPE.
+--
+-- NO record_run() re-create needed. Since 20260716180000 the atomic write goes through
+-- jsonb_populate_record(null::alert_log, v_alert), which coerces each JSON value via that column's
+-- CURRENT input type — so the day this ALTER lands, the same ISO string in p_alert->'obs_date' is
+-- parsed to `date` automatically (it was already casting text before). No explicit INSERT column list
+-- to update, no function body to touch (contrast the pre-rank-8 explicit-INSERT body, which pulled
+-- `p_alert->>'obs_date'` as text and would have needed a `::date` added here).
+--
+-- TS mappings unchanged: supabase-js returns `date` columns as `YYYY-MM-DD` strings (same wire form as
+-- the old text column), so AlertRecord.date / AlertSlice.date stay `string` and every ISO-lexicographic
+-- `>=` comparison in JS (scoreboard.ts, getAlertsSince) yields the identical result — ISO date strings
+-- and dates order the same. The PostgREST `.gte(obs_date, sinceIso)` in getAlertsSince now compares as
+-- date server-side, also identical for ISO inputs.
+alter table alert_log alter column obs_date type date using obs_date::date;

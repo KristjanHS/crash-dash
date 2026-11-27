@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>How it works - crash-dash</title>
+    <meta
+      name="description"
+      content="What crash-dash measures, how to read the alert band, where the data comes from, and what it deliberately does not do."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./legal.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='%235f7a5f'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <div class="pagenav-bar">
+      <a class="pagenav" href="/">Dashboard <span aria-hidden="true">↗</span></a>
+      <a class="pagenav pagenav-gap" href="/lab">Lab <span aria-hidden="true">↗</span></a>
+      <a class="pagenav pagenav-gap" href="/signin" data-auth-nav>Sign in <span aria-hidden="true">↗</span></a>
+    </div>
+
+    <main class="legal">
+      <p class="legal-eyebrow">crash-dash</p>
+      <h1 class="legal-title">How it works</h1>
+      <p>
+        Once per trading day, crash-dash pulls a set of free public market and economic series,
+        scores each one against fixed thresholds, and rolls the lot into a single danger reading.
+        That reading is the alert band at the top of the dashboard.
+      </p>
+      <p>
+        It watches, and when the band moves it sends a notification. That is the whole job. It
+        places no orders, holds no account, and knows nothing about you.
+      </p>
+
+      <h2>Reading the alert band</h2>
+      <p>Four steps, calm to acute.</p>
+      <dl>
+        <dt>OK</dt>
+        <dd>Nothing in the scored set is flagging. Ordinary conditions.</dd>
+        <dt>WATCH</dt>
+        <dd>Some signals have turned. Danger is building, but it is not broad yet.</dd>
+        <dt>WARNING</dt>
+        <dd>Several signals agree, and they sit in different parts of the market.</dd>
+        <dt>CRITICAL</dt>
+        <dd>Broad stress, everywhere at once.</dd>
+      </dl>
+      <p>
+        The band moves up on the same run it is earned. It moves back down only after the calmer
+        reading has held for two runs. That asymmetry is on purpose, because being late to escalate
+        costs more than being early to relax. A change is pushed once. An unchanged band is not
+        re-sent.
+      </p>
+
+      <h2>What it watches</h2>
+      <p>
+        Credit conditions. Interest rates and the shape of the yield curve. Equity volatility and
+        its term structure, price trend, market breadth, valuation, plus a small geopolitical
+        channel that is mostly quiet.
+      </p>
+      <p>
+        Every series gets its own card below the band, with a Green/Amber/Red state and its
+        history, so any reading can be traced back to the signals behind it. No single indicator
+        can carry the band on its own.
+      </p>
+
+      <h2>The panels below the band</h2>
+      <p>
+        Three more panels sit under the headline. None of them can move the alert band, which is
+        deliberate.
+      </p>
+      <ul>
+        <li>
+          <strong>Portfolio drawdown</strong> - how far a reference book of broad market exposure
+          has fallen from its own peak, in EUR. This is decline that already happened, not risk
+          ahead.
+        </li>
+        <li>
+          <strong>Bottom signal</strong> - a contrarian read of extreme, cresting volatility. It
+          hints that fear may be burning itself out. It is not a buy signal.
+        </li>
+        <li>
+          <strong>Bubble state</strong> - a slow gauge of how much speculative fuel has piled up.
+          Higher means more froth. It says nothing about when.
+        </li>
+      </ul>
+
+      <h2>Where the numbers come from</h2>
+      <p>
+        Free public sources only: FRED (Federal Reserve Bank of St. Louis), the European Central
+        Bank, and daily closing prices from public market feeds. The full list, with the terms each
+        source is used under, is on the <a href="/attribution">Attribution</a> page. What you see
+        here are values crash-dash derived from those feeds, not figures the sources published.
+      </p>
+      <p>
+        Data arrives late, gets revised, and is sometimes simply wrong. Every card shows the age of
+        its newest observation, so a stale feed is visible instead of quietly rotting behind a
+        number.
+      </p>
+
+      <h2>What it deliberately does not do</h2>
+      <ul>
+        <li>No investment advice, and no personal recommendation, to anyone.</li>
+        <li>No account, no profile, no holdings. It knows nothing about you.</li>
+        <li>No orders, no broker connection.</li>
+        <li>No forecast, and no probability of a crash. It reports the present.</li>
+        <li>Nothing for sale, no advertising.</li>
+      </ul>
+      <p>The full legal position is in the <a href="/terms">Terms of use</a>.</p>
+
+      <h2>Going deeper</h2>
+      <ul>
+        <li><a href="/lab">Lab</a> - the instrument bench. Every method and cut, running on live data.</li>
+        <li><a href="/journal">Journal</a> - what the gauge actually published, over time.</li>
+        <li><a href="/exposure">Exposure</a> - a two-key posture dial off the same signals.</li>
+        <li><a href="/subscribe">Email alerts</a> - band-change mails; subscribing creates your account.</li>
+        <li><a href="/signin">Sign in</a> - an existing account's way in and out (sign out shows the public page only).</li>
+      </ul>
+    </main>
+
+    <footer class="site-footer">
+      <nav class="site-footer-links" aria-label="Legal">
+        <a href="/imprint">Imprint</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/cookies">Cookies</a>
+        <a href="/attribution">Attribution</a>
+      </nav>
+      <p class="site-footer-donate">
+        Free to use. <a href="https://paypal.me/kristjanhs" rel="noopener noreferrer external">Send a gift</a>
+        - voluntary, and it buys nothing.
+      </p>
+    </footer>
+    <script type="module" src="./auth-nav.js"></script>
+  </body>
+</html>

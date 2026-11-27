@@ -1,0 +1,40 @@
+-- crash-dash — W5-d Stage 3.0: persist the V-vs-bear FALL SHAPE
+-- (DEC-3; ruled (A) = suppress the
+-- early cash overlay).
+--
+-- ADDITIVE ONLY: three `add column if not exists` statements, no DROP / ALTER TYPE / DELETE /
+-- UPDATE, so this is safe on the direct-to-main path (.claude/rules/migrations.md taxonomy) and
+-- `scripts/check-destructive-migrations.ts` needs no `-- destructive: reviewed` marker.
+--
+-- No `record_run` re-create is needed: since 20260716180000 the function inserts via
+-- `jsonb_populate_record(null::alert_log, ...)`, so a new column is picked up BY NAME from the
+-- `p_alert` jsonb (`store.ts:alertRow`). An unknown key raises loudly rather than NULL-dropping.
+--
+-- Behaviour-neutral on landing, and that is the DEPLOY-ORDERING constraint this stage exists to
+-- satisfy: it applies before Stage 3.1's code writes these columns, and `fall_shape` defaults to
+-- 'indeterminate' — the exact value the no-closes / short-history / clipped-peak branches of
+-- `classifyFallShape` produce — so a pre-migration row and a post-migration row read identically
+-- through `rowToAlert`. 'indeterminate' is also the SAFE default in the influence sense: of the
+-- three classes only 'v-shaped' diverges from today's behaviour, so an un-backfilled row can never
+-- retroactively suppress an overlay.
+--
+--   fall_shape           — `FallShape` as text: 'v-shaped' | 'bear' | 'indeterminate'.
+--                          NOT NULL DEFAULT 'indeterminate' (see above): the class is emitted every
+--                          run, and a degraded run means 'indeterminate', never NULL and never a
+--                          fabricated class. No CHECK constraint — the enum is owned by
+--                          `src/v-bear.ts`'s `FallShape`, and a DB-side enum would need a second
+--                          (destructive) migration every time the classifier widens. Same reasoning
+--                          as `cash_overlay` in 20260718130000.
+--   fall_velocity        — the measured drawdown-per-trading-day (negative while falling), for
+--                          D-E3, which reuses it as W5-e's drawdown input. NULLABLE: null means
+--                          "not measurable" (no closes), which is distinct from 0.0 ("at the
+--                          trailing peak, no fall") — collapsing the two would let a dead feed read
+--                          as a fresh peak.
+--   credit_dwell_closes  — consecutive confirmed-RED credit closes, max over F1/F2. NULLABLE: null
+--                          means a history shorter than `BEAR_DWELL_CLOSES`, which `v-bear.ts`
+--                          deliberately refuses to report as a small number (a small dwell reads as
+--                          'v-shaped' — the one behaviour-changing class — on evidence that does
+--                          not support it).
+alter table alert_log add column if not exists fall_shape text not null default 'indeterminate';
+alter table alert_log add column if not exists fall_velocity double precision;
+alter table alert_log add column if not exists credit_dwell_closes integer;

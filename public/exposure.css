@@ -1,0 +1,125 @@
+/* Exposure-page-scoped tokens/chips. Externalized from exposure.html's inline
+   <style> so the CSP can drop style-src 'unsafe-inline' (rung 5). Loaded ONLY by
+   exposure.html, immediately after styles.css, so the cascade order is unchanged:
+   reuses styles.css color vars, adds the chip ramp. */
+      .exposure {
+        max-width: 680px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+      }
+      .exp-headline {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 20px 22px;
+        text-align: center;
+      }
+      .exp-eyebrow {
+        margin: 0 0 6px;
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink-dim);
+      }
+      .exp-posture {
+        margin: 0;
+        font-size: 2.1rem;
+        font-weight: 700;
+        line-height: 1.1;
+      }
+      /* Posture tones — Full=green … Defensive=red; warming=dim. Core shifts one step
+         toward amber so 100%-equity Full and 70%-equity Core never read as one colour. */
+      .exp-posture[data-tone="full"] { color: var(--state-green); }
+      .exp-posture[data-tone="core"] { color: color-mix(in oklab, var(--state-green) 60%, var(--state-amber)); }
+      .exp-posture[data-tone="reduced"] { color: var(--state-amber); }
+      .exp-posture[data-tone="defensive"] { color: var(--state-red); }
+      .exp-posture[data-tone="warming"] { color: var(--ink-dim); }
+      /* Equity weight under the headline — the number the user acts on. Empty when
+         the posture is degraded, so the element collapses rather than reading 0%. */
+      .exp-posture-weight {
+        margin: 2px 0 0;
+        font-size: 0.95rem;
+        color: var(--ink-dim);
+      }
+
+      .exp-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--gap);
+      }
+      .exp-chip {
+        flex: 1 1 220px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-left: 4px solid var(--line);
+        border-radius: var(--radius);
+        padding: 12px 14px;
+      }
+      .exp-chip-label {
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+      .exp-chip-tone {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--ink-dim);
+        margin-left: 6px;
+      }
+      .exp-chip-detail {
+        margin: 6px 0 0;
+        font-variant-numeric: tabular-nums;
+        color: var(--ink-dim);
+        font-size: 0.9rem;
+      }
+      /* Chip tone ramp — quiet/intact = green edge, approaching = amber (pre-alert tier),
+         armed/broken = red, degraded = grey. */
+      .exp-chip[data-tone="quiet"],
+      .exp-chip[data-tone="intact"] { border-left-color: var(--state-green); }
+      .exp-chip[data-tone="approaching"] { border-left-color: var(--state-amber); }
+      .exp-chip[data-tone="armed"],
+      .exp-chip[data-tone="broken"] { border-left-color: var(--state-red); }
+      .exp-chip[data-tone="degraded"] { border-left-color: var(--ink-dim); }
+
+      /* Per-chip as-of date (R10): each key prints its own feed's date, always —
+         the page-level shared `as of` line is gone, so a one-day skew between the
+         two keys can no longer hide behind a single date. */
+      .exp-chip-asof {
+        margin: 4px 0 0;
+        font-variant-numeric: tabular-nums;
+        font-size: 0.78rem;
+        color: var(--ink-dim);
+      }
+
+      /* Three-part chip footnote (R1): what it is · which thresholds drive it · why only
+         these metrics. The threshold line's numbers are SERVED (/api/exposure `thresholds`),
+         so nothing numeric is typed in public/. The rule above separates the footnote from
+         the live readout, and the rationale sits smallest — it is reference, not a number. */
+      .exp-chip-what {
+        margin: 10px 0 0;
+        padding-top: 8px;
+        border-top: 1px solid var(--line);
+        font-size: 0.8rem;
+        color: var(--ink-dim);
+      }
+      .exp-chip-cuts {
+        margin: 4px 0 0;
+        font-variant-numeric: tabular-nums;
+        font-size: 0.8rem;
+        color: var(--ink-dim);
+      }
+      /* A payload with no `thresholds` block renders an EMPTY threshold line (the seam ruling: no
+         typed fallback). Without this it still holds its top margin, leaving a stray gap between
+         the "what it is" line and the rationale. */
+      .exp-chip-cuts:empty {
+        display: none;
+      }
+      .exp-chip-why {
+        margin: 4px 0 0;
+        font-size: 0.75rem;
+        line-height: 1.45;
+        color: var(--ink-dim);
+        opacity: 0.85;
+      }

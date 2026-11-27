@@ -1,0 +1,5 @@
+# Accepted advisories — each entry expires; scan-sec reds again at ignoreUntil.
+[[IgnoredVulns]]
+id = "GHSA-fc5q-39xc-vjpf"
+ignoreUntil = 2026-12-17
+reason = "picomatch 4.0.7, dev-only (knip, vitest); no fixed release as of 2026-11-17 — [USER] accepted 2026-11-17"

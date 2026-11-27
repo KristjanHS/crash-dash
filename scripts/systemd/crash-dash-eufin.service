@@ -1,0 +1,24 @@
+[Unit]
+Description=crash-dash headless re-entry ladder runs — /semis (default LEGS; any of /eufin /value /semis /spit /sp500) (claude -p on the Max monthly API credit)
+# Any failed run (exit ≠ 0, timeout, kill, start failure) → one ntfy push (scripts/ladder-alert.sh).
+OnFailure=crash-dash-ladder-alert.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/projects/crash-dash
+# A Persistent= catch-up counts as "ran" either way; the user manager has no network-online.target, so wait here.
+ExecStartPre=%h/projects/crash-dash/scripts/systemd/wait-online.sh
+ExecStart=%h/projects/crash-dash/scripts/eufin-run-local.sh
+# ANTHROPIC_API_KEY (Console key, workspace-scoped) — in the operator's environment file (chmod 600, never in the repo). The leading
+# "-" makes a missing file a soft error; the script then fails loud on the unset key.
+# `make ship` uses the stored `vercel login` (no token, by user ruling) — stale login ⇒ push only. The prod scoring cron trigger uses .env.prod's CRON_SECRET.
+EnvironmentFile=-%h/.config/crash-dash/eufin.env
+# The 07:40 ship may push until 08:00 (ruled 2026-11-20); eufin.env overrides it.
+Environment=SHIP_PUSH_HORIZON_S=0
+# Each leg's skill is bounded by --max-budget-usd (not by time; four legs back to back); the one
+# `make ship` after any commit is the long pole (suite + deploy + push + cron, ~5-10 min; deploy
+# alone may wait 15 min for READY). 80 min cap.
+TimeoutStartSec=4800
+# Node comes from nvm (the script resolves it); claude is in ~/.local/bin; the `make ship`
+# security trio (gitleaks · osv-scanner · zizmor) is Homebrew — scan-sec.sh fails CLOSED without it.
+Environment=PATH=%h/.local/bin:%h/.npm-global/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:/usr/bin:/bin

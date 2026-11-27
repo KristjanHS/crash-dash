@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacy - crash-dash</title>
+    <meta name="description" content="How crash-dash handles personal data under the GDPR." />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./legal.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='%235f7a5f'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <main class="legal">
+      <p class="legal-eyebrow">crash-dash</p>
+      <h1 class="legal-title">Privacy policy</h1>
+      <p class="legal-note">
+        Information under Arts. 13-14 GDPR. The controller is the operator named in the
+        <a href="/imprint">Imprint</a>.
+      </p>
+
+      <h2>What the public pages collect</h2>
+      <p>
+        The dashboard, exposure and lab pages have no accounts, no login, no analytics, no
+        advertising and no third-party trackers. They set no cookies. Small view preferences (for
+        example which panels or mode are shown) are stored in your browser's local storage on your
+        own device and are never sent to a server - see the <a href="/cookies">Cookie policy</a>.
+      </p>
+
+      <h2>Server logs</h2>
+      <p>
+        The site is hosted on Vercel and its data store on Supabase. As part of delivering the pages
+        and the read API, the hosting infrastructure processes technical request data such as IP
+        address, timestamp and requested URL in server and security logs. The legal basis is the
+        operator's legitimate interest (Art. 6(1)(f)) in operating and securing the service. These
+        providers act as processors and may store or process data outside the EU/EEA under the
+        relevant transfer safeguards (such as the EU Standard Contractual Clauses).
+      </p>
+
+      <h2>The optional holdings journal</h2>
+      <p>
+        The journal page is optional and self-hosted: you connect it to your own Supabase project.
+        Your email is used only to send a sign-in magic link, and your entries are stored in the
+        database you connect. Your connection details stay in your browser's local storage and your
+        sign-in token in session storage on your own device.
+      </p>
+
+      <h2>Recipients</h2>
+      <p>
+        Hosting and infrastructure providers (Vercel, Supabase) as processors. The push channel
+        (ntfy.sh) is used only where you subscribe to it. No personal data is sold or shared for
+        advertising.
+      </p>
+
+      <h2>Retention</h2>
+      <p>Server and security logs are kept only as long as the hosting providers retain them for operational and security purposes.</p>
+      <p>
+        Erasing your account (see <a href="#your-rights">Your rights</a>) removes your journal entries, your email
+        subscription and the sign-in account itself. It does not touch the market-data series, the alert history or the
+        calibration record - none of those hold anything about you. Two records outlive the account by design: the
+        sign-in provider's own security audit log, and the processor-side logs of the mail sender (Brevo) and the host
+        (Vercel), each kept for their own retention period.
+      </p>
+
+      <h2 id="your-rights">Your rights</h2>
+      <p>
+        Subject to the GDPR you may request access, rectification, erasure, restriction, portability
+        and object to processing (Arts. 15-21). You may also lodge a complaint with the Estonian Data
+        Protection Inspectorate (Andmekaitse Inspektsioon, AKI).
+      </p>
+      <p>
+        There are two routes to erasure. If you can sign in, do it yourself: <a href="/journal">Holdings journal</a> carries
+        a <em>Delete my account</em> control that removes your journal entries, your email subscription and the sign-in
+        account in one step, immediately and without asking us. If you cannot sign in - a lost address, a link that no
+        longer arrives - contact the operator at the email address in the <a href="/imprint">Imprint</a> and ask; we do the same
+        thing by hand. Unsubscribing from the emails is a separate, smaller thing: it stops the mails and keeps the account.
+      </p>
+    </main>
+
+    <footer class="site-footer">
+      <nav class="site-footer-links" aria-label="Legal">
+        <a href="/imprint">Imprint</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/cookies">Cookies</a>
+        <a href="/attribution">Attribution</a>
+      </nav>
+      <p class="site-footer-donate">
+        Free to use. <a href="https://paypal.me/kristjanhs" rel="noopener noreferrer external">Send a gift</a>
+        - voluntary, and it buys nothing.
+      </p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Attribution - crash-dash</title>
+    <meta name="description" content="Data-source credits and reuse conditions for crash-dash." />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./legal.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='%235f7a5f'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <main class="legal">
+      <p class="legal-eyebrow">crash-dash</p>
+      <h1 class="legal-title">Attribution</h1>
+      <p>
+        The values shown on this site, and returned by the <code>/api</code> endpoints, are
+        <strong>derived and transformed by crash-dash</strong> - through percentiles, z-scores,
+        folds and other calculations - and are <strong>not published by the sources</strong> named
+        below. Source credits are a licence condition, not a courtesy.
+      </p>
+
+      <h2>Sources</h2>
+      <dl>
+        <dt>FRED - Federal Reserve Bank of St. Louis</dt>
+        <dd>
+          Source: FRED, Federal Reserve Bank of St. Louis. The values shown are derived and
+          transformed by crash-dash and are not published by FRED or the underlying data owners.
+        </dd>
+
+        <dt>ECB - European Central Bank</dt>
+        <dd>
+          Source: European Central Bank (ECB). Where ECB information is used it is reproduced with
+          the ECB cited as the source, and the values shown have been modified - derived and
+          transformed by crash-dash (for example by percentile, z-score or growth-rate
+          calculation) - and are not published by the ECB.
+        </dd>
+
+        <dt>US Treasury</dt>
+        <dd>Source: US Treasury (daily Treasury par yield curve rates).</dd>
+
+        <dt>Federal Reserve Board</dt>
+        <dd>
+          Source: Federal Reserve Board (G&#252;rkaynak-Sack-Wright nominal yield curve; excess bond
+          premium).
+        </dd>
+
+        <dt>Deutsche Bundesbank</dt>
+        <dd>Source: Deutsche Bundesbank (daily Federal-securities spot rates).</dd>
+      </dl>
+
+      <p class="legal-note">
+        These credits match the reuse notice carried on every <code>/api</code> response
+        (<code>X-Data-Terms</code>): the values are for personal, non-commercial use, and no
+        redistribution, republication or automated collection is permitted. See the
+        <a href="/terms">Terms</a>.
+      </p>
+    </main>
+
+    <footer class="site-footer">
+      <nav class="site-footer-links" aria-label="Legal">
+        <a href="/imprint">Imprint</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/cookies">Cookies</a>
+        <a href="/attribution">Attribution</a>
+      </nav>
+      <p class="site-footer-donate">
+        Free to use. <a href="https://paypal.me/kristjanhs" rel="noopener noreferrer external">Send a gift</a>
+        - voluntary, and it buys nothing.
+      </p>
+    </footer>
+  </body>
+</html>

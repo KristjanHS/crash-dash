@@ -1,0 +1,10 @@
+[Unit]
+Description=Re-start user@%i.service after a failed start (WSL /run/user race)
+# Bounded: 3 rescues per 5 min, then user-manager-deadman.sh (cron) alerts.
+StartLimitIntervalSec=300
+StartLimitBurst=3
+
+[Service]
+Type=oneshot
+# The sleep lets user-runtime-dir@%i finish its unneeded-stop, so the start below re-mounts a fresh tmpfs.
+ExecStart=/bin/sh -c 'sleep 2; exec systemctl start --no-block user@%i.service'

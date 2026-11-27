@@ -1,0 +1,27 @@
+{
+  "env": {
+    "CLAUDE_CODE_FORK_SUBAGENT": "0"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(scripts/prod-sql-ro.sh:*)"
+    ],
+    "deny": [
+      "Edit(scripts/prod-sql-ro.sh)",
+      "Read(**/.env.prod)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guard-ask.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": [
+    "src/run.ts!", "api/**/*.ts!", "vitest.config.ts",
+    "scripts/!(ladder-render|ladder-scrub|ladder-state|ladder-apply|ladder-skills|ladder-prelabel|ladder-research-prompt|probe-*-tranches|probe-outcomes|probe-restate).ts",
+    "scripts/!(backfill|backup)/**/*.ts", "scripts/backfill/!(run|dial-state).ts", "scripts/backup/!(dump|restore-rows).ts",
+    "scripts/ladder-{render,scrub,state,apply,skills,prelabel,research-prompt}.ts!", "scripts/probe-{eufin,value,semis,spit,sp500}-tranches.ts!",
+    "scripts/probe-{outcomes,restate}.ts!",
+    "scripts/backfill/{run,dial-state}.ts!", "scripts/backup/{dump,restore-rows}.ts!"
+  ],
+  "project": ["src/**/*.ts!", "api/**/*.ts!", "!src/**/*.test-helpers.ts!", "!src/test-helpers.ts!", "!src/goldens/**!"],
+  "ignore": ["scripts/archive/**"],
+  "rules": {
+    "dependencies": "off", "devDependencies": "off", "optionalPeerDependencies": "off",
+    "unlisted": "off", "binaries": "off", "unresolved": "off", "duplicates": "off"
+  }
+}

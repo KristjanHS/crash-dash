@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Email alerts (sign up) - crash-dash</title>
+    <meta name="description" content="Subscribe to the crash-dash band alert by email - the confirmation link also creates your account, which signs you in to the full dashboard, lab, exposure and a private holdings journal. Unsubscribing stops the mails only; sign in and out on /signin." />
+    <!-- Static shell only: vanilla ES modules, no framework/bundler/build. Auth is raw GoTrue REST
+         (magic link), wired on this page and the journal only. Styles reuse journal.css. -->
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./journal.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='%235f7a5f'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <div class="pagenav-bar">
+      <a class="pagenav" href="/">Dashboard <span aria-hidden="true">↗</span></a>
+      <a class="pagenav pagenav-gap" href="/lab">Lab <span aria-hidden="true">↗</span></a>
+      <a class="pagenav pagenav-gap" href="/signin" data-auth-nav>Sign in <span aria-hidden="true">↗</span></a>
+    </div>
+
+    <main class="journal">
+      <h1 class="journal-title">Email alerts</h1>
+
+      <!-- One card, two intents. Either button mails a confirmation link to the address; the
+           list changes only when that link is clicked (double opt-in / opt-out). -->
+      <section id="card" class="jr-card">
+        <p class="jr-h">Band alerts by email - and your account</p>
+        <p>
+          Get a mail when the alert band moves (OK / WATCH / WARNING / CRITICAL) - a few a month.
+          Subscribing also creates your crash-dash account: the confirmation link you click signs
+          this tab in to the full dashboard, the lab, exposure and a private holdings journal that
+          only you can read. Already have an account? <a href="/signin">Sign in</a> instead - no
+          need to subscribe again.
+        </p>
+        <p>
+          Both subscribing and unsubscribing are confirmed by a link sent to the address, so nobody
+          can sign you up or remove you but you. Unsubscribing stops the mails only - your account
+          and journal stay, and you can still sign in.
+        </p>
+        <div class="jr-fields">
+          <label class="jr-field jr-wide"
+            >Email
+            <input id="email" type="email" placeholder="you@example.com" autocomplete="email" />
+          </label>
+        </div>
+        <div class="jr-actions">
+          <button id="sub" class="jr-btn" type="button">Subscribe</button>
+          <button id="unsub" class="jr-link" type="button">Unsubscribe</button>
+          <!-- Escape from a STALE device marker: shown only when `cd.sub.email` matches the typed
+               address, so a row deleted on another device costs one click, never a lockout. -->
+          <button id="sendanyway" class="jr-btn" type="button" hidden>Send the link anyway</button>
+        </div>
+        <p id="msg" class="jr-msg"></p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <nav class="site-footer-links" aria-label="Legal">
+        <a href="/imprint">Imprint</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/cookies">Cookies</a>
+        <a href="/attribution">Attribution</a>
+      </nav>
+      <p class="site-footer-donate">
+        Free to use. <a href="https://paypal.me/kristjanhs" rel="noopener noreferrer external">Send a gift</a>
+        - voluntary, and it buys nothing.
+      </p>
+    </footer>
+
+    <script type="module" src="./disclaimer.js"></script>
+    <script type="module" src="./auth-nav.js"></script>
+    <script type="module" src="./subscribe.js"></script>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-08-08",
+  "source": "prod",
+  "regen": "npm run emit:synth-cuts",
+  "notes": "Stage 6.3 — Option B runtime expanding percentile. Review record only; production recomputes from the live store on every run. `degradedLegs.<leg>: true` means that leg's window was thinner than minObs and it fell back to `prior`; `degraded` is the any-leg roll-up. The velocity window is `velocityWindow` observations SHORTER than the level one (see nObs vs nObsVelocity), so the two axes can degrade independently. `source` is the store the numbers were read from — nObs is only comparable across ids from the SAME store. An AMBER-ONLY velocity id (F3, R2) emits `amberVelocity` + `nObsVelocity` but NO `redVelocity` — its registry prior defines no red velocity cut, so none is computed. F3 carries a per-id `velocityWindow` on the ENTRY that differs from the global `method.velocityWindow` (20, which is the DEFAULT and does not move when an entry overrides it): F3 = 4 (a weekly series scoring a 4-WEEK |Δ|). `nObsVelocity = nObs - velocityWindow` per id, so read the depth off the entry's own window, never off `method`. The covered set is F3 alone (added 2026-07-20, W1 slice 2 — its 0.5/1.0 prior was unreachable by the series). THREE ids left it: F10 (BAMLEMCBPIOAS) 2026-07-18 (option C) — keyless FRED serves the ICE BofA OAS series over a rolling ~3-year window, so its percentile was fitted to one benign credit regime with no event in it, which no minObs floor can detect; F9 (DTWEXBGS) 2026-08-08 and F11 (DEXCHUS) 2026-08-09, both of which now standardize their Δ60 by a strictly-historical rolling σ and cut at fixed σ values on their registry pair. All three score off registry pairs now.",
+  "method": {
+    "amberPercentile": 0.85,
+    "redPercentile": 0.95,
+    "velocityWindow": 20,
+    "minObs": 252,
+    "estimator": "expanding-window empirical CDF (point-in-time, pre-t only)"
+  },
+  "cuts": {
+    "F3": {
+      "series": "NFCIRISK",
+      "label": "NFCI Risk",
+      "nObs": 766,
+      "velocityWindow": 4,
+      "nObsVelocity": 762,
+      "degraded": false,
+      "degradedLegs": {
+        "amberLevel": false,
+        "redLevel": false,
+        "amberVelocity": false,
+        "redVelocity": false
+      },
+      "amberLevel": -0.3526,
+      "redLevel": -0.224,
+      "amberVelocity": 0.061,
+      "prior": {
+        "amberLevel": 0.5,
+        "redLevel": 1,
+        "amberVelocity": 0.5
+      }
+    }
+  }
+}

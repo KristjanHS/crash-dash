@@ -1,0 +1,28 @@
+-- crash-dash — persist the assembled family panel: `panel_state` jsonb blob on alert_log
+-- (Stage C′). The cron already
+-- assembles the panel once at notify time (`assembleDial`, src/run-cycle.ts) and DISCARDS it;
+-- persisting it on the SAME row as `dial_state` lets the live `/api/lab` read path SERVE it instead
+-- of re-running `assembleDial` per request — and the shared row guarantees panel and dial can never
+-- disagree about vintage ("compute once, read once", the same seam `dial_state` established).
+--
+-- ADDITIVE ONLY: one `add column if not exists`, NULLABLE, no DROP / ALTER TYPE / DELETE / UPDATE, so
+-- this is safe on the direct-to-main path (.claude/rules/migrations.md taxonomy) and
+-- `scripts/check-destructive-migrations.ts` needs no `-- destructive: reviewed` marker.
+--
+-- No `record_run` re-create is needed: since 20260716180000 the function inserts via
+-- `jsonb_populate_record(null::alert_log, ...)`, so a new column is picked up BY NAME from the
+-- `p_alert` jsonb (`store.ts:alertRow`). An unknown key raises loudly rather than NULL-dropping.
+--
+-- Behaviour-neutral on landing: pre-migration rows read back `panel_state = NULL`, and `rowToAlert`
+-- maps that to `panelState: null` — the live read path is DEGRADED-fallback (a null blob falls back
+-- to a fresh `assembleDial`, never a silent stale serve), so legacy rows keep rendering exactly as
+-- before.
+--
+--   panel_state — the four fields `/api/lab` consumes off one `assembleDial` return
+--                 (`globalPanel`, `displayPanel`, `cissHistory`, `heldMemberState`; `PersistedPanel`,
+--                 src/dial-assembly.ts) as jsonb. NULLABLE: null on legacy (pre-migration) rows and on
+--                 a run that assembled no panel — the read path is serve-or-recompute, so a null blob
+--                 just falls back to `assembleDial`. No CHECK / schema constraint — the shape is owned
+--                 by TypeScript's `PersistedPanel` and pinned by the `alertRow`↔`rowToAlert`
+--                 round-trip test.
+alter table alert_log add column if not exists panel_state jsonb;

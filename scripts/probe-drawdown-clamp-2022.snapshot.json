@@ -1,0 +1,55 @@
+{
+  "probe": "W5-e Phase C — 2022 clamp on/off rung-path divergence + isolated clamp effect",
+  "window": {
+    "name": "2022",
+    "from": "2022-01-01",
+    "to": "2022-12-31"
+  },
+  "generatedFrom": {
+    "acwiFixture": "scripts/backtest/data/acwi.csv",
+    "acwiCloses": 4603,
+    "failOffTrueCloses": 399,
+    "biteDefinition": "failOff===true && prevRung>0 && |candidateRung−prevRung|>1 (bidirectional, §9)",
+    "note": "ISOLATED clamp effect = closes where decideRotationHold's committed sleeve differs between gate OFF and gate=failOff on the SAME carried state (history held equal). This is the TRUE behaviour change; the A-2 'bite' count is on the dial's REQUESTED move (pre-M8), so it OVERSTATES the clamp when M8 already holds the re-risk. Path divergence = the two independently-folded arms compared."
+  },
+  "clampBiteAll": 3,
+  "clampBite2022": 0,
+  "clampBiteByEpisode": {
+    "2022": 0,
+    "2025": 0,
+    "2008-09 GFC": 0,
+    "2011 EU crisis": 2,
+    "2015-16": 1,
+    "2018Q4": 0,
+    "2020 COVID": 0
+  },
+  "clampHits": [
+    {
+      "date": "2011-09-26",
+      "episode": "2011 EU crisis",
+      "prevRung": 4,
+      "offRung": 7,
+      "onRung": 5,
+      "failOff": true
+    },
+    {
+      "date": "2011-10-10",
+      "episode": "2011 EU crisis",
+      "prevRung": 7,
+      "offRung": 4,
+      "onRung": 6,
+      "failOff": true
+    },
+    {
+      "date": "2016-01-08",
+      "episode": "2015-16",
+      "prevRung": 4,
+      "offRung": 7,
+      "onRung": 5,
+      "failOff": true
+    }
+  ],
+  "window2022Closes": 251,
+  "diffCloses": 0,
+  "diff": []
+}

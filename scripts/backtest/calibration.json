@@ -1,0 +1,3767 @@
+{
+  "schema_version": 1,
+  "computed_at": "2026-08-07T16:15:29.701001+00:00",
+  "ndx_window": {
+    "start": "1985-10-01",
+    "end": "2026-08-07"
+  },
+  "params": [
+    {
+      "channel": "credit",
+      "metric": "baa10y_evt_level_amber",
+      "value": 3.353,
+      "ci_low": 3.0188,
+      "ci_high": 4.5377,
+      "method": "evt_gpd",
+      "n_events": 997,
+      "window_start": "1986-01-02",
+      "window_end": "2026-08-05",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes. Baa is investment-grade \u2014 understates/lags HY OAS blowouts (800\u20131500bp); treat as a lagging IG proxy for the HY tail."
+    },
+    {
+      "channel": "credit",
+      "metric": "baa10y_evt_level_red",
+      "value": 4.4729,
+      "ci_low": 3.4537,
+      "ci_high": 5.877,
+      "method": "evt_gpd",
+      "n_events": 997,
+      "window_start": "1986-01-02",
+      "window_end": "2026-08-05",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes. Baa is investment-grade \u2014 understates/lags HY OAS blowouts (800\u20131500bp); treat as a lagging IG proxy for the HY tail."
+    },
+    {
+      "channel": "rate",
+      "metric": "dfii10_evt_level_amber",
+      "value": 0.3647,
+      "ci_low": 0.322,
+      "ci_high": 0.4117,
+      "method": "evt_gpd",
+      "n_events": 588,
+      "window_start": "2003-01-31",
+      "window_end": "2026-08-05",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "rate",
+      "metric": "dfii10_evt_level_red",
+      "value": 0.6214,
+      "ci_low": 0.521,
+      "ci_high": 0.7224,
+      "method": "evt_gpd",
+      "n_events": 588,
+      "window_start": "2003-01-31",
+      "window_end": "2026-08-05",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "rate",
+      "metric": "dgs10_evt_level_amber",
+      "value": 0.4897,
+      "ci_low": 0.4548,
+      "ci_high": 0.5266,
+      "method": "evt_gpd",
+      "n_events": 1599,
+      "window_start": "1962-01-30",
+      "window_end": "2026-08-05",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "rate",
+      "metric": "dgs10_evt_level_red",
+      "value": 0.8494,
+      "ci_low": 0.7616,
+      "ci_high": 0.9483,
+      "method": "evt_gpd",
+      "n_events": 1599,
+      "window_start": "1962-01-30",
+      "window_end": "2026-08-05",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "rate",
+      "metric": "dgs2_evt_level_amber",
+      "value": 0.5778,
+      "ci_low": 0.5187,
+      "ci_high": 0.6503,
+      "method": "evt_gpd",
+      "n_events": 1239,
+      "window_start": "1976-06-29",
+      "window_end": "2026-08-05",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "rate",
+      "metric": "dgs2_evt_level_red",
+      "value": 1.1872,
+      "ci_low": 0.9968,
+      "ci_high": 1.4,
+      "method": "evt_gpd",
+      "n_events": 1239,
+      "window_start": "1976-06-29",
+      "window_end": "2026-08-05",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "credit",
+      "metric": "ebp_evt_level_amber",
+      "value": 1.024,
+      "ci_low": 0.6714,
+      "ci_high": 1.4519,
+      "method": "evt_gpd",
+      "n_events": 65,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "credit",
+      "metric": "ebp_evt_level_red",
+      "value": 2.0268,
+      "ci_low": 1.1786,
+      "ci_high": 2.9903,
+      "method": "evt_gpd",
+      "n_events": 65,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "vol",
+      "metric": "move_evt_level_amber",
+      "value": 142.2099,
+      "ci_low": 119.741,
+      "ci_high": 172.0202,
+      "method": "evt_gpd",
+      "n_events": 586,
+      "window_start": "2002-11-12",
+      "window_end": "2026-07-17",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "vol",
+      "metric": "move_evt_level_red",
+      "value": 181.768,
+      "ci_low": 141.0152,
+      "ci_high": 214.0448,
+      "method": "evt_gpd",
+      "n_events": 586,
+      "window_start": "2002-11-12",
+      "window_end": "2026-07-17",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "semis",
+      "metric": "smh_evt_level_amber",
+      "value": -0.3229,
+      "ci_low": -0.4097,
+      "ci_high": -0.2127,
+      "method": "evt_gpd",
+      "n_events": 646,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "semis",
+      "metric": "smh_evt_level_red",
+      "value": -0.4834,
+      "ci_low": -0.5448,
+      "ci_high": -0.3372,
+      "method": "evt_gpd",
+      "n_events": 646,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "rate",
+      "metric": "t10y2y_evt_level_amber",
+      "value": -0.5637,
+      "ci_low": -0.872,
+      "ci_high": -0.1048,
+      "method": "evt_gpd",
+      "n_events": 1252,
+      "window_start": "1976-06-01",
+      "window_end": "2026-08-06",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "rate",
+      "metric": "t10y2y_evt_level_red",
+      "value": -1.1944,
+      "ci_low": -1.5407,
+      "ci_high": -0.5493,
+      "method": "evt_gpd",
+      "n_events": 1252,
+      "window_start": "1976-06-01",
+      "window_end": "2026-08-06",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "rate",
+      "metric": "t10y3m_evt_level_amber",
+      "value": -0.6473,
+      "ci_low": -1.3282,
+      "ci_high": 0.0977,
+      "method": "evt_gpd",
+      "n_events": 1093,
+      "window_start": "1982-01-04",
+      "window_end": "2026-08-06",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "rate",
+      "metric": "t10y3m_evt_level_red",
+      "value": -1.415,
+      "ci_low": -1.7176,
+      "ci_high": -0.3268,
+      "method": "evt_gpd",
+      "n_events": 1093,
+      "window_start": "1982-01-04",
+      "window_end": "2026-08-06",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "vol",
+      "metric": "vix_evt_level_amber",
+      "value": 33.1776,
+      "ci_low": 29.2003,
+      "ci_high": 39.1455,
+      "method": "evt_gpd",
+      "n_events": 925,
+      "window_start": "1990-01-02",
+      "window_end": "2026-08-06",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "vol",
+      "metric": "vix_evt_level_red",
+      "value": 46.973,
+      "ci_low": 37.0611,
+      "ci_high": 57.7254,
+      "method": "evt_gpd",
+      "n_events": 925,
+      "window_start": "1990-01-02",
+      "window_end": "2026-08-06",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "vol",
+      "metric": "vix_backwardation_evt_level_amber",
+      "value": 1.3137,
+      "ci_low": 0.6783,
+      "ci_high": 2.3255,
+      "method": "evt_gpd",
+      "n_events": 504,
+      "window_start": "2006-07-17",
+      "window_end": "2026-07-17",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "vol",
+      "metric": "vix_backwardation_evt_level_red",
+      "value": 6.1563,
+      "ci_low": 3.6631,
+      "ci_high": 9.7136,
+      "method": "evt_gpd",
+      "n_events": 504,
+      "window_start": "2006-07-17",
+      "window_end": "2026-07-17",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "geo",
+      "metric": "wti_evt_level_amber",
+      "value": 0.1647,
+      "ci_low": 0.1516,
+      "ci_high": 0.1799,
+      "method": "evt_gpd",
+      "n_events": 1020,
+      "window_start": "1986-01-30",
+      "window_end": "2026-08-03",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "geo",
+      "metric": "wti_evt_level_red",
+      "value": 0.31,
+      "ci_low": 0.2553,
+      "ci_high": 0.3754,
+      "method": "evt_gpd",
+      "n_events": 1020,
+      "window_start": "1986-01-30",
+      "window_end": "2026-08-03",
+      "notes": "Full-sample GPD POT level; a CANDIDATE cutpoint \u2014 apply point-in-time (expanding-window) in production, not as a fixed full-sample quantile. n_events counts GPD exceedances above the POT threshold (what drove the fit), not drawdown episodes."
+    },
+    {
+      "channel": "credit",
+      "metric": "baa10y_zscore_amber",
+      "value": 1.5,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 15,
+      "window_start": "1986-01-02",
+      "window_end": "2026-08-05",
+      "notes": "Regime-relative z cutpoint (upper tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 3.30. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window. Baa is IG \u2014 understates/lags HY OAS blowouts."
+    },
+    {
+      "channel": "credit",
+      "metric": "baa10y_zscore_red",
+      "value": 2.0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 15,
+      "window_start": "1986-01-02",
+      "window_end": "2026-08-05",
+      "notes": "Regime-relative z cutpoint (upper tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 3.65. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window. Baa is IG \u2014 understates/lags HY OAS blowouts."
+    },
+    {
+      "channel": "credit",
+      "metric": "baa10y_zref_mean",
+      "value": 1.802794,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 15,
+      "window_start": "1986-01-02",
+      "window_end": "2026-08-05",
+      "notes": "Trailing 1260-obs (~5y) mean of the baa10y decision variable (upper tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "credit",
+      "metric": "baa10y_zref_std",
+      "value": 0.24215,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 15,
+      "window_start": "1986-01-02",
+      "window_end": "2026-08-05",
+      "notes": "Trailing 1260-obs (~5y) std of the baa10y decision variable (upper tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "rate",
+      "metric": "dfii10_zscore_amber",
+      "value": 1.5,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 5,
+      "window_start": "2003-01-31",
+      "window_end": "2026-08-05",
+      "notes": "Regime-relative z cutpoint (upper tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 0.33. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "rate",
+      "metric": "dfii10_zscore_red",
+      "value": 2.0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 5,
+      "window_start": "2003-01-31",
+      "window_end": "2026-08-05",
+      "notes": "Regime-relative z cutpoint (upper tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 0.44. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "rate",
+      "metric": "dfii10_zref_mean",
+      "value": 0.000282,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 5,
+      "window_start": "2003-01-31",
+      "window_end": "2026-08-05",
+      "notes": "Full-sample mean of the dfii10 decision variable (upper tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "rate",
+      "metric": "dfii10_zref_std",
+      "value": 0.217959,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 5,
+      "window_start": "2003-01-31",
+      "window_end": "2026-08-05",
+      "notes": "Full-sample std of the dfii10 decision variable (upper tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "rate",
+      "metric": "dgs10_zscore_amber",
+      "value": 1.5,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 15,
+      "window_start": "1962-01-30",
+      "window_end": "2026-08-05",
+      "notes": "Regime-relative z cutpoint (upper tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 0.48. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "rate",
+      "metric": "dgs10_zscore_red",
+      "value": 2.0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 15,
+      "window_start": "1962-01-30",
+      "window_end": "2026-08-05",
+      "notes": "Regime-relative z cutpoint (upper tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 0.64. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "rate",
+      "metric": "dgs10_zref_mean",
+      "value": 0.000681,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 15,
+      "window_start": "1962-01-30",
+      "window_end": "2026-08-05",
+      "notes": "Full-sample mean of the dgs10 decision variable (upper tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "rate",
+      "metric": "dgs10_zref_std",
+      "value": 0.320714,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 15,
+      "window_start": "1962-01-30",
+      "window_end": "2026-08-05",
+      "notes": "Full-sample std of the dgs10 decision variable (upper tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "rate",
+      "metric": "dgs2_zscore_amber",
+      "value": 1.5,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 15,
+      "window_start": "1976-06-29",
+      "window_end": "2026-08-05",
+      "notes": "Regime-relative z cutpoint (upper tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 0.65. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "rate",
+      "metric": "dgs2_zscore_red",
+      "value": 2.0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 15,
+      "window_start": "1976-06-29",
+      "window_end": "2026-08-05",
+      "notes": "Regime-relative z cutpoint (upper tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 0.87. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "rate",
+      "metric": "dgs2_zref_mean",
+      "value": -0.00452,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 15,
+      "window_start": "1976-06-29",
+      "window_end": "2026-08-05",
+      "notes": "Full-sample mean of the dgs2 decision variable (upper tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "rate",
+      "metric": "dgs2_zref_std",
+      "value": 0.436946,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 15,
+      "window_start": "1976-06-29",
+      "window_end": "2026-08-05",
+      "notes": "Full-sample std of the dgs2 decision variable (upper tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "credit",
+      "metric": "ebp_zscore_amber",
+      "value": 1.5,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 15,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "Regime-relative z cutpoint (upper tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 0.86. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "credit",
+      "metric": "ebp_zscore_red",
+      "value": 2.0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 15,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "Regime-relative z cutpoint (upper tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 1.13. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "credit",
+      "metric": "ebp_zref_mean",
+      "value": 0.064652,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 15,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "Full-sample mean of the ebp decision variable (upper tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "credit",
+      "metric": "ebp_zref_std",
+      "value": 0.531824,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 15,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "Full-sample std of the ebp decision variable (upper tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "semis",
+      "metric": "smh_zscore_amber",
+      "value": 1.5,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "Regime-relative z cutpoint (lower tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 -0.26. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "semis",
+      "metric": "smh_zscore_red",
+      "value": 2.0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "Regime-relative z cutpoint (lower tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 -0.37. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "semis",
+      "metric": "smh_zref_mean",
+      "value": 0.076099,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "Full-sample mean of the smh decision variable (lower tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "semis",
+      "metric": "smh_zref_std",
+      "value": 0.224946,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "Full-sample std of the smh decision variable (lower tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "rate",
+      "metric": "t10y2y_zscore_amber",
+      "value": 1.5,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 15,
+      "window_start": "1976-06-01",
+      "window_end": "2026-08-06",
+      "notes": "Regime-relative z cutpoint (lower tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 -0.52. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "rate",
+      "metric": "t10y2y_zscore_red",
+      "value": 2.0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 15,
+      "window_start": "1976-06-01",
+      "window_end": "2026-08-06",
+      "notes": "Regime-relative z cutpoint (lower tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 -0.98. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "rate",
+      "metric": "t10y2y_zref_mean",
+      "value": 0.845947,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 15,
+      "window_start": "1976-06-01",
+      "window_end": "2026-08-06",
+      "notes": "Full-sample mean of the t10y2y decision variable (lower tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "rate",
+      "metric": "t10y2y_zref_std",
+      "value": 0.913292,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 15,
+      "window_start": "1976-06-01",
+      "window_end": "2026-08-06",
+      "notes": "Full-sample std of the t10y2y decision variable (lower tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "rate",
+      "metric": "t10y3m_zscore_amber",
+      "value": 1.5,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 15,
+      "window_start": "1982-01-04",
+      "window_end": "2026-08-06",
+      "notes": "Regime-relative z cutpoint (lower tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 -0.34. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "rate",
+      "metric": "t10y3m_zscore_red",
+      "value": 2.0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 15,
+      "window_start": "1982-01-04",
+      "window_end": "2026-08-06",
+      "notes": "Regime-relative z cutpoint (lower tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 -0.96. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "rate",
+      "metric": "t10y3m_zref_mean",
+      "value": 1.534404,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 15,
+      "window_start": "1982-01-04",
+      "window_end": "2026-08-06",
+      "notes": "Full-sample mean of the t10y3m decision variable (lower tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "rate",
+      "metric": "t10y3m_zref_std",
+      "value": 1.248878,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 15,
+      "window_start": "1982-01-04",
+      "window_end": "2026-08-06",
+      "notes": "Full-sample std of the t10y3m decision variable (lower tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "vol",
+      "metric": "vix_zscore_amber",
+      "value": 1.5,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 12,
+      "window_start": "1990-01-02",
+      "window_end": "2026-08-06",
+      "notes": "Regime-relative z cutpoint (upper tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 31.03. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "vol",
+      "metric": "vix_zscore_red",
+      "value": 2.0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 12,
+      "window_start": "1990-01-02",
+      "window_end": "2026-08-06",
+      "notes": "Regime-relative z cutpoint (upper tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 34.90. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "vol",
+      "metric": "vix_zref_mean",
+      "value": 19.440596,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 12,
+      "window_start": "1990-01-02",
+      "window_end": "2026-08-06",
+      "notes": "Full-sample mean of the vix decision variable (upper tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "vol",
+      "metric": "vix_zref_std",
+      "value": 7.727651,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 12,
+      "window_start": "1990-01-02",
+      "window_end": "2026-08-06",
+      "notes": "Full-sample std of the vix decision variable (upper tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "vol",
+      "metric": "vix_backwardation_zscore_amber",
+      "value": 1.5,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 5,
+      "window_start": "2006-07-17",
+      "window_end": "2026-07-17",
+      "notes": "Regime-relative z cutpoint (upper tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 1.54. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "vol",
+      "metric": "vix_backwardation_zscore_red",
+      "value": 2.0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 5,
+      "window_start": "2006-07-17",
+      "window_end": "2026-07-17",
+      "notes": "Regime-relative z cutpoint (upper tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 2.59. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "vol",
+      "metric": "vix_backwardation_zref_mean",
+      "value": -1.619692,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 5,
+      "window_start": "2006-07-17",
+      "window_end": "2026-07-17",
+      "notes": "Full-sample mean of the vix_backwardation decision variable (upper tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "vol",
+      "metric": "vix_backwardation_zref_std",
+      "value": 2.103874,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 5,
+      "window_start": "2006-07-17",
+      "window_end": "2026-07-17",
+      "notes": "Full-sample std of the vix_backwardation decision variable (upper tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "geo",
+      "metric": "wti_zscore_amber",
+      "value": 1.5,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 15,
+      "window_start": "1986-01-30",
+      "window_end": "2026-08-03",
+      "notes": "Regime-relative z cutpoint (upper tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 0.19. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "geo",
+      "metric": "wti_zscore_red",
+      "value": 2.0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 15,
+      "window_start": "1986-01-30",
+      "window_end": "2026-08-03",
+      "notes": "Regime-relative z cutpoint (upper tail); apply as a point-in-time expanding-window z-score. Full-sample-implied level \u2248 0.24. Fixed threshold \u21d2 no sampling CI. n_events counts \u226515% NDX drawdown episodes in-window."
+    },
+    {
+      "channel": "geo",
+      "metric": "wti_zref_mean",
+      "value": 0.008324,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 15,
+      "window_start": "1986-01-30",
+      "window_end": "2026-08-03",
+      "notes": "Full-sample mean of the wti decision variable (upper tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "geo",
+      "metric": "wti_zref_std",
+      "value": 0.118295,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 15,
+      "window_start": "1986-01-30",
+      "window_end": "2026-08-03",
+      "notes": "Full-sample std of the wti decision variable (upper tail); the reference distribution the regime-relative z cutpoint is defined against. The live scorer computes z = (today \u2212 mean) / std (std \u2264 0 \u21d2 z-leg skipped)."
+    },
+    {
+      "channel": "credit",
+      "metric": "hyoas_zscore_amber",
+      "value": 1.5,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 15,
+      "window_start": "1986-01-02",
+      "window_end": "2026-08-05",
+      "notes": "EW-R1 Stage 2.1 MIRROR of baa10y_zscore_amber \u2014 F1 (HY OAS) resolves its own credit/hyoas prefix to byte-identical cuts. Still the Baa10y PROXY distribution, and it REMAINS so after Stage 2.2 (which ADDED the measured hyoas_evt_level_* rows alongside these four rather than replacing them \u2014 dropping the z rows is the A1 z-leg regression). This leg is scored against the proxy z-series (run.ts proxyZFor), not against F1's own HY-OAS level. Emitted by harness.py (section_hyoas_cuts) as a copy of the baa10y proxy row, so a regen reproduces it."
+    },
+    {
+      "channel": "credit",
+      "metric": "hyoas_zscore_red",
+      "value": 2.0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zscore",
+      "n_events": 15,
+      "window_start": "1986-01-02",
+      "window_end": "2026-08-05",
+      "notes": "EW-R1 Stage 2.1 MIRROR of baa10y_zscore_red \u2014 F1 (HY OAS) resolves its own credit/hyoas prefix to byte-identical cuts. Still the Baa10y PROXY distribution, and it REMAINS so after Stage 2.2 (which ADDED the measured hyoas_evt_level_* rows alongside these four rather than replacing them \u2014 dropping the z rows is the A1 z-leg regression). This leg is scored against the proxy z-series (run.ts proxyZFor), not against F1's own HY-OAS level. Emitted by harness.py (section_hyoas_cuts) as a copy of the baa10y proxy row, so a regen reproduces it."
+    },
+    {
+      "channel": "credit",
+      "metric": "hyoas_zref_mean",
+      "value": 1.802794,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 15,
+      "window_start": "1986-01-02",
+      "window_end": "2026-08-05",
+      "notes": "EW-R1 Stage 2.1 MIRROR of baa10y_zref_mean \u2014 F1 (HY OAS) resolves its own credit/hyoas prefix to byte-identical cuts. Still the Baa10y PROXY distribution, and it REMAINS so after Stage 2.2 (which ADDED the measured hyoas_evt_level_* rows alongside these four rather than replacing them \u2014 dropping the z rows is the A1 z-leg regression). This leg is scored against the proxy z-series (run.ts proxyZFor), not against F1's own HY-OAS level. Emitted by harness.py (section_hyoas_cuts) as a copy of the baa10y proxy row, so a regen reproduces it."
+    },
+    {
+      "channel": "credit",
+      "metric": "hyoas_zref_std",
+      "value": 0.24215,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "zref",
+      "n_events": 15,
+      "window_start": "1986-01-02",
+      "window_end": "2026-08-05",
+      "notes": "EW-R1 Stage 2.1 MIRROR of baa10y_zref_std \u2014 F1 (HY OAS) resolves its own credit/hyoas prefix to byte-identical cuts. Still the Baa10y PROXY distribution, and it REMAINS so after Stage 2.2 (which ADDED the measured hyoas_evt_level_* rows alongside these four rather than replacing them \u2014 dropping the z rows is the A1 z-leg regression). This leg is scored against the proxy z-series (run.ts proxyZFor), not against F1's own HY-OAS level. Emitted by harness.py (section_hyoas_cuts) as a copy of the baa10y proxy row, so a regen reproduces it."
+    },
+    {
+      "channel": "credit",
+      "metric": "hyoas_evt_level_amber",
+      "value": 3.7994,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "percentile_p66_unconditional",
+      "n_events": 1310,
+      "window_start": "2021-07-21",
+      "window_end": "2026-07-21",
+      "notes": "EW-R1 Stage 2.2 \u2014 MEASURED HY-OAS level cut, p66 of the unconditional distribution (379.94 bps = 3.7994 percentage points; the registry/`thresholds` unit). Source: f1_cuts.json `spliced.primary.level.p66`, computed by scripts/backtest/f1-percentile-cuts.ts over the spliced vintage+live BAMLH0A0HYM2 series. Window is trailing-5y, re-rolled at PUBLISH cadence, NOT per-close \u2014 the cut is a scalar frozen between publications (plan \u00a72 Conflict 1). n_events is the OBSERVATION count of the trailing-5y window, not a GPD exceedance count (method is a plain quantile, no EVT fit). Provisional: measured, NOT optimized \u2014 no overfit gate has run. Emitted by harness.py (section_hyoas_cuts) from f1_cuts.json; if that artifact is absent the row is skipped and F1 falls back to its 4.5 registry prior."
+    },
+    {
+      "channel": "credit",
+      "metric": "hyoas_evt_level_red",
+      "value": 4.69,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "percentile_p90_unconditional",
+      "n_events": 1310,
+      "window_start": "2021-07-21",
+      "window_end": "2026-07-21",
+      "notes": "EW-R1 Stage 2.2 \u2014 MEASURED HY-OAS level cut, p90 of the unconditional distribution (469 bps = 4.69 percentage points). Source: f1_cuts.json `spliced.primary.level.p90`, computed by scripts/backtest/f1-percentile-cuts.ts over the spliced vintage+live BAMLH0A0HYM2 series. Window is trailing-5y, re-rolled at PUBLISH cadence, NOT per-close (plan \u00a72 Conflict 1). n_events is the OBSERVATION count of the trailing-5y window, not a GPD exceedance count. Provisional: measured, NOT optimized. Emitted by harness.py (section_hyoas_cuts) from f1_cuts.json; if that artifact is absent the row is skipped and F1 falls back to its 6.0 registry prior."
+    },
+    {
+      "channel": "credit",
+      "metric": "hyoas_evt_vel_amber",
+      "value": 0.07,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "percentile_p66_unconditional",
+      "n_events": 1310,
+      "window_start": "2021-07-21",
+      "window_end": "2026-07-21",
+      "notes": "D-A (2026-07-22 F1 velocity overhaul, Stage 1.1) \u2014 MEASURED HY-OAS 30d-change velocity cut, p66 of the unconditional distribution of \u039430d (percentage points; the delta20 unit F1's velocity leg compares against). Source: f1_cuts.json `spliced.primary.velocity30d.p66`, computed by scripts/backtest/f1-percentile-cuts.ts (velocityObservations(all, 30)) over the spliced vintage+live BAMLH0A0HYM2 series. Window is trailing-5y, re-rolled at PUBLISH cadence, NOT per-close (plan \u00a72 Conflict 1). n_events is the OBSERVATION count of the trailing-5y window, not a GPD exceedance count (plain quantile, no EVT fit). Provisional: measured, NOT optimized. Feeds resolveCuts' velEvt* (evt_vel_*) \u2014 INERT until Stage 1.2 opens F1's legs.velocity axis. Emitted by harness.py (section_hyoas_cuts) from f1_cuts.json; if that artifact is absent the row is skipped."
+    },
+    {
+      "channel": "credit",
+      "metric": "hyoas_evt_vel_red",
+      "value": 0.54,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "percentile_p90_unconditional",
+      "n_events": 1310,
+      "window_start": "2021-07-21",
+      "window_end": "2026-07-21",
+      "notes": "D-A (2026-07-22 F1 velocity overhaul, Stage 1.1) \u2014 MEASURED HY-OAS 30d-change velocity cut, p90 of the unconditional distribution of \u039430d (percentage points; the delta20 unit F1's velocity leg compares against). Source: f1_cuts.json `spliced.primary.velocity30d.p90`, computed by scripts/backtest/f1-percentile-cuts.ts (velocityObservations(all, 30)) over the spliced vintage+live BAMLH0A0HYM2 series. Window is trailing-5y, re-rolled at PUBLISH cadence, NOT per-close (plan \u00a72 Conflict 1). n_events is the OBSERVATION count of the trailing-5y window, not a GPD exceedance count (plain quantile, no EVT fit). Provisional: measured, NOT optimized. Feeds resolveCuts' velEvt* (evt_vel_*) \u2014 INERT until Stage 1.2 opens F1's legs.velocity axis. Emitted by harness.py (section_hyoas_cuts) from f1_cuts.json; if that artifact is absent the row is skipped."
+    },
+    {
+      "channel": "credit",
+      "metric": "hyoas_operative_vel_amber",
+      "value": 0.07,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "percentile_p66_unconditional",
+      "n_events": 1310,
+      "window_start": "2021-07-21",
+      "window_end": "2026-07-21",
+      "notes": "D-A (2026-07-22 F1 velocity overhaul, Stage 1.1) \u2014 MEASURED HY-OAS 30d-change velocity cut, p66 of the unconditional distribution of \u039430d (percentage points; the delta20 unit F1's velocity leg compares against). Source: f1_cuts.json `spliced.primary.velocity30d.p66`, computed by scripts/backtest/f1-percentile-cuts.ts (velocityObservations(all, 30)) over the spliced vintage+live BAMLH0A0HYM2 series. Window is trailing-5y, re-rolled at PUBLISH cadence, NOT per-close (plan \u00a72 Conflict 1). n_events is the OBSERVATION count of the trailing-5y window, not a GPD exceedance count (plain quantile, no EVT fit). Provisional: measured, NOT optimized. Feeds resolveCuts' velOp* (operative_vel_*) \u2014 INERT until Stage 1.2 opens F1's legs.velocity axis. Emitted by harness.py (section_hyoas_cuts) from f1_cuts.json; if that artifact is absent the row is skipped."
+    },
+    {
+      "channel": "credit",
+      "metric": "hyoas_operative_vel_red",
+      "value": 0.54,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "percentile_p90_unconditional",
+      "n_events": 1310,
+      "window_start": "2021-07-21",
+      "window_end": "2026-07-21",
+      "notes": "D-A (2026-07-22 F1 velocity overhaul, Stage 1.1) \u2014 MEASURED HY-OAS 30d-change velocity cut, p90 of the unconditional distribution of \u039430d (percentage points; the delta20 unit F1's velocity leg compares against). Source: f1_cuts.json `spliced.primary.velocity30d.p90`, computed by scripts/backtest/f1-percentile-cuts.ts (velocityObservations(all, 30)) over the spliced vintage+live BAMLH0A0HYM2 series. Window is trailing-5y, re-rolled at PUBLISH cadence, NOT per-close (plan \u00a72 Conflict 1). n_events is the OBSERVATION count of the trailing-5y window, not a GPD exceedance count (plain quantile, no EVT fit). Provisional: measured, NOT optimized. Feeds resolveCuts' velOp* (operative_vel_*) \u2014 INERT until Stage 1.2 opens F1's legs.velocity axis. Emitted by harness.py (section_hyoas_cuts) from f1_cuts.json; if that artifact is absent the row is skipped."
+    },
+    {
+      "channel": "equity",
+      "metric": "qqq_nearhigh_tol",
+      "value": 1.0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "percentile_p90_trailing_distfraction",
+      "n_events": 6645,
+      "window_start": "2000-03-07",
+      "window_end": "2026-08-07",
+      "notes": "D-B (2026-07-22 F1 velocity overhaul, Stage 2.1) \u2014 MEASURED near-high tolerance: p90 of the QQQ trailing-252d distFraction distribution (distFraction = qClose / max(qClose over the trailing SLOW_HIGH_WINDOW=252 closes INCLUDING today; \u2208 (0,1], \u21921 = at the high; exactly as src/slow.ts:291-294 computes it). Each day with \u2265252 closes contributes one distFraction; the tolerance is np.quantile(dists, 0.90) (linear/type-7, matching src/slow.ts `quantile`), so QQQ sits at/above it only ~10% of days = genuinely near the high. Source: RAW closes from scripts/backtest/data/qqq.csv (distFraction is a ratio, split/div adjustment cancels \u2014 see derive.ts). Provisional: measured, NOT optimized. INERT until the D-B escalator (Stage 2.2) wires it \u2014 nothing consumes it yet; it will DISPLACE the hand-typed NEAR_HIGH_FRAC=0.98. Emitted by harness.py (section_qqq_nearhigh); reproduced on regen."
+    },
+    {
+      "market": "ndx",
+      "mode": "correction",
+      "channel": "semis",
+      "metric": "f4c_lift",
+      "value": 1.2396,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 49,
+      "chosen_k": null,
+      "window_start": "2001-03-20",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.2396 (hide iff lift<=1.0 and n_events>=3); n_events=49 -> hidden=0; display-only"
+    },
+    {
+      "market": "ndx",
+      "mode": "correction",
+      "channel": "semis",
+      "metric": "f4c_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 49,
+      "chosen_k": null,
+      "window_start": "2001-03-20",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.2396 (hide iff lift<=1.0 and n_events>=3); n_events=49 -> hidden=0; display-only"
+    },
+    {
+      "market": "ndx",
+      "mode": "correction",
+      "channel": "breadth",
+      "metric": "breadth_lift",
+      "value": 1.0868,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 49,
+      "chosen_k": null,
+      "window_start": "2013-03-22",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.0868 (hide iff lift<=1.0 and n_events>=3); n_events=49 -> hidden=0; display-only"
+    },
+    {
+      "market": "ndx",
+      "mode": "correction",
+      "channel": "breadth",
+      "metric": "breadth_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 49,
+      "chosen_k": null,
+      "window_start": "2013-03-22",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.0868 (hide iff lift<=1.0 and n_events>=3); n_events=49 -> hidden=0; display-only"
+    },
+    {
+      "market": "ndx",
+      "mode": "bear",
+      "channel": "credit",
+      "metric": "ebp_operative_amber",
+      "value": 0.3216,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 11,
+      "chosen_k": 0.5,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass"
+    },
+    {
+      "market": "ndx",
+      "mode": "bear",
+      "channel": "credit",
+      "metric": "ebp_operative_red",
+      "value": 0.4867,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 11,
+      "chosen_k": 0.5,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass"
+    },
+    {
+      "market": "ndx",
+      "mode": "bear",
+      "channel": "credit",
+      "metric": "ebp_lift",
+      "value": 2.3105,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 11,
+      "chosen_k": 0.5,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-mode lift=2.3105 (hide iff lift<=1.0 and n_events>=3); n_events=11 -> hidden=0; display-only"
+    },
+    {
+      "market": "ndx",
+      "mode": "bear",
+      "channel": "credit",
+      "metric": "ebp_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 11,
+      "chosen_k": 0.5,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-mode lift=2.3105 (hide iff lift<=1.0 and n_events>=3); n_events=11 -> hidden=0; display-only"
+    },
+    {
+      "market": "ndx",
+      "mode": "bear",
+      "channel": "semis",
+      "metric": "f4c_lift",
+      "value": 1.3789,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 11,
+      "chosen_k": null,
+      "window_start": "2001-03-20",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.3789 (hide iff lift<=1.0 and n_events>=3); n_events=11 -> hidden=0; display-only"
+    },
+    {
+      "market": "ndx",
+      "mode": "bear",
+      "channel": "semis",
+      "metric": "f4c_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 11,
+      "chosen_k": null,
+      "window_start": "2001-03-20",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.3789 (hide iff lift<=1.0 and n_events>=3); n_events=11 -> hidden=0; display-only"
+    },
+    {
+      "market": "ndx",
+      "mode": "bear",
+      "channel": "breadth",
+      "metric": "breadth_lift",
+      "value": 1.0462,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 11,
+      "chosen_k": null,
+      "window_start": "2013-03-22",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.0462 (hide iff lift<=1.0 and n_events>=3); n_events=11 -> hidden=0; display-only"
+    },
+    {
+      "market": "ndx",
+      "mode": "bear",
+      "channel": "breadth",
+      "metric": "breadth_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 11,
+      "chosen_k": null,
+      "window_start": "2013-03-22",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.0462 (hide iff lift<=1.0 and n_events>=3); n_events=11 -> hidden=0; display-only"
+    },
+    {
+      "market": "ndx",
+      "mode": "crash",
+      "channel": "credit",
+      "metric": "ebp_operative_amber",
+      "value": 0.3216,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 7,
+      "chosen_k": 0.55,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.55, C6 pass"
+    },
+    {
+      "market": "ndx",
+      "mode": "crash",
+      "channel": "credit",
+      "metric": "ebp_operative_red",
+      "value": 0.4867,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 7,
+      "chosen_k": 0.55,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.55, C6 pass"
+    },
+    {
+      "market": "ndx",
+      "mode": "crash",
+      "channel": "credit",
+      "metric": "ebp_lift",
+      "value": 1.9992,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 7,
+      "chosen_k": 0.55,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-mode lift=1.9992 (hide iff lift<=1.0 and n_events>=3); n_events=7 -> hidden=0; display-only"
+    },
+    {
+      "market": "ndx",
+      "mode": "crash",
+      "channel": "credit",
+      "metric": "ebp_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 7,
+      "chosen_k": 0.55,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-mode lift=1.9992 (hide iff lift<=1.0 and n_events>=3); n_events=7 -> hidden=0; display-only"
+    },
+    {
+      "market": "ndx",
+      "mode": "crash",
+      "channel": "semis",
+      "metric": "smh_operative_amber",
+      "value": -0.0931,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 7,
+      "chosen_k": 0.55,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.55, C6 pass -- WARNING: degenerate amber==red band-collapse -- directional, display-only"
+    },
+    {
+      "market": "ndx",
+      "mode": "crash",
+      "channel": "semis",
+      "metric": "smh_operative_red",
+      "value": -0.0931,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 7,
+      "chosen_k": 0.55,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.55, C6 pass -- WARNING: degenerate amber==red band-collapse -- directional, display-only"
+    },
+    {
+      "market": "ndx",
+      "mode": "crash",
+      "channel": "semis",
+      "metric": "smh_lift",
+      "value": 1.633,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 7,
+      "chosen_k": 0.55,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.6330 (hide iff lift<=1.0 and n_events>=3); n_events=7 -> hidden=0; display-only"
+    },
+    {
+      "market": "ndx",
+      "mode": "crash",
+      "channel": "semis",
+      "metric": "smh_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 7,
+      "chosen_k": 0.55,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.6330 (hide iff lift<=1.0 and n_events>=3); n_events=7 -> hidden=0; display-only"
+    },
+    {
+      "market": "ndx",
+      "mode": "crash",
+      "channel": "semis",
+      "metric": "f4c_lift",
+      "value": 1.3013,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 7,
+      "chosen_k": null,
+      "window_start": "2001-03-20",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.3013 (hide iff lift<=1.0 and n_events>=3); n_events=7 -> hidden=0; display-only"
+    },
+    {
+      "market": "ndx",
+      "mode": "crash",
+      "channel": "semis",
+      "metric": "f4c_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 7,
+      "chosen_k": null,
+      "window_start": "2001-03-20",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.3013 (hide iff lift<=1.0 and n_events>=3); n_events=7 -> hidden=0; display-only"
+    },
+    {
+      "market": "ndx",
+      "mode": "crash",
+      "channel": "breadth",
+      "metric": "breadth_lift",
+      "value": 1.1062,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 7,
+      "chosen_k": null,
+      "window_start": "2013-03-22",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.1062 (hide iff lift<=1.0 and n_events>=3); n_events=7 -> hidden=0; display-only"
+    },
+    {
+      "market": "ndx",
+      "mode": "crash",
+      "channel": "breadth",
+      "metric": "breadth_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 7,
+      "chosen_k": null,
+      "window_start": "2013-03-22",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.1062 (hide iff lift<=1.0 and n_events>=3); n_events=7 -> hidden=0; display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "correction",
+      "channel": "semis",
+      "metric": "smh_operative_amber",
+      "value": -0.0931,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 20,
+      "chosen_k": 0.5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: degenerate amber==red band-collapse -- directional, display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "correction",
+      "channel": "semis",
+      "metric": "smh_operative_red",
+      "value": -0.0931,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 20,
+      "chosen_k": 0.5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: degenerate amber==red band-collapse -- directional, display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "correction",
+      "channel": "semis",
+      "metric": "smh_lift",
+      "value": 1.5343,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 20,
+      "chosen_k": 0.5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.5343 (hide iff lift<=1.0 and n_events>=3); n_events=20 -> hidden=0; display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "correction",
+      "channel": "semis",
+      "metric": "smh_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 20,
+      "chosen_k": 0.5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.5343 (hide iff lift<=1.0 and n_events>=3); n_events=20 -> hidden=0; display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "bear",
+      "channel": "credit",
+      "metric": "ebp_operative_amber",
+      "value": 1.024,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 7,
+      "chosen_k": 0.55,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.55, C6 pass"
+    },
+    {
+      "market": "spx",
+      "mode": "bear",
+      "channel": "credit",
+      "metric": "ebp_operative_red",
+      "value": 1.0307,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 7,
+      "chosen_k": 0.55,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.55, C6 pass"
+    },
+    {
+      "market": "spx",
+      "mode": "bear",
+      "channel": "credit",
+      "metric": "ebp_lift",
+      "value": 2.4751,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 7,
+      "chosen_k": 0.55,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-mode lift=2.4751 (hide iff lift<=1.0 and n_events>=3); n_events=7 -> hidden=0; display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "bear",
+      "channel": "credit",
+      "metric": "ebp_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 7,
+      "chosen_k": 0.55,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-mode lift=2.4751 (hide iff lift<=1.0 and n_events>=3); n_events=7 -> hidden=0; display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "credit",
+      "metric": "baa10y_lift",
+      "value": 2.268,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1986-01-02",
+      "window_end": "2026-08-05",
+      "notes": "per-mode lift=2.2680 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "credit",
+      "metric": "baa10y_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1986-01-02",
+      "window_end": "2026-08-05",
+      "notes": "per-mode lift=2.2680 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "rate",
+      "metric": "dfii10_operative_amber",
+      "value": 0.3647,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2003-01-31",
+      "window_end": "2026-08-05",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "rate",
+      "metric": "dfii10_operative_red",
+      "value": 0.47,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2003-01-31",
+      "window_end": "2026-08-05",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "rate",
+      "metric": "dfii10_lift",
+      "value": 1.7851,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2003-01-31",
+      "window_end": "2026-08-05",
+      "notes": "per-mode lift=1.7851 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "rate",
+      "metric": "dfii10_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2003-01-31",
+      "window_end": "2026-08-05",
+      "notes": "per-mode lift=1.7851 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "credit",
+      "metric": "ebp_operative_amber",
+      "value": 2.0268,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "credit",
+      "metric": "ebp_operative_red",
+      "value": 2.0653,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "credit",
+      "metric": "ebp_lift",
+      "value": 2.9104,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-mode lift=2.9104 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "credit",
+      "metric": "ebp_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-mode lift=2.9104 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "vol",
+      "metric": "move_operative_amber",
+      "value": 181.768,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2002-11-12",
+      "window_end": "2026-07-17",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "vol",
+      "metric": "move_operative_red",
+      "value": 188.682,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2002-11-12",
+      "window_end": "2026-07-17",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "vol",
+      "metric": "move_lift",
+      "value": 4.2199,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2002-11-12",
+      "window_end": "2026-07-17",
+      "notes": "per-mode lift=4.2199 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "vol",
+      "metric": "move_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2002-11-12",
+      "window_end": "2026-07-17",
+      "notes": "per-mode lift=4.2199 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "semis",
+      "metric": "smh_operative_amber",
+      "value": -0.1378,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "semis",
+      "metric": "smh_operative_red",
+      "value": -0.2044,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "semis",
+      "metric": "smh_lift",
+      "value": 1.8779,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.8779 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "semis",
+      "metric": "smh_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.8779 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "vol",
+      "metric": "vix_operative_amber",
+      "value": 38.8687,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1990-01-02",
+      "window_end": "2026-08-06",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "vol",
+      "metric": "vix_operative_red",
+      "value": 46.711,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1990-01-02",
+      "window_end": "2026-08-06",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "vol",
+      "metric": "vix_lift",
+      "value": 2.9636,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1990-01-02",
+      "window_end": "2026-08-06",
+      "notes": "per-mode lift=2.9636 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "spx",
+      "mode": "crash",
+      "channel": "vol",
+      "metric": "vix_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1990-01-02",
+      "window_end": "2026-08-06",
+      "notes": "per-mode lift=2.9636 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "correction",
+      "channel": "semis",
+      "metric": "smh_operative_amber",
+      "value": -0.0931,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 14,
+      "chosen_k": 0.5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: degenerate amber==red band-collapse -- directional, display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "correction",
+      "channel": "semis",
+      "metric": "smh_operative_red",
+      "value": -0.0931,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 14,
+      "chosen_k": 0.5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: degenerate amber==red band-collapse -- directional, display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "correction",
+      "channel": "semis",
+      "metric": "smh_lift",
+      "value": 1.4019,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 14,
+      "chosen_k": 0.5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.4019 (hide iff lift<=1.0 and n_events>=3); n_events=14 -> hidden=0; display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "correction",
+      "channel": "semis",
+      "metric": "smh_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 14,
+      "chosen_k": 0.5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.4019 (hide iff lift<=1.0 and n_events>=3); n_events=14 -> hidden=0; display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "credit",
+      "metric": "baa10y_lift",
+      "value": 1.9893,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1986-01-02",
+      "window_end": "2026-08-05",
+      "notes": "per-mode lift=1.9893 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "credit",
+      "metric": "baa10y_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1986-01-02",
+      "window_end": "2026-08-05",
+      "notes": "per-mode lift=1.9893 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "rate",
+      "metric": "dfii10_operative_amber",
+      "value": 0.3647,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2003-01-31",
+      "window_end": "2026-08-05",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "rate",
+      "metric": "dfii10_operative_red",
+      "value": 0.47,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2003-01-31",
+      "window_end": "2026-08-05",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "rate",
+      "metric": "dfii10_lift",
+      "value": 1.4799,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2003-01-31",
+      "window_end": "2026-08-05",
+      "notes": "per-mode lift=1.4799 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "rate",
+      "metric": "dfii10_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2003-01-31",
+      "window_end": "2026-08-05",
+      "notes": "per-mode lift=1.4799 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "credit",
+      "metric": "ebp_operative_amber",
+      "value": 2.0268,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "credit",
+      "metric": "ebp_operative_red",
+      "value": 2.0653,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "credit",
+      "metric": "ebp_lift",
+      "value": 2.3273,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-mode lift=2.3273 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "credit",
+      "metric": "ebp_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1973-01-01",
+      "window_end": "2026-07-01",
+      "notes": "per-mode lift=2.3273 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "vol",
+      "metric": "move_operative_amber",
+      "value": 181.768,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2002-11-12",
+      "window_end": "2026-07-17",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "vol",
+      "metric": "move_operative_red",
+      "value": 188.682,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2002-11-12",
+      "window_end": "2026-07-17",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "vol",
+      "metric": "move_lift",
+      "value": 3.341,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2002-11-12",
+      "window_end": "2026-07-17",
+      "notes": "per-mode lift=3.3410 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "vol",
+      "metric": "move_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2002-11-12",
+      "window_end": "2026-07-17",
+      "notes": "per-mode lift=3.3410 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "semis",
+      "metric": "smh_operative_amber",
+      "value": -0.1378,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "semis",
+      "metric": "smh_operative_red",
+      "value": -0.2044,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "semis",
+      "metric": "smh_lift",
+      "value": 1.6595,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.6595 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "semis",
+      "metric": "smh_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "2000-12-01",
+      "window_end": "2026-08-07",
+      "notes": "per-mode lift=1.6595 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "vol",
+      "metric": "vix_operative_amber",
+      "value": 38.8687,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1990-01-02",
+      "window_end": "2026-08-06",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "vol",
+      "metric": "vix_operative_red",
+      "value": 46.711,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1990-01-02",
+      "window_end": "2026-08-06",
+      "notes": "per-cell sweep: tightest cut clearing recall floor K=0.50, C6 pass -- WARNING: THIN-N (n_events=2) -- directional, display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "vol",
+      "metric": "vix_lift",
+      "value": 2.2557,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1990-01-02",
+      "window_end": "2026-08-06",
+      "notes": "per-mode lift=2.2557 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    },
+    {
+      "market": "eafe",
+      "mode": "crash",
+      "channel": "vol",
+      "metric": "vix_hidden",
+      "value": 0,
+      "ci_low": null,
+      "ci_high": null,
+      "method": "cell_sweep",
+      "n_events": 2,
+      "chosen_k": 0.5,
+      "window_start": "1990-01-02",
+      "window_end": "2026-08-06",
+      "notes": "per-mode lift=2.2557 (hide iff lift<=1.0 and n_events>=3); n_events=2 -> hidden=0; display-only"
+    }
+  ],
+  "bottom_sweep": {
+    "window": {
+      "start": "2006-07-17",
+      "end": "2026-08-07"
+    },
+    "fp_horizon_days": 180,
+    "depths": [
+      0.05,
+      0.1,
+      0.15
+    ],
+    "return_horizons_days": [
+      180,
+      365
+    ],
+    "n_troughs": 5,
+    "troughs": [
+      {
+        "date": "2008-11-20",
+        "depth": 0.5371
+      },
+      {
+        "date": "2018-12-24",
+        "depth": 0.2299
+      },
+      {
+        "date": "2020-03-20",
+        "depth": 0.2803
+      },
+      {
+        "date": "2022-12-28",
+        "depth": 0.3556
+      },
+      {
+        "date": "2025-04-08",
+        "depth": 0.2293
+      }
+    ],
+    "incumbent_on_grid": true,
+    "incumbent_params": {
+      "vixCap": 35,
+      "rolloverK": 0.9,
+      "backwardCut": 1.05
+    },
+    "grid_centre_params": {
+      "vixCap": 40,
+      "rolloverK": 0.85,
+      "backwardCut": 1.0
+    },
+    "winner_params": {
+      "vixCap": 35,
+      "rolloverK": 0.9,
+      "backwardCut": 1.05
+    },
+    "incumbent_mean_fp": 0.25,
+    "grid_centre_mean_fp": 0.3333,
+    "winner_mean_fp": 0.25,
+    "gate": {
+      "passes": true,
+      "pbo": 0.2778,
+      "dsr": 0.9996,
+      "sr_best": 0.5984,
+      "best_index": 8
+    },
+    "swap_eligible": false,
+    "swap_reason": "kept: shipped incumbent is FP-min (winner == incumbent)",
+    "configs": [
+      {
+        "params": {
+          "vixCap": 35,
+          "rolloverK": 0.9,
+          "backwardCut": 1.05
+        },
+        "n_fires": 24,
+        "fp_rate": {
+          "0.05": 0.4583,
+          "0.10": 0.2083,
+          "0.15": 0.0833
+        },
+        "mean_fp": 0.25,
+        "median_fwd_return": {
+          "180": 0.1917,
+          "365": 0.3343
+        },
+        "median_lag_days": -26.0
+      },
+      {
+        "params": {
+          "vixCap": 35,
+          "rolloverK": 0.9,
+          "backwardCut": 0.95
+        },
+        "n_fires": 34,
+        "fp_rate": {
+          "0.05": 0.4412,
+          "0.10": 0.2353,
+          "0.15": 0.0882
+        },
+        "mean_fp": 0.2549,
+        "median_fwd_return": {
+          "180": 0.1855,
+          "365": 0.3332
+        },
+        "median_lag_days": -38.5
+      },
+      {
+        "params": {
+          "vixCap": 35,
+          "rolloverK": 0.85,
+          "backwardCut": 1.05
+        },
+        "n_fires": 22,
+        "fp_rate": {
+          "0.05": 0.5,
+          "0.10": 0.2273,
+          "0.15": 0.0909
+        },
+        "mean_fp": 0.2727,
+        "median_fwd_return": {
+          "180": 0.1917,
+          "365": 0.3318
+        },
+        "median_lag_days": -29.5
+      },
+      {
+        "params": {
+          "vixCap": 35,
+          "rolloverK": 0.85,
+          "backwardCut": 0.95
+        },
+        "n_fires": 31,
+        "fp_rate": {
+          "0.05": 0.4839,
+          "0.10": 0.2581,
+          "0.15": 0.0968
+        },
+        "mean_fp": 0.2796,
+        "median_fwd_return": {
+          "180": 0.1699,
+          "365": 0.2876
+        },
+        "median_lag_days": -39.0
+      },
+      {
+        "params": {
+          "vixCap": 35,
+          "rolloverK": 0.8,
+          "backwardCut": 1.05
+        },
+        "n_fires": 20,
+        "fp_rate": {
+          "0.05": 0.5,
+          "0.10": 0.25,
+          "0.15": 0.1
+        },
+        "mean_fp": 0.2833,
+        "median_fwd_return": {
+          "180": 0.1946,
+          "365": 0.3318
+        },
+        "median_lag_days": -21.0
+      },
+      {
+        "params": {
+          "vixCap": 40,
+          "rolloverK": 0.9,
+          "backwardCut": 1.05
+        },
+        "n_fires": 20,
+        "fp_rate": {
+          "0.05": 0.5,
+          "0.10": 0.25,
+          "0.15": 0.1
+        },
+        "mean_fp": 0.2833,
+        "median_fwd_return": {
+          "180": 0.1981,
+          "365": 0.3604
+        },
+        "median_lag_days": -104.0
+      },
+      {
+        "params": {
+          "vixCap": 35,
+          "rolloverK": 0.9,
+          "backwardCut": 1.0
+        },
+        "n_fires": 34,
+        "fp_rate": {
+          "0.05": 0.5,
+          "0.10": 0.2647,
+          "0.15": 0.0882
+        },
+        "mean_fp": 0.2843,
+        "median_fwd_return": {
+          "180": 0.1748,
+          "365": 0.3009
+        },
+        "median_lag_days": -75.0
+      },
+      {
+        "params": {
+          "vixCap": 45,
+          "rolloverK": 0.9,
+          "backwardCut": 1.05
+        },
+        "n_fires": 15,
+        "fp_rate": {
+          "0.05": 0.4667,
+          "0.10": 0.2667,
+          "0.15": 0.1333
+        },
+        "mean_fp": 0.2889,
+        "median_fwd_return": {
+          "180": 0.3126,
+          "365": 0.5034
+        },
+        "median_lag_days": -38.0
+      },
+      {
+        "params": {
+          "vixCap": 40,
+          "rolloverK": 0.9,
+          "backwardCut": 0.95
+        },
+        "n_fires": 24,
+        "fp_rate": {
+          "0.05": 0.5,
+          "0.10": 0.2917,
+          "0.15": 0.0833
+        },
+        "mean_fp": 0.2917,
+        "median_fwd_return": {
+          "180": 0.2269,
+          "365": 0.3678
+        },
+        "median_lag_days": -52.5
+      },
+      {
+        "params": {
+          "vixCap": 40,
+          "rolloverK": 0.9,
+          "backwardCut": 1.0
+        },
+        "n_fires": 26,
+        "fp_rate": {
+          "0.05": 0.5385,
+          "0.10": 0.3077,
+          "0.15": 0.0769
+        },
+        "mean_fp": 0.3077,
+        "median_fwd_return": {
+          "180": 0.2269,
+          "365": 0.3678
+        },
+        "median_lag_days": -95.0
+      },
+      {
+        "params": {
+          "vixCap": 35,
+          "rolloverK": 0.85,
+          "backwardCut": 1.0
+        },
+        "n_fires": 30,
+        "fp_rate": {
+          "0.05": 0.5333,
+          "0.10": 0.3,
+          "0.15": 0.1
+        },
+        "mean_fp": 0.3111,
+        "median_fwd_return": {
+          "180": 0.1722,
+          "365": 0.2815
+        },
+        "median_lag_days": -75.5
+      },
+      {
+        "params": {
+          "vixCap": 45,
+          "rolloverK": 0.9,
+          "backwardCut": 0.95
+        },
+        "n_fires": 17,
+        "fp_rate": {
+          "0.05": 0.4706,
+          "0.10": 0.3529,
+          "0.15": 0.1176
+        },
+        "mean_fp": 0.3137,
+        "median_fwd_return": {
+          "180": 0.2617,
+          "365": 0.405
+        },
+        "median_lag_days": -39.0
+      },
+      {
+        "params": {
+          "vixCap": 40,
+          "rolloverK": 0.85,
+          "backwardCut": 1.05
+        },
+        "n_fires": 19,
+        "fp_rate": {
+          "0.05": 0.5789,
+          "0.10": 0.2632,
+          "0.15": 0.1053
+        },
+        "mean_fp": 0.3158,
+        "median_fwd_return": {
+          "180": 0.1913,
+          "365": 0.3545
+        },
+        "median_lag_days": -98.0
+      },
+      {
+        "params": {
+          "vixCap": 40,
+          "rolloverK": 0.85,
+          "backwardCut": 0.95
+        },
+        "n_fires": 22,
+        "fp_rate": {
+          "0.05": 0.5455,
+          "0.10": 0.3182,
+          "0.15": 0.0909
+        },
+        "mean_fp": 0.3182,
+        "median_fwd_return": {
+          "180": 0.1981,
+          "365": 0.3604
+        },
+        "median_lag_days": -56.0
+      },
+      {
+        "params": {
+          "vixCap": 35,
+          "rolloverK": 0.8,
+          "backwardCut": 0.95
+        },
+        "n_fires": 27,
+        "fp_rate": {
+          "0.05": 0.5556,
+          "0.10": 0.2963,
+          "0.15": 0.1481
+        },
+        "mean_fp": 0.3333,
+        "median_fwd_return": {
+          "180": 0.1583,
+          "365": 0.2754
+        },
+        "median_lag_days": -38.0
+      },
+      {
+        "params": {
+          "vixCap": 40,
+          "rolloverK": 0.8,
+          "backwardCut": 1.05
+        },
+        "n_fires": 17,
+        "fp_rate": {
+          "0.05": 0.5882,
+          "0.10": 0.2941,
+          "0.15": 0.1176
+        },
+        "mean_fp": 0.3333,
+        "median_fwd_return": {
+          "180": 0.1973,
+          "365": 0.3545
+        },
+        "median_lag_days": -38.0
+      },
+      {
+        "params": {
+          "vixCap": 40,
+          "rolloverK": 0.85,
+          "backwardCut": 1.0
+        },
+        "n_fires": 24,
+        "fp_rate": {
+          "0.05": 0.5833,
+          "0.10": 0.3333,
+          "0.15": 0.0833
+        },
+        "mean_fp": 0.3333,
+        "median_fwd_return": {
+          "180": 0.1981,
+          "365": 0.3604
+        },
+        "median_lag_days": -96.0
+      },
+      {
+        "params": {
+          "vixCap": 45,
+          "rolloverK": 0.85,
+          "backwardCut": 1.05
+        },
+        "n_fires": 14,
+        "fp_rate": {
+          "0.05": 0.5714,
+          "0.10": 0.2857,
+          "0.15": 0.1429
+        },
+        "mean_fp": 0.3333,
+        "median_fwd_return": {
+          "180": 0.2384,
+          "365": 0.4363
+        },
+        "median_lag_days": -29.5
+      },
+      {
+        "params": {
+          "vixCap": 45,
+          "rolloverK": 0.9,
+          "backwardCut": 1.0
+        },
+        "n_fires": 20,
+        "fp_rate": {
+          "0.05": 0.55,
+          "0.10": 0.35,
+          "0.15": 0.1
+        },
+        "mean_fp": 0.3333,
+        "median_fwd_return": {
+          "180": 0.2582,
+          "365": 0.3871
+        },
+        "median_lag_days": -51.0
+      },
+      {
+        "params": {
+          "vixCap": 35,
+          "rolloverK": 0.8,
+          "backwardCut": 1.0
+        },
+        "n_fires": 27,
+        "fp_rate": {
+          "0.05": 0.5556,
+          "0.10": 0.3333,
+          "0.15": 0.1481
+        },
+        "mean_fp": 0.3457,
+        "median_fwd_return": {
+          "180": 0.1632,
+          "365": 0.2766
+        },
+        "median_lag_days": -39.0
+      },
+      {
+        "params": {
+          "vixCap": 45,
+          "rolloverK": 0.85,
+          "backwardCut": 0.95
+        },
+        "n_fires": 15,
+        "fp_rate": {
+          "0.05": 0.5333,
+          "0.10": 0.4,
+          "0.15": 0.1333
+        },
+        "mean_fp": 0.3556,
+        "median_fwd_return": {
+          "180": 0.2546,
+          "365": 0.3692
+        },
+        "median_lag_days": -39.0
+      },
+      {
+        "params": {
+          "vixCap": 45,
+          "rolloverK": 0.85,
+          "backwardCut": 1.0
+        },
+        "n_fires": 18,
+        "fp_rate": {
+          "0.05": 0.6111,
+          "0.10": 0.3889,
+          "0.15": 0.1111
+        },
+        "mean_fp": 0.3704,
+        "median_fwd_return": {
+          "180": 0.2297,
+          "365": 0.3678
+        },
+        "median_lag_days": -51.0
+      },
+      {
+        "params": {
+          "vixCap": 40,
+          "rolloverK": 0.8,
+          "backwardCut": 1.0
+        },
+        "n_fires": 21,
+        "fp_rate": {
+          "0.05": 0.619,
+          "0.10": 0.381,
+          "0.15": 0.1429
+        },
+        "mean_fp": 0.381,
+        "median_fwd_return": {
+          "180": 0.198,
+          "365": 0.3663
+        },
+        "median_lag_days": -52.0
+      },
+      {
+        "params": {
+          "vixCap": 40,
+          "rolloverK": 0.8,
+          "backwardCut": 0.95
+        },
+        "n_fires": 19,
+        "fp_rate": {
+          "0.05": 0.6316,
+          "0.10": 0.3684,
+          "0.15": 0.1579
+        },
+        "mean_fp": 0.386,
+        "median_fwd_return": {
+          "180": 0.1609,
+          "365": 0.3663
+        },
+        "median_lag_days": -39.0
+      },
+      {
+        "params": {
+          "vixCap": 45,
+          "rolloverK": 0.8,
+          "backwardCut": 1.05
+        },
+        "n_fires": 12,
+        "fp_rate": {
+          "0.05": 0.6667,
+          "0.10": 0.3333,
+          "0.15": 0.1667
+        },
+        "mean_fp": 0.3889,
+        "median_fwd_return": {
+          "180": 0.1976,
+          "365": 0.3678
+        },
+        "median_lag_days": -21.0
+      },
+      {
+        "params": {
+          "vixCap": 45,
+          "rolloverK": 0.8,
+          "backwardCut": 1.0
+        },
+        "n_fires": 17,
+        "fp_rate": {
+          "0.05": 0.6471,
+          "0.10": 0.4118,
+          "0.15": 0.1765
+        },
+        "mean_fp": 0.4118,
+        "median_fwd_return": {
+          "180": 0.2004,
+          "365": 0.3692
+        },
+        "median_lag_days": -39.0
+      },
+      {
+        "params": {
+          "vixCap": 45,
+          "rolloverK": 0.8,
+          "backwardCut": 0.95
+        },
+        "n_fires": 14,
+        "fp_rate": {
+          "0.05": 0.6429,
+          "0.10": 0.4286,
+          "0.15": 0.2143
+        },
+        "mean_fp": 0.4286,
+        "median_fwd_return": {
+          "180": 0.2311,
+          "365": 0.3871
+        },
+        "median_lag_days": -38.5
+      }
+    ]
+  },
+  "warning_sweeps": {
+    "fp_horizon_days": 180,
+    "depths": [
+      0.05,
+      0.1,
+      0.15
+    ],
+    "fp_polarity": "inverted vs bottom-signal: FP = no drawdown >= d follows within horizon",
+    "cg_default": {
+      "n_episodes": 4,
+      "detected": 4,
+      "median_lead_days": 344.5,
+      "n_fires": 367,
+      "fp_rate": {
+        "0.05": 0.436,
+        "0.10": 0.6894,
+        "0.15": 0.7956
+      }
+    },
+    "slow_calm_default": {
+      "n_episodes": 5,
+      "detected": 2,
+      "median_lead_days": 329.0,
+      "n_fires": 20,
+      "fp_rate": {
+        "0.05": 0.5,
+        "0.10": 0.85,
+        "0.15": 0.9
+      }
+    },
+    "cg_sweep": {
+      "param_names": [
+        "amber",
+        "red"
+      ],
+      "depths": [
+        0.05,
+        0.1,
+        0.15
+      ],
+      "fp_horizon_days": 180,
+      "prior_params": {
+        "amber": 0.0,
+        "red": -0.02
+      },
+      "winner_params": {
+        "amber": -0.05,
+        "red": -0.07
+      },
+      "prior_mean_fp": 0.623,
+      "winner_mean_fp": 0.5923,
+      "beats_prior": true,
+      "gate": {
+        "passes": true,
+        "pbo": 0.3571,
+        "dsr": 0.9676,
+        "sr_best": 0.358,
+        "best_index": 1
+      },
+      "verdict_reason": "validated: winner strictly beats the prior and the C6 gate PASSES (pbo=0.357, dsr=0.968)",
+      "configs": [
+        {
+          "params": {
+            "amber": -0.05,
+            "red": -0.07
+          },
+          "n_fires": 121,
+          "detected": 4,
+          "n_episodes": 4,
+          "median_lead_days": 231.0,
+          "fp_rate": {
+            "0.05": 0.3802,
+            "0.10": 0.6446,
+            "0.15": 0.7521
+          },
+          "mean_fp": 0.5923
+        },
+        {
+          "params": {
+            "amber": -0.05,
+            "red": -0.12000000000000001
+          },
+          "n_fires": 124,
+          "detected": 4,
+          "n_episodes": 4,
+          "median_lead_days": 234.0,
+          "fp_rate": {
+            "0.05": 0.4032,
+            "0.10": 0.6452,
+            "0.15": 0.7419
+          },
+          "mean_fp": 0.5968
+        },
+        {
+          "params": {
+            "amber": -0.1,
+            "red": -0.12000000000000001
+          },
+          "n_fires": 37,
+          "detected": 4,
+          "n_episodes": 4,
+          "median_lead_days": 121.0,
+          "fp_rate": {
+            "0.05": 0.4595,
+            "0.10": 0.6216,
+            "0.15": 0.7568
+          },
+          "mean_fp": 0.6126
+        },
+        {
+          "params": {
+            "amber": 0.0,
+            "red": -0.12000000000000001
+          },
+          "n_fires": 192,
+          "detected": 4,
+          "n_episodes": 4,
+          "median_lead_days": 340.0,
+          "fp_rate": {
+            "0.05": 0.4062,
+            "0.10": 0.6562,
+            "0.15": 0.776
+          },
+          "mean_fp": 0.6128
+        },
+        {
+          "params": {
+            "amber": 0.0,
+            "red": -0.07
+          },
+          "n_fires": 192,
+          "detected": 4,
+          "n_episodes": 4,
+          "median_lead_days": 340.0,
+          "fp_rate": {
+            "0.05": 0.4062,
+            "0.10": 0.6562,
+            "0.15": 0.776
+          },
+          "mean_fp": 0.6128
+        },
+        {
+          "params": {
+            "amber": 0.0,
+            "red": -0.02
+          },
+          "n_fires": 183,
+          "detected": 4,
+          "n_episodes": 4,
+          "median_lead_days": 339.5,
+          "fp_rate": {
+            "0.05": 0.4208,
+            "0.10": 0.6667,
+            "0.15": 0.7814
+          },
+          "mean_fp": 0.623
+        }
+      ]
+    },
+    "slow_calm_sweep": {
+      "param_names": [
+        "pctile",
+        "runMin"
+      ],
+      "depths": [
+        0.05,
+        0.1,
+        0.15
+      ],
+      "fp_horizon_days": 180,
+      "prior_params": {
+        "pctile": 0.5,
+        "runMin": 63.0
+      },
+      "winner_params": {
+        "pctile": 0.4,
+        "runMin": 63.0
+      },
+      "prior_mean_fp": 0.75,
+      "winner_mean_fp": 0.6667,
+      "beats_prior": true,
+      "gate": {
+        "passes": true,
+        "pbo": 0.2341,
+        "dsr": 0.9941,
+        "sr_best": 0.5176,
+        "best_index": 4
+      },
+      "verdict_reason": "validated: winner strictly beats the prior and the C6 gate PASSES (pbo=0.234, dsr=0.994)",
+      "configs": [
+        {
+          "params": {
+            "pctile": 0.4,
+            "runMin": 63.0
+          },
+          "n_fires": 15,
+          "detected": 2,
+          "n_episodes": 5,
+          "median_lead_days": 3.5,
+          "fp_rate": {
+            "0.05": 0.5333,
+            "0.10": 0.6667,
+            "0.15": 0.8
+          },
+          "mean_fp": 0.6667
+        },
+        {
+          "params": {
+            "pctile": 0.6,
+            "runMin": 63.0
+          },
+          "n_fires": 23,
+          "detected": 2,
+          "n_episodes": 5,
+          "median_lead_days": 174.0,
+          "fp_rate": {
+            "0.05": 0.5217,
+            "0.10": 0.7391,
+            "0.15": 0.913
+          },
+          "mean_fp": 0.7246
+        },
+        {
+          "params": {
+            "pctile": 0.5,
+            "runMin": 63.0
+          },
+          "n_fires": 20,
+          "detected": 2,
+          "n_episodes": 5,
+          "median_lead_days": 132.0,
+          "fp_rate": {
+            "0.05": 0.5,
+            "0.10": 0.85,
+            "0.15": 0.9
+          },
+          "mean_fp": 0.75
+        },
+        {
+          "params": {
+            "pctile": 0.4,
+            "runMin": 126.0
+          },
+          "n_fires": 5,
+          "detected": 0,
+          "n_episodes": 5,
+          "median_lead_days": null,
+          "fp_rate": {
+            "0.05": 0.8,
+            "0.10": 0.8,
+            "0.15": 0.8
+          },
+          "mean_fp": 0.8
+        },
+        {
+          "params": {
+            "pctile": 0.6,
+            "runMin": 126.0
+          },
+          "n_fires": 7,
+          "detected": 0,
+          "n_episodes": 5,
+          "median_lead_days": null,
+          "fp_rate": {
+            "0.05": 0.7143,
+            "0.10": 1.0,
+            "0.15": 1.0
+          },
+          "mean_fp": 0.9048
+        },
+        {
+          "params": {
+            "pctile": 0.5,
+            "runMin": 126.0
+          },
+          "n_fires": 8,
+          "detected": 0,
+          "n_episodes": 5,
+          "median_lead_days": null,
+          "fp_rate": {
+            "0.05": 0.75,
+            "0.10": 1.0,
+            "0.15": 1.0
+          },
+          "mean_fp": 0.9167
+        }
+      ]
+    },
+    "cg_geo_cooccurrence": {
+      "cg_fires": 371,
+      "cg_fires_with_elevated_geo": 14,
+      "those_leading_a_drawdown": 1
+    },
+    "slowcalm_ok_floor": {
+      "slowcalm_fires": 20,
+      "fires_on_ok_base": 14,
+      "those_leading_a_drawdown": 3,
+      "quiet_false_floors": 11
+    }
+  },
+  "phase2_sweeps": {
+    "fp_horizon_days": 180,
+    "depths": [
+      0.05,
+      0.1,
+      0.15
+    ],
+    "fp_polarity": "inverted vs bottom-signal: FP = no drawdown >= d follows within horizon",
+    "candidates": {
+      "T10Y2Y": {
+        "default": {
+          "n_episodes": 8,
+          "detected": 7,
+          "median_lead_days": 365.0,
+          "n_fires": 43,
+          "fp_rate": {
+            "0.05": 0.6977,
+            "0.10": 0.8605,
+            "0.15": 0.907
+          }
+        },
+        "sweep": {
+          "param_names": [
+            "amberLevel",
+            "redLevel"
+          ],
+          "depths": [
+            0.05,
+            0.1,
+            0.15
+          ],
+          "fp_horizon_days": 180,
+          "prior_params": {
+            "amberLevel": 0.5,
+            "redLevel": 0.0
+          },
+          "winner_params": {
+            "amberLevel": 0.25,
+            "redLevel": -0.25
+          },
+          "prior_mean_fp": 0.8217,
+          "winner_mean_fp": 0.6232,
+          "beats_prior": true,
+          "gate": {
+            "passes": false,
+            "pbo": 0.5913,
+            "dsr": 0.9755,
+            "sr_best": 0.4102,
+            "best_index": 6
+          },
+          "verdict_reason": "not validated: winner beats the prior but the C6 gate FAILS (pbo=0.591 [bar < 0.5], dsr=0.975 [bar >= 0.95]) \u2014 kept as directional",
+          "configs": [
+            {
+              "params": {
+                "amberLevel": 0.25,
+                "redLevel": -0.25
+              },
+              "n_fires": 46,
+              "detected": 7,
+              "n_episodes": 8,
+              "median_lead_days": 246.0,
+              "fp_rate": {
+                "0.05": 0.4565,
+                "0.10": 0.6739,
+                "0.15": 0.7391
+              },
+              "mean_fp": 0.6232
+            },
+            {
+              "params": {
+                "amberLevel": 0.25,
+                "redLevel": 0.0
+              },
+              "n_fires": 46,
+              "detected": 7,
+              "n_episodes": 8,
+              "median_lead_days": 246.0,
+              "fp_rate": {
+                "0.05": 0.4565,
+                "0.10": 0.6739,
+                "0.15": 0.7391
+              },
+              "mean_fp": 0.6232
+            },
+            {
+              "params": {
+                "amberLevel": 0.25,
+                "redLevel": 0.25
+              },
+              "n_fires": 46,
+              "detected": 7,
+              "n_episodes": 8,
+              "median_lead_days": 246.0,
+              "fp_rate": {
+                "0.05": 0.4565,
+                "0.10": 0.6739,
+                "0.15": 0.7391
+              },
+              "mean_fp": 0.6232
+            },
+            {
+              "params": {
+                "amberLevel": 0.5,
+                "redLevel": -0.25
+              },
+              "n_fires": 43,
+              "detected": 3,
+              "n_episodes": 8,
+              "median_lead_days": -84.0,
+              "fp_rate": {
+                "0.05": 0.6977,
+                "0.10": 0.8605,
+                "0.15": 0.907
+              },
+              "mean_fp": 0.8217
+            },
+            {
+              "params": {
+                "amberLevel": 0.5,
+                "redLevel": 0.0
+              },
+              "n_fires": 43,
+              "detected": 3,
+              "n_episodes": 8,
+              "median_lead_days": -84.0,
+              "fp_rate": {
+                "0.05": 0.6977,
+                "0.10": 0.8605,
+                "0.15": 0.907
+              },
+              "mean_fp": 0.8217
+            },
+            {
+              "params": {
+                "amberLevel": 0.5,
+                "redLevel": 0.25
+              },
+              "n_fires": 43,
+              "detected": 3,
+              "n_episodes": 8,
+              "median_lead_days": -84.0,
+              "fp_rate": {
+                "0.05": 0.6977,
+                "0.10": 0.8605,
+                "0.15": 0.907
+              },
+              "mean_fp": 0.8217
+            },
+            {
+              "params": {
+                "amberLevel": 1.0,
+                "redLevel": -0.25
+              },
+              "n_fires": 33,
+              "detected": 2,
+              "n_episodes": 8,
+              "median_lead_days": 318.0,
+              "fp_rate": {
+                "0.05": 0.7273,
+                "0.10": 0.8182,
+                "0.15": 0.8182
+              },
+              "mean_fp": 0.7879
+            },
+            {
+              "params": {
+                "amberLevel": 1.0,
+                "redLevel": 0.0
+              },
+              "n_fires": 33,
+              "detected": 2,
+              "n_episodes": 8,
+              "median_lead_days": 318.0,
+              "fp_rate": {
+                "0.05": 0.7273,
+                "0.10": 0.8182,
+                "0.15": 0.8182
+              },
+              "mean_fp": 0.7879
+            },
+            {
+              "params": {
+                "amberLevel": 1.0,
+                "redLevel": 0.25
+              },
+              "n_fires": 33,
+              "detected": 2,
+              "n_episodes": 8,
+              "median_lead_days": 318.0,
+              "fp_rate": {
+                "0.05": 0.7273,
+                "0.10": 0.8182,
+                "0.15": 0.8182
+              },
+              "mean_fp": 0.7879
+            }
+          ]
+        }
+      },
+      "MOVE": {
+        "default": {
+          "n_episodes": 4,
+          "detected": 3,
+          "median_lead_days": 188.0,
+          "n_fires": 64,
+          "fp_rate": {
+            "0.05": 0.5156,
+            "0.10": 0.7812,
+            "0.15": 0.9062
+          }
+        },
+        "sweep": {
+          "param_names": [
+            "amberLevel",
+            "redLevel"
+          ],
+          "depths": [
+            0.05,
+            0.1,
+            0.15
+          ],
+          "fp_horizon_days": 180,
+          "prior_params": {
+            "amberLevel": 79.0,
+            "redLevel": 95.0
+          },
+          "winner_params": {
+            "amberLevel": 92.0,
+            "redLevel": 95.0
+          },
+          "prior_mean_fp": 0.7344,
+          "winner_mean_fp": 0.6439,
+          "beats_prior": true,
+          "gate": {
+            "passes": true,
+            "pbo": 0.4048,
+            "dsr": 0.9953,
+            "sr_best": 0.5315,
+            "best_index": 0
+          },
+          "verdict_reason": "validated: winner strictly beats the prior and the C6 gate PASSES (pbo=0.405, dsr=0.995)",
+          "configs": [
+            {
+              "params": {
+                "amberLevel": 92.0,
+                "redLevel": 95.0
+              },
+              "n_fires": 44,
+              "detected": 3,
+              "n_episodes": 4,
+              "median_lead_days": -12.0,
+              "fp_rate": {
+                "0.05": 0.4091,
+                "0.10": 0.6818,
+                "0.15": 0.8409
+              },
+              "mean_fp": 0.6439
+            },
+            {
+              "params": {
+                "amberLevel": 92.0,
+                "redLevel": 105.0
+              },
+              "n_fires": 48,
+              "detected": 3,
+              "n_episodes": 4,
+              "median_lead_days": -13.0,
+              "fp_rate": {
+                "0.05": 0.4375,
+                "0.10": 0.6875,
+                "0.15": 0.8333
+              },
+              "mean_fp": 0.6528
+            },
+            {
+              "params": {
+                "amberLevel": 66.0,
+                "redLevel": 85.0
+              },
+              "n_fires": 59,
+              "detected": 3,
+              "n_episodes": 4,
+              "median_lead_days": 261.0,
+              "fp_rate": {
+                "0.05": 0.661,
+                "0.10": 0.7966,
+                "0.15": 0.8814
+              },
+              "mean_fp": 0.7797
+            },
+            {
+              "params": {
+                "amberLevel": 66.0,
+                "redLevel": 95.0
+              },
+              "n_fires": 59,
+              "detected": 3,
+              "n_episodes": 4,
+              "median_lead_days": 261.0,
+              "fp_rate": {
+                "0.05": 0.661,
+                "0.10": 0.7966,
+                "0.15": 0.8814
+              },
+              "mean_fp": 0.7797
+            },
+            {
+              "params": {
+                "amberLevel": 66.0,
+                "redLevel": 105.0
+              },
+              "n_fires": 59,
+              "detected": 3,
+              "n_episodes": 4,
+              "median_lead_days": 261.0,
+              "fp_rate": {
+                "0.05": 0.661,
+                "0.10": 0.7966,
+                "0.15": 0.8814
+              },
+              "mean_fp": 0.7797
+            },
+            {
+              "params": {
+                "amberLevel": 79.0,
+                "redLevel": 85.0
+              },
+              "n_fires": 63,
+              "detected": 2,
+              "n_episodes": 4,
+              "median_lead_days": 95.5,
+              "fp_rate": {
+                "0.05": 0.5079,
+                "0.10": 0.7778,
+                "0.15": 0.9048
+              },
+              "mean_fp": 0.7302
+            },
+            {
+              "params": {
+                "amberLevel": 79.0,
+                "redLevel": 95.0
+              },
+              "n_fires": 64,
+              "detected": 2,
+              "n_episodes": 4,
+              "median_lead_days": 95.5,
+              "fp_rate": {
+                "0.05": 0.5156,
+                "0.10": 0.7812,
+                "0.15": 0.9062
+              },
+              "mean_fp": 0.7344
+            },
+            {
+              "params": {
+                "amberLevel": 79.0,
+                "redLevel": 105.0
+              },
+              "n_fires": 64,
+              "detected": 2,
+              "n_episodes": 4,
+              "median_lead_days": 95.5,
+              "fp_rate": {
+                "0.05": 0.5156,
+                "0.10": 0.7812,
+                "0.15": 0.9062
+              },
+              "mean_fp": 0.7344
+            }
+          ]
+        }
+      },
+      "backwardation-ratio": {
+        "default": {
+          "n_episodes": 4,
+          "detected": 4,
+          "median_lead_days": 338.5,
+          "n_fires": 222,
+          "fp_rate": {
+            "0.05": 0.491,
+            "0.10": 0.7162,
+            "0.15": 0.8333
+          }
+        },
+        "sweep": {
+          "param_names": [
+            "amber",
+            "red"
+          ],
+          "depths": [
+            0.05,
+            0.1,
+            0.15
+          ],
+          "fp_horizon_days": 180,
+          "prior_params": {
+            "amber": 0.93,
+            "red": 0.97
+          },
+          "winner_params": {
+            "amber": 1.0,
+            "red": 1.05
+          },
+          "prior_mean_fp": 0.7068,
+          "winner_mean_fp": 0.6667,
+          "beats_prior": true,
+          "gate": {
+            "passes": false,
+            "pbo": 0.5754,
+            "dsr": 0.9983,
+            "sr_best": 0.4889,
+            "best_index": 3
+          },
+          "verdict_reason": "not validated: winner beats the prior but the C6 gate FAILS (pbo=0.575 [bar < 0.5], dsr=0.998 [bar >= 0.95]) \u2014 kept as directional",
+          "configs": [
+            {
+              "params": {
+                "amber": 1.0,
+                "red": 1.05
+              },
+              "n_fires": 56,
+              "detected": 4,
+              "n_episodes": 4,
+              "median_lead_days": 200.0,
+              "fp_rate": {
+                "0.05": 0.4643,
+                "0.10": 0.7143,
+                "0.15": 0.8214
+              },
+              "mean_fp": 0.6667
+            },
+            {
+              "params": {
+                "amber": 0.9,
+                "red": 0.97
+              },
+              "n_fires": 131,
+              "detected": 4,
+              "n_episodes": 4,
+              "median_lead_days": 338.0,
+              "fp_rate": {
+                "0.05": 0.5038,
+                "0.10": 0.7252,
+                "0.15": 0.855
+              },
+              "mean_fp": 0.6947
+            },
+            {
+              "params": {
+                "amber": 0.9,
+                "red": 0.93
+              },
+              "n_fires": 124,
+              "detected": 4,
+              "n_episodes": 4,
+              "median_lead_days": 325.5,
+              "fp_rate": {
+                "0.05": 0.5081,
+                "0.10": 0.7258,
+                "0.15": 0.8548
+              },
+              "mean_fp": 0.6962
+            },
+            {
+              "params": {
+                "amber": 0.9,
+                "red": 1.05
+              },
+              "n_fires": 134,
+              "detected": 4,
+              "n_episodes": 4,
+              "median_lead_days": 338.0,
+              "fp_rate": {
+                "0.05": 0.5224,
+                "0.10": 0.7313,
+                "0.15": 0.8657
+              },
+              "mean_fp": 0.7065
+            },
+            {
+              "params": {
+                "amber": 0.93,
+                "red": 0.97
+              },
+              "n_fires": 108,
+              "detected": 4,
+              "n_episodes": 4,
+              "median_lead_days": 307.5,
+              "fp_rate": {
+                "0.05": 0.5278,
+                "0.10": 0.75,
+                "0.15": 0.8426
+              },
+              "mean_fp": 0.7068
+            },
+            {
+              "params": {
+                "amber": 0.93,
+                "red": 0.93
+              },
+              "n_fires": 114,
+              "detected": 4,
+              "n_episodes": 4,
+              "median_lead_days": 322.0,
+              "fp_rate": {
+                "0.05": 0.5351,
+                "0.10": 0.7544,
+                "0.15": 0.8596
+              },
+              "mean_fp": 0.7164
+            },
+            {
+              "params": {
+                "amber": 0.93,
+                "red": 1.05
+              },
+              "n_fires": 113,
+              "detected": 4,
+              "n_episodes": 4,
+              "median_lead_days": 322.0,
+              "fp_rate": {
+                "0.05": 0.5398,
+                "0.10": 0.7611,
+                "0.15": 0.8673
+              },
+              "mean_fp": 0.7227
+            }
+          ]
+        }
+      },
+      "backwardation-diff": {
+        "default": {
+          "n_episodes": 4,
+          "detected": 4,
+          "median_lead_days": 277.0,
+          "n_fires": 110,
+          "fp_rate": {
+            "0.05": 0.5273,
+            "0.10": 0.7545,
+            "0.15": 0.8455
+          }
+        },
+        "sweep": {
+          "param_names": [
+            "amberLevel",
+            "redLevel"
+          ],
+          "depths": [
+            0.05,
+            0.1,
+            0.15
+          ],
+          "fp_horizon_days": 180,
+          "prior_params": {
+            "amberLevel": -1.0,
+            "redLevel": 0.0
+          },
+          "winner_params": {
+            "amberLevel": 0.0,
+            "redLevel": 1.0
+          },
+          "prior_mean_fp": 0.7091,
+          "winner_mean_fp": 0.6481,
+          "beats_prior": true,
+          "gate": {
+            "passes": true,
+            "pbo": 0.496,
+            "dsr": 0.9987,
+            "sr_best": 0.5306,
+            "best_index": 0
+          },
+          "verdict_reason": "validated: winner strictly beats the prior and the C6 gate PASSES (pbo=0.496, dsr=0.999)",
+          "configs": [
+            {
+              "params": {
+                "amberLevel": 0.0,
+                "redLevel": 1.0
+              },
+              "n_fires": 54,
+              "detected": 4,
+              "n_episodes": 4,
+              "median_lead_days": 200.0,
+              "fp_rate": {
+                "0.05": 0.4444,
+                "0.10": 0.7037,
+                "0.15": 0.7963
+              },
+              "mean_fp": 0.6481
+            },
+            {
+              "params": {
+                "amberLevel": -2.0,
+                "redLevel": 0.0
+              },
+              "n_fires": 140,
+              "detected": 4,
+              "n_episodes": 4,
+              "median_lead_days": 320.5,
+              "fp_rate": {
+                "0.05": 0.4429,
+                "0.10": 0.6929,
+                "0.15": 0.8571
+              },
+              "mean_fp": 0.6643
+            },
+            {
+              "params": {
+                "amberLevel": -2.0,
+                "redLevel": 2.0
+              },
+              "n_fires": 141,
+              "detected": 4,
+              "n_episodes": 4,
+              "median_lead_days": 320.5,
+              "fp_rate": {
+                "0.05": 0.4397,
+                "0.10": 0.695,
+                "0.15": 0.8582
+              },
+              "mean_fp": 0.6643
+            },
+            {
+              "params": {
+                "amberLevel": -2.0,
+                "redLevel": 1.0
+              },
+              "n_fires": 141,
+              "detected": 4,
+              "n_episodes": 4,
+              "median_lead_days": 320.5,
+              "fp_rate": {
+                "0.05": 0.4468,
+                "0.10": 0.695,
+                "0.15": 0.8582
+              },
+              "mean_fp": 0.6667
+            },
+            {
+              "params": {
+                "amberLevel": 0.0,
+                "redLevel": 2.0
+              },
+              "n_fires": 58,
+              "detected": 4,
+              "n_episodes": 4,
+              "median_lead_days": 200.0,
+              "fp_rate": {
+                "0.05": 0.4828,
+                "0.10": 0.7241,
+                "0.15": 0.8276
+              },
+              "mean_fp": 0.6782
+            },
+            {
+              "params": {
+                "amberLevel": 0.0,
+                "redLevel": 0.0
+              },
+              "n_fires": 59,
+              "detected": 4,
+              "n_episodes": 4,
+              "median_lead_days": 201.5,
+              "fp_rate": {
+                "0.05": 0.4915,
+                "0.10": 0.7288,
+                "0.15": 0.8305
+              },
+              "mean_fp": 0.6836
+            },
+            {
+              "params": {
+                "amberLevel": -1.0,
+                "redLevel": 2.0
+              },
+              "n_fires": 117,
+              "detected": 4,
+              "n_episodes": 4,
+              "median_lead_days": 276.5,
+              "fp_rate": {
+                "0.05": 0.4957,
+                "0.10": 0.7436,
+                "0.15": 0.8376
+              },
+              "mean_fp": 0.6923
+            },
+            {
+              "params": {
+                "amberLevel": -1.0,
+                "redLevel": 1.0
+              },
+              "n_fires": 116,
+              "detected": 4,
+              "n_episodes": 4,
+              "median_lead_days": 276.5,
+              "fp_rate": {
+                "0.05": 0.5,
+                "0.10": 0.7414,
+                "0.15": 0.8362
+              },
+              "mean_fp": 0.6925
+            },
+            {
+              "params": {
+                "amberLevel": -1.0,
+                "redLevel": 0.0
+              },
+              "n_fires": 110,
+              "detected": 4,
+              "n_episodes": 4,
+              "median_lead_days": 277.0,
+              "fp_rate": {
+                "0.05": 0.5273,
+                "0.10": 0.7545,
+                "0.15": 0.8455
+              },
+              "mean_fp": 0.7091
+            }
+          ]
+        }
+      }
+    },
+    "move_r5_cooccurrence": {
+      "move_fires": 67,
+      "with_elevated_r5": 22
+    }
+  }
+}

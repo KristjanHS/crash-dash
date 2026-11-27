@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /lab
+Disallow: /journal
+Disallow: /signin
+Disallow: /api/

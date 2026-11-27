@@ -1,0 +1,211 @@
+name: Integration (DB-backed)
+
+# The integration half of the vitest suite hits a real Postgres/PostgREST. It runs
+# HERE, not in ci.yml's unit-only `check`, so every push stays ~1 billed min. Two jobs:
+#
+#   integration        — self-hosted; runs against the persistent crash-dash-ci Supabase
+#                        stack on the runner host (scripts/ci-stack.sh, ports 5532x). Free
+#                        minutes, warm start (images shared with the dev stack, no 72s pull).
+#   integration-cloud  — GitHub-hosted break-glass; spins up an ephemeral Supabase and is
+#                        the ONLY place the 72s image pull still happens. Manual dispatch only.
+#
+# Trigger a run from the Actions tab → "Integration (DB-backed)" → Run workflow, choosing
+# the `target` (self-hosted default; cloud for the break-glass path).
+
+on:
+  # ── ARM THIS when a self-hosted runner (label: linux) is registered ──
+  # Until a runner exists this push trigger stays commented, so store/migration pushes
+  # don't accrue a perpetual pending check while the `integration` job has nowhere to run.
+  # Uncomment to gate every store/migration push on the self-hosted integration suite.
+  #
+  # push:
+  #   branches: [main]
+  #   paths:
+  #     - "src/store**"
+  #     - "supabase/migrations/**"
+  #     - ".github/workflows/integration.yml"
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Which integration runner to use"
+        type: choice
+        options:
+          - self-hosted
+          - cloud
+        default: self-hosted
+
+concurrency:
+  group: integration-${{ github.ref }}
+  cancel-in-progress: true
+
+# Both jobs only clone and run the DB-backed suite against an ephemeral stack.
+permissions:
+  contents: read
+
+jobs:
+  # Primary path once a runner is registered. On a push (when armed) it always runs; on a
+  # manual dispatch it runs when target=self-hosted (the default). Queues harmlessly — and
+  # blocks nothing on this repo (the job is owner-gated) — while no runner is registered.
+  integration:
+    if: github.triggering_actor == github.repository_owner && (github.event_name == 'push' || inputs.target == 'self-hosted')
+    runs-on: [self-hosted, linux]
+    # Self-hosted ⇒ bills no free minutes, but an uncapped job holds the single runner for
+    # up to 6h and blocks every later dispatch behind it. 15m caps that lockout.
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        # No job token in .git/config: nothing here pushes, and a persisted
+        # credential is readable by every later step and by any artifact
+        # that captures .git/ (zizmor artipacked).
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version-file: ".nvmrc"
+          # NO `cache: npm` here, unlike every GitHub-hosted job in this repo. The runner's
+          # ~/.npm already persists on local disk between runs, so there is nothing to
+          # restore — but the post step would still TAR AND UPLOAD it, and that cache is the
+          # host's personal one shared across every project on the machine (8.4 GB measured
+          # 2026-07-20, vs ~176 MB for the cloud job's clean crash-dash-only cache). Measured
+          # cost of leaving it on: a 5.5 GB upload at ~2 MB/s (~48 min) that would also evict
+          # the useful cloud-job entries from the repo's 10 GB cache quota, and can fail the
+          # job on upload timeout AFTER every test passed.
+      - name: Install deps
+        run: npm ci
+      - name: Run integration suite against the crash-dash-ci stack
+        # Goes through scripts/db.sh, the one front door — same lifecycle the local chain
+        # (ship.sh §2, run-integration-tests.sh) uses, so this job cannot drift from it again.
+        # `with ci` starts the stack, arms SUPABASE_URL/SERVICE_KEY/DB_TESTS via capture-then-eval
+        # and ASSERTS DB_TESTS=1, then ALWAYS tears down. The bare `eval "$(ci-stack.sh env)"` this
+        # replaces returned EVAL's status, not the substitution's, so an empty/failed env silently
+        # left DB_TESTS unset, the store suites' hasDb gate (src/store.test-helpers.ts) self-skipped, and this gate passed GREEN
+        # AS UNIT-ONLY. The warm-stack `up ci` that used to precede this is gone (2026-07-26): this
+        # runner IS the dev machine, so "warm" and the DOWN default are the same contradiction, and
+        # the held-open stack is exactly what made the 2026-07-25 orphan permanent. Cost is one
+        # container start per run — seconds, images shared with the dev stack, no pull.
+        # ci-stack.sh still seeds the _disposable_stack marker into the :55322 stack only
+        # (never the dev DB — the script asserts the port).
+        run: scripts/db.sh with ci -- npx vitest run
+
+  # Break-glass: manual dispatch with target=cloud. Ephemeral Supabase on a GitHub-hosted
+  # runner — the one place the 72s image pull still happens. These steps mirror the Supabase
+  # lifecycle ci.yml's `check` dropped when it went unit-only.
+  integration-cloud:
+    if: github.triggering_actor == github.repository_owner && github.event_name == 'workflow_dispatch' && inputs.target == 'cloud'
+    runs-on: ubuntu-latest
+    # Backstop only — this job DOES bill free minutes. Successful runs are ~55s-1m, but a
+    # cancelled one ran 9m30s before being killed by hand, so the Supabase lifecycle can
+    # genuinely stall; 15m makes that self-terminating instead of manual.
+    timeout-minutes: 15
+    steps:
+      # Supabase's host ports (54321/54322) sit inside the kernel's ephemeral port
+      # range, so any outbound socket — an npm download, a docker image pull — can be
+      # assigned 54322 and make the db container's bind fail with EADDRINUSE. Reserving
+      # them stops the kernel ever handing them out. Must be the FIRST step: reserving a
+      # port does not evict a socket already holding it (incl. TIME_WAIT, which blocks a
+      # bind even with SO_REUSEADDR). Cause of the intermittent red CI on 2026-07-03/09.
+      - name: Reserve Supabase ports from the ephemeral range
+        run: |
+          read -r lo hi < /proc/sys/net/ipv4/ip_local_port_range
+          echo "kernel ephemeral range: $lo-$hi"
+          if [ "$lo" -le 54322 ] && [ 54322 -le "$hi" ]; then
+            echo "confirmed: 54322 is inside the ephemeral range — the reservation below is load-bearing"
+          else
+            echo "::warning::54322 is OUTSIDE the ephemeral range ($lo-$hi), so no outbound socket could have taken it. The EADDRINUSE flake has a different cause — reopen the investigation."
+          fi
+          sudo sysctl -w net.ipv4.ip_local_reserved_ports=54320-54330
+          # Fail loud if the write was silently ignored — a no-op reservation would let
+          # the flake return while the step still reported success.
+          reserved=$(cat /proc/sys/net/ipv4/ip_local_reserved_ports)
+          test -n "$reserved" || { echo "reservation did not stick — ports still allocatable"; exit 1; }
+          echo "reserved ports: $reserved"
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        # No job token in .git/config: nothing here pushes, and a persisted
+        # credential is readable by every later step and by any artifact
+        # that captures .git/ (zizmor artipacked).
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version-file: ".nvmrc"
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Start local Supabase
+        # Same CLI version as local (the `supabase` devDep). A fresh start applies
+        # every supabase/migrations/* to the local DB during init.
+        run: npx supabase start
+
+      - name: Export local Supabase creds for the integration suite
+        # URL is scraped from `status -o env` (cut -d= -f2- + tr -d '"' handles both
+        # quoted and unquoted output — the format has varied across CLI versions).
+        #
+        # The service_role key comes from the same `status -o env` read — it is emitted
+        # only because `[auth]` is enabled in supabase/config.toml. It only ever
+        # authenticates to the ephemeral 127.0.0.1 DB in this runner. An empty read
+        # fails the step rather than arming the suite with no key.
+        run: |
+          env_out="$(npx supabase status -o env)"
+          key="$(printf '%s\n' "$env_out" | grep '^SERVICE_ROLE_KEY=' | cut -d= -f2- | tr -d '"')"
+          [ -n "$key" ] || { echo "::error::supabase status -o env printed no SERVICE_ROLE_KEY — is [auth] enabled in supabase/config.toml?"; exit 1; }
+          echo "SUPABASE_URL=$(printf '%s\n' "$env_out" | grep '^API_URL=' | cut -d= -f2- | tr -d '"')" >> "$GITHUB_ENV"
+          echo "SUPABASE_SERVICE_KEY=$key" >> "$GITHUB_ENV"
+          # Destructive-suite opt-in: the integration tests truncate the target DB, so they
+          # require an explicit flag on top of local-URL creds (safe here — ephemeral stack).
+          echo "DB_TESTS=1" >> "$GITHUB_ENV"
+
+      - name: Seed the `_disposable_stack` marker (CI-ONLY — never a migration)
+        # The barrier behind audit TEST-2 (src/disposable-guard.ts). store.test-helpers.ts's
+        # truncate() refuses to delete a row unless this marker table exists, so the
+        # only DB it can ever wipe is one that ran THIS step: the ephemeral runner stack.
+        #
+        # ⚠ DO NOT MOVE THIS INTO supabase/migrations/. Migrations auto-apply to prod on
+        # merge (.claude/rules/migrations.md) — a marker there would mark PROD disposable
+        # and turn the guard into a loaded gun. Living only here is the whole mechanism:
+        # the dev stack applies every migration but never runs this workflow, so the
+        # irreplaceable local dev DB stays permanently unmarked no matter what anyone
+        # writes into an untracked .env.local.
+        run: |
+          psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" -v ON_ERROR_STOP=1 <<'SQL'
+          create table if not exists public._disposable_stack (
+            id bigint primary key generated always as identity,
+            note text not null default 'ephemeral CI stack — safe to truncate; seeded by integration.yml, NOT by a migration'
+          );
+          -- Incidental row: the guard's probe is a zero-row projection, so TABLE EXISTENCE is
+          -- the marker (src/disposable-guard.ts:supabaseMarkerProbe, pinned by its unit test).
+          -- This row only makes a manual `select *` self-documenting — do NOT "fix" the guard
+          -- toward row-presence on the strength of it.
+          insert into public._disposable_stack default values;
+          grant select on public._disposable_stack to service_role;
+          -- PostgREST caches the schema at boot; the marker is created after `supabase start`,
+          -- so without this reload the guard's probe 404s on a stack that IS marked.
+          notify pgrst, 'reload schema';
+          SQL
+          # Verify through the path that actually gates: PostgREST as service_role — the same
+          # read src/disposable-guard.ts's probe makes. A psql-side `select count(*)` cannot
+          # fail here (ON_ERROR_STOP already proved the table exists); the real failure mode is
+          # PostgREST still serving its boot-time schema cache, since `notify pgrst` is
+          # fire-and-forget with no acknowledgement. A stale cache ⇒ PGRST205 ⇒ probe false ⇒
+          # every integration suite dies with "refusing to truncate ...", reading as a guard
+          # misfire rather than a seeding race. Poll briefly, then fail loudly.
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            code=$(curl -s -o /tmp/marker.json -w '%{http_code}' \
+              -H "apikey: $SUPABASE_SERVICE_KEY" -H "Authorization: Bearer $SUPABASE_SERVICE_KEY" \
+              "$SUPABASE_URL/rest/v1/_disposable_stack?select=*&limit=1")
+            if [ "$code" = "200" ]; then echo "marker visible through PostgREST after $attempt attempt(s)"; break; fi
+            if [ "$attempt" = "10" ]; then
+              echo "::error::PostgREST never served public._disposable_stack (last HTTP $code: $(cat /tmp/marker.json)). The table exists in Postgres, so this is a stale PostgREST schema cache — the guard's probe would return false and every integration test would fail as 'refusing to truncate'."
+              exit 1
+            fi
+            sleep 1
+          done
+
+      - name: Test (integration — DB_TESTS=1 arms the DB-backed half)
+        run: npx vitest run
+
+      - name: Stop local Supabase
+        if: always()
+        run: npx supabase stop || true

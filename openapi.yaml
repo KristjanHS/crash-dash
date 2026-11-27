@@ -1,0 +1,3274 @@
+# crash-dash read API + cron trigger — v4 closure Phase 1 contract (design v4 §6.7).
+#
+# This contract is committed NOW so a future dashboard UI can be built
+# independently (plan §3). The endpoints are IMPLEMENTED in Phase 3 (serverless
+# functions); Phase 1 ships only the contract + mirrored TS types
+# (src/api/types.ts). The component schemas here are the single source of truth
+# for those payload shapes.
+openapi: 3.1.0
+info:
+  title: crash-dash read API
+  version: 0.1.0
+  description: >
+    Notify-only big-tech drawdown gauge. Public read endpoints expose the latest
+    verdict, alert history, and indicator metadata; an internal endpoint triggers
+    a scoring run from the scheduler.
+servers:
+  - url: https://prod-alias.invalid/api
+    description: Vercel deployment (canonical project alias; the unprefixed project subdomain is owned by an unrelated app, so this prefixed alias is used)
+paths:
+  /health:
+    get:
+      operationId: getHealth
+      summary: Liveness probe; bearer-gated schema-drift + operational-drift probe
+      description: >
+        PUBLIC (no bearer, or a wrong one): ONE cheap read, returning `{ ok: true }` only — a
+        wrong bearer gets this same body, never a 401. With `Authorization: Bearer $CRON_SECRET`
+        the DEEP probe runs instead: it asserts the DB has every column the code reads (checkSchema)
+        and attaches operational drift signals: the PostgREST wire cap the deep reads assume (maxRows)
+        plus a count-gated LIVE observation of it (maxRowsObserved / maxRowsMismatch).
+        Served behind the api/meta router (vercel.json rewrite). Never cached.
+        The read handlers run on the service key behind a read-only store (`getStore("ro")` holds no
+        write method at run time); an unset key is a 503 here. The old `readKeyMode` field was
+        removed 2026-08-08.
+      security:
+        - {}
+        - cronSecret: []
+      responses:
+        "200":
+          description: >-
+            Healthy. Public: `{ ok: true }` alone. Deep (right bearer): schema present, and
+            maxRows / maxRowsObserved (+ maxRowsMismatch) attached.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ok]
+                properties:
+                  ok:
+                    type: boolean
+                    enum: [true]
+                  maxRows:
+                    type: integer
+                    description: Deep only. The PostgREST max_rows the deep-read paths assume.
+                  maxRowsObserved:
+                    type: integer
+                    nullable: true
+                    description: Deep only. Rows returned by the count-gated cap probe; null when the readings count is at/under maxRows (nothing to probe).
+                  maxRowsMismatch:
+                    type: boolean
+                    description: Deep only. Present and true only when maxRowsObserved < maxRows (prod lowered [api] max_rows — the silent-truncation cliff).
+        "503":
+          description: Read failure (either path) or schema drift (deep path) — the error names the cause/absent column
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /status:
+    get:
+      operationId: getStatus
+      summary: Latest verdict + per-indicator readings
+      description: >-
+        Served redacted (R7) on an edge-cached vintage: the verdict's `vix`/`vix3m`/`fallVelocity` and each
+        affected reading's `value`/`delta20` (`ReadingDTO.value` lists which rows). Any query param ⇒ 400 `no-store`.
+      responses:
+        "200":
+          description: Current dashboard state
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusResponse"
+        "404":
+          description: No runs have been recorded yet
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /history:
+    get:
+      operationId: getHistory
+      summary: Alert-log entries over time (newest first)
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 500
+            default: 100
+      responses:
+        "200":
+          description: Recent alert-log rows
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AlertRecord"
+  /indicators:
+    get:
+      operationId: getIndicators
+      summary: Static indicator metadata (ids, labels, channels, thresholds)
+      description: >-
+        Hand-set config (thresholds, chart specs) plus the values read off stored history. Redacted in the served body:
+        a `bpsSensitivity` report over a licensed series is omitted, and the F7 (CAPE) chart's percentile
+        display bands — cut values read off that id's own licensed history — are dropped (the chart is served
+        band-less, value-only). Every hand-set threshold/spec field stays. Edge-cached (`VINTAGE_HEADERS`);
+        any query param ⇒ 400 `no-store`.
+      responses:
+        "200":
+          description: The configured indicator set
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/IndicatorMeta"
+        "400":
+          description: An unknown query param (`no-store`)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /families:
+    get:
+      operationId: getFamilies
+      summary: The ordered card grouping (key + label + desc + render rank) the UI groups cards under
+      responses:
+        "200":
+          description: >-
+            The 7 danger families in render order, then the synthetic card-only zones
+            (static, from DASHBOARD_FAMILIES + CARD_ONLY_GROUPS)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FamilyMeta"
+  /danger-model:
+    get:
+      operationId: getDangerModel
+      summary: The static danger-model reference block (bijection, relevance mask, labels, knobs)
+      responses:
+        "200":
+          description: The static danger model (identical every run, from danger-ladder.ts + families.ts)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DangerModel"
+  /config:
+    get:
+      operationId: getConfig
+      summary: Ladder constants the browser renders against (cut-points, modifier, ranks)
+      responses:
+        "200":
+          description: The ladder configuration (served verbatim from ladder.ts)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LadderConfig"
+  /series:
+    get:
+      operationId: getSeries
+      summary: One indicator's history (latest vintage per date, oldest→newest)
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: >-
+            Indicator id — one of ALL_INDICATORS[].id or the chart-only ids (e.g. F1), or one of the
+            chained-only display lines with no registry row (src/api-routes/series-chained.ts
+            `CHAINED_SERIES_HEAD`: LEGP_VALUE, SB_STRAT, SB_BENCH). Those three are stored chained EUR
+            levels / NAV indexes with NO band, score or fold semantics: their `state`/`rawState` is a
+            placeholder GREEN, the body carries `valueOnly: true` and no `confirmCloses`, and
+            `detail`/`mult` are inert. Outside the registry they fail closed as redacted (`redacted`).
+            Any other id ⇒ 400.
+          example: F1
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: >-
+            Most-recent N observation dates. With `from`/`to` present it applies
+            AFTER the range slice (latest-N within the window) and defaults to the
+            4000 cap instead of 365.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 4000
+            default: 365
+        - name: from
+          in: query
+          required: false
+          description: >-
+            Inclusive range start — a month-start `YYYY-MM-01` (either bound alone OK).
+            Slices the series server-side to the date window — the /lab replay companion
+            chart's data path. The key space is CLOSED to the month grid: a within-month
+            bound 400s `no-store` (never snapped — P5, the `mult`-grid precedent); both live
+            callers snap before emitting. A window before stored history returns an honest
+            empty/short payload, never a 400; malformed dates 400.
+          schema:
+            type: string
+            format: date
+            pattern: '^\d{4}-\d{2}-01$'
+        - name: to
+          in: query
+          required: false
+          description: >-
+            Inclusive range end — a month-start `YYYY-MM-01` (either bound alone OK). A
+            within-month bound 400s `no-store` (P5), same grid as `from`.
+          schema:
+            type: string
+            format: date
+            pattern: '^\d{4}-\d{2}-01$'
+        - name: detail
+          in: query
+          required: false
+          description: >-
+            `detail=1` (the detail chart only) opts into a full on-read recompute:
+            each point's `rawState`/`state` is re-scored under the shared/null-row
+            resolved cuts by the real scorer — the SAME cuts the notify path scores —
+            so the detail-chart state ribbon re-tunes to match the drawn band lines.
+            Faithful only for the standard level/velocity indicators (R1–R5, EBP;
+            R6 correctly invariant); for a bespoke/proxy/bands-less indicator the flag
+            is ignored and the shared-state series is returned. Absent ⇒ the unchanged
+            STORED shared-state series (byte-identical for external consumers and the
+            off-ladder panels). `value`/`delta20` are recompute-invariant.
+          schema:
+            type: string
+            enum: ["1"]
+        - name: mult
+          in: query
+          required: false
+          description: >-
+            Display-only threshold what-if MULTIPLIER, applied on top of the config
+            multiplier: `m < 1` shifts every measured cut EARLIER (fires on a less
+            extreme reading), `m > 1` later, `m = 1` is the identity. DISPLAY-ONLY:
+            it moves this payload's `rawState`/`state` ribbon and `effAmber`/`effRed`
+            band lines only — the notify path, the persisted verdict, and `/api/status`
+            never see it.
+            Absent, non-numeric, zero and negative all resolve to OFF (never 400). A finite
+            positive value MUST lie on the 0.5–2.0 step-0.25 grid (0.5, 0.75, …, 2.0);
+            any other value ⇒ 400 `no-store` (P12.b key-space bound — the grid is the whole
+            edge-cache key space; the client snaps to it before composing the URL). Inert
+            without `detail=1` — only the recompute branch shifts. The APPLIED multiplier
+            is echoed back in the response's `mult` field, which is what the client badges.
+          schema:
+            type: number
+            minimum: 0.5
+            maximum: 2.0
+      responses:
+        "200":
+          description: The indicator's time series
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeriesResponse"
+        "400":
+          description: Unknown id, invalid limit, or a malformed / non-month-start from/to date
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /lab:
+    get:
+      operationId: getLab
+      summary: What-If danger panel — the latest cron snapshot (or a hand-set scenario / historical replay)
+      description: >-
+        The full /lab board snapshot: the 6-family danger panel + T1 dial + R4
+        cash-breaker overlay. Read-only, no ntfy. NOT a pure function of the query
+        string — every mode (including `?s=`) reads the store, so responses move
+        as the DB does. Three modes: the
+        live path (default) reduces the LATEST cron run's confirmed readings; the
+        scenario path (`?s=`) computes the panel from hand-set per-family states
+        (substituting only the states at t — it still reads the live member
+        history (signal hold) + held sleeve, so a same-states scenario equals live);
+        the replay path (`?replay=`) advances the SAME pure
+        pipeline over stored history and returns a ReplayResponse leg-path. `s` and
+        `replay` are mutually exclusive (supplying both 400s).
+      parameters:
+        - name: s
+          in: query
+          required: false
+          description: >-
+            Scenario override — a comma-separated list of `key:value` segments.
+            Empty string is a valid all-green scenario (the client drops GREEN
+            families, so "everything calm" is `?s=`). SIX accepted segment
+            shapes, matched in this order:
+            (1) `tail:0|1` and (2) `sustained:0|1` — R4 boolean knobs (`sustained`
+            is retained for bookmarked URLs but no longer changes the path: NF-1(A)
+            deleted the arming ladder it primed);
+            (3) `daysInCash:<non-negative int>` — ages the R4 cash entry;
+            (4) `lag:<indicator id>` — forces that member's freshness entry to the
+            quiet `◌` LAG tier (repeats accumulate);
+            (5) `<family key>:GREEN|AMBER|RED` — a whole-family base state
+            (e.g. `credit:RED`), the keys of the US_FAMILIES table;
+            (6) `<indicator id>:GREEN|AMBER|RED` — a SINGLE-MEMBER override
+            (e.g. `BUND:RED`) over any US_FAMILIES/GLOBAL_FAMILIES member id.
+            (5) and (6) share one namespace check and are disjoint: a family key
+            wins, else an indicator id, else 400. Repeats of the same key: last
+            wins. A segment with extra colons keeps only the first two fields
+            (`lag:F9:rot` ≡ `lag:F9`). Any unrecognised key, bad state or
+            malformed knob value 400s — nothing is silently dropped.
+            All three parse products are echoed on the response: `states` (5),
+            `members` (6) and `knobs` (1–4). Present ⇒ `mode:"scenario"`. Scenario ≡ live
+            (same states ⇒ identical `field`) holds only with a CONFIGURED store
+            (SUPABASE_URL + SUPABASE_SERVICE_KEY): a cold store (no runs yet) OR
+            an unconfigured one degrades to the pre-2.1 shape (`verdict: null`,
+            empty member history ⇒ unheld member state, ungated held, logged via console.warn) —
+            the scenario path never 404s and never 500s.
+          schema:
+            type: string
+        - name: hist
+          in: query
+          required: false
+          description: >-
+            i5 View-C momentum window. When `> 0`, the live path computes each
+            leg's `field.legRows[].momentum` server-side over the members' last N
+            observations; the member history itself is never returned. Absent /
+            `0` ⇒ no momentum. Ignored on the scenario path (momentum is live-only).
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: replay
+          in: query
+          required: false
+          description: >-
+            Historical-replay range `YYYY-MM-DD:YYYY-MM-DD` (mode 2b). Present ⇒
+            `mode:"replay"`: the SAME pure pipeline is advanced one stored close at a
+            time over [start, end], returning a ReplayResponse leg-path (no verdict /
+            scoreboard / field — a learning view). MUTUALLY EXCLUSIVE with `s` —
+            supplying both 400s. 400 also when the range is malformed (not two dates
+            split by `:`), start ≥ end, the calendar span is shorter than
+            REPLAY_MIN_SPAN_DAYS (7), or start is older than today − REPLAY_MAX_YEARS
+            (10y). Edge-cached (`Cache-Control: s-maxage=600`, per range string).
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The board snapshot (live), the scenario panel, or the replay leg-path
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/LabResponse"
+                  - $ref: "#/components/schemas/ReplayResponse"
+        "400":
+          description: Malformed scenario string, malformed/out-of-range replay range, `s`+`replay` together, or an unknown query param
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: No cron run recorded yet (live path only)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /exposure:
+    get:
+      operationId: getExposure
+      summary: The two-key exposure dial — current posture (Full / Core / Reduced / Defensive)
+      description: >-
+        The CURRENT-state exposure posture computed server-side from the persisted
+        F1 (HY OAS, ARM = credit stress) and GT (ACWI trend, FIRE = trend break)
+        series. Read-only, no ntfy, deterministic — no client-side rule math. A
+        store hiccup on either feed degrades to a 200 with `posture:null` (never a
+        500); an empty pre-first-cron DB likewise returns 200 with `posture:null`
+        (the honest "warming up" shape — this endpoint needs no verdict row, so no
+        /lab-style 404). Edge-cached (`VINTAGE_HEADERS`, `src/api/http.ts`): a day-long
+        s-maxage+SWR that the cron's `Vercel-Cache-Tag: vintage` purge busts, not the TTL.
+        Served redacted: `arm.level` and `arm.roc` are null, and `summary`'s ROC slot reads `—` (3.5b: the
+        F1 30d change is a statistic over one licensed input).
+      responses:
+        "200":
+          description: The current exposure posture + ARM/FIRE keys (posture null when degraded / warming up)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExposureResponse"
+  /replay:
+    get:
+      operationId: getReplay
+      summary: Exposure-dial episode replay — every crisis window in one payload
+      description: >-
+        Replays the two-key exposure dial (ARM credit on the stitched HY-OAS vintage,
+        FIRE trend on the ACWI/^GSPC splice) day-by-day across every historical crisis
+        episode, for the /lab "Episode replay" learning view. All episodes ship in one
+        payload so the client switches with zero refetch. Read-only, deterministic and
+        store-only: every input is a cron-persisted raw series (`src/input-series.ts`) and
+        the handler fetches nothing upstream. An input with no stored rows serves the
+        response without that leg (field omitted or empty `points`), never a 503; a stitch
+        VIOLATION (data corruption) throws to a 500. Edge-cached a full day
+        (`Cache-Control: s-maxage=86400, stale-while-revalidate=86400`), purged after each
+        cron run.
+        Every response is the redacted body (`redacted: true`, episode `price` null); a
+        restricted-source companion serves `points: []`.
+
+        With `?companion=<id>` the SAME function instead serves one external
+        companion-overlay series (Rung E3; the deploy is pinned at 8 functions by
+        `api/deploy-budget.test.ts`, so no new endpoint) — off its cron-persisted raw rows
+        (`src/input-series.ts`, no live feed), sliced to the optional `from`/`to` window.
+        Unknown id or malformed date ⇒ 400; an id with no stored rows ⇒ empty `points`.
+      parameters:
+        - name: companion
+          in: query
+          required: false
+          schema: { type: string, enum: [VIXCLS, T10Y2Y, DCOILWTICO, "^IXIC"] }
+          description: Serve this external companion series instead of the episode payload.
+        - name: from
+          in: query
+          required: false
+          schema: { type: string, format: date }
+          description: Companion branch only — inclusive window start (episode start).
+        - name: to
+          in: query
+          required: false
+          schema: { type: string, format: date }
+          description: Companion branch only — inclusive window end (episode end).
+      responses:
+        "200":
+          description: >-
+            Every episode's replayed points + optional IEF bond-rung line + honesty notes;
+            or, with `?companion=`, one external companion series.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/ExposureReplayResponse"
+                  - $ref: "#/components/schemas/ReplayCompanionSeries"
+        "400":
+          description: Unknown companion id, or malformed `from`/`to` date
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+  /cron/run:
+    get:
+      operationId: runCron
+      summary: Internal — fetch, score, persist, notify. Scheduler-only (Vercel Cron uses GET).
+      security:
+        - cronSecret: []
+      parameters:
+        - name: email
+          in: query
+          required: false
+          schema: { type: string, enum: [force] }
+          description: >-
+            `force` mails the current band to every subscriber even without a band change
+            (owner verify switch; same bearer gate). Persistence and the ntfy push are unchanged.
+        - name: rederive
+          in: query
+          required: false
+          schema: { type: string, enum: ["0"] }
+          description: >-
+            `0` (intraday runs only): readings only — the `intraday_verdict` slot is emptied instead of
+            written, so `/status`, `/lab` and `/exposure` stay on the last EOD verdict. Absent ⇒ the
+            slot is written and those reads serve it. Ignored past the 21:05 UTC cutoff.
+      responses:
+        "200":
+          description: Run completed; the resulting verdict
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlertRecord"
+components:
+  securitySchemes:
+    # Vercel Cron sends `Authorization: Bearer $CRON_SECRET` on each invocation.
+    cronSecret:
+      type: http
+      scheme: bearer
+  schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error: { type: string }
+    AlertLevel:
+      type: string
+      enum: [OK, WATCH, WARNING, CRITICAL]
+    State:
+      type: string
+      enum: [GREEN, AMBER, RED]
+    Channel:
+      type: string
+      enum: [FIN, RATE, COINCIDENT, CONTEXT, GEO]
+    Direction:
+      type: string
+      description: Level polarity — HIGH = higher is worse, LOW = lower is worse (R1 term spread).
+      enum: [HIGH, LOW]
+    Thresholds:
+      type: object
+      description: >-
+        Amber/Red cut-points (in the indicator's unit). All optional: a
+        level-only indicator omits the velocity bounds and vice versa; an
+        omitted bound never fires. Bespoke price scorers (F4/F5) carry {}.
+      properties:
+        amberLevel: { type: number }
+        redLevel: { type: number }
+        amberVelocity: { type: number }
+        redVelocity: { type: number }
+    DerivedView:
+      type: object
+      description: >-
+        Detail-chart descriptor for bespoke scorers (F4/G1/NVDA/F5) whose
+        decision variable is derived from the plotted price (return / MA-spread
+        / distance-from-high), not a horizontal line on it. The series rides
+        each SeriesPoint's `decision`; the frontend draws it with bands on a
+        secondary axis. Absent on level/velocity indicators except a displayOnly block (F1).
+      required: [kind, amber, red, label, unit]
+      properties:
+        kind:
+          type: string
+          enum: [return, change, maSpread, highDist, lowRise, worstDrop, identity]
+        window:
+          type: integer
+          description: lookback in observations; omitted for "identity"
+        amber: { type: number, nullable: true, description: band in derived units; null = no amber band }
+        red: { type: number, nullable: true, description: band in derived units; null = no red band }
+        label: { type: string, description: secondary-axis label, e.g. "6-mo return" }
+        unit: { type: string, description: '"%" multiplies by 100 on the 2nd axis; "" = unitless' }
+        displayOnly:
+          type: boolean
+          description: >-
+            true = the block is drawable but NO scorer reads it (F1 lowRise, persisted;
+            KBE worstDrop, computed on read); presence never reroutes the id off its own serve path.
+    ChartAxis:
+      type: object
+      description: One axis of a detail-chart ChartSpec (Case 1).
+      required: [id, side, unit, format]
+      properties:
+        id: { type: string, enum: [primary, secondary] }
+        side: { type: string, enum: [left, right] }
+        unit: { type: string, description: 'tick/label unit ("%", "", "€", "$", "pp" = a level Δ of a %-quoted id, "bp")' }
+        format: { type: string, enum: [value, derived], description: formatValue vs formatDerived }
+        label: { type: string, description: axis title (secondary only) }
+        domain:
+          type: array
+          items: { type: number }
+          minItems: 2
+          maxItems: 2
+          description: 'fixed [lo, hi] for the axis (an integer rank 0..RED); absent = the renderer fits the data extent'
+    ChartSeries:
+      type: object
+      description: One plotted line of a ChartSpec, bound to an axis + a point field or compute hook.
+      required: [axis, style]
+      properties:
+        axis: { type: string, enum: [primary, secondary] }
+        fromPoint: { type: string, description: 'point field: value | delta20 | decision | havenLegs.eur|.chf|.jpy' }
+        compute: { type: string, enum: [havenEnvelope, roc30, ma50, ma200, high60, rv10, rv20, vetoBreach, probit, lowRise, trailingReturn, delta, offHigh, median], description: 'named compute hook (overrides fromPoint); median = median of value over the inclusive window obs (VOL_MEDIAN toggle lines); delta = v[i] − v[i−window], the level difference (display-only Δ5 line); offHigh = v[i] / max of value over the inclusive window obs − 1 (F17 spit yen-gate overlay); ma50/ma200 = trailing mean of value over PRICE_WINDOWS.maShort / MA_WINDOW obs; high60 = max of value over the inclusive XDEV_GATE_DESCRIPTOR highWindow obs; rv10 = annualised realized vol of the rvWindow log returns ending at i (RV10_OVERLAY); vetoBreach = value on a day whose daily log return is under −vetoSd σ (σ of the sigmaWindow log returns ending vetoWindow back), else null (XDEV veto dots)' }
+        window: { type: integer, description: 'lookback in obs for a windowed hook that cannot bake it into the name (lowRise → F1_LOW_RISE_WINDOW, trailingReturn → F13 retWindow); roc30/ma200 carry it in the name; absent = the hook gaps' }
+        scale: { type: number, description: 'multiplies this series'' values before drawing (absent = 1); F8 draws MA200 x 1.1, its gate line' }
+        label: { type: string, description: 'legend/readout name override (absent = the renderer per-hook default)' }
+        style: { type: string, enum: [primary, derived, leg, envelope, trend, scored-mean, step, dots], description: 'stroke spec; dots = a mark per non-null point, no line (toggle overlays only)' }
+        gatedBy:
+          type: array
+          items: { type: string }
+          description: >-
+            Case 4 — keys into SeriesPoint.gates; the renderer dims/dashes this
+            series' segments where NO listed gate is on (a band cross there
+            cannot fire). Absent = the series always draws normally.
+        pair: { type: string, description: 'leg↔cut pairing (R7 drop|steep) — series + bands sharing it render in one hue; absent = default strokes, byte-identical' }
+        tone: { type: string, enum: [alt, white, cyan, trend], description: 'stroke tone: on a trend overlay absent = --trend-line (blue), alt = --trend-line-2 (orange), white = --trend-line-white, trend = --trend-line; on the derived decision line absent = --ink-dim, a tone recolours it (EXSH_GATE: MA50 white, MA200 alt, decision trend)' }
+        fit: { type: boolean, enum: [true], description: 'virtual axis: drawn on its own scale fitted to the plot height, no ticks/label/margin, never in the primary domain; value in the hover readout only (single layout, DELTA5_OVERLAY + XDEV RV10 + R4 Δ63/Δ120); rv hooks share one scale, delta hooks share one scale; hidden until a legend .fit-toggle' }
+        ref:
+          type: object
+          description: 'a fit line''s display-only reference: a faint hairline in its tone at value on its fitted scale (kept in the extent), label named in the legend (R4 Δ120: spit escalation cut)'
+          required: [value, label]
+          properties:
+            value: { type: number }
+            label: { type: string }
+        toggle: { type: boolean, enum: [true], description: 'display-only overlay on its own axis scale riding the shared .fit-lines group — hidden until a legend .fit-toggle flips it; never joins the axis domain, out-of-frame points gap (single + derived layouts, TOGGLE_OVERLAYS)' }
+        readout: { type: boolean, enum: [true], description: 'hover: a fit/toggle line whose value prints in the expanded readout only, never the compact chip' }
+        cut:
+          type: object
+          description: 'a toggle overlay drawn in a cut stroke — severity hue + dash; approach = faint dotted (XDEV zone lines, veto dots); absent = the trend tone'
+          required: [level]
+          properties:
+            level: { type: string, enum: [amber, red] }
+            style: { type: string, enum: [approach] }
+    ChartGate:
+      type: object
+      description: >-
+        Case 4 — one declared gate condition of a compound-rule indicator:
+        legend copy for the "also requires …" line (the retired f4GateNote's
+        generic replacement). `key` matches SeriesPoint.gates / ChartSeries.gatedBy.
+      required: [key, label, appliesTo]
+      properties:
+        key: { type: string, description: wire key into SeriesPoint.gates }
+        label: { type: string, description: 'human phrase, e.g. "MU below its 200-day MA +10%"' }
+        appliesTo: { type: string, enum: [amber, red, both], description: which band(s) the gate arms }
+    ChartBand:
+      type: object
+      description: One amber/red band of a ChartSpec, resolved by its declared source.
+      required: [level, axis, source]
+      properties:
+        level: { type: string, enum: [amber, red] }
+        axis: { type: string, enum: [primary, secondary] }
+        source: { type: string, enum: [derived, displayBand, threshold, effective, perPoint] }
+        metric: { type: string, enum: [level, velocity], description: 'source:threshold only (which thresholds pair)' }
+        value: { type: number, description: 'source:derived|displayBand — baked at build time' }
+        fromPoint:
+          type: string
+          description: >-
+            source:perPoint only — the key into SeriesPoint.bandCuts carrying THIS band's value
+            for each date. A MOVING band: the value is a per-DATE series, so no `value` scalar
+            rides the spec. A point MISSING the key has NO CUT on that date (the pre-warmup
+            head) — the renderer draws a GAP there, never a band at 0.
+        label: { type: string, description: 'source:displayBand|perPoint — strict/inclusive edge text' }
+        shortLabel:
+          type: string
+          description: >-
+            source:perPoint only — compact 2-glyph chip text ("2A"/"sR") drawn in the right MARGIN,
+            outside the plot frame, in place of the full `label`; the full label names the cut in the
+            legend, keyed by the chip. Absent ⇒ the label keeps its in-plot right anchor.
+        style: { type: string, enum: [approach, evt], description: 'approach = fainter pre-alert rendering (on a perPoint band: a display-only reference line, not a cut — a dualAxis.refSigma 1σ, drawn faint + dotted); evt = a measured EVT leg cut drawn dotted beside the operative pair (F1); absent = full strength' }
+        pair: { type: string, description: 'same pair contract as ChartSeries — hue carries LEG identity; severity stays on stroke weight/dash + the amber/red label text' }
+        sigmaMultiple: { type: number, description: 'σ-reference perPoint band only (a dualAxis.refSigma line) — the σ multiple the line sits at; the hover reads σ = cut ÷ multiple and z = Δ ÷ σ. Absent on every cut' }
+    ChartSpec:
+      type: object
+      description: >-
+        Declarative detail-chart spec (Case 1, Stage 2). Backend-emitted per indicator so
+        the generic renderer draws every id from ONE model. Additive/optional on
+        IndicatorMeta — the FE ignores it until the Case-1 collapse (Stage 5).
+      required: [axes, series, bands]
+      properties:
+        axes: { type: array, items: { $ref: "#/components/schemas/ChartAxis" } }
+        series: { type: array, items: { $ref: "#/components/schemas/ChartSeries" } }
+        bands:
+          description: >-
+            Case 3 — band-completeness contract: EITHER a non-empty array of real amber/red
+            bands OR the explicit string sentinel "context-only" (a genuinely unbanded
+            context/notify-neutral channel). No silent empty array — an absent threshold line
+            is always a declared choice.
+          oneOf:
+            - type: array
+              items: { $ref: "#/components/schemas/ChartBand" }
+            - type: string
+              enum: ["context-only"]
+        gates:
+          type: array
+          items: { $ref: "#/components/schemas/ChartGate" }
+          description: Case 4 — gate declarations (src/gates.ts GATES); present only on gated ids (F4/F8)
+        window: { type: integer, description: visible trading days to render (default DETAIL_LIMIT); F1 → 504 }
+        lead: { type: integer, description: extra leading points fetched to feed a windowed compute but never drawn; F1 → 30 }
+        legBands: { type: boolean, description: "spec draws each drawable OR-leg as its own cut pair (F1) — the renderer keeps them and never swaps in the effAmber/effRed worst-of composite" }
+        renderer: { type: string, enum: [single, fx, derived], description: "FE layout dispatch key — declared per id or derived from the spec shape; absent (old payload) ⇒ the FE shape-sniffs" }
+    Reading:
+      type: object
+      required: [indicatorId, label, date, value, delta20, rawState, state, ageDays, unit, lag, source]
+      properties:
+        indicatorId: { type: string, example: F1 }
+        label: { type: string, example: HY OAS }
+        date:
+          type: string
+          format: date
+          description: >-
+            the observation actually SERVED — the date of the row this reading was scored from.
+            ⚠ DIFFERENT SOURCE from `ageDays`/`lag` below, and the two CAN diverge: this is the
+            run's row, those are measured on the newest STORED observation for the same feed.
+            A run that wrote an older row over a newer stored one yields `date` in the past with
+            `ageDays: 0`. `api/status-freshness.test.ts` pins exactly that case
+            (`date: "2026-06-01"`, `ageDays: 0`). Do NOT pair them as one age statement.
+        value:
+          type: [number, "null"]
+          description: >-
+            R7a: null on a PENSION-channel, ETFs-card or licensed (src/licensed.ts `isLicensedId`) row, and on a row
+            whose served value is an estimate over exactly one `isLicensedId` lead — the same for every request; a
+            number otherwise.
+        delta20:
+          type: [number, "null"]
+          description: null exactly where `value` is (R7a); a number otherwise.
+        rawState: { $ref: "#/components/schemas/State" }
+        state: { $ref: "#/components/schemas/State" }
+        ageDays:
+          type: integer
+          description: >-
+            per-feed lag (audit rank 6) — calendar days between the NEWEST STORED observation
+            for this feed and today, resolved on that feed's own calendar. This
+            normally comes from `freshnessFrom`'s series source rather than from `date` above — that
+            move fixed a false-lag measured on 2 of 9 legs. ⚠ EXCEPT on the three stated degrade
+            paths, where the run's own row supplies BOTH this and `lag` (see `freshnessOf` in
+            `api/status.ts`): a degraded freshness read, an id outside the roster, and a roster id
+            the store holds zero observations for. The pair is always ATOMIC — one source supplies
+            both fields — so `date` still must not be read as their source. See `date`'s note.
+        unit:
+          type: string
+          enum: [slots, days]
+          description: >-
+            the unit of `ageDays`: `slots` — the
+            feed's own publication days — for a daily/weekly id since the read path moved to slot age,
+            `days` — calendar days — for monthly/quarterly and for every run-row fallback. Serve it
+            beside `ageDays` so a consumer never pairs the number with the wrong unit.
+        lag:
+          type: boolean
+          description: >-
+            per-feed lag (audit rank 6) — the newest STORED observation is older than this
+            indicator's cadence threshold (weekly feeds tolerate their 5–7d release lag). Same
+            series source as `ageDays`, so it likewise does not describe `date`.
+        source:
+          type: string
+          enum: [roster, run-row]
+          description: >-
+            WHICH freshness notion answered for `ageDays`/`lag`/`unit` (A1.1): `roster` — the per-feed
+            series roster (`freshnessFrom`), the normal source; `run-row` — the run's own stored row,
+            the fallback where the roster does not cover the id (a roster miss, a zero-row store, an
+            uncomputable publication calendar, or a degraded freshness read). A `run-row` age is a
+            last-fetch age, NOT a publication verdict.
+        provisional:
+          type: boolean
+          enum: [true]
+          description: >-
+            B7: `date`/`value`/`delta20`/`rawState`/`state` are overlaid from the feed's newest stored
+            row, an INTRADAY one newer than the verdict run's row — the card is labelled INTRADAY. Also
+            set on the run's OWN intraday row when the served verdict is the `intraday_verdict` slot
+            (`StatusResponse.provisional`). ABSENT otherwise.
+        estimated:
+          type: boolean
+          enum: [true]
+          description: >-
+            E3: set with `provisional` when the overlaid row (or, on the intraday verdict, the run's own row) carries
+            the stored `readings.estimated` marker (a proxy nowcast or a carry, any id) — the card reads EST instead
+            of INTRADAY. ABSENT otherwise.
+        lastPrint:
+          $ref: '#/components/schemas/LastPrintTag'
+        return20d:
+          type: [number, "null"]
+          description: >-
+            ETFs-group cards only: newest stored close ÷ the stored row 20 back − 1, as a fraction (-0.042 = −4.2%);
+            the head may be an intraday row (`provisional`). ABSENT under 21 stored rows, a non-positive base, or a
+            degraded read. null on the served body (R7a: a single-input return is redacted under R6), like `value`.
+    LastPrintTag:
+      type: object
+      required: [date, days, cadence, reason]
+      description: >-
+        E22: the card reads `last print D-n · <cadence>` in place of the generic age pill. Served for every
+        weekly/monthly/quarterly id held between releases (`reason: cadence`), and for a daily-roster id (oil
+        included) whenever its newest stored row is a print dated before its recent market day (`reason: cap`; no
+        estimate heads it). ABSENT otherwise, and on a degraded freshness read.
+      properties:
+        date: { type: string, format: date, description: the newest stored print's obs date (never an estimated row) }
+        days: { type: integer, minimum: 0, description: "calendar days from `date` to the payload's `asOf`, floored at 0" }
+        cadence: { type: string, enum: [daily, weekly, monthly, quarterly], description: the registry release cadence (the tag's suffix) }
+        reason: { type: string, enum: [cadence, cap], description: "why the print is held — `cadence` = between releases, `cap` = a daily id's print behind its recent market day; the tooltip keys on this, never on `cadence`" }
+    AlertRecord:
+      type: object
+      required: [date, level, bandReason, fin, rate, geoFlags, coincident, finReds, firedAt, pushedAt, pushError, degraded, slowScore, slowMaxScore, slowBand, bottomState, vix, vix3m, ratio, r4Phase, r4EntryFiredAt, r4ReentryRung, dialBand, dialState, displayDialState, heldSleeve, reriskConfirmCount, heldDays, nonLiveFamilies, cashOverlay, cashOverlaySince, cashOverlayReason, dialTargetRung, fallShape, fallVelocity, creditDwellCloses]
+      properties:
+        date: { type: string, description: as-of date of the run's data }
+        level: { $ref: "#/components/schemas/AlertLevel" }
+        bandReason:
+          type: [string, "null"]
+          description: >-
+            why `level` is what it is (audit rank 13), emitted from the band-derivation branch that set it:
+            `floor:credit`/`floor:geo`/`floor:r4`/`floor:rate`/`floor:ew` (a hard escalator lifted the band above the raw dial),
+            `floor:coverage` (the WATCH-capped COVERAGE floor: a dial family's verdict is held by data that is not live — a claim about SIGHT, never a market reading),
+            `lag-hold` (the de-escalation lag held it above the dropping raw dial), `regime` (the raw dial band stands),
+            `verdict-hold` (≥1 feed is lagging per cadence and the prior final band held this band above where the dial/floor put it — W4-e),
+            `divergence` (the D-B escalator bumped the band +1 — HY-OAS 30d widening into a near-high QQQ — and the bump actually bound),
+            or `no-dial` (a dial-less/degraded run — band IS the escalator floor, none fired). Null on pre-migration rows.
+        fin:
+          type: integer
+          description: legacy NOT-NULL channel-verdict column — constant sentinel (always 0) since the verdict retirement 2026-07-15; column drop is DDL, deferred behind the Stage-3 gate
+        rate:
+          type: integer
+          description: legacy NOT-NULL channel-verdict column — constant sentinel (always 0) since 2026-07-15; drop deferred behind the Stage-3 DDL gate
+        geoFlags:
+          type: integer
+          description: manual active geo-flag count (loadGeoActiveCount) this run — the REAL value feeding the escalator floor (audit rank 13; was hardcoded 0, misstating the audit trail)
+        coincident:
+          $ref: "#/components/schemas/State"
+          description: legacy NOT-NULL channel-verdict column — constant sentinel (always GREEN) since 2026-07-15; drop deferred behind the Stage-3 DDL gate
+        finReds:
+          type: integer
+          description: legacy NOT-NULL channel-verdict column — constant sentinel (always 0) since 2026-07-15; drop deferred behind the Stage-3 DDL gate
+        firedAt: { type: string, format: date-time, description: when this run fired (every run) }
+        pushedAt:
+          type: [string, "null"]
+          format: date-time
+          description: when this run pushed, or null if silent (Phase 3 re-assert)
+        pushError:
+          type: [string, "null"]
+          description: push OUTCOME (audit rank 1) — error text when a warranted push failed to deliver (pushedAt then null), else null
+        degraded:
+          type: [array, "null"]
+          description: persisted degrade trace (audit rank 6) — every degrade() feed fallback this run as {scope, reason, effect}; [] = fully live, null = pre-migration row
+          items:
+            type: object
+            required: [scope, reason, effect]
+            properties:
+              scope: { type: string, description: the per-feed warning prefix that degraded }
+              reason: { type: string, description: the caught error message }
+              effect: { type: string, enum: [notify, trace], description: "notify can arm the push's calm-ward caveat; trace only persists here. A stored event without it reads notify" }
+              late: { type: string, enum: [notify, trace], description: "set only on an event recorded after the run's push (the seed tail; an intraday run's post-commit sweeps): effect is stored trace, this is the effect it was recorded with. A late notify event surfaces on the next EOD push" }
+              kind: { type: string, enum: [no-free-source], description: "set only when the series has no free data source (unavailable by design, not an outage; needs a paid data API); outage counters skip it. Absent otherwise" }
+        timings:
+          type: [object, "null"]
+          description: per-run phase marks (ms since the run anchor), rewritten after the EOD seed tail; absent on pre-migration rows
+          required: [cold, anchorMs, marks]
+          properties:
+            cold: { type: [boolean, "null"], description: "cold-start anchor; null = an un-anchored (CLI) run" }
+            anchorMs: { type: number, description: the handler/cold-start offset charged to the fetch budget }
+            marks: { type: object, additionalProperties: { type: number }, description: "phase name to ms since the anchor (load, fred, confirmers, globals, assemble, push, persist, purge (EOD cron), ecb.<id>, tail.<task>, tail, pushTail)" }
+        nonLiveFamilies:
+          type: [array, "null"]
+          description: >-
+            family keys that were NON-LIVE this run (audit-extras 1.2 fix) — the signal the push's
+            calm-ward caveat both fires on and dedupes against. null = a dial-less/pre-migration row
+            (unknown), which the caveat gate treats as new information (fail open).
+          items: { type: string }
+        slowScore:
+          type: [integer, "null"]
+          description: slow bubble-tier composite score (Phase 3 Stage 1B), or null when its feed is degraded
+        slowMaxScore:
+          type: [integer, "null"]
+          description: >-
+            the DENOMINATOR slowScore was scored against on this run (2 × activeCount, src/slow.ts).
+            null on a degraded slow run AND on rows written before 2026-08-08 (OFF-2) — a reader
+            renders "score / —" rather than assuming a constant.
+        slowBand:
+          type: [string, "null"]
+          enum: [CALM, ELEVATED, "DE-RISK", null]
+          description: slow bubble-tier band, or null when its feed is degraded (isolated from the fast verdict)
+        bottomState:
+          type: [string, "null"]
+          enum: [CALM, "CAPITULATION-WATCH", "BOTTOM-FORMING", null]
+          description: VIX bottom-signal tier state, or null when its ^VIX/^VIX3M feed is degraded (isolated from the fast verdict)
+        vix:
+          type: [number, "null"]
+          description: VIX bottom-signal tier — live front (^VIX) level driving bottomState, or null when its feed is degraded. Redacted (R7) — null on `/status` + `/history`.
+        vix3m:
+          type: [number, "null"]
+          description: VIX bottom-signal tier — live 3-month (^VIX3M) level, or null when its feed is degraded. Redacted (R7) — null on `/status` + `/history`.
+        ratio:
+          type: [number, "null"]
+          description: VIX bottom-signal tier — term-structure ratio (vix/vix3m; >1 = backwardation), or null when its feed is degraded
+        r4Phase:
+          type: [string, "null"]
+          enum: [equity, cash, reentry, null]
+          description: >-
+            R4 cash-breaker phase, layered over the T1 dial (notify-only to /lab, never feeds
+            the fast verdict). The live phase walk is `equity → cash → re-entry` — there is no
+            arming state between them. The breaker enters `cash` on the FIRST close satisfying
+            `dial rung AND family breadth AND (HY OAS tail OR VIX-term tail)`; null on pre-R4
+            rows. Historical rows written before 2026-07-26 can carry the retired arming values,
+            which the read seam narrows to `equity`.
+        r4EntryFiredAt:
+          type: [string, "null"]
+          description: ISO timestamp of the close that entered cash (anchors the idle-cash ratchet), or null off-cash / pre-R4.
+        r4ReentryRung:
+          type: [integer, "null"]
+          description: the on-ladder rung a laddered re-entry currently holds, or null unless phase === reentry.
+        dialBand:
+          type: [string, "null"]
+          enum: [OK, WATCH, WARNING, CRITICAL, null]
+          description: >-
+            Raw T1-dial band (regimeToBand(dial.regime)) BEFORE the escalator floor and
+            de-escalation lag (alert-engine Slice 3). Persisted so the lag can count
+            consecutive low runs — the final `level` is escalator-masked. Null on
+            pre-migration / degraded runs.
+        dialState:
+          type: [object, "null"]
+          description: >-
+            The WHOLE assembled T1 dial (`T1DialResult`) persisted as jsonb (2026-07-21
+            "compute once, read once" refactor) so the read path hydrates the pushed dial
+            instead of recomputing it via `computeT1Dial`. `dialBand` (via
+            `regimeToBand(dial.notifyRegime)`) and `dialTargetRung` (`dial.targetRung`) are
+            PROJECTIONS of this blob when present, so scalar and blob can never disagree.
+            Object shape is the internal `T1DialResult` (not field-enumerated here — it is a
+            persistence blob, not an emitted response field). Null on pre-migration / degraded
+            (no-dial) runs, which keep the independently-passed scalars.
+        panelState:
+          type: [object, "null"]
+          description: >-
+            The four `assembleDial` fields the live `/api/lab` read path consumes
+            (`globalPanel`, `displayPanel`, `cissHistory`, `heldMemberState`; `PersistedPanel`)
+            — `cissHistory` = each danger member's per-close state history (`MemberHistoryEntry[]`), read
+            for the signal hold, the t−N ROC bases and momentum — persisted as jsonb (§7 Stage C′) from the SAME `assembleDial` return as `dialState`,
+            so panel and dial can never carry different vintages. The read path serves this off the
+            row instead of re-running `assembleDial`. Object shape is the internal `PersistedPanel`
+            (not field-enumerated here — a persistence blob, not an emitted response field). Null on
+            pre-migration / no-panel runs, a DEGRADED read that falls back to a fresh `assembleDial`.
+            OPTIONAL (P-1): emitted ONLY by `/api/lab` (a `withPanel` read); `/api/status` and
+            `/api/exposure` OMIT the key entirely (a narrow read), so absent ≠ null here.
+        displayDialState:
+          type: [object, "null"]
+          description: >-
+            E12 DISPLAY twin of `dialState` (estimates included); never feeds notify. Null on legacy/dial-less runs.
+        displayPanelState:
+          type: [object, "null"]
+          description: >-
+            E12 DISPLAY twin of `panelState`; OPTIONAL like it — only a `withPanel` read emits the key.
+        heldSleeve:
+          type: [string, "null"]
+          description: >-
+            Auto-hold held sleeve (alert-engine Slice 3, i7a): the calmest-in-band leg picked
+            by the per-leg danger field, persisted every run BEFORE notify so the on-held-change
+            push dedups against the last PERSISTED held sleeve. Null on pre-migration / degraded
+            (no-field) runs; a null prior is a silent baseline, not a push.
+        reriskConfirmCount:
+          type: integer
+          description: >-
+            Re-risk confirmation counter (slice-1 Stage 1.3, M5/M8): consecutive IMPROVING closes
+            (danger falling) the auto-hold has seen while a more-aggressive leg was wanted. Non-nullable
+            (integer default 0): a pre-migration / degraded run reads back 0 (a fresh streak).
+            NO LONGER A GATE since 2026-08-07: RERISK_CONFIRM
+            went to 1, so a single close always meets it and this counter is bookkeeping kept for the
+            re-arm case. It advances per FIRED-DATE, not per close — a manual cron re-run of the same
+            close pushes it forward, which is intended, not a bug.
+        heldDays:
+          type: integer
+          description: >-
+            Held-leg dwell ledger (M7, 2026-07-15): trading closes the auto-held leg has survived
+            since it last changed; ticks once per NEW close, resets to 0 on any held-leg change.
+            Non-nullable (integer default 0): a pre-migration / degraded run reads back 0.
+            NO LONGER A GATE since 2026-08-07: RERISK_DWELL_DAYS
+            went to 0, so a re-risk is never dwell-blocked and a first post-deploy re-risk waits nothing.
+            The ledger is retained because the FE renders it and a dwell re-arm would need it.
+        cashOverlay:
+          type: string
+          enum: [off, partial]
+          description: >-
+            W5-a Tier-1 cash overlay level (DEC-1) — the OVERLAY's own state, never the merged cash
+            claim. `full` is R4's terminal cash and lives in `r4Phase`; `resolveCash(r4, overlay)`
+            merges the two at render time. Non-nullable (text default 'off'): the overlay is emitted
+            every run and a dial-less/degraded run means 'off' (fail-safe), never null.
+            NOT A MONEY SIGNAL until W5-b sizes it — notify-only, boolean-ish.
+        cashOverlaySince:
+          type: [string, "null"]
+          description: >-
+            ISO stamp of the close the overlay went ACTIVE, preserved across a continuously-active
+            run so it records the ENTRY rather than the latest close. Null while off.
+        cashOverlayReason:
+          type: [string, "null"]
+          description: Legible trigger string for the overlay (display-only; never read back into the fold).
+        dialTargetRung:
+          type: [integer, "null"]
+          description: >-
+            The T1 dial's `targetRung` this run — the prior the overlay's acceleration trigger reads
+            next close. Distinct from the held leg (`heldSleeve`), which diverges from the dial target
+            exactly when the hold gate binds. Null on pre-migration rows and dial-less/degraded runs.
+        fallShape:
+          type: string
+          enum: [v-shaped, bear, indeterminate]
+          description: >-
+            W5-d V-vs-bear class (DEC-3) for the fall in progress, measured at push time from ACWI
+            drawdown velocity and credit dwell, and persisted so readers never re-derive it. Of the
+            three classes only `v-shaped` ever diverges from today's behaviour; `bear` and
+            `indeterminate` both mean "act as today", so a dead feed, a short credit history, a
+            clipped trailing peak or disagreeing inputs all land on today's behaviour structurally.
+            Non-nullable (text default 'indeterminate'). As of Stage 3.1 this is COMPUTED AND
+            PERSISTED ONLY — it steers nothing.
+        fallVelocity:
+          type: [number, "null"]
+          description: >-
+            Measured drawdown per trading day since the trailing peak (negative while falling).
+            Null means NOT MEASURABLE (no closes) — distinct from 0.0, which means "at the trailing
+            peak, no fall"; collapsing the two would let a dead feed read as a fresh peak. Redacted (R7) — null on
+            `/status` + `/history`.
+        creditDwellCloses:
+          type: [integer, "null"]
+          description: >-
+            Consecutive confirmed-RED credit closes, max over F1/F2 (matching the existing
+            `creditBlowout` predicate). Null on a credit history shorter than BEAR_DWELL_CLOSES —
+            deliberately not reported as a small number, since a small dwell reads as `v-shaped`,
+            the one behaviour-changing class, on evidence that does not support it.
+    StatusResponse:
+      type: object
+      required: [verdict, readings, asOf, lag, feedAgeDays, deployId, alertLinks]
+      properties:
+        verdict: { $ref: "#/components/schemas/AlertRecord" }
+        readings:
+          type: array
+          items: { $ref: "#/components/schemas/Reading" }
+        asOf: { type: string, format: date }
+        lag: { type: boolean, description: heartbeat — feed older than STALE_AFTER_DAYS }
+        feedAgeDays: { type: integer, description: whole days between asOf and today }
+        feedsLagging:
+          type: integer
+          description: >-
+            OPTIONAL, and the three per-feed fields are emitted as a SET or not at all: the freshness
+            read is its own store read, and a failure degrades this endpoint (it still serves the
+            verdict) instead of 500ing. Absent means NOT MEASURED — never 0, which would claim every
+            feed is current. `feedsLagging` always equals `laggingFeedIds.length`.
+            PER-FEED pill: how many ids of `feedsTotal` are past THEIR OWN lag cut on THEIR OWN
+            publication calendar (freshnessFrom, src/feed-lag.ts — the same per-id verdict /lab's board
+            makes). Independent of the `lag` heartbeat above, which is one generic cut over the MAX
+            observation date across all feeds; the two CAN disagree, which is the point of serving both.
+        laggingFeedIds:
+          type: array
+          items: { type: string }
+          description: the ids counted by `feedsLagging` — the pill tooltip names them
+        feedsTotal:
+          type: integer
+          description: >-
+            the roster size freshnessFrom scored (served registry + composite components) — the
+            denominator, so the tooltip reads "3 of N behind" rather than a bare count
+        unmeasuredFeedIds:
+          type: array
+          items: { type: string }
+          description: >-
+            ids whose publication calendar could not be built, so lateness is UNCOMPUTABLE — EXCLUDED
+            from feedsLagging/laggingFeedIds and served here instead. Optional-as-a-set with the pill
+            fields; the pill renders "· K unmeasured" when this is non-empty.
+        feedLag:
+          type: array
+          description: >-
+            FEED-LAG OVERVIEW — one row per
+            REGISTERED feed off the SAME freshness walk the pill above uses, so /lab's ledger panel
+            renders "age now / healthy cut / deep-lag bar" without a second fetch. Distinct from
+            /api/lab's `feedLag` (FeedLagNote, marked feeds only): this is the WHOLE roster. OPTIONAL
+            and emitted with the pill fields — a degraded freshness read omits it rather than serving
+            a measurement-less roster. Lagging rows sort first.
+          items: { $ref: "#/components/schemas/FeedLagRow" }
+        deployId:
+          type: string
+          nullable: true
+          description: >-
+            the serving build's VERCEL_DEPLOYMENT_ID (null outside Vercel). With `verdict.firedAt` it is
+            the client's localStorage paint key (load-tolerance P9.2): a fresh page load paints from
+            storage only when BOTH match, so a deploy always forces the full fetch.
+        alertLinks:
+          type: boolean
+          description: >-
+            whether this deploy resolves the dashboard link host (PROD_ALIAS, else the platform's production
+            domain) that the push tap target and the mail footer carry; false means alerts still send, without
+            links. Derived only — the url itself is never served.
+        provisional:
+          type: boolean
+          enum: [true]
+          description: >-
+            set iff the served `verdict` is the daytime `intraday_verdict` slot (a run before the EOD cutoff,
+            newer than the last alert_log row) — its dial/band/held and its run's readings; the push still
+            reads the EOD row. ABSENT otherwise.
+    SeriesPoint:
+      type: object
+      required: [date, value, delta20, rawState, state]
+      properties:
+        date: { type: string, format: date }
+        value:
+          type: [number, "null"]
+          description: >-
+            The plotted level, in `unit`; PENSION ids serve the stored close, identical for a date
+            across from/to windows. null on a `pointBandCutSeries` breadth-distance warm-up gap, on every
+            point of a `redacted` body (a licensed id), or on each `estimated` point of an id whose
+            estimate carries exactly one licensed lead (`isLicensedEstimateId`).
+        delta20:
+          type: [number, "null"]
+          description: 20-obs change, in `unit`; null wherever `value` is redacted (a `redacted` body, or a redacted `estimated` point of an `isLicensedEstimateId` id).
+        provisional:
+          type: boolean
+          enum: [true]
+          description: >-
+            Present ONLY on a point written by an intraday run (src/intraday.ts); the EOD close replaces it.
+            Drives the detail chart's INTRADAY label. ABSENT on a final point.
+        estimated:
+          type: boolean
+          enum: [true]
+          description: >-
+            The stored `readings.estimated` marker (E3): the row is an estimate, not a print — written by an intraday
+            run (WITH `provisional`) or an EOD run (without). `oilEst` serves the newest one, anchored on the newest non-estimate point; the detail
+            chart labels it ESTIMATED, plus `· INTRADAY` when it is also `provisional`. ABSENT otherwise.
+        rawState: { $ref: "#/components/schemas/State", description: "Unconfirmed state; shared-cut by default, recomputed when getSeries `detail=1` is supplied" }
+        state: { $ref: "#/components/schemas/State", description: "Confirmed state (the one that counts); shared-cut by default, recomputed when getSeries `detail=1` is supplied" }
+        decision:
+          type: [number, "null"]
+          description: >-
+            The decision variable for this point (for scored derived ids, the
+            exact scalar the cron scorer used to classify rawState/state; for a
+            displayOnly block — F1 lowRise, KBE worstDrop — a context series the
+            states ignore), served verbatim from the stored column. EXCEPTION: a
+            PENSION row with a derived block (KBE) stores null, so its decision is
+            computed on read over the returned rows — the first window−1 returned
+            points are null and values depend on limit/from. Present for the
+            derived-block ids (F1/F4/F5/F6/F8/G1/NVDA/BRENT/OVX/KBE); null for non-derived
+            ids and for points whose lookback window is short or predates a
+            backfill. The client renders null as a line gap.
+        leg:
+          type: string
+          enum: [op, evt, z, vel-op, vel-evt, vel-z, vel-z-fast, vel-z-slow, vel-cusum]
+          description: >-
+            The RAW per-day OR-leg that fired (first leg in classify order).
+            Emitted ONLY where the raw leg agrees with the confirmed ribbon
+            state; on boundary cells where they disagree it is suppressed and the
+            tooltip degrades to date+state. Since IS-5 (2026-07-26) every
+            per-indicator confirm buffer is 0, so raw and confirmed always agree
+            and that suppression is unreachable on this path — the rule still
+            binds any caller passing a real buffer.
+            Absent on agreeing-GREEN days and on non-detail payloads. Present
+            on the ?detail=1 recompute read path.
+        havenLegs:
+          type: object
+          required: [eur, chf, jpy]
+          description: >-
+            The three FX-haven leg moves (−20d haven-bid signed move, %) whose
+            worst-of (max) is the classified FXH envelope. Present ONLY on the
+            FXH bespoke read path (mode-invariant); the client plots all three
+            and derives the envelope = max. Absent on every other indicator id.
+          properties:
+            eur: { type: number, description: DEXUSEU leg −20d haven-bid move }
+            chf: { type: number, description: DEXSZUS leg −20d haven-bid move }
+            jpy: { type: number, description: DEXJPUS leg −20d haven-bid move }
+        bullLegs:
+          type: object
+          required: [drop, steep]
+          description: >-
+            R7's two honest 20d yield-change legs (pp): drop = Δ20 DGS2, steep =
+            Δ20 (10y−2y). Present ONLY on the R7 bespoke read path
+            (mode-invariant); the four moving ranked cut lines ride
+            bandCuts.r7DropAmber/r7DropRed/r7SteepAmber/r7SteepRed. Absent on
+            every other indicator id.
+          properties:
+            drop: { type: number, description: 20d change in the 2y yield (DGS2), pp }
+            steep: { type: number, description: 20d change in the 10y−2y steepening, pp }
+        gates:
+          type: object
+          additionalProperties: { type: boolean }
+          description: >-
+            Case 4 — named per-point gate flags for compound-rule indicators
+            (F8 belowMA200; F4 smhBelowMA200/nvdaBelowMA200): the non-drawable
+            AND-conditions that must ALSO hold for the plotted decision
+            variable's band cross to fire. Wire-only, recomputed on read from
+            stored history (never persisted); a key is present only where its
+            MA window is fully covered — a missing key/object means unknown
+            and the client draws normally. The generic renderer dims/dashes a
+            ChartSeries.gatedBy series where no listed gate is on.
+        bandCuts:
+          type: object
+          additionalProperties: { type: number }
+          description: >-
+            PER-POINT band cut values keyed by ChartBand.fromPoint (source:perPoint) — a MOVING
+            threshold that cannot be baked as a build-time scalar. Today: CG's
+            expanding-percentile HG÷GC level cuts, ECY's expanding expensive cut, F9/F11's
+            per-day sigma velocity cuts, and R1's post-inversion decayed amber cut — plus one
+            NON-cut key, velSigmaRef (a dualAxis.refSigma id's display-only σ multiple). Wire-only —
+            recomputed on read from stored
+            history, never persisted, and purely additive: every other field on the point passes
+            through verbatim. A MISSING key means NO CUT on that date (the pre-warmup head /
+            an unarmed post-inversion day) and MUST render as a GAP, never as 0.
+        cusum:
+          type: number
+          description: >-
+            The day's one-sided CUSUM accumulator S+ for a rolling-sigma velocity id (F9) — the
+            `vel-cusum` scorer leg's own state variable, drawn on the detail chart's SECONDARY
+            axis beside its flat `h` bound. Wire-only — recomputed on read from stored history
+            through velocityCusumSeries, never persisted, purely additive. Emitted only for ids
+            declaring thresholds.velocitySigma. ABSENT means no accumulator reading on that date
+            (the sigma warm-up head, where z is undefined) and MUST render as a GAP, never as 0 —
+            0 is a real S+ reading (drift fully decayed). Read-depth INVARIANT since 2026-08-09,
+            WITH its condition: two different `limit`s report the SAME S+ for a shared date,
+            exactly, whenever the shallower read's lead-in contains a forgetting event — a
+            reset-to-0 at the action limit, or a decay to the 0 floor. That holds for every read
+            on today's data at the shipped cusumK, where S+ floors on most days; it is not an
+            unconditional guarantee, since a lead-in whose S+ stays strictly positive throughout
+            carries its entry state in. The former blanket path-dependence caveat (16 of 40 shared
+            dates disagreed on the F9 fixture) was an artefact of a sigma pad sized to minObs
+            rather than the estimator window. Display only — the scored state comes from the cron-time fold over the full
+            history and never moves with the requested window.
+        velZ:
+          type: number
+          description: >-
+            PER-POINT velocity z for a composite velocity scorer leg (BONOS/R6; z of the id's own Delta over its sigma window),
+            drawn on the detail chart's SECONDARY axis beside its flat zAmber/zRed sigma bounds.
+            Wire-only — recomputed on read via oatVelocityZ (the one owner of velFrom + the offset),
+            never persisted, purely additive. ABSENT means no z on that date (the pre-head warm-up
+            or the sigma=0 degrade) and MUST render as a GAP, never as 0.
+        rollingMax:
+          type: number
+          description: >-
+            The trailing PRIOR-window peak an atOrAboveRollingMax gate scores against (G1/BRENT:
+            the descriptor's levelWindow observations, excluding the day itself) — the gate's own
+            line, drawn as a primary-axis trend overlay. Wire-only — recomputed on read from
+            stored history beside the gate flags, never persisted. ABSENT where the stored
+            history is shorter than the window (renders as a GAP, mirroring the null gate flag).
+        shortMove:
+          type: number
+          description: >-
+            R1's short-leg gate DECISION VARIABLE, drawn on the detail chart's SECONDARY axis: the
+            signed change in the post-inversion rung's short leg (DGS3MO) over the trailing
+            shortLegWindow JOINED observations, in percentage points. NEGATIVE = the short leg fell
+            (bull steepening). It is the quantity two otherwise INVISIBLE AND-conditions test — the
+            rung's bull-steepener escalation (a firing rung day with a fall >= shortLegDropBp scores
+            RED) and the always-on drawdown leg's direction-agnostic move gate — so the chart can
+            draw them as a crossing instead of painting an un-cued colour. Wire-only — recomputed on
+            read through the SAME walk the scorer gates on (shortMoveSeries), never persisted.
+            ABSENT where the day has no aligned short-leg observation or the window has not filled
+            (renders as a GAP; on those days the gate is structurally off).
+        gateLine:
+          type: number
+          description: >-
+            The MA50 trend gate's own line for the downside detectors (DB_SMH/DB_XLK), expressed on
+            the DRAWDOWN axis their detail chart plots: ma50 / 63d-high - 1, x100 like the drawdown
+            itself. Wire-only — recomputed on read beside the belowMA50 gate flag, never persisted.
+            It is the same condition the flag carries, drawn: close < ma50 iff dd < gateLine (both
+            sides over the same positive rolling high), so line and dimming cannot disagree. ABSENT
+            where the stored history is shorter than the MA window (renders as a GAP, mirroring the
+            null gate flag).
+        redMean:
+          type: number
+          description: >-
+            The redWindow-obs trailing mean of the feed — the quantity RED scores on for a two-window
+            smoothed carrier (R1, SMOOTHED_LEVEL_OF[id].redWindow), drawn as a SECOND primary line so
+            the RED ribbon has a visible cause. Wire-only — recomputed on read, never persisted.
+            Emitted ONLY for a redWindow carrier (byte-identical payload otherwise); ABSENT where the
+            stored history is shorter than the window (renders as a GAP, never 0).
+        corrP90:
+          type: number
+          description: >-
+            DISP's rolling correlation percentile cut (p of DISP_CORR_P over the trailing
+            DISP_CORR_P_WINDOW obs) — the B2 deepener line: a meanCorr at/above it turns a gated
+            AMBER day RED. Drawn as a primary-axis trend line beside the static DISP_CORR gate band.
+            Wire-only — recomputed on read via rollingPercentile (the SAME array dispersionState
+            deepens against, so line and ribbon share one source), never persisted. Emitted ONLY on
+            the DISP read path (absent on every other id). ABSENT on a warm-up day (fewer than
+            DISP_CORR_P_MIN_OBS finite obs, where the percentile is NaN) — renders as a GAP, never 0.
+    SeriesResponse:
+      type: object
+      required: [indicatorId, label, points]
+      properties:
+        indicatorId: { type: string, example: F1 }
+        label: { type: string, example: HY OAS }
+        longLabel:
+          type: string
+          example: Credit appetite (HYG/LQD)
+          description: >-
+            the indicator's descriptive long name (registry `longLabel`); the detail chart's
+            hover/aria title reads "short — long (id)". Absent on a payload predating the split,
+            where the client omits the long-name segment.
+        unit: { type: string, description: 'value suffix ("%") or currency prefix symbol ("€", "$"); empty string for unitless indicators (VIX, rate, ratio); PENSION channel rows carry their registry unit' }
+        points:
+          type: array
+          description: Oldest→newest; one point per obs_date (latest vintage)
+          items: { $ref: "#/components/schemas/SeriesPoint" }
+        effAmber:
+          type: [number, "null"]
+          description: >-
+            Worst-of (earliest-firing) amber cut in plotted units — the exact
+            level the full scorer (the OR-legs listed in `scorerLegs`) tests
+            against, drawn as a flat dashed line. null = no applicable amber cut
+            for the recompute.  Both effAmber/effRed ABSENT = non-detail payload ⇒
+            client degrades to the static single-leg band.
+        effRed:
+          type: [number, "null"]
+          description: Worst-of red cut, same units/semantics as effAmber.
+        scorerLegs:
+          type: array
+          items: { type: string, enum: [op, vel-op, evt, z, vel-evt, vel-z, vel-z-fast, vel-z-slow, vel-cusum] }
+          description: >-
+            WHICH OR-legs the scorer tests for this indicator, in LEG_ORDER — derived from
+            the same resolved cuts as effAmber/effRed (`activeLegs`, src/domain-legs.ts). The
+            detail-chart legend NAMES these instead of restating the leg set in prose, so a
+            retired leg (F1's EVT level pair, 2026-07-23) drops out of the copy by itself.
+            Present on the branch that resolves cuts (?detail=1 recompute); absent ⇒ the
+            client omits the leg list.
+        legBounds:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              amber: { type: [number, "null"] }
+              red: { type: [number, "null"] }
+          description: >-
+            Per-leg amber/red bound values keyed by exactly the `scorerLegs` ids, derived from the
+            same resolved cuts (`activeLegBounds`, src/domain-legs.ts) — the detail-chart caption PRINTS
+            these when no cut line is in frame, never a hardcoded client-side value. null = no
+            bound at that severity (or a σ-leg whose zref is degenerate). Every non-null value is
+            in the leg's plotted axis's units: level legs in `effAmber`'s plotted-level units (the
+            σ-axis z leg zref-inverted the same way), `vel-*` legs in the velocity/Δ units the
+            client's Δ-axis formatter renders — vel-z/vel-z-fast are velZref-inverted server-side,
+            and vel-cusum (an accumulator with no Δ-axis image) is served null at both severities,
+            the leg staying present. Present exactly where `scorerLegs` is present; absent on
+            non-recompute payloads.
+        confirmCloses:
+          type: integer
+          description: >-
+            Consecutive closes a raw state must hold before it confirms, for this indicator's
+            family (`confirmClosesFor`) — the legend states it rather than hardcoding 2.
+            Absent on VTP, whose streak-banded state is served with no confirm fold, and on the
+            chained-only ids (LEGP_VALUE, SB_STRAT, SB_BENCH), which carry no fold.
+        valueOnly:
+          type: boolean
+          enum: [true]
+          description: >-
+            Every point's `state` is a placeholder GREEN, not a RAG verdict — the client neutralizes the
+            ribbon. Present on the never-scored / cut-less chart ids and the chained-only ids (LEGP_VALUE,
+            SB_STRAT, SB_BENCH); ABSENT on every scored id.
+        mult:
+          type: number
+          minimum: 0.5
+          maximum: 2.0
+          description: >-
+            The display-only what-if MULTIPLIER APPLIED to this payload (always a grid value —
+            off-grid requests 400 rather than clamp).
+            Present ONLY when `?mult` was supplied AND a recompute branch ran; ABSENT ⇒
+            this is the config-scored ribbon and the client renders no what-if badge. The
+            non-`detail` path and the degraded-proxy fallback both serve the stored
+            shared-state series, so they omit it even when `?mult` was supplied.
+        chainSplices:
+          type: integer
+          minimum: 1
+          description: >-
+            How many chained-index BASE BREAKS the read-path splice (`spliceChainedIndex`) repaired
+            for this id (HCX only). Present > 0 ⇒ the stored rows carried more than one base (a
+            shallow/deep-fetch cron split) and were re-anchored on read so the distance-from-high line
+            has no false cliff; ABSENT ⇒ no splice was needed. Surfaces a heal that would otherwise be
+            silent, so a future base drift cannot pass unnoticed.
+        maxChainRatio:
+          type: number
+          minimum: 1
+          description: >-
+            The largest observed consecutive basket factor `max(r, 1/r) >= 1` for this id (HCX only),
+            present ONLY when it clears the quiet-market bound (`CHAIN_QUIET_RATIO`). Reveals a base
+            cliff BELOW the `spliceChainedIndex` splice threshold — one that prints a real chart drop
+            yet is never spliced and leaves `chainSplices` absent. ABSENT on a quiet payload, so a
+            healthy response stays byte-identical.
+        oilEst:
+          type: object
+          required: [date, value, fromDate]
+          properties:
+            date: { type: string, format: date }
+            value: { type: number }
+            fromDate: { type: string, format: date }
+            provisional: { type: boolean, enum: [true], description: "The newest point is `provisional` (an intraday run's estimate). ABSENT on an EOD estimate." }
+          description: >-
+            The served estimate tail, any id (the wire name is kept from the BRENT/G1 era). Built from this response's
+            own `points` — the stored `estimated` rows, never recomputed on read; display-only, never band selection.
+            `date` / `value` = the newest point when it carries `estimated`, in the units `points` carry; `fromDate` =
+            the newest non-estimate point's date (the print the estimated tail extends). ABSENT when the newest served
+            point is not `estimated`, or when no non-estimate point precedes the estimated tail in the served window —
+            never an error. Also ABSENT on the served body of an id whose estimate carries exactly one `isLicensedId`
+            lead (redacted, R7).
+        proxy:
+          type: object
+          required: [source, until]
+          properties:
+            source: { type: string, description: the stand-in ticker }
+            until: { type: string, format: date }
+          description: >-
+            A held-fund leg's pre-join stand-in (a `LEGP_*` id with `LegQuote.proxy`): points dated before `until` (the
+            held fund's first close) are the `source` fund's € path scaled to meet that close. One series-level object,
+            never per-point flags; kept on a `redacted` body (the join date carries no licensed value). ABSENT elsewhere.
+        redacted:
+          type: boolean
+          enum: [true]
+          description: >-
+            R7: an `isLicensedId` id (an unregistered id fails closed), served so to every request. Points keep only `date`/`rawState`/`state`
+            (+ `leg`/`provisional`/`estimated`/`gates`) with `value`/`delta20` null; the top level keeps only
+            `indicatorId`/`label`/`longLabel`/`unit`/`points`/`confirmCloses`/`valueOnly`/`proxy`. ABSENT on a full payload.
+    ExposureResponse:
+      type: object
+      description: >-
+        GET /exposure — the two-key exposure dial (slice E1). `posture` is the
+        named exposure level (Full / Core / Reduced / Defensive) or null when the input is
+        degraded / warming up, and `equityPct` is its equity weight. `arm` = the credit key (trailing-window
+        percentile rank + 30d ROC on F1 HY OAS); `fire` = the trend key (GT's own scored band
+        over its ACWI-vs-MA200 maSpread). `summary` is the one-sentence behavioral-contract line; `asOf` =
+        the newest date across the F1/GT series (null when both are empty); `thresholds` = the ARM/FIRE cuts
+        themselves, served so the `/exposure` chip footnotes print live literals and the front-end holds no
+        numeric copy of a cut (R1 seam ruling, 2026-07-26).
+      required: [posture, equityPct, arm, fire, summary, asOf, thresholds]
+      properties:
+        posture:
+          type: [string, "null"]
+          enum: [Full, Core, Reduced, Defensive, null]
+          description: >-
+            0 keys with neither key approaching → Full; 0 keys with either approaching → Core;
+            1 → Reduced; 2 → Defensive; null = degraded input. BOUNDED by the R8 compound-risk
+            floor: when `equityPct × (10 − heldRiskRank) / 9` falls below `COMPOUND_RISK_FLOOR`
+            (10, USER-decided) the posture is stepped UP one tier at a time until it clears, so
+            the served posture can be one tier (or more) above what the keys alone imply. The
+            held rung comes from the served verdict's `heldSleeve` (the newer `intraday_verdict` slot, else the
+            last alert_log row — `provisional` marks the slot); with no held sleeve the
+            pair is rung-blind and the key-driven posture is served unchanged.
+        equityPct:
+          type: [integer, "null"]
+          enum: [100, 70, 40, 15, null]
+          description: >-
+            Equity weight of `posture` (Full 100, Core 70, Reduced 40, Defensive 15); null exactly
+            when `posture` is null. At Defensive the non-equity remainder is bond-rung-primary, NOT
+            cash — do not render `100 - equityPct` as a cash figure.
+        arm:
+          type: object
+          description: The ARM (credit-stress) key.
+          required: [armed, approaching, degraded, level, percentile, roc, asOf]
+          properties:
+            armed: { type: boolean }
+            approaching: { type: boolean, description: "pre-alert tier: not armed but 30d ROC ≥ ARM_ROC_APPROACH_BP (+28bp); always false when armed or degraded" }
+            degraded: { type: boolean, description: true when F1 has < ARM_MIN_OBS points }
+            level: { type: [number, "null"], description: "latest F1 HY-OAS level (%); null on the served body (redacted)" }
+            percentile: { type: [number, "null"], description: "trailing-window percentile RANK of the latest F1 value [0,1] — the fraction of the last ARM_RANGE_WINDOW observations at or below it; null on a flat window. NOT a position-in-range: a rank at cut c arms on ~(1−c) of days by construction, a range position has no such floor." }
+            roc: { type: [number, "null"], description: "30d widening (value[last] − value[last−30]), OAS points; null on the served body (3.5b)" }
+            asOf: { type: [string, "null"], format: date }
+        fire:
+          type: object
+          description: The FIRE (trend-break) key.
+          required: [fired, approaching, degraded, maSpread, asOf]
+          properties:
+            fired: { type: boolean, description: "true when GT's RESOLVED band scores the latest maSpread non-GREEN — the same verdict the GT card renders (CORE-B4). Both GT cuts are positive, so FIRE trips on the cushion above MA200, not at the break." }
+            approaching: { type: boolean, description: "pre-alert tier: not fired but maSpread is within FIRE_MA_APPROACH_SPREAD (+4pp) of GT's resolved amber cut; always false when fired or degraded" }
+            degraded: { type: boolean, description: true when GT is empty or its latest decision is null }
+            maSpread: { type: [number, "null"], description: "GT's persisted decision (ACWI vs MA200 spread); also null when degraded; null on the served body (3.5b)" }
+            asOf: { type: [string, "null"], format: date }
+        summary:
+          type: string
+          description: One-sentence behavioral-contract line, e.g. "credit calm (34th pct, +2bp/30d); trend clear of GT's cut -> Full (100% equity)". Its ROC slot reads "—" wherever `arm.roc` is null-redacted.
+        asOf:
+          type: [string, "null"]
+          format: date
+          description: Newest date across the F1/GT series; null when both are empty.
+        provisional:
+          type: boolean
+          enum: [true]
+          description: >-
+            set iff the held rung / cash level bounding `posture` came off the daytime `intraday_verdict`
+            slot (newer than the last alert_log row); the exposure push still reads the EOD row. ABSENT otherwise.
+        thresholds:
+          type: object
+          description: >-
+            The live ARM/FIRE cuts (`EXPOSURE_THRESHOLDS` in src/exposure.ts), served verbatim so the
+            `/exposure` chip footnotes render them without a client-side copy. Static per deploy.
+          required: [armLevelPct, armRangeWindow, armRocBp, armRocWindow, armReleasePct, armRocApproachBp, fireMaApproachSpread]
+          properties:
+            armLevelPct: { type: number, description: "ARM_LEVEL_PCT — trailing-window rank cut that arms" }
+            armRangeWindow: { type: integer, description: "ARM_RANGE_WINDOW — trading days the rank is taken over" }
+            armRocBp: { type: number, description: "ARM_ROC_BP — widening cut that arms, OAS points" }
+            armRocWindow: { type: integer, description: "ARM_ROC_WINDOW — trading days the widening is measured over" }
+            armReleasePct: { type: number, description: "ARM_RELEASE_PCT — the latch's lower edge" }
+            armRocApproachBp: { type: number, description: "ARM_ROC_APPROACH_BP — the ARM pre-alert cut, OAS points" }
+            fireMaApproachSpread: { type: number, description: "FIRE_MA_APPROACH_SPREAD — pre-alert cushion above GT's resolved amber cut" }
+    ExposureReplayPoint:
+      type: object
+      description: >-
+        One replayed trading day inside a GET /replay episode. `price` is the fire-segment
+        close that day (^GSPC pre-splice, ACWI post-splice), 2dp; `armed`/`fired` are the
+        ARM/FIRE keys; `posture` is the named exposure level or null on degraded input.
+      required: [date, price, armed, fired, posture, degraded]
+      properties:
+        date: { type: string, format: date }
+        price:
+          type: [number, "null"]
+          description: fire-segment close that day (2dp); null = withheld on a `redacted` body
+        armed: { type: boolean, description: ARM credit key }
+        fired: { type: boolean, description: FIRE trend key }
+        posture:
+          type: [string, "null"]
+          enum: [Full, Core, Reduced, Defensive, null]
+          description: named exposure level; null = degraded input (never a fabricated Core)
+        degraded: { type: boolean, description: true when posture is null }
+    ExposureReplayEpisode:
+      type: object
+      description: >-
+        One crisis window in GET /replay — the episode descriptor plus its replayed
+        `points`, an optional `defensive` (IEF bond-rung proxy) line present only when IEF
+        history covers the window's open, and server-authored honesty `notes`.
+      required: [id, label, start, end, candidate, rationale, points, notes]
+      properties:
+        id: { type: string, example: "2008" }
+        label: { type: string, example: 2008 GFC }
+        start: { type: string, format: date }
+        end: { type: string, format: date }
+        candidate:
+          type: boolean
+          description: a deflation-focus episode the user may drop at eyeball time
+        rationale: { type: string, description: one-line web-verified window rationale }
+        points:
+          type: array
+          items: { $ref: "#/components/schemas/ExposureReplayPoint" }
+        defensive:
+          type: array
+          description: IEF bond-rung proxy line; absent when IEF history predates the window's open
+          items:
+            type: object
+            required: [date, price]
+            properties:
+              date: { type: string, format: date }
+              price:
+                type: [number, "null"]
+                description: IEF close (2dp); null = withheld on a `redacted` body
+        notes:
+          type: array
+          description: server-authored honesty notes (short-ARM-window, ^GSPC provenance, IEF-absent, feed errors)
+          items: { type: string }
+    ExposureReplayResponse:
+      type: object
+      description: >-
+        GET /replay — every historical crisis episode replayed in one payload so the /lab
+        episode-replay section switches with zero refetch. `asOf` = the newest underlying
+        observation across the fetched feeds (falls back to today when everything degraded).
+      required: [asOf, episodes]
+      properties:
+        asOf: { type: string, format: date }
+        episodes:
+          type: array
+          items: { $ref: "#/components/schemas/ExposureReplayEpisode" }
+        redacted:
+          type: boolean
+          enum: [true]
+          description: >-
+            Set on the served body, for every request: every raw vendor close — point `price` and
+            `defensive[].price` — is null; dates, `armed`/`fired`/`posture`/`degraded` and notes stay.
+            ABSENT on a full payload.
+    ReplayCompanionSeries:
+      type: object
+      description: >-
+        GET /replay?companion=<id> — one external companion-overlay series (VIXCLS /
+        T10Y2Y / DCOILWTICO / ^IXIC) for the episode-replay chart, served off their
+        cron-persisted raw rows and sliced server-side to the
+        `from`/`to` episode window. The slim core of `SeriesResponse` so the client
+        consumes either shape interchangeably.
+      required: [indicatorId, label, unit, points]
+      properties:
+        indicatorId: { type: string, example: VIXCLS }
+        label: { type: string, example: VIX (implied volatility) }
+        unit: { type: string, description: '"" = unitless; "%" / "$" format like /series' }
+        points:
+          type: array
+          items:
+            type: object
+            required: [date, value]
+            properties:
+              date: { type: string, format: date }
+              value: { type: number }
+        redacted:
+          type: boolean
+          enum: [true]
+          description: >-
+            A redacted companion (VIXCLS, ^IXIC — the R7 source roster), for every request: `points` is empty.
+            ABSENT on a full payload and on every other companion.
+    FamilyMeta:
+      type: object
+      description: >-
+        One display GROUP's metadata for GET /families — the ordered grouping the Dashboard +
+        Lab render cards under. Membership itself rides the `family` key on each IndicatorMeta
+        / the /lab panel. From DASHBOARD_FAMILIES + CARD_ONLY_GROUPS (src/families.ts): the
+        list carries the 7 danger families in render order, then one SYNTHETIC entry per
+        card-only overlay group that is not a family at all (today `pension-drawdown`).
+      required: [key, label, ids]
+      properties:
+        key: { type: string, example: credit }
+        label: { type: string, example: Credit }
+        ids:
+          type: array
+          items: { type: string }
+          description: >-
+            Dashboard RENDER RANK — NOT the family's members (accepted cost of the 2026-07-30
+            E6(a) option-A ruling; a rename was declined). Ranked members in E6(a) IMPACT
+            ORDER, strongest first, followed by that family's CARD_ONLY_GROUPS display-overlay
+            ids, which are deliberately NOT panel/dial members (e.g. CQS under `credit`).
+            Every card surface sorts by position in this array; /indicators is registry-ordered
+            and cannot supply the rank. Read membership off the /lab panel, never off this.
+          example: [F1, EBP, F3, F2, F10, F13, CQS]
+        desc:
+          type: string
+          description: one-line "what this family is" for the group heading tooltip
+        awaiting:
+          type: string
+          description: >-
+            Sanctioned-stub reason — WHY a deliberately-feedless family has no members,
+            rendered by /lab in place of the generic "no live feed" empty state. Present
+            ONLY on a family whose `ids` are empty by design (today: `valuation`);
+            absent on every live family.
+          example: >-
+            regional CAPE (EU / ex-US / EM): no keyless source. US CAPE is live as a
+            severity multiplier, not a member.
+    DangerModel:
+      type: object
+      description: >-
+        The static danger-model reference block for GET /danger-model — identical every
+        run, single-sourced from src/danger-ladder.ts + src/families.ts (Stage 4). Serves
+        what lab.js's decorateCell needs to rebuild each signal cell's M/N drill-down
+        tooltip client-side. Serves the derived memberRelevance mask AND (since R3, 2026-07-18)
+        the raw MEMBER_WEIGHT magnitudes behind it, which the tooltip prints as `×<weight>`.
+      required:
+        [signalOf, familyOfSignal, superGroups, superGroupOf, memberRelevance,
+         memberWeight, memberLabel, clusters, concThreshold, concWeight, deriskDeadband,
+         reriskDeadband, reriskConfirm, reriskDwellDays, legRagCuts, pillarIds]
+      properties:
+        signalOf:
+          type: object
+          description: FamilyKey → 2-letter SignalKey bijection (SIGNAL_OF)
+          additionalProperties: { type: string }
+        familyOfSignal:
+          type: object
+          description: inverse SignalKey → FamilyKey (FAMILY_OF_SIGNAL)
+          additionalProperties: { type: string }
+        superGroups:
+          type: array
+          description: lead-time super-groups in render order (SUPER_GROUPS, Stage 5.1)
+          items: { type: string }
+        superGroupOf:
+          type: object
+          description: SignalKey → its lead-time super-group (SUPER_GROUP_OF)
+          additionalProperties: { type: string }
+        memberRelevance:
+          type: object
+          description: member id → relevant leg sleeves (MEMBER_RELEVANCE)
+          additionalProperties:
+            type: array
+            items: { type: string }
+        memberWeight:
+          type: object
+          description: >-
+            member id → leg sleeve → magnitude weight (MEMBER_WEIGHT). Superset of
+            memberRelevance, which is its non-zero support; an absent sleeve is weight 0.
+          additionalProperties:
+            type: object
+            additionalProperties: { type: number }
+        memberLabel:
+          type: object
+          description: member id → short display label (MEMBER_LABEL)
+          additionalProperties: { type: string }
+        clusters:
+          type: array
+          description: correlated-leg clusters keyed by sleeve (CLUSTERS)
+          items:
+            type: array
+            items: { type: string }
+        concThreshold: { type: number, description: cluster-sibling "elevated" bar (CONC_THRESHOLD) }
+        concWeight: { type: number, description: flagged-leg sibling-danger weight (CONC_WEIGHT) }
+        deriskDeadband: { type: number, description: de-risk deadband (DERISK_DEADBAND) }
+        reriskDeadband: { type: number, description: re-risk deadband (RERISK_DEADBAND) }
+        reriskConfirm: { type: integer, description: re-risk confirmation closes (RERISK_CONFIRM) }
+        reriskDwellDays: { type: integer, description: re-risk held-leg min-dwell in trading closes (RERISK_DWELL_DAYS) }
+        legRagCuts:
+          type: object
+          description: leg-RAG amber/red cuts (DANGER_CUTS) — the FE ledger idioms colour from these
+          required: [amber, red]
+          properties:
+            amber: { type: number }
+            red: { type: number }
+        pillarIds:
+          type: array
+          description: >-
+            PILLAR_MEMBER_IDS — the ids a danger cell folds; a memberWeight key outside it
+            carries the Dashboard card's ⌁ not-in-pillar note.
+          items: { type: string }
+    Family:
+      type: object
+      description: >-
+        One danger family in a /lab panel — its worst confirmed member state plus
+        the present members. Mirrors src/families.ts FamilyPanel.
+      required: [key, label, state, live, firing, contribution, members, absent]
+      properties:
+        key: { type: string, example: credit }
+        label: { type: string, example: Credit }
+        state:
+          oneOf:
+            - $ref: "#/components/schemas/State"
+            - type: "null"
+          description: worst confirmed state among present members; null when none present
+        live: { type: boolean, description: has ≥1 present member (counts toward the denominator) }
+        firing: { type: boolean, description: live AND amber-or-worse }
+        contribution:
+          type: [number, "null"]
+          description: 0 / 0.5 / 1 for a live family; null for an excluded one
+        members:
+          type: array
+          items:
+            type: object
+            required: [id, label, state]
+            properties:
+              id: { type: string, example: F1 }
+              label:
+                type: string
+                example: "HY OAS"
+                description: >-
+                  the indicator's official short name (registry `label`), rendered by the board's leg
+                  tooltip; defaults to the member id when the producer was given no label map.
+              state: { $ref: "#/components/schemas/State" }
+              longLabel:
+                type: string
+                example: HY OAS
+                description: >-
+                  the indicator's descriptive long name (registry `longLabel`), carried for the
+                  board's leg hover copy. ABSENT on the scenario/replay paths, which synthesize
+                  members from ids alone.
+              factor:
+                type: string
+                example: oil
+                description: >-
+                  the indicator's underlying FACTOR tag (registry `geoFactor`). The diffusion count
+                  (`diffusionText`, public/diffusion-label.js) counts DISTINCT factors, not members,
+                  so `gp`'s three oil reads (G1/BRENT/OVX, all `oil`) print as one signal. ABSENT
+                  for an untagged indicator and on the replay path — an absent factor makes the
+                  member its own factor, the pre-collapse count.
+              obs:
+                type: string
+                example: "2026-08-19"
+                description: >-
+                  serve-time only (api/lab.ts): the member's OWN folded observation date, so a
+                  consumer can see how stale each cell is. ABSENT on the scenario/replay paths and on
+                  a carried member with no folded run row.
+              fold:
+                oneOf:
+                  - type: object
+                    required: [raw, of]
+                    properties:
+                      raw: { $ref: "#/components/schemas/State" }
+                      of: { type: integer, example: 2 }
+                  - type: "null"
+                description: >-
+                  serve-time only (api/lab.ts): non-null iff the SERVED point is mid stand-down
+                  (`rawState` ≠ confirmed `state`). `raw` = the served point's unconfirmed state;
+                  `of` = the stand-down buffer (`confirmClosesFor`). ABSENT on the scenario/replay
+                  paths and on a carried member with no folded run row.
+              provisional:
+                type: boolean
+                enum: [true]
+                description: >-
+                  serve-time only (api/lab.ts, B5): the served point is an INTRADAY row (written before
+                  its date's EOD cutoff) — the chip is coloured by it and labelled INTRADAY, and it never
+                  sets the family's `bandLagIds`. ABSENT otherwise.
+              estimated:
+                type: boolean
+                enum: [true]
+                description: >-
+                  serve-time only (api/lab.ts, L3/E3): the served row carries the stored `readings.estimated`
+                  marker (a proxy nowcast or a carry, intraday or EOD) — the chip reads `EST`. ABSENT otherwise.
+              lastPrint:
+                $ref: '#/components/schemas/LastPrintTag'
+        absent:
+          type: integer
+          example: 2
+          description: >-
+            roster members that did NOT report this run ("dark") — the family's full id count
+            minus `members.length`. Not derivable client-side, since `members` is already
+            filtered to the present ids; without it the denominator shrinks silently. 0 on a
+            fully-reporting family and on a feedless stub.
+        band:
+          type: object
+          required: [state, firing, contribution, ids]
+          description: >-
+            the family's BAND role — the members whose verdict drives the DIAL, as opposed to the
+            per-leg danger role every member keeps. Mirrors `FamilyPanel.band`. For every family
+            but `credit` it repeats the family's own state/firing/contribution over the full
+            roster; `credit` is narrowed to F1 · EBP · F3 · F2 (R1), with CQS substituted for EBP
+            on any day EBP is absent or past its lag cut (R3), so `ids` is the seat that actually
+            applied THAT day and must never be hand-mirrored from a constant client-side.
+            Optional on the TS interface, always emitted by the three producers.
+          properties:
+            state:
+              oneOf:
+                - $ref: "#/components/schemas/State"
+                - type: "null"
+              description: worst confirmed state among the PRESENT band members; null when none present
+            firing: { type: boolean, description: band state is amber-or-worse }
+            contribution:
+              type: [number, "null"]
+              description: 0 / 0.5 / 1 over the band members; null when none present
+            ids:
+              type: array
+              items: { type: string }
+              example: [F1, EBP, F3, F2]
+              description: the band-driving ids resolved for this run
+        absentIds:
+          type: array
+          items: { type: string }
+          example: [GT, GB]
+          description: >-
+            the dark ids behind `absent`, in roster order. Optional on the TS interface (many
+            internal literals construct a panel), but ALWAYS emitted by the three producers, so
+            a served family carries it whenever `absent` is present.
+        coverageDegraded:
+          type: boolean
+          example: false
+          description: >-
+            this family's verdict is held (or tied) by data that is not live — a present roster
+            member past its own lag cut sits AT the worst-of verdict, or a coverage-roster
+            member did not report. The `trend` family judges this over its coincident GT/GB
+            members only. A claim about SIGHT, not danger: it moves no state, contribution or
+            firing flag, and only arms the WATCH-capped coverage floor.
+        carriedOnly:
+          type: boolean
+          example: false
+          description: >-
+            live BUT every present member arrived via the absent-member carry — no genuinely-present
+            member. Such a family is folded worse-of(carried state, family last-known) rather than
+            exempted from the family carry, and is always `coverageDegraded`. Optional on the TS
+            interface (undefined ⇒ false), emitted by the live and scenario producers.
+        verdictHoldIds:
+          type: array
+          items: { type: string }
+          example: [GT]
+          description: >-
+            the PRESENT coverage-roster members past their own lag cut that sit AT the
+            family's worst-of verdict — the lagging half of `coverageDegraded` (`absentIds` is the
+            dark half). Optional on the TS interface for the same literal-churn reason as
+            `absentIds`, but ALWAYS emitted by the three producers. `[]` on a scenario family (no
+            lag input) and on a carried one (zero present members).
+        bandLagIds:
+          type: array
+          items: { type: string }
+          example: [FXH]
+          description: >-
+            serve-time only (api/lab.ts, option C): present member ids whose freshest stored close
+            post-dates the row this run folded — the cell serves that newer close, while the family's
+            own state/band stay the run's authoritative decision and recompute next run. ABSENT ⇒ no
+            member is ahead of the run.
+        cannotArm:
+          type: object
+          required: [count, worst, worstCount]
+          properties:
+            count: { type: integer, example: 1 }
+            worst: { $ref: "#/components/schemas/State" }
+            worstCount: { type: integer, example: 1 }
+          description: >-
+            D1/D2 (family-colour-follows-danger): present members amber-or-worse that the band-driving
+            set does not seat, so they cannot arm the family's band role — a count, their worst
+            severity, and how many sit AT that severity (`worstCount`), which the board paints as a
+            "⌁1 red" secondary mark (reds when any, else ambers). ABSENT when none (every
+            family outside the credit/rates band split, by construction).
+        note: { type: string }
+        desc: { type: string }
+        awaiting:
+          type: string
+          description: >-
+            sanctioned-stub reason (see FamilyMeta.awaiting) — present only on a
+            deliberately-feedless family, absent on every live one.
+    PillarScore:
+      type: object
+      description: >-
+        one super-group pillar's share reading (TS `PillarScore`, src/danger-engine.ts). A
+        TAGGED union on `kind`, so a consumer that reads `value` without checking `kind` is a
+        type error rather than a silent "absent pillar read as calm 0". `scored` ⇒ `value`
+        is present; `uncomparable` ⇒ `reason` is present and there is NO value.
+      required: [kind]
+      properties:
+        kind: { type: string, enum: [scored, uncomparable] }
+        value:
+          type: number
+          description: >-
+            the pillar share ∈ [0,1] — the FAMILY_LEG_WEIGHT-weighted mean of the super-group's
+            observed family shares (each = MEMBER_WEIGHT-weighted mean of member SEV_NUM); present iff kind = scored
+        reason:
+          type: string
+          enum: [not-live]
+          description: >-
+            present iff kind = uncomparable. `not-live` = no family of this super-group observed
+            on the leg.
+    CellObserved:
+      type: object
+      description: >-
+        OQ-5 Stage 5.2/5.4 — one signal cell's OBSERVATION census over the members its
+        severity is derived from (TS `CellObserved`, src/danger-engine.ts). `fresh + lag`
+        is the member set that ENTERED the cell's weighted-severity max (per S-2 a lagging
+        reading is HELD at its last state, so it still counts); `absent` is the set that was
+        EXCLUDED from it — members carrying no observation in the member map. A measured cell quantifies
+        over its leg-relevant members, so `fresh + lag + absent` = `LegRow.cells[].N`; an `na`/`insensitive`
+        cell carries no severity and reads all-zero. DISPLAY/AUDIT ONLY — read by nothing in
+        danger/subDangers/regime/band/pick/notify. The `/lab` reader prints it as the per-cell
+        freshness counter and marks any cell with `absent > 0`.
+      required: [fresh, lag, absent, deepLag]
+      properties:
+        fresh: { type: integer, description: members observed and assessed fresh }
+        lag: { type: integer, description: members observed but lagging/unassessed — held at their last state, still in the max }
+        absent: { type: integer, description: "members with no observation in the member map — excluded from the max, never imputed calm" }
+        absentIds:
+          type: array
+          items: { type: string }
+          description: >-
+            the member ids behind `absent`, in roster order — the /lab drill-down footnote names
+            them so an absent count is investigable. Optional on the TS interface (literal churn,
+            the FamilyPanel.absentIds precedent) but always emitted by the engine.
+        deepLag:
+          type: integer
+          description: >-
+            the DEEP-LAG SUBSET of `lag` (§I9.6): members whose feed-lag label classifies `deepLag`
+            (`lagTier`, src/feed-lag.ts) — dark against their OWN demonstrated publication rhythm,
+            not merely past a registry cut. A SUBSET, never a fourth bucket: `fresh + lag +
+            absent` still equals the cell's member count and `deepLag <= lag` by construction.
+            ⚠ SERVED, NOT YET PAINTED: the `/lab` reader is DESIGNED to paint a cell with `deepLag > 0`
+            RED and any other marked cell dim, but that FE half is unshipped
+            — no marker renders at HEAD.
+    SignalCell:
+      type: object
+      description: >-
+        one leg × signal-family cell (TS `SignalCell`, src/danger-engine.ts): the family's
+        worst state among this leg's RELEVANT members, its M-of-N firing drill-down, and its
+        weighted-severity max (`wsev`, NOT the family share `danger` reads). `wsev` is null for `na`/`insensitive`
+        and fully-unobserved cells. `observed` (Stage 5.4) is the observation
+        census behind the severity. `held` (B2) is the hold-window provenance of that severity.
+      required: [family, cellState, M, N, wsev, observed, held]
+      properties:
+        family: { type: string, description: the 2-letter SignalKey (cr/rt/vb/vl/xa/uT/gp) }
+        cellState:
+          type: string
+          enum: [na, insensitive, calm, elev, lit]
+          description: >-
+            worst OBSERVED state among the leg-relevant members (`na` = the family cannot
+            light on this leg; `insensitive` = members exist but carry no reach here). A
+            fully-unobserved cell reads `calm` today — the §1.3 Option-A ruling — which is
+            exactly why `observed.absent` rides beside it.
+        M: { type: integer, description: relevant members firing (elev or lit) }
+        N: { type: integer, description: relevant members total — the STRUCTURAL denominator, unchanged by absence }
+        wsev: { type: [number, "null"], description: "weighted-severity max ∈ [0,1] over the observed relevant members; DISPLAY — `danger` reads the family share; null = no severity" }
+        observed: { $ref: '#/components/schemas/CellObserved' }
+        held:
+          oneOf:
+            - $ref: '#/components/schemas/HeldMark'
+            - type: "null"
+          description: >-
+            Non-null iff this
+            cell's `wsev` argmax member's entry was RAISED (or resurrected above calm) by the
+            SIGNAL-HOLD WINDOW — that member's severity is an earlier close's, not today's reading.
+            This is what tells a reader why a cell can read `elev` while every one of the family's
+            live chips is green (the chip strip paints the LIVE panel, the cell paints the HELD map).
+            SCOPED TO THE ARGMAX MEMBER: a held NON-argmax member leaves this null yet still enters the
+            family share (a weighted mean over every reporting member), so `null` is not proof the hold added nothing. ⚠ It does NOT claim the cell would read
+            calmer unheld: the max advances on strict `>`, so a held member TYING a live-lit one wins
+            the argmax first-in-declared-order and this field is non-null at a severity the window
+            did not move. `null` on every `na`/`insensitive` cell
+            (no per-member argmax) and on every cell built from an UNGATED/unheld member map (the
+            cold-store degrade). DISPLAY/AUDIT ONLY — no severity moves and nothing in
+            danger/subDangers/regime/band/pick/notify reads it.
+    HeldMark:
+      type: object
+      description: >-
+        the hold-window provenance of a cell's severity (TS `HeldMark`, src/danger-engine.ts) — see
+        `SignalCell.held`.
+      required: [member, closes]
+      properties:
+        member: { type: string, description: "the argmax member whose HELD severity the cell's wsev rests on (first in FAMILY_MEMBERS order under a tie)" }
+        closes:
+          type: integer
+          description: >-
+            that member's hold WINDOW LENGTH in closes — the UPPER BOUND on how long its fire can stay
+            visible — resolved from its timing class through `signalHoldClosesFor` (src/danger-ladder.ts).
+            SERVED, never restated: the window values live at that one constant and a reader must not
+            hard-code them from an observed payload. ⚠ NOT the hold's duration: since arm C
+            an observed recovery ends the hold
+            early, so use `ageCloses` for how long the severity has actually been up.
+        ageCloses:
+          type: integer
+          description: >-
+            OPTIONAL — the OBSERVED AGE in closes of the severity being shown: how many closes back the
+            hold window's walk found it, `0` being the newest stored close. Produced by the same
+            traversal that chose the severity, so the two cannot disagree. ABSENT means UNKNOWN (a
+            member map carrying no age, e.g. a pre-Stage-2 cached response) and a consumer must degrade
+            to "age unknown" — never to `0` and never to `closes`.
+    FeedLagNote:
+      type: object
+      description: >-
+        one marked feed's lag classification (TS `FeedLagNote`, src/feed-lag.ts) — the same
+        classifier `npm run probe:feed-lag` runs. The deep-lag bar is the feed's OWN demonstrated rhythm
+        (`p90Gap`) for an id the registry never asserted a cadence for, and
+        `max(p90Gap, LAG_THRESHOLDS[registered])` — the CADENCE TIER, never the id's resolved
+        `lagAfterDays` cut — for one it did (E7 §Stage 4.7-R2); `deepLagBar` reports whichever applied. `age`, `p90Gap` and
+        `deepLagBar` are NULLABLE: `NO-DATA` has no newest observation to age from, and the
+        `?s=lag:<id>` debug knob asserts a classification rather than measuring one.
+      required: [id, label, age, p90Gap, deepLagBar, lagCut, registered]
+      properties:
+        id: { type: string, description: the indicator / composite-component id }
+        label:
+          type: string
+          enum: [NO-DATA, DEEP-LAG, MISCADENCED, LATE]
+          description: >-
+            DEEP-LAG / NO-DATA are the RED tier (the feed aged past `deepLagBar`, or never reported);
+            MISCADENCED / LATE the dim `◌` tier. FRESH and UNKNOWN are never served — they carry
+            no tier. ⚠ Tiers only; the paint itself is §I9.7 and is not shipped.
+        age: { type: integer, nullable: true, description: days since the newest stored observation; null for NO-DATA / the forced knob }
+        p90Gap: { type: integer, nullable: true, description: the feed's own p90 spacing between distinct observation dates; null when unmeasured }
+        deepLagBar: { type: integer, nullable: true, description: "the age in days at which this feed reads DEEP-LAG — DEEP_LAG_MULTIPLE × p90Gap on the strict arm, × max(p90Gap, LAG_THRESHOLDS[registered]) (the cadence tier, not the resolved cut — E7 §Stage 4.7-R2) for an explicitly registered id; null when unmeasured" }
+        lagCut: { type: integer, nullable: true, description: "the resolved lag cut (lagCutFor) the FRESH arm scored age against — the bar a LAG label crossed; null only for the forced knob" }
+        registered: { type: string, enum: [daily, weekly, monthly, quarterly], description: the cadence the registry claims for this id }
+    FeedLagRow:
+      type: object
+      description: >-
+        one REGISTERED feed's row in /api/status's feed-lag overview (TS `FeedLagRow`, src/api/types.ts).
+        Distinct from `FeedLagNote` (marked feeds only): this is the WHOLE roster, one row per feed,
+        carrying age now, the healthy cut, and the deep-lag bar plus which of the two ways that bar was
+        derived. `age`/`ageUnit` are nullable together — a feed has no age when the store holds zero rows
+        for it OR when its publication calendar could not be built (never a fabricated 0, which reads "fresh today").
+      required: [id, cadence, age, ageUnit, lagCut, deepLagBar, source]
+      properties:
+        id: { type: string, description: the indicator / composite-component id }
+        cadence: { type: string, enum: [daily, weekly, monthly, quarterly], description: the cadence its freshness is scored against (CADENCE_OF) }
+        age: { type: integer, nullable: true, description: "age of the newest stored observation on the feed's own publication calendar, in `ageUnit`; null where there is no stamp measurement - zero stored rows (then `lag: true`) or a publication calendar that could not be built (then `unmeasured: true`, no `lag`). A `source: run-row` age is NOT null - the last-fetch date." }
+        ageUnit: { type: string, nullable: true, enum: [slots, days], description: "unit of `age`: slots for daily/weekly, days for monthly/quarterly and every run-row age; null exactly when `age` is" }
+        lagCut: { type: integer, description: the resolved lag cut (LAG_CUT_OF = lagCutFor) the feed is FRESH within — its age's healthy bar }
+        deepLagBar: { type: integer, description: "the bar at which the feed reads DEEP-LAG, in `ageUnit`: the measured 2×p90 (source p90; a slot id's day bar recounted on its own publication calendar) or the derived DEEP_LAG_MULTIPLE × LAG_THRESHOLDS[cadence] (source tier or run-row)" }
+        source: { type: string, enum: [p90, tier, run-row], description: "p90 = the measured bar from an existing lag note (a stage-2 suspect); tier = derived from the cadence tier, no measurement; run-row = `age` is the last-fetch date off the run row (an unmeasured feed whose publication calendar was uncomputable), read as last fetched not published. A fully-fresh store has no suspects, so every measured row is tier" }
+        deep: { type: boolean, description: "the server's day-based DEEP-LAG verdict (lagTier(label) = deep); present exactly where the feed carries a lag note" }
+        lag: { type: boolean, description: "past its own cut on its own publication calendar — the same per-feed verdict the pill counts. OMITTED on an unmeasured row (lateness uncomputable)" }
+        unmeasured: { type: boolean, description: "set (with no `lag`) when the publication calendar could not be built — the feed is UNMEASURED, served in unmeasuredFeedIds and excluded from the pill's lagging count" }
+        provisional: { type: boolean, enum: [true], description: "set when the newest stored row is intraday (written before its date's EOD cutoff) — `age` reads 0 and the /lab panel marks the row INTRADAY; omitted otherwise" }
+    LegRow:
+      type: object
+      description: >-
+        one leg's danger row (TS `LegRow`, src/danger-engine.ts — a `LegField` static
+        leg descriptor plus the derived cells/danger). `danger` = the max of the four
+        `subDangers` share terms. `momentum` is present ONLY on `?hist=N` live requests.
+      required: [sleeve, region, rgn, exposure, sector, sec, style, risk, danger, subDangers, regime, cells, concentrated, growth, volAdjMom, trend, familiesLit, coverage, ewPct]
+      properties:
+        sleeve: { type: string, description: the leg's short name (e.g. "S&P 500") }
+        region: { type: string, description: 'full region label (e.g. "Global-DM") — the `rgn` cell tooltip' }
+        rgn: { type: string, description: 'short region code (e.g. "DM") — the rendered region cell' }
+        exposure: { type: string, description: 'the leg''s exposure (e.g. "Broad", "Semiconductors")' }
+        sector: { type: string, description: 'full sector label (e.g. "Broad (Value factor)") — the `sec` cell tooltip' }
+        sec: { type: string, description: 'short sector code (e.g. "Value") — the rendered sector cell' }
+        style: { type: string, description: 'the leg''s style (e.g. "Growth / high-beta", "Defensive")' }
+        risk: { type: integer, description: 1..9 total-risk ladder rank (most-aggressive=1 → most-defensive=9) }
+        danger: { type: number, description: "share-lit leg danger ∈ [0,1] = max of the subDangers terms" }
+        regime:
+          type: string
+          enum: [calm, deter, stress, recov]
+          description: >-
+            the named 2×2 regime from the EW×SN pillar pair, each quantized
+            low/high at the AMBER cut and folded through the 2-close
+            confirmation idiom. CALM=both low / DETER=EW hi,SN lo (danger
+            approaching) / STRESS=both hi / RECOV=EW lo,SN hi (stress present,
+            early-warn easing). A non-live pillar counts as LOW.
+        subDangers:
+          type: object
+          description: >-
+            the four share-arm terms behind `danger` (TS `SubDangers`); `danger` = their max, a
+            null / `uncomparable` term counting 0. Each pillar is a TS `PillarScore`: `kind: scored`
+            carries `value`; `reason: not-live` = no family of that super-group observed on the leg.
+          required: [earlyWarn, stressNow, trend, gp]
+          properties:
+            earlyWarn: { $ref: '#/components/schemas/PillarScore' }
+            stressNow: { $ref: '#/components/schemas/PillarScore' }
+            trend: { type: number, nullable: true, description: "uT share × trendGateFactor; null when no uT member is observed" }
+            gp: { type: number, nullable: true, description: "min(gp share, GP_CAP_FRACTION × amber cut); null when no gp member is observed" }
+        cells:
+          type: array
+          description: >-
+            per-signal-family cell drill-down (M-of-N firing + weighted severity + the
+            OQ-5 observation census). Was an unspecified `object` until Stage 5.4 put the
+            census on the documented contract.
+          items: { $ref: '#/components/schemas/SignalCell' }
+        concentrated: { type: boolean, description: correlated-twin sibling ≥ CONC_THRESHOLD }
+        momentum: { type: number, description: "ROC of danger over the ?hist window, ∈ [−1,1]" }
+        snRoc:
+          type: number
+          description: >-
+            RAW STRESS-NOW delta over 5 closes (stressNow(t) − stressNow(t−5)),
+            in raw SN units (same [0,1] scale as subDangers.stressNow), clamped
+            to [−1,1], NO divisor — the speed-arrow intensity cuts |snRoc| ≥
+            0.02/0.05/0.10 apply directly. Present on live loads (normal path,
+            no ?hist needed); absent on the scenario path or when the SN pillar
+            is not live at t or t−5.
+        ewRoc:
+          type: number
+          description: >-
+            RAW EARLY-WARN delta over 20 closes (earlyWarn(t) − earlyWarn(t−20)),
+            in raw EW units (same [0,1] scale as subDangers.earlyWarn), clamped
+            to [−1,1], NO divisor — the SAME cuts as snRoc apply (both pillars
+            share the raw squared-pillar scale; only the lookback cadence
+            differs). The 20-close window is EW's own: its members are monthly
+            (OECD CLI EAFE, Euro biz confidence) or quarterly (China credit
+            impulse), so a 5-close EW delta would be ≈ 0. Present on live loads
+            (normal path, no ?hist needed); absent on the scenario path, when the
+            EW pillar is not live at t or t−20, or on cold start (history shorter
+            than 21 closes ⇒ the t−20 base would be imputed calm).
+        growth:
+          type: [number, "null"]
+          description: >-
+            G1 growth pillar. The leg's growth value when the pillar is live, else null
+            (never 0). Since G2.1 both production paths supply the rs/mom maps — the
+            cron/notify path and /lab — so it serializes a number on either. DISPLAY-ONLY:
+            growth briefly broke within-band ties in the held-leg pick (G2.3), and Rung 4
+            Stage 2 retired that on 2026-08-03. It no longer reaches the pick, and it never
+            entered the danger scalar in any era.
+        volAdjMom:
+          type: [number, "null"]
+          description: >-
+            G1 raw per-leg volatility-adjusted momentum z-score (computeVolAdjMom),
+            display-only for inspectability; null when undefined.
+        trend:
+          type: object
+          description: >-
+            DISPLAY-ONLY per-leg CONFIRMING-trend read (§5 UI). `value` = the raw
+            per-leg `uT` family share; null = no `uT` member observed on the leg.
+            `counting` = value != null AND trendGateFactor(share EW, share SN, amber cut) > 0
+            — TRUE when the trend counts toward `danger`, FALSE when gated-off. READ-ONLY:
+            never touches danger/held/notify (the FE dims a gated-off read).
+          required: [value, counting]
+          properties:
+            value: { type: [number, "null"], description: raw per-leg uT family share (null = no uT member observed) }
+            counting: { type: boolean, description: true when this trend counts toward the leg's danger (admitted through the gate) }
+        familiesLit:
+          type: object
+          description: >-
+            DISPLAY-ONLY per-pillar family count from the share arm (`legDangerShare`): `of` =
+            observed relevant families, `lit` = those whose share ≥ DANGER_CUTS.amber. A count only.
+          required: [earlyWarn, stressNow]
+          properties:
+            earlyWarn: { type: object, required: [lit, of], properties: { lit: { type: integer }, of: { type: integer } } }
+            stressNow: { type: object, required: [lit, of], properties: { lit: { type: integer }, of: { type: integer } } }
+        coverage:
+          type: object
+          description: >-
+            W0 per-super-group signal coverage (engine `computeCoverage`,
+            src/danger-engine.ts): for each super-group `capable` = families that CAN
+            light there (non-stub, non-empty membership — derived, never hardcoded),
+            `live` = how many of those this leg lights now — cells whose cellState is
+            an actual severity (`isSensitiveState`). NOT `cellState !== "na"`: since W1
+            Stage 1.1 that also admits the `insensitive` tag and would over-count.
+            ADDITIVE DISPLAY field — read by NOTHING in danger/subDangers/regime/band/
+            pick (W0 is strictly zero behavioural change). Keyed by SuperGroup; the
+            single-family super-groups (CONFIRMING/EXOGENOUS) read capable 1.
+          required: [EARLY-WARN, STRESS-NOW, CONFIRMING, EXOGENOUS]
+          properties:
+            EARLY-WARN: { type: object, required: [live, capable], properties: { live: { type: integer }, capable: { type: integer } } }
+            STRESS-NOW: { type: object, required: [live, capable], properties: { live: { type: integer }, capable: { type: integer } } }
+            CONFIRMING: { type: object, required: [live, capable], properties: { live: { type: integer }, capable: { type: integer } } }
+            EXOGENOUS: { type: object, required: [live, capable], properties: { live: { type: integer }, capable: { type: integer } } }
+        ewPct:
+          description: >-
+            W4 the leg's EARLY-WARN pillar percentile — a rolling-window ECDF rank of
+            the pillar against its own stored history (TS `PercentileCell`,
+            src/api/types.ts). TAGGED UNION on `kind`, four arms, three of which the FE
+            prints as `—`: `pct` carries the rank in `value` (plus
+            `basisSpans` when the window straddles a roster change); `warmup` = fewer
+            than ECDF_WINDOW stored closes (never imputed); `na` = the pillar is
+            uncomparable, so a rank would be meaningless; `stale-basis` = the stored
+            generator vintage differs from the live one, so no number is served (that
+            arm carries `stored` + `live` so the FE title can name both).
+            ADDITIVE DISPLAY field, and display-only BY TYPE: it lives on `LegRowDTO`
+            only, never on the engine's `LegRow`, so nothing in danger/subDangers/
+            regime/inBand/held/band/notify can read it. Since Stage 4.3
+            the `pct` arm carries a real rolling-ECDF rank; since Stage 4.4 the
+            `stale-basis` arm is REACHABLE — the live generator is a hash over the
+            pillar-formula constants, so an engine edit orphans the stored vintage.
+            ⚠ MODELLED AS `oneOf` WITH PER-ARM `required` (Stage 4.3, closing the 4.1
+            review finding): the previous single flat object with `required: [kind]`
+            validated BOTH `{kind: pct}` with no rank (a TS compile error) AND
+            `{kind: warmup, value: 0.9}` (a number on a `—` arm). Per-arm objects make
+            the doc say what the TS union says. `additionalProperties: false` on the
+            three dash arms is what actually rejects a stray `value`.
+          oneOf:
+            - title: pct
+              type: object
+              required: [kind, value]
+              additionalProperties: false
+              properties:
+                kind: { type: string, enum: [pct] }
+                value: { type: number, minimum: 0, maximum: 1, description: "the ECDF rank ∈[0,1]" }
+                basisSpans:
+                  type: array
+                  description: >-
+                    roster-change obs_dates INSIDE the ranked window (ascending, newer side of each
+                    boundary; Stage 4.4 — never emitted before it). Omitted, never `[]`, when the
+                    window shares one roster. A spanned window earns the FE's `~`.
+                  items: { type: string }
+            - title: warmup
+              type: object
+              required: [kind]
+              additionalProperties: false
+              properties:
+                kind: { type: string, enum: [warmup] }
+            - title: na
+              type: object
+              required: [kind]
+              additionalProperties: false
+              properties:
+                kind: { type: string, enum: [na] }
+            - title: stale-basis
+              type: object
+              required: [kind, stored, live]
+              additionalProperties: false
+              properties:
+                kind: { type: string, enum: [stale-basis] }
+                stored: { type: string, description: the engine-formula vintage found in leg_pillars for this sleeve }
+                live: { type: string, description: this deploy's LEG_PILLAR_GENERATOR (the hash over the pillar-formula constants) }
+    FieldResult:
+      type: object
+      description: >-
+        the per-leg danger field (slice-3 i7a, TS `FieldResult`) — always present on
+        BOTH the live and scenario paths: every ladder leg's danger row + the live dial
+        band + the calmest-in-band held pick (live: gated to the persisted
+        verdict.heldSleeve).
+      required: [legRows, band, held, exogenous, memberState]
+      properties:
+        legRows:
+          type: array
+          items: { $ref: "#/components/schemas/LegRow" }
+        band:
+          type: object
+          description: the live dial band the held pick filters within
+          required: [lo, hi]
+          properties:
+            lo: { type: number }
+            hi: { type: number }
+            label: { type: string }
+        held:
+          description: >-
+            the calmest-in-band leg row (a legRows element), or null when the band is empty —
+            gated by the PERSISTED held sleeve, so during a re-risk confirm window it is the leg
+            actually held rather than the stateless pick. ⚠ On the SCENARIO path this is the
+            UN-WALKED incumbent even when `?walk=N` is supplied (ruling 2026-08-05): the walk feeds
+            `walkPath` only, so the headline keeps answering "what you hold", not "where you'd end
+            up". The LIVE path still reports the day-N walked hold here.
+          oneOf:
+            - $ref: "#/components/schemas/LegRow"
+            - type: "null"
+        exogenous:
+          type: object
+          description: >-
+            the EXOGENOUS read-out. ⚠ RE-DERIVED 2026-08-02 (C1): this is NO LONGER a
+            uniform overlay — EXO_CAP_FLOOR is deleted and the oil contribution is a
+            PER-LEG weighted term (MEMBER_WEIGHT[member][leg] × severity, over
+            G1/OVX/BRENT) inside each leg's own danger. `floor` is therefore the MINIMUM
+            of that per-leg term across the 9 legs — the largest value that genuinely
+            floors EVERY leg, not a constant and not what any particular leg carries
+            (most carry more); `active` = `floor > 0`. Display-only: already reflected in
+            legRows[].danger, never re-applied by a consumer. The same oil shock also
+            raises the ALERT ladder's GEO escalator — two axes (how loud vs what to
+            hold), ruled intended, and neither enters any danger MEAN.
+          required: [active, floor]
+          properties:
+            active: { type: boolean }
+            floor: { type: number }
+        memberState:
+          type: object
+          description: >-
+            member id → the OBSERVATION the cells were actually built from: the HELD map
+            (`buildMemberStateHeld`) on the normal path, the plain
+            `buildMemberState` on the no-history degrade. ⚠ This is NOT `globalFamilies`, which
+            is the plain per-close family fold — a member the hold window raised reads GREEN
+            there while `SignalCell.M` counts it as firing, so a drill-down re-derived from the
+            panel prints `2/8 firing` above eight calm chips (the 2026-08-07 defect). Any
+            consumer naming per-member state beside M/N/wsev/observed must read THIS map.
+            ⚠ A MISSING KEY MEANS ABSENT — the member should have reported and did not. It is
+            never calm, and must never be defaulted to one.
+          additionalProperties:
+            type: object
+            required: [sev, obs]
+            properties:
+              sev: { type: string, enum: [calm, elev, lit] }
+              obs:
+                type: string
+                enum: [fresh, lag]
+                description: >-
+                  how the reading was observed. `lag` also covers "never assessed" — it is
+                  never an assertion of freshness.
+              lag:
+                type: string
+                description: >-
+                  the feed-lag CLASSIFICATION behind a `lag` obs, when one was measured
+                  (DEEP-LAG/NO-DATA vs LATE/MISCADENCED). Absent = not measured, never FRESH.
+              held:
+                type: boolean
+                enum: [true]
+                description: >-
+                  the SIGNAL-HOLD WINDOW put a severity here the live panel did not. Present
+                  only when true. ⚠ It does not say the cell would read calmer without the
+                  hold — the max advances on strict `>`.
+    OverlayView:
+      type: object
+      description: >-
+        One /lab overlay, already projected to display shape. Overlays are VIEW-ONLY
+        layers over the T1 dial output; each keeps its own compute module and signature,
+        and only this wire shape is shared. `tone` is the OVERLAY's own severity, not the
+        board band: `alert` = its override is active (R4 = in cash), `caution` = armed or
+        in transition, `neutral` = off, `reentry` = laddering back IN (a DIRECTION, not a
+        severity step between caution and alert; only R4 emits it).
+      required: [id, label, headline, tone, fields]
+      properties:
+        id: { type: string, description: stable overlay key, mirroring the `overlays` record key }
+        label: { type: string, description: short human label for the strip row }
+        headline: { type: string, description: one-line summary of the overlay's state }
+        tone:
+          type: string
+          enum: [neutral, caution, alert, reentry]
+        fields:
+          type: array
+          description: ordered display rows; values are already formatted for print
+          items:
+            type: object
+            required: [label, value]
+            properties:
+              label: { type: string }
+              value: { type: string }
+        note:
+          type: string
+          description: optional trailing rationale line; ABSENT (not empty) when there is none
+        group:
+          type: string
+          enum: [decision-now, decision-pending, not-wired]
+          description: >-
+            which /lab danger-ledger group the strip renders this overlay under —
+            `decision-now` (drives the held rung today), `decision-pending` (a real
+            re-risk queued), or `not-wired` (display-only candidate). Assigned at the
+            api/lab.ts assembly point; ABSENT on a pre-grouping cached payload.
+    FallShapeOverlayView:
+      description: >-
+        The `overlays.fallShape` row (NF-1 Stage 5.2) — an `OverlayView` plus the REQUIRED
+        four-valued `confidence` key. `confidence` says WHICH of `classifyFallShape`'s five
+        `indeterminate` branches fired, and it is a first-class KEY, never copy-only ([USER]
+        ruling, 2026-07-26): `measured` = both axes present and agreeing (any non-`indeterminate`
+        shape); `conflicting` = drawdown velocity and credit dwell DISAGREE, so a bear is NOT
+        excluded; `no-fall` = no classifiable fall (too shallow / clipped peak / short credit
+        history); `dark` = no closes, the price feed is down. `no-fall` and `dark` are ABSENCES of
+        measurement, never an all-clear. A consumer branches on this key and must NOT re-derive the
+        split from `fallVelocity`/`creditDwellCloses` null-ness. Derived from the PERSISTED triple
+        (`fall_shape` / `fall_velocity` / `credit_dwell_closes`) by the pure
+        `fallShapeConfidence` — never a read-time recompute, which would read a different vintage
+        than the class live at push time.
+      allOf:
+        - $ref: "#/components/schemas/OverlayView"
+        - type: object
+          required: [confidence]
+          properties:
+            confidence:
+              type: string
+              enum: [measured, conflicting, no-fall, dark]
+    LabBandMember:
+      type: object
+      description: >-
+        One member row inside a BAND-column escalator floor (role-split board, 2026-07-22). RAG
+        members carry `state` (own confirmed RAG) + `cappedState` (capped to the floor's reach);
+        r4 enter-input rows instead carry `value`/`threshold`/`note`, toned by how close the value
+        sits to its own gate (AMBER at >= 0.8 of it, GREEN below — never RED: the ENTER gate is
+        rung AND breadth AND (HY-OAS tail OR VIX-term tail), so no single row is an entry by
+        itself). The breaker's phase moved to `LabBandFloor.phase` ([USER] E5, 2026-07-26).
+      required: [id, label, state, cappedState]
+      properties:
+        id: { type: string }
+        label: { type: string }
+        longLabel:
+          type: string
+          description: >-
+            the indicator's descriptive long name (registry `longLabel`) for the member row's hover
+            copy. ABSENT on SYNTHETIC rows with no indicator behind them (the r4 enter-input rows,
+            the GEO manual-flag summary, the dial-derived EW fallback).
+        state:
+          $ref: "#/components/schemas/State"
+        cappedState:
+          allOf:
+            - $ref: "#/components/schemas/State"
+          description: >-
+            `state` capped to the floor's reachable scale (rate/ew: RED→AMBER);
+            equals `state` on RED-capable floors
+        value:
+          type: [number, "null"]
+          description: r4 enter/exit rows only — the live input value (null when unavailable this run)
+        threshold:
+          type: [number, "null"]
+          description: r4 enter/exit rows only — the gate threshold the input is tested against
+        note:
+          type: string
+          description: >-
+            short human note — r4 rows (e.g. "rung ≥ 8 to enter") and ew rows on a half-met
+            AND-gate pair (names the unmet condition); absent elsewhere
+    LabBandFloor:
+      type: object
+      description: One escalator floor in the BAND column — its own computed level, the cap it can reach, and its member rows. `coverage` (R4, 2026-08-01) is the trailing WATCH-capped floor whose member rows are SYNTHETIC family rows (id = FamilyKey), not indicators.
+      required: [id, level, cap, members]
+      properties:
+        id:
+          type: string
+          # `coverage` was added to the emitted set (R4, 2026-08-01) but not to this enum, which
+          # then contradicted this schema's own description one line above. Closed 2026-08-05.
+          # `LabFloorId` (src/families.ts) is the source; `api/openapi-drift.test.ts` is PATH-level
+          # only and carries no enum parity guard, so nothing else sees a drift here.
+          enum: [credit, geo, r4, rate, ew, coverage]
+        level:
+          type: string
+          enum: [OK, WATCH, WARNING, CRITICAL]
+          description: this floor's OWN computed level (the floor chip), not the binding max
+        cap:
+          type: string
+          enum: [OK, WATCH, WARNING, CRITICAL]
+          description: >-
+            the highest level this floor can reach (rate/ew WATCH, geo WARNING, credit/r4
+            CRITICAL) — drives the capped member-cell scale
+        phase:
+          type: string
+          enum: [equity, cash, reentry]
+          description: >-
+            `r4` ONLY — the cash/haven circuit-breaker's live phase, rendered as a chip on the floor
+            head. ABSENT on every other floor (no phase machine).
+        phaseState:
+          allOf:
+            - $ref: "#/components/schemas/State"
+          description: >-
+            `r4` ONLY — the display tone for `phase` (equity GREEN, reentry AMBER, cash RED).
+            Served so the FE never re-implements the phase→tone table.
+        chips:
+          type: array
+          items: { $ref: "#/components/schemas/LabFloorChip" }
+          description: >-
+            NF-1 Stage 6.1 — extra SERVER-TONED chips on the floor head, rendered in order right
+            after the `phase` chip. `r4` ONLY today: the fall-shape class chip plus its `confidence`
+            chip (`FallShapeOverlayView.confidence`), promoted out of the decision-logic strip
+            whenever the breaker is OFF the ladder — `phase !== "equity"`, i.e. BOTH `cash` and
+            `reentry`, never `cash` alone (a cash-only promotion would go dark for the whole
+            re-entry walk). ABSENT/empty at `phase === "equity"` and on every other floor.
+        basis:
+          type: string
+          description: >-
+            R9 ([USER] 2026-07-31) — `geo` ONLY: the floor's count in words, e.g. `geo base 4`,
+            composed server-side off the addends the escalator summed (`formatGeoBasisLead`,
+            alert-band.ts) so the front-end recounts nothing. Carries the SUM only, never the
+            `>=1 WATCH / >=2 WARNING` cuts — a threshold copied into display text is what drifts.
+            ABSENT on the other four floors (no count to explain). NARROWED 2026-08-05 ([USER]):
+            the addends it used to carry inline now ride `basisDetail`.
+        basisDetail:
+          type: string
+          description: >-
+            `geo` ONLY, present exactly when `basis` is — the addend breakdown as one self-contained
+            sentence, e.g. `geo base 4 = 1 manual + 1 auto (OVX, BRENT) + 2 stage`
+            (`formatGeoBasis`). Footnote copy: /lab hangs it off a ⓘ glyph beside `basis` instead of
+            printing it inline, which is what made the geo floor block the widest on the panel.
+        members:
+          type: array
+          items: { $ref: "#/components/schemas/LabBandMember" }
+    LabFloorChip:
+      type: object
+      description: >-
+        One extra chip on a BAND-column floor head (NF-1 Stage 6.1) — display text, its tone, and
+        the hover copy that states it in full words. The tone crosses the wire pre-decided (same
+        discipline as `LabBandFloor.phaseState`): the front-end mirrors no classification table and
+        derives no tone. `state` ABSENT = the quiet base outline, which is how "nothing was
+        measured" avoids borrowing GREEN's reassurance.
+      required: [label, title]
+      properties:
+        label:
+          type: string
+          description: the short chip text (e.g. `V-shaped`, `AXES DISAGREE`)
+        state:
+          allOf:
+            - $ref: "#/components/schemas/State"
+          description: the chip's tone; ABSENT ⇒ quiet (no RAG colour), never GREEN as a stand-in
+        title:
+          type: string
+          description: the hover copy — the chip's label spelled out in words
+    LabBand:
+      type: object
+      description: >-
+        Role-split board (2026-07-22) — the LIVE-ONLY BAND-column drill-down: a read-time
+        recompute of the alert-band escalator floors + the deduction chain explaining the
+        pushed band (dangerScore →(cut)→ regime →(floors)→ band). LIVE ONLY — omitted on the
+        scenario/replay paths (like `bandReason`), which carry no escalator run (the engine
+        runs only at push time). Each floor's member cells render on a scale CAPPED to what the
+        floor can reach (rate/ew never RED).
+      required: [level, dialBand, source, chain, floors]
+      properties:
+        level:
+          type: string
+          enum: [OK, WATCH, WARNING, CRITICAL]
+          description: the pushed alert band = max of every floor over the lagged dial band
+        dialBand:
+          type: string
+          enum: [OK, WATCH, WARNING, CRITICAL]
+          description: >-
+            R6 (2026-07-31) — the PRE-FLOOR dial band (`regimeToBand(dial.notifyRegime)`, read off
+            the same alert row as `level`): the market read BEFORE any escalator floor, the
+            de-escalation lag or the divergence bump raised it. NOT `chain.band`, which is the
+            pushed POST-floor band and equals `level`. Never above `level` in production (the
+            composed band is a max over it), so /lab renders the pair as "the market read is
+            WATCH; the geo floor raised it to WARNING" — and renders it ONLY when they differ.
+        source:
+          type: [string, "null"]
+          # Same R4 omission as `LabBandFloor.id` above — `source` is `LabFloorId | null`
+          # (src/families.ts), so `coverage` is a reachable binding floor id. Closed 2026-08-05.
+          enum: [credit, geo, r4, rate, ew, coverage, null]
+          description: the binding floor id, or null when every floor is OK (band stands on the raw dial)
+        chain:
+          type: object
+          description: the top-strip deduction — raw dangerScore → the dial's DISPLAY regime → final band
+          required: [dangerScore, regime, band]
+          properties:
+            dangerScore: { type: number, description: raw (rung−1)/8 dial danger score }
+            regime:
+              type: string
+              enum: [Calm, Caution, Stress, Crisis]
+              description: >-
+                the NOTIFY dial's `regime` (cuts DIAL_REGIME_CUTS); live `t1dial` is the E12 display
+                dial, so `t1dial.regime` ≠ this ⇒ /lab's EST · push band tag (E14)
+            band:
+              type: string
+              enum: [OK, WATCH, WARNING, CRITICAL]
+              description: the final pushed band after the floors
+        floors:
+          type: array
+          description: every escalator floor, most-severe-first (credit, r4, geo, rate, ew, coverage)
+          items: { $ref: "#/components/schemas/LabBandFloor" }
+    LabResponse:
+      type: object
+      description: >-
+        GET /lab board snapshot: the family panel + T1 dial + the view-only `overlays`
+        strip (several overlay cards, e.g. the cash / haven circuit-breaker). `mode`
+        distinguishes the live (latest cron run) and scenario (hand-set) paths.
+      required: [families, liveFamilyCount, firingCount, ladder, overlays, t1dial, globalFamilies, dialFamilies, dangerRoster, field, feedLag, freshnessMissing, coverage, mode]
+      properties:
+        field: { $ref: "#/components/schemas/FieldResult" }
+        freshnessMissing:
+          type: boolean
+          description: >-
+            Is there a freshness stamp behind this payload's per-cell `observed` census? `true` = there
+            is NONE (the freshness read threw and was swallowed, or no store could be acquired), so
+            every member reads `obs: "lag"` and `feedLag` is `[]` for want of a measurement — not
+            because the feeds are current. `false` = the stamp was read, and an empty `feedLag` then
+            genuinely means nothing is marked. Without this flag the two cases are byte-identical on
+            the wire. Present on the live and scenario paths (`?replay` serves its own shape).
+            DISPLAY/diagnostic only — nothing here reaches the band, the pick or notify.
+        coverage:
+          type: array
+          description: >-
+            The COVERAGE DEGRADES the served run recorded: one entry per family whose verdict rested
+            on data that is not live (R5), with the exact members holding it — lagging (present, past
+            their own lag cut, sitting at the verdict) or absent (did not report). Read off the
+            alert row's structured `degraded[].coverage`; rows written before that field shipped
+            carry none and are invisible here (no prose fallback). Present on BOTH paths and EMPTY
+            when the run's coverage was clean (the healthy state); the scenario path carries no
+            persisted run and always serves `[]`. DISPLAY ONLY — the coverage FLOOR arms off the
+            family panel, never off this list.
+          items: { $ref: "#/components/schemas/CoverageDegrade" }
+        feedLag:
+          type: array
+          description: >-
+            §I9.6 — the payload for the DESIGNED signal-grid footnote (`◌` marks, §I9.7 — NOT yet
+            rendered): one entry per feed `lagTier` classifies as marked. Present on BOTH paths and
+            EMPTY when nothing is marked
+            (the healthy state); a degraded freshness read also serves `[]`, and the grid then
+            carries no marks either, so the two never disagree. DISPLAY ONLY — nothing here
+            reaches the band, the pick or notify.
+          items: { $ref: "#/components/schemas/FeedLagNote" }
+        families:
+          type: array
+          description: the US_FAMILIES veto panel (drives the board)
+          items: { $ref: "#/components/schemas/Family" }
+        liveFamilyCount: { type: integer, description: families with ≥1 present member (the danger denominator) }
+        firingCount: { type: integer, description: live families amber-or-worse (K of N) }
+        ladder:
+          type: array
+          items: { type: string }
+          description: the 9-leg total-risk ladder, aggressive→defensive
+        globalFamilies:
+          type: array
+          description: >-
+            the GLOBAL_FAMILIES panel — the DISPLAY axis (board tiles, ledger chips,
+            replay coverage). NOT the panel the T1 dial aggregates over: the dial folds
+            against DIAL_FAMILIES = GLOBAL_FAMILIES minus the display-only SLOW legs
+            (price-accel, complacency-vix/-high/-duration), so a RED slow leg can redden
+            a family here while leaving t1dial untouched (B-11, 2026-07-20).
+          items: { $ref: "#/components/schemas/Family" }
+        dialFamilies:
+          type: array
+          description: >-
+            the DIAL_FAMILIES panel — the NOTIFY axis (`GLOBAL_FAMILIES` minus the
+            display-only SLOW legs), i.e. the panel `t1dial` aggregates over and the
+            population the pushed alert body counts. Served alongside `globalFamilies`,
+            never instead of it: `/lab`'s member-level diffusion count reads THIS one so
+            the two surfaces print one number, while every other /lab surface (board
+            tiles, ledger chips, replay coverage) keeps reading the display panel
+            (C1 ruling, 2026-07-31).
+            It bites `volatility` alone; every other family is element-identical.
+          items: { $ref: "#/components/schemas/Family" }
+        dangerRoster:
+          type: object
+          required: [legWeightedIds, perLegOnlyIds, noArmFamilies, pillarIds]
+          description: >-
+            D3/D4 (family-colour-follows-danger) served roster the browser cannot derive
+            (public/*.js cannot import t1dial). `legWeightedIds` = the `MEMBER_WEIGHT` keys, so a
+            chip is toned live (moves the band) / per-leg (`perLegOnlyIds` = `PER_LEG_ONLY_MEMBERS`: scores
+            its own leg, never the dial) / leg-only (rowless of the band but weighted) / grey (neither); `noArmFamilies` = families that score legs but can never arm (the tile paints
+            a distinct no-arm treatment, `{valuation}` today); `pillarIds` = `PILLAR_MEMBER_IDS`
+            (danger-engine.ts), so a shown member outside it is marked dead-lit (moves no danger pillar). Static — identical on every payload.
+          properties:
+            legWeightedIds:
+              type: array
+              items: { type: string }
+            perLegOnlyIds:
+              type: array
+              items: { type: string }
+            noArmFamilies:
+              type: array
+              items: { type: string }
+            pillarIds:
+              type: array
+              items: { type: string }
+        t1dial:
+          type: object
+          description: >-
+            the two-tier T1 dial (L/K/band/rung + headline) over DIAL_FAMILIES (live: the
+            persisted `displayDialState ?? dialState`, E12) — the
+            served `globalFamilies` is the wider DISPLAY panel, see its description;
+            includes techConfirmerP — the slice-4 US-tech downside-breadth within-band
+            deepener over {SMH,NVDA,QQQ} (0 unless ≥2 detectors are amber-or-worse).
+            Carries TWO regime axes (W3-c): `regime` is the DISPLAY label (cuts
+            DIAL_REGIME_CUTS) and `notifyRegime` is the axis the pushed alert band is
+            derived from (cuts NOTIFY_REGIME_CUTS). Both run the same Crisis gate, and
+            the two cut sets currently hold identical values, so they agree today —
+            do not rely on that.
+        overlays:
+          type: object
+          description: >-
+            the view-only overlays layered on the T1 dial output, keyed by overlay id
+            (`r4` = the cash breaker; `r1` = the
+            one-rung-per-close walk from the held rung to the dial target; `r5` = vol-target
+            gross sizing on the held leg; `y1` = the relative-strength pick of WHICH rung
+            inside the band to hold; `fallShape` = the W5-d V-shaped-vs-bear read of the
+            current fall; `vtp` = the R3 confirmer-only VIX-backwardation persistence streak,
+            an UNWEIGHTED read-time annotation that feeds no band/family/roll-up/notify — LIVE
+            ONLY, key ABSENT when a ^VIX/^VIX3M leg is down). Each value is an
+            already-projected OverlayView: the front-end renders `fields` in order and
+            never re-derives. `r4` is present on BOTH the live and scenario paths;
+            `r1`, `r5` and `y1` are OPTIONAL on both — `r1`'s key is ABSENT (not blank) whenever
+            there is no walk to draw, i.e. on cold start and when already seated at the
+            target rung, `r5`'s is ABSENT whenever there is no on-ladder held leg to
+            size, and `y1`'s is ABSENT whenever there is no store to read the nine `LEGP_*`
+            series from (the unconfigured-env scenario path — Y1's whole input is persisted
+            series, so there is not even a warming-up fact to report). A `r5` present with
+            `gross` = `—` is NOT absence: it is
+            the warming-up
+            degrade (fewer than `R5_MIN_OBS` persisted `LEGP_*` closes, or a window
+            spanning more than `R5_MAX_SPAN_DAYS` calendar days), whose fail-safe is fully
+            invested rather than a fabricated trim. The same distinction holds for `y1`: a
+            present `y1` with `margin` = `—` is the warming-up degrade (the date-intersected
+            axis over the nine `LEGP_*` series is shorter than `Y1_MIN_OBS`, or spans more
+            than `Y1_MAX_SPAN_DAYS` calendar days), whose fail-safe is holding the incumbent.
+            `y1`'s `candidates` field prints the D4 bounds explicitly: the pick may reach
+            `Y1_REACH` rung(s) MORE defensive than the band's defensive edge and can NEVER go
+            more aggressive than `band.lo`. A switch additionally requires `Y1_MARGIN` cross-
+            sectional sd sustained for `Y1_PERSIST` consecutive closes (the `streak` field),
+            recomputed from the persisted series on every read — `y1` holds no state.
+            Every `r1`/`r5`/`y1` field is DISPLAY-ONLY — derived at this
+            wire edge, feeding neither the dial band nor the pushed alert. A SIZED `r5` (`gross` not `-`) carries
+            `-` in `gross`/`realized vol`/`cash (R5)`/`if wired` and the headline "vol-target stats withheld"
+            on the served body (3.5b: realized vol over the held leg's licensed closes).
+            `fallShape` (W5-d Stage 4.1) is LIVE ONLY — ABSENT on the scenario/replay paths, like
+            `bandReason` and `cashOverlay`, because it is read STRAIGHT OFF the persisted alert row
+            (`fall_shape` / `fall_velocity` / `credit_dwell_closes`) and is never re-derived at read
+            time: the class needs ~275 ACWI closes plus an F1/F2 confirmed-state history, so a
+            read-time recompute would run on a different vintage and could disagree with the class
+            that was live at push time. Its `shape` field is the three-state class
+            (`v-shaped`, `bear` or `indeterminate` — only `v-shaped` ever diverges from today's
+            behaviour), `velocity` is trailing-peak drawdown per trading day in percentage points
+            (`—` when the feed gave nothing to measure), and `credit dwell` is consecutive
+            confirmed-RED credit closes. The tone is `caution` for the `bear` grind and `neutral`
+            otherwise — `v-shaped` is the BENIGN read, not an escalation. The `note` carries the two
+            DERIVED cuts alone: `V_BEAR_INFLUENCE_ENABLED` is now `true` (Stage 5.1 shipped), so the
+            class STEERS the cash overlay and the note carries no disclaimer. The prefix
+            "display only — influence disabled" is derived from the flag, not hardcoded, and
+            reappears only if the kill switch is set back to `false`.
+            Since NF-1 Stage 5.2 the `fallShape` value is a `FallShapeOverlayView` — an
+            `OverlayView` plus a REQUIRED four-valued `confidence` key
+            (`measured` / `conflicting` / `no-fall` / `dark`) saying WHICH of the five
+            `indeterminate` branches fired; its headline is `shape: <shape> · <confidence>` and it
+            carries a matching `confidence` field row. See that schema.
+          properties:
+            # The ONE overlay whose value carries more than OverlayView. Named alongside
+            # additionalProperties (which still types every other key) so the extra REQUIRED key
+            # is expressible on the contract at all.
+            fallShape: { $ref: "#/components/schemas/FallShapeOverlayView" }
+          additionalProperties: { $ref: "#/components/schemas/OverlayView" }
+        mode:
+          type: string
+          enum: [live, scenario]
+        asOf: { type: string, format: date, description: the verdict's data date (live only) }
+        firedAt: { type: string, description: the run id whose readings this reduced (live only) }
+        provisional:
+          type: boolean
+          enum: [true]
+          description: >-
+            live only: set iff the served verdict is the daytime `intraday_verdict` slot (a run before the
+            EOD cutoff, newer than the last alert_log row) — families, dial, floors and field are that
+            run's, as on `/status`; the push still reads the EOD row. ABSENT otherwise.
+        pruneFailed:
+          type: object
+          required: [firedAt, reason]
+          description: >-
+            live only: the LATEST EOD run's cron prune failed — its `degraded[]` carries the prune scope.
+            `firedAt` = that run, `reason` = the error. ABSENT on a clean prune. DISPLAY ONLY.
+          properties:
+            firedAt: { type: string, format: date-time }
+            reason: { type: string }
+        bandReason:
+          type: [string, "null"]
+          description: >-
+            the persisted rank-13 band-reason (alert-band BandReason: `regime` |
+            `lag-hold` | `floor:<src>` | `verdict-hold` | `divergence` | `no-dial`) naming why the live notify band is
+            what it is. LIVE ONLY — omitted on the scenario/replay paths (they show the
+            raw dial band, which has no persisted notify decision). `null` on a
+            pre-migration row that predates the column. Surfaced for the eyeball (BUG-2).
+        cashOverlay:
+          type: object
+          description: >-
+            W5-a — the PERSISTED Tier-1 cash overlay (`cash_overlay*` columns), read
+            straight off the alert row. Never re-derived on the read path: the trigger is
+            stateful (a `targetRung` acceleration window), so a read-time recompute would
+            disagree with the state that was live at push time. LIVE ONLY — omitted on the
+            scenario/replay paths, which carry no persisted run.
+          required: [level, since, reason]
+          properties:
+            level:
+              type: string
+              enum: [off, partial]
+              description: >-
+                the OVERLAY'S OWN magnitude, never `full` — that magnitude is R4's and is
+                reported by `r4.cash`. `resolveCash` is the single merge point; a renderer
+                must merge the two rather than show two cash claims.
+            since:
+              type: [string, "null"]
+              description: ISO timestamp of the close the overlay went active; null while off
+            reason:
+              type: [string, "null"]
+              description: legible trigger reason; null on a pre-migration row that predates the column
+        band: { $ref: "#/components/schemas/LabBand" }
+        legAttribution:
+          type: array
+          description: >-
+            D3 Stage 2.3 — per-indicator level-vs-velocity attribution: which OR-leg
+            attributed today's CONFIRMED state, and which units axis that leg lives on.
+            One entry per DUAL-AXIS id — the ids carrying BOTH a level and a velocity
+            bound, enumerated by the `id` enum below and by nothing else in this prose
+            (the canonical set is `DUAL_AXIS_IDS` in `src/domain-legs.ts`; a restated
+            list here rots, and did — it still read F1/F2/F9/F10/F11 three ids after
+            BAA10Y/F3 joined; BAA10Y has since retired) — that is confirmed non-GREEN. Each entry carries
+            EITHER `leg` + `axis` (the read-time recompute reproduced the persisted date
+            and state exactly) OR a `declined` reason — a firing id is never silently
+            dropped, because "no badge" is reachable several different ways and an
+            undistinguished absence cannot be falsified by eye. R2/R3/R4 can NEVER appear:
+            they are velocity-ONLY, so "via velocity" would be a tautology, not
+            information. F1/F2 ARE attributed (since 2026-07-28); since 2026-08-06 they
+            score their OWN stored series alone — the borrowed BAA10Y credit legs, and the
+            `proxy-unavailable` decline reason that guarded that read, are both retired
+            (the BAA10Y indicator itself retired outright 2026-08-11).
+            DISPLAY-ONLY — it does not feed the band, and `bandReason` is unaffected. LIVE
+            ONLY — omitted on the scenario/replay paths (no persisted readings to
+            attribute). Cross-checkable against the same date's per-point `leg` on GET
+            /series AT THE DEFAULT CELL only: this recompute resolves cuts with no cell
+            (mirroring the notify path) while /series honours `?cell=`.
+          items:
+            type: object
+            required: [id]
+            properties:
+              # Kept in lockstep with `DUAL_AXIS_IDS` (src/domain-legs.ts) by
+              # src/api/contract.test.ts (enum-sync table) — the enum is derived from it, never hand-edited alone.
+              id: { type: string, enum: [F1, F2, F3, F10, CCC, T10YIE, T5YIFR] }
+              leg:
+                type: string
+                enum: [op, vel-op, evt, z, vel-evt, vel-z, vel-z-fast, vel-z-slow, vel-cusum]
+                description: >-
+                  the winning OR-leg (same vocabulary as SeriesPointDTO.leg). Present iff
+                  `declined` is absent.
+              axis:
+                type: string
+                enum: [level, velocity]
+                description: >-
+                  the leg's units class — the z legs are σ-restatements of their OWN axis,
+                  so `z` is level-class and `vel-z` is velocity-class. Present iff
+                  `declined` is absent.
+              declined:
+                type: string
+                enum: [no-history, mid-confirm, recompute-disagreed]
+                description: >-
+                  why this firing id carries no axis. `no-history` = no stored
+                  rows to recompute from; `mid-confirm` = raw state disagrees with the
+                  confirmed state on the tail day, so attributing would name a receded leg;
+                  `recompute-disagreed` = the recompute's date or state did not reproduce
+                  the persisted row. Present iff `leg`/`axis` are absent.
+              confirmCloses:
+                type: integer
+                description: >-
+                  the id's confirmation-buffer depth (`confirmClosesFor`, src/family-table.ts) —
+                  the buffer that suppressed the leg. Present ONLY on `declined: mid-confirm`,
+                  so the chip can name the fold ("mid N-close confirmation fold") from data
+                  instead of restating today's `CONFIRM_TIERS` value. No `example:` here for
+                  the same reason: the tier lives in `CONFIRM_TIERS` alone, and a number
+                  copied into this contract would read as the promise after a retune moved it.
+        downsideDetectors:
+          type: array
+          description: >-
+            slice-2 per-leg downside-break detector states over {SMH, XLK}
+            (drawdown-from-recent-high + MA50 trend gate). SMH is the US-semis proxy; XLK is
+            the S&P 500 IT sector, the direct read on the 100%-held pension track (added
+            2026-07-23). DB_NVDA/DB_QQQ were RETIRED 2026-07-22. LIVE ONLY —
+            omitted on the scenario path (needs the fetched daily closes). Empty on a
+            pre-deploy run whose DB_* rows aren't yet persisted.
+          items:
+            type: object
+            required: [id, state]
+            properties:
+              id: { type: string, enum: [SMH, XLK] }
+              state: { type: string, enum: [GREEN, AMBER, RED] }
+        states:
+          type: object
+          description: scenario only — the parsed per-family overrides echoed back (`?s=credit:RED`)
+          additionalProperties: { $ref: "#/components/schemas/State" }
+        members:
+          type: object
+          description: >-
+            scenario only — the parsed per-MEMBER (single indicator id) overrides echoed
+            back (`?s=BUND:RED`), keyed by indicator id. Disjoint from `states`. `{}` when
+            the scenario string carried none.
+          additionalProperties: { $ref: "#/components/schemas/State" }
+        knobs:
+          type: object
+          description: >-
+            scenario only — the reserved `?s=` knobs echoed back. Always all four keys
+            (defaults included), so the shape is total and a caller can read exactly what
+            the server applied.
+          required: [tail, sustained, daysInCash, lag]
+          properties:
+            tail: { type: boolean }
+            sustained: { type: boolean, description: parsed and echoed; inert since NF-1(A) deleted the arming ladder }
+            daysInCash: { type: integer, minimum: 0 }
+            lag:
+              type: array
+              description: indicator ids forced to the quiet LAG freshness tier, first-seen order
+              items: { type: string }
+        scoreboard:
+          $ref: "#/components/schemas/ScoreboardView"
+        growthRs:
+          type: array
+          description: >-
+            G0 Stage 0.3 — the per-leg growth relative-strength the Y1 resolver already ranked
+            (`resolveY1View`'s `rsAt(0)`), one entry per LADDER sleeve, surfaced DISPLAY-ONLY so the
+            growth input is inspectable before G1/G2 consume it. Feeds no band/field/pick. Present
+            whenever a store was read — the live path always is; ABSENT on the unconfigured-env
+            scenario path (no store to rank the nine `LEGP_*` series). Present/absent in lockstep with
+            `lookbacksUsed`.
+          items:
+            type: object
+            required: [sleeve, rs]
+            properties:
+              sleeve: { type: string, description: the LADDER sleeve this RS row belongs to }
+              rs:
+                type: [number, "null"]
+                description: >-
+                  the leg's cross-sectionally standardized RS; `null` — never `0` — when the leg has
+                  no defensible RS (starved leg, degraded axis, or every lookback dropped). A `0`
+                  serializes as `0` and is a legitimate RS, distinct from `null`. Every row's `rs` is null
+                  on the served body (3.5b: a statistic over the leg's licensed closes).
+        lookbacksUsed:
+          type: integer
+          description: >-
+            G0 Stage 0.3 — how many of `Y1_LOOKBACKS` contributed to `growthRs` this read (0–3). A
+            short intersected axis silently drops the long lookbacks, so a single-lookback RS is
+            visibly weaker. Present/absent in lockstep with `growthRs`.
+        walkPath:
+          type: array
+          description: >-
+            The `?walk=N` forward-walk leg path — one entry per simulated day, `day` 1..N (there is
+            no day-0 entry; day 0 is the caller's own incumbent position). Served on BOTH the live
+            and scenario paths, and OMITTED ENTIRELY when `walk` is 0 or absent, so the default
+            payload is byte-unchanged. Also absent on the scenario path when there is no store or no
+            seed verdict to accumulate from.
+
+            Each day is produced by the SAME `assembleRun` core the cron runs, so a walk day is
+            byte-identical to a real one and every delayed action resolves — the re-entry rung walk,
+            the de-escalation lag, the re-risk confirm+dwell, the cash-overlay acceleration.
+
+            CAUTION for consumers: the `{lo,hi}` RUNG band is not here and cannot be derived per-day
+            — `walkForward` freezes the dial for the whole walk, so the rung band is constant across
+            days 1..N and is served once at `field.band`. The `band` member below is the NOTIFY level
+            (`OK`/`WATCH`/…), a different axis; it can move via the de-escalation lag but was
+            measured flat across 12 days on two prod scenarios (2026-08-05). `heldSleeve` is the
+            member that actually moves.
+          items: { $ref: "#/components/schemas/WalkLegStep" }
+    WalkLegStep:
+      type: object
+      description: >-
+        One day of `LabResponse.walkPath` — the forward-walk leg path. Mirrors `WalkLegStep` in
+        `src/run-core.ts`.
+      required: [day, date, band, heldSleeve, r4Phase, r4ReentryRung, cashOverlay, reriskConfirmCount]
+      properties:
+        day:
+          type: integer
+          description: 1-based offset from the seed close; there is no day-0 entry.
+        date:
+          type: string
+          description: the simulated calendar date (`YYYY-MM-DD`) this walk day advanced the clock to.
+        band:
+          $ref: "#/components/schemas/AlertLevel"
+        heldSleeve:
+          type: [string, "null"]
+          description: >-
+            the sleeve held at this walk day, or `null` when no sleeve is in band. This is the member
+            that moves — a change from the previous day is a rotation.
+        r4Phase:
+          type: [string, "null"]
+          enum: [equity, cash, reentry, null]
+        r4ReentryRung:
+          type: [integer, "null"]
+        cashOverlay:
+          type: string
+          enum: [off, partial]
+          description: >-
+            the OVERLAY's own level at this walk day, never the merged cash claim — `full` is R4's
+            terminal cash and lives in `r4Phase`. Mirrors the alert row's `cashOverlay`.
+        reriskConfirmCount:
+          type: integer
+          description: >-
+            the re-risk confirm counter as of this day. `walkPath` otherwise carries values only, so
+            this is what lets a consumer say WHY a rotation happened (the confirm cleared) rather
+            than only that it did.
+    CoverageMark:
+      type: object
+      description: >-
+        One non-live roster member inside a `CoverageDegrade`. Every field is recorded AT RUN TIME
+        on the alert row's structured `degraded[].coverage` and served verbatim — nothing here is
+        re-derived on the read path, because the reading's `date` is frozen and an age measured
+        later is a different, larger number.
+      required: [id, reason, series, state, ageDays]
+      properties:
+        id: { type: string, description: roster member id whose non-liveness holds or ties its family's verdict, example: GT }
+        reason:
+          type: string
+          enum: [lag, absent, carried]
+          description: >-
+            `lag` — reported but past its own lag cut; `absent` — did not report and has no in-cut
+            close to carry (no reading to describe); `carried` — did not report but its last close is
+            within its own lag cut, so it re-entered the fold with that state (fields populated, as `lag`).
+        series:
+          type: string
+          nullable: true
+          description: the member's feed symbol (registry `series`); populated for `lag`/`carried`, null for `absent`
+        state:
+          oneOf:
+            - $ref: "#/components/schemas/State"
+            - type: "null"
+          description: the last-known confirmed state the verdict rests on; populated for `lag`/`carried`, null for `absent`
+        ageDays:
+          type: integer
+          nullable: true
+          description: >-
+            run-time age in calendar days of the newest close, measured against the run's evaluation
+            clock. Populated for `lag`/`carried`; null when `absent`, or when the run recorded no
+            freshness stamp; consumers print no age rather than a 0.
+    CoverageDegrade:
+      type: object
+      description: >-
+        One entry of `LabResponse.coverage`: a family whose verdict the served run rested on data
+        that is not live (R5). A claim about SIGHT, not danger — it moves no state and no
+        contribution; the WATCH-capped coverage floor arms off the family panel, not off this.
+      required: [family, verdict, carried, members]
+      properties:
+        family: { type: string, description: the FamilyKey whose verdict is carried by non-live data, example: trend }
+        verdict:
+          allOf: [{ $ref: "#/components/schemas/State" }]
+          description: the family's worst-of verdict being held or tied (the restricted GT/GB fold for `trend`)
+        carried:
+          type: boolean
+          description: >-
+            whether the family was rank-7 CARRIED (zero present members, its verdict re-marked from
+            last-known state) — such a family is coverage-degraded unconditionally.
+        members:
+          type: array
+          description: the non-live members behind the claim; EMPTY only on a carried family with an empty roster
+          items: { $ref: "#/components/schemas/CoverageMark" }
+    ReplayPoint:
+      type: object
+      description: >-
+        One replayed close in a GET /lab `?replay=` leg-path — the T1 dial target rung
+        (1..9) plus the band/regime it maps to and the R4 cash-breaker overlay for that
+        day. Mirrors src/replay.ts ReplayPoint.
+      required: [date, targetRung, band, regime, r4Phase, cash, reentryRung]
+      properties:
+        date: { type: string, format: date }
+        targetRung: { type: integer, description: 'T1 dial targetRung ∈ 1..9 — the leg-path value' }
+        band: { $ref: "#/components/schemas/AlertLevel" }
+        regime:
+          type: string
+          enum: [Calm, Caution, Stress, Crisis]
+          description: >-
+            the T1 dial's DISPLAY regime for the day. Note `band` is on the separate
+            NOTIFY axis (W3-c), so `regimeToBand(regime) === band` holds only while the
+            two cut sets coincide — do not rely on it.
+        r4Phase:
+          type: string
+          enum: [equity, cash, reentry]
+          description: the R4 cash-breaker phase, threaded sequentially across replay days
+        cash: { type: boolean, description: true iff r4Phase === cash (held off-ladder) }
+        reentryRung:
+          type: [integer, "null"]
+          description: the on-ladder rung a laddered re-entry currently holds, or null unless phase === reentry
+    ReplayCoverage:
+      type: object
+      description: >-
+        Per-requested-member data coverage for a GET /lab `?replay=` run — `firstDate`
+        is the earliest stored observation, null when the member has no history. Mirrors
+        src/replay.ts ReplayCoverage.
+      required: [id, firstDate]
+      properties:
+        id: { type: string, example: F1 }
+        firstDate: { type: [string, "null"], format: date, description: earliest observation date, or null = no history }
+    ReplayResponse:
+      type: object
+      description: >-
+        GET /lab historical-replay (`?replay=`) response (mode 2b): the SAME pure
+        pipeline advanced one stored close at a time over [start, end] — a per-day
+        leg-path (`points`), per-member `coverage`, and server-authored honesty `notes`.
+        Learning view only — no verdict / scoreboard / field. `mode` is always "replay".
+      required: [mode, start, end, points, coverage, notes]
+      properties:
+        mode: { type: string, enum: [replay] }
+        start: { type: string, format: date, description: range start (inclusive) }
+        end: { type: string, format: date, description: range end (inclusive) }
+        points:
+          type: array
+          description: one point per union trading-day observation ≥ start (oldest→newest)
+          items: { $ref: "#/components/schemas/ReplayPoint" }
+        coverage:
+          type: array
+          description: one entry per requested GLOBAL_FAMILIES member id
+          items: { $ref: "#/components/schemas/ReplayCoverage" }
+        notes:
+          type: array
+          description: >-
+            server-authored honesty labels (GEO manual-flag caveat, R4 warm-up depth),
+            rendered verbatim by the FE
+          items: { type: string }
+    MetricCell:
+      type: object
+      description: >-
+        One D9 scoreboard metric value or its honest absence — `naReason` is a
+        human "n/a yet — …" string set exactly when `value` is null. Every metric value is null
+        on the served body (3.5b), with `naReason` "withheld - licensed closes".
+      required: [value, naReason]
+      properties:
+        value: { type: [number, "null"] }
+        naReason: { type: [string, "null"] }
+    ScoreboardMetrics:
+      type: object
+      description: the per-series metric column (strategy and benchmark each get one)
+      required: [ulcer, maxDD, calmar, recoveryRuns, annRet]
+      properties:
+        ulcer: { $ref: "#/components/schemas/MetricCell" }
+        maxDD: { $ref: "#/components/schemas/MetricCell" }
+        calmar: { $ref: "#/components/schemas/MetricCell" }
+        recoveryRuns: { $ref: "#/components/schemas/MetricCell" }
+        annRet: { $ref: "#/components/schemas/MetricCell" }
+    ScoreboardView:
+      type: object
+      description: >-
+        The D9 live scoreboard riding `LabResponse.scoreboard` (LIVE path only —
+        omitted on `?s=` scenario responses): chain-linked EUR NAV metrics for the
+        rotation strategy vs the ACWI-proxy yardstick, plus the two SEPARATE gate
+        verdicts (ulcer, override budget — never combined into a product) and the
+        watched M2 guardrails. Pure display math over persisted SB_STRAT/SB_BENCH
+        rows; informs the D7 kill criterion, never auto-decides, never notifies.
+        Zero SB rows (pre-first-cron prod) ⇒ present with `warmingUp: true` and
+        every metric `n/a`. 3.5b: the NAV statistics — every metric value, both ulcer indexes and
+        `returnVsFundPp` — are null on the served body; the verdicts, flag, counts and window stay.
+      required:
+        [warmingUp, since, runs, windowStatement, yardstickLabel, strategy,
+         benchmark, gates, returnVsFundPp, returnFlag, timeInCashShare]
+      properties:
+        warmingUp: { type: boolean, description: true before the first SB row exists — FE renders the honest empty card }
+        since: { type: [string, "null"], description: first SB row date in the window (YYYY-MM-DD), or null when warming up }
+        runs: { type: integer, description: SB run count in the window }
+        windowStatement: { type: string, description: Fork 3 verbatim window statement ("" while warming up) }
+        yardstickLabel: { type: string, description: Fork 1 honesty label, verbatim }
+        strategy: { $ref: "#/components/schemas/ScoreboardMetrics" }
+        benchmark: { $ref: "#/components/schemas/ScoreboardMetrics" }
+        gates:
+          type: object
+          description: the two D9 gates as SEPARATE verdicts (never a combined figure)
+          required: [ulcer, overrides]
+          properties:
+            ulcer:
+              type: object
+              description: gate (a) — both ulcer indexes + verdict; null verdict = n/a yet
+              required: [verdict, naReason, strategyUi, benchmarkUi]
+              properties:
+                verdict: { type: [string, "null"], enum: [PASS, FAIL, null] }
+                naReason: { type: [string, "null"] }
+                strategyUi: { type: [number, "null"] }
+                benchmarkUi: { type: [number, "null"] }
+            overrides:
+              type: object
+              description: gate (b) — manual overrides in the trailing 365 calendar days vs the D7 B1 budget
+              required: [verdict, count, limit]
+              properties:
+                verdict: { type: string, enum: [PASS, FAIL] }
+                count: { type: integer }
+                limit: { type: integer }
+        returnVsFundPp:
+          type: [number, "null"]
+          description: watched guardrail — annRet_strat − annRet_bench in pp/yr (feeds M2, display only)
+        returnFlag:
+          type: [string, "null"]
+          enum: [RETUNE, KILL-FLOOR, null]
+          description: M2 flag chip — RETUNE below −CUSTODY_DRAG_PP, KILL-FLOOR below −M2_RETURN_LAG_PP
+        timeInCashShare:
+          type: [number, "null"]
+          description: share of last-365d alert rows with r4Phase === "cash"; null when no rows in window
+    LadderConfig:
+      type: object
+      required: [alertRank, ladder, legIds, scoringCuts]
+      description: >-
+        The alert math the browser must render but never redefine (P2). Served
+        verbatim from src/ exports so the dashboard scores against the same numbers.
+      properties:
+        alertRank:
+          type: object
+          description: AlertLevel → numeric rank (OK=0 … CRITICAL=3).
+          additionalProperties: { type: integer }
+        ladder:
+          type: array
+          description: >-
+            The 9-leg total-risk ladder (src/families.ts LADDER), most-aggressive
+            (rung 1) → most-defensive (rung 9), in rung order. /journal turns a stored
+            rung into its leg with ladder[rung - 1].
+          items: { type: string }
+        legIds:
+          type: array
+          description: >-
+            The persisted per-leg EUR close series ids (src/scoreboard.ts legCloseId over
+            LADDER), in the SAME rung order as `ladder`. Served so the browser never re-types
+            the LEG_SLUG mapping; /journal chains legIds[rung - 1].
+          items: { type: string }
+        scoringCuts:
+          type: object
+          required: [pension, slow, vt]
+          description: >-
+            Forensic scoring cut-points the dashboard draws (pension bands / slow-tier
+            percentiles / VT ratio), served from the real src/ exports so app.js never
+            hardcodes a mirror that can drift (D0). vt is served for completeness but is
+            not consumed for render (the VT dot is a semantic relabel, not a numeric cut).
+          properties:
+            pension:
+              type: object
+              required: [dip, correction, bear, confirmCloses]
+              description: >-
+                Blended-portfolio drawdown band cuts (src/pension.ts), inclusive at each cut. They
+                score the drawdown of the dated blend, never a per-sleeve drawdown. confirmCloses
+                (src/domain-types.ts CONFIRM_CLOSES) is the consecutive-close buffer a new band must
+                hold before it is published — /journal folds its own band through the same buffer.
+              properties:
+                dip: { type: number }
+                correction: { type: number }
+                bear: { type: number }
+                confirmCloses: { type: integer }
+            slow:
+              type: object
+              required: [accelAmber, accelRed, vixLow, nearHigh]
+              description: Slow-tier percentile/fraction cut-points (src/slow.ts).
+              properties:
+                accelAmber: { type: number }
+                accelRed: { type: number }
+                vixLow: { type: number }
+                nearHigh: { type: number }
+            vt:
+              type: object
+              required: [amber, red]
+              description: VIX term-structure ratio cuts (src/family-descriptor-rows.ts).
+              properties:
+                amber: { type: number }
+                red: { type: number }
+    IndicatorMeta:
+      type: object
+      required: [id, label, series, channel, thresholds, role]
+      properties:
+        id: { type: string }
+        label: { type: string }
+        series: { type: string, description: FRED series id }
+        channel: { $ref: "#/components/schemas/Channel" }
+        family: { type: string, description: "7-family Dashboard grouping (Stage 5); absent for PENSION/BOTTOM" }
+        unit: { type: string }
+        thresholds: { $ref: "#/components/schemas/Thresholds" }
+        direction: { $ref: "#/components/schemas/Direction" }
+        cadence:
+          type: string
+          enum: [daily, weekly, monthly, quarterly]
+          description: >-
+            Observation cadence. Absent = daily. Drives the detail chart's
+            per-reading unit word (day vs month vs quarter) so a monthly series
+            (EBP, F7/CAPE) isn't mislabeled "N days" — `quarterly` stays in the
+            enum but has NO live carrier since F12's 2026-07-17 retirement — AND the
+            per-feed lag threshold (a weekly feed e.g. F3 tolerates its
+            5–7d release lag).
+        velocityWindow:
+          type: integer
+          description: >-
+            The span the `delta20` column carries for THIS id, in OBSERVATIONS. Absent = the
+            global default 20, the same absent-means-default convention `cadence` uses above.
+            Carriers today: F1 30, F3 4, F9 60, F11 60, F17 60 — so the shared "Δ20" caption is
+            wrong for all five, which is why the span is on the wire. The companion unit WORD
+            is NOT `cadence`: that is the RELEASE schedule, and F9/F11 release weekly over a
+            business-day observation grid, so "60 weeks" would be 5× wrong. The server ships
+            the finished caption as the velocity axis' `label` in `chart`; a client composing
+            its own must resolve `obsCadence ?? cadence` (below) and never `cadence` alone — a
+            weekly word is correct only for an id that genuinely OBSERVES weekly (F3).
+        velocityMode:
+          type: string
+          enum: [relative]
+          description: >-
+            `relative` = the `delta20` column (and the velocity thresholds) are a FRACTION of the
+            base level, printed as a percentage. Absent = the absolute Δ.
+        obsCadence:
+          type: string
+          enum: [daily, weekly, monthly, quarterly]
+          description: >-
+            The OBSERVATION grid `velocityWindow` steps over, where `cadence` above is the
+            RELEASE schedule. Absent = fall back to `cadence` (itself absent = daily), so a
+            client's one rule is `obsCadence ?? cadence`. Carriers today: F9 and F11, both
+            `cadence: weekly` (the FRED H.10 release) over business-day DTWEXBGS/DEXCHUS rows.
+            On the wire because the Dashboard card's Δ chip and tooltip hold no `chart` spec:
+            reading `cadence` alone captions F9's 60-trading-day change "60 weeks", 5× wrong.
+        derived: { $ref: "#/components/schemas/DerivedView" }
+        chart: { $ref: "#/components/schemas/ChartSpec", description: "The served F7 (CAPE) chart drops its percentile display bands (cut values read off its redacted history) and is band-less." }
+        chartOnly:
+          type: boolean
+          description: >-
+            CHART-ONLY id (registry `CHART_ONLY_INDICATORS`, VTP today): persisted and served
+            as history + a Dashboard card, but in NO scored set, NO panel/dial family, NO
+            roll-up, and filtered out of the notify body. Emitted as `true` only for those
+            ids; absent (never `false`) for every scored indicator.
+        role:
+          type: string
+          enum: [member, chart-only, early-warning, context]
+          description: >-
+            Which engine seat the id holds, derived server-side from the registry/engine sets
+            (never a hand-typed list): `member` holds a MEMBER_WEIGHT row in the danger model;
+            `chart-only` is the CHART_ONLY_IDS set; `early-warning` is an EARLY_WARN_MEMBERS
+            downside detector or its RS_LEG_OF rel-strength gate leg (raises only the
+            WATCH-capped alert-band floor, no family weight); `context` is served and charted but
+            carries no weight of its own (raw composite legs, pension track, observability
+            ids). Always present; the detail tab's "In the engine." line renders off it.
+        bpsSensitivity: { $ref: "#/components/schemas/BpsSensitivity", description: "Omitted from the served body when its `series` is redacted (R7)." }
+        companionAnchorDate:
+          type: string
+          format: date
+          description: >-
+            P4 companion-eligibility anchor — the newest stored observation at/before 2015-01-01
+            (STORED_COMPANION_HORIZON). Present iff the id's history reaches the horizon (lab.js's
+            >=2015 companion-picker sweep reads it, `!= null`); NOT the literal earliest observation.
+    BpsSensitivity:
+      type: object
+      description: >-
+        EW-R1 / EW-7 — what the SHIPPED PERCENTILE cut implies in bps today, in 2015 and
+        in 2019. Report-only: nothing scores off it, and it does not restate the shipped
+        cut (that is `thresholds`). Present ONLY on the indicator whose
+        `series` the committed measurement covers (today F1 / BAMLH0A0HYM2); absent on
+        every other indicator, since no such measurement exists for them. Served verbatim
+        from the committed measurement output rather than recomputed per request, so the
+        wire cannot disagree with the published calibration vintage.
+      required: [source, series, leg, percentiles, points]
+      properties:
+        source: { type: string, description: "repo path of the committed measurement output" }
+        series: { type: string, description: "the measured series id; equals the indicator's `series`" }
+        leg: { type: string, description: "which leg the percentiles cut (today: the level leg)" }
+        percentiles:
+          type: object
+          required: [amber, red]
+          properties:
+            amber: { type: number }
+            red: { type: number }
+          description: the shipped percentile pair, e.g. 0.66 / 0.90
+        points:
+          type: array
+          items: { $ref: "#/components/schemas/BpsSensitivityPoint" }
+          description: one entry per as-of window, newest first
+    BpsSensitivityPoint:
+      type: object
+      description: >-
+        One as-of window of the bps sensitivity report. A percentile is regime-relative,
+        so the SAME percentile implies different bps on each window — that spread is the
+        point of the field.
+      required: [window, start, asOf, n, amberBps, redBps]
+      properties:
+        window: { type: string, description: "human label, e.g. `trailing-5y @ 2019-12-31`" }
+        start: { type: string, format: date, description: window open }
+        asOf: { type: string, format: date, description: "window close — the today / 2015 / 2019 axis" }
+        n: { type: integer, description: "observations in the window (a thin window's quantile is not comparable)" }
+        amberBps: { type: number, description: what the amber percentile implies in bps over THIS window }
+        redBps: { type: number, description: what the red percentile implies in bps over THIS window }

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Exposure - crash-dash</title>
+    <meta
+      name="description"
+      content="Two-key exposure dial - ARM (credit) + FIRE (trend) → Full / Core / Reduced / Defensive posture."
+    />
+    <!-- Static shell only: vanilla ES modules, no framework/bundler/build (repo charter). -->
+    <link rel="preconnect" href="https://configrefplaceholder.supabase.co" crossorigin />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./exposure.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='%235f7a5f'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <!-- Cross-link to the Lab: the Lab's "Crisis, hold EU-Fin" print vs this
+         page's "Core, full equity" is the E1 learning payload. -->
+    <div class="pagenav-bar">
+      <a class="pagenav" href="/lab">Lab <span aria-hidden="true">↗</span></a>
+      <a class="pagenav pagenav-gap" href="/signin" data-auth-nav>Sign in <span aria-hidden="true">↗</span></a>
+    </div>
+
+    <!-- Centered overlay for loading / error states. -->
+    <div id="message" class="message" role="status">Loading…</div>
+
+    <main id="exposure" class="exposure" hidden>
+      <section class="exp-headline" aria-label="Posture">
+        <p class="exp-eyebrow">Exposure posture</p>
+        <p id="posture" class="exp-posture" data-tone="warming">Warming up</p>
+        <p id="posture-weight" class="exp-posture-weight"></p>
+      </section>
+
+      <section class="exp-chips" aria-label="Keys">
+        <div id="arm-chip" class="exp-chip" data-tone="quiet">
+          <span class="exp-chip-label"></span><span class="exp-chip-tone"></span>
+          <p class="exp-chip-detail"></p>
+          <p class="exp-chip-asof"></p>
+          <p class="exp-chip-what"></p>
+          <p class="exp-chip-cuts"></p>
+          <p class="exp-chip-why"></p>
+        </div>
+        <div id="fire-chip" class="exp-chip" data-tone="intact">
+          <span class="exp-chip-label"></span><span class="exp-chip-tone"></span>
+          <p class="exp-chip-detail"></p>
+          <p class="exp-chip-asof"></p>
+          <p class="exp-chip-what"></p>
+          <p class="exp-chip-cuts"></p>
+          <p class="exp-chip-why"></p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <nav class="site-footer-links" aria-label="Legal">
+        <a href="/imprint">Imprint</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/cookies">Cookies</a>
+        <a href="/attribution">Attribution</a>
+      </nav>
+      <p class="site-footer-donate">
+        Free to use. <a href="https://paypal.me/kristjanhs" rel="noopener noreferrer external">Send a gift</a>
+        - voluntary, and it buys nothing.
+      </p>
+    </footer>
+
+    <script type="module" src="./disclaimer.js"></script>
+    <script type="module" src="./auth-nav.js"></script>
+    <script type="module" src="./exposure.js"></script>
+  </body>
+</html>

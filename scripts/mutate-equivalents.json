@@ -1,0 +1,490 @@
+[
+  {
+    "file": "src/domain-legs.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "false",
+    "src": "if (amber === undefined || red === undefined) return false;",
+    "orig": "red === undefined",
+    "reason": "equivalent - an undefined leg makes the `<` below compare undefined/NaN, already false, so dropping either operand or the whole guard returns false anyway"
+  },
+  {
+    "file": "src/domain-legs.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "false",
+    "src": "if (amber === undefined || red === undefined) return false;",
+    "orig": "amber === undefined",
+    "reason": "equivalent - an undefined leg makes the `<` below compare undefined/NaN, already false, so dropping either operand or the whole guard returns false anyway"
+  },
+  {
+    "file": "src/domain-legs.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "false",
+    "src": "if (amber === undefined || red === undefined) return false;",
+    "orig": "amber === undefined || red === undefined",
+    "reason": "equivalent - an undefined leg makes the `<` below compare undefined/NaN, already false, so dropping either operand or the whole guard returns false anyway"
+  },
+  {
+    "file": "src/domain-legs.ts",
+    "mutator": "LogicalOperator",
+    "replacement": "amber === undefined && red === undefined",
+    "src": "if (amber === undefined || red === undefined) return false;",
+    "orig": "amber === undefined || red === undefined",
+    "reason": "equivalent - with one leg undefined the `<` below compares undefined/NaN, already false"
+  },
+  {
+    "file": "src/domain-legs.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "true",
+    "src": "z !== undefined &&",
+    "orig": "z !== undefined",
+    "reason": "equivalent - `undefined >= b` / `-undefined >= b` is already false"
+  },
+  {
+    "file": "src/domain-legs.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "true",
+    "src": "velZ !== undefined &&",
+    "orig": "velZ !== undefined",
+    "reason": "equivalent - `undefined >= b` is already false"
+  },
+  {
+    "file": "src/domain-legs.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "true",
+    "src": "velZFast !== undefined &&",
+    "orig": "velZFast !== undefined",
+    "reason": "equivalent - `undefined >= b` is already false"
+  },
+  {
+    "file": "src/domain-legs.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "true",
+    "src": "cusum !== undefined &&",
+    "orig": "cusum !== undefined",
+    "reason": "equivalent - `undefined >= b` is already false"
+  },
+  {
+    "file": "src/domain-legs.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "false",
+    "src": "if (l.bound === undefined) return { ...l, fired: false };",
+    "orig": "l.bound === undefined",
+    "reason": "equivalent - every leg predicate below is a relational compare against `b`, false for an undefined bound"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ArithmeticOperator",
+    "replacement": "base - 1",
+    "src": "minLength: base + 1,",
+    "orig": "base + 1",
+    "reason": "equivalent - every such site passes baseOffset: base, so a series of length base−1 or base runs the classify loop zero times and ratioReadingSeries returns [] either way"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "true",
+    "src": "const amberKey = bandRows?.find((r) => r.level === \"amber\")?.key;",
+    "orig": "r.level === \"amber\"",
+    "reason": "equivalent - every POINT_BAND_CUTS_OF list leads with its amber row, so a match-anything find returns the same row"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "false",
+    "src": "if (L <= 0) continue; // anchor is today ⇒ Δ=0, no call",
+    "orig": "L <= 0",
+    "reason": "equivalent - L ≥ 0 always (aIdx ≤ t), and at L = 0 every same-horizon Δ is 0, so σ = 0 fails the CQS sigmaFloor and the day continues anyway"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "EqualityOperator",
+    "replacement": "L < 0",
+    "src": "if (L <= 0) continue; // anchor is today ⇒ Δ=0, no call",
+    "orig": "L <= 0",
+    "reason": "equivalent - L ≥ 0 always (aIdx ≤ t), and at L = 0 every same-horizon Δ is 0, so σ = 0 fails the CQS sigmaFloor and the day continues anyway"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ArithmeticOperator",
+    "replacement": "VELOCITY_WINDOW - 1",
+    "src": "minLength: VELOCITY_WINDOW + 1,",
+    "orig": "VELOCITY_WINDOW + 1",
+    "reason": "equivalent - every such site passes baseOffset: VELOCITY_WINDOW, so a series of length VELOCITY_WINDOW−1 or VELOCITY_WINDOW runs the classify loop zero times and ratioReadingSeries returns [] either way"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "false",
+    "src": "return zi === undefined ? \"GREEN\" : highBandState(zi, zAmber, zRed);",
+    "orig": "zi === undefined",
+    "reason": "equivalent - highBandState(undefined) compares undefined, which is false on both edges, so it is GREEN too"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "false",
+    "src": "const arm = (z: number | undefined): State => (z === undefined ? \"GREEN\" : highBandState(z, c.zAmber, c.zRed));",
+    "orig": "z === undefined",
+    "reason": "equivalent - highBandState(undefined) compares undefined, which is false on both edges, so it is GREEN too"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "false",
+    "src": "day === \"GREEN\"",
+    "orig": "day === \"GREEN\"",
+    "reason": "equivalent - under BONOS' `or` combine a GREEN day has a GREEN velocity leg, whose vel.leg token is already undefined"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "false",
+    "src": "const vl: State = zi === undefined ? \"GREEN\" : highBandState(zi, zAmber, zRed);",
+    "orig": "zi === undefined",
+    "reason": "equivalent - highBandState(undefined) compares undefined, which is false on both edges, so it is GREEN too"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ArithmeticOperator",
+    "replacement": "s.length + 1",
+    "src": "let end = s.length - 1;",
+    "orig": "s.length - 1",
+    "reason": "equivalent - informative[length] and informative[length + 1] are undefined, so the walk below steps straight back to length − 1"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "false",
+    "src": "if (end < VELOCITY_WINDOW) return [];",
+    "orig": "end < VELOCITY_WINDOW",
+    "reason": "equivalent - below VELOCITY_WINDOW the rawStates loop never runs and buildReadings returns []"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "EqualityOperator",
+    "replacement": "d2y <= 0",
+    "src": "d2y < 0 &&",
+    "orig": "d2y < 0",
+    "reason": "equivalent - at d2y = 0, |d2y| ≥ dSteepen > 0 is false anyway"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "EqualityOperator",
+    "replacement": "at(drop, i) <= 0",
+    "src": "at(drop, i) < 0 &&",
+    "orig": "at(drop, i) < 0",
+    "reason": "equivalent - at drop = 0, |drop| ≥ s > 0 is false anyway"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ArithmeticOperator",
+    "replacement": "baseOffset - 1",
+    "src": "minLength: baseOffset + 1,",
+    "orig": "baseOffset + 1",
+    "reason": "equivalent - baseOffset: baseOffset, so a series of length baseOffset−1 or baseOffset runs the classify loop zero times and ratioReadingSeries returns [] either way"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "EqualityOperator",
+    "replacement": "p.value >= 0",
+    "src": "(p) => p.value > 0 && dfiiByMonth.has(p.date.slice(0, 7)),",
+    "orig": "p.value > 0",
+    "reason": "equivalent - a 0 CAPE makes ecy = ±Infinity, which the isFinite guard in the loop skips (never yielded, never inserted)"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "EqualityOperator",
+    "replacement": "at(sorted, mid) <= ecy",
+    "src": "if (at(sorted, mid) < ecy) lo = mid + 1;",
+    "orig": "at(sorted, mid) < ecy",
+    "reason": "equivalent - inserting an equal value before or after its ties leaves the same sorted array"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ArithmeticOperator",
+    "replacement": "ECY_EXPENSIVE_P / n",
+    "src": "let k = Math.floor(ECY_EXPENSIVE_P * n);",
+    "orig": "ECY_EXPENSIVE_P * n",
+    "reason": "equivalent - from k = floor(p/n) = 0 the first loop climbs to the same floor(p·n)"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ArithmeticOperator",
+    "replacement": "k - 1",
+    "src": "while (k + 1 <= n && (k + 1) / n <= ECY_EXPENSIVE_P) k++;",
+    "orig": "k + 1",
+    "reason": "equivalent - at the shipped ECY_EXPENSIVE_P = 0.02 floor(p·n) already satisfies k/n ≤ p < (k+1)/n for every n ≤ 2e6 (checked 2026-10-26), so this loop never runs, and the one variant that does ((k − 1)/n ≤ p) overshoots into the second loop, which steps back to floor(p·n)"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "true",
+    "src": "while (k + 1 <= n && (k + 1) / n <= ECY_EXPENSIVE_P) k++;",
+    "orig": "k + 1 <= n",
+    "reason": "equivalent - at the shipped ECY_EXPENSIVE_P = 0.02 floor(p·n) already satisfies k/n ≤ p < (k+1)/n for every n ≤ 2e6 (checked 2026-10-26), so this loop never runs, and the one variant that does ((k − 1)/n ≤ p) overshoots into the second loop, which steps back to floor(p·n)"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "EqualityOperator",
+    "replacement": "k + 1 < n",
+    "src": "while (k + 1 <= n && (k + 1) / n <= ECY_EXPENSIVE_P) k++;",
+    "orig": "k + 1 <= n",
+    "reason": "equivalent - at the shipped ECY_EXPENSIVE_P = 0.02 floor(p·n) already satisfies k/n ≤ p < (k+1)/n for every n ≤ 2e6 (checked 2026-10-26), so this loop never runs, and the one variant that does ((k − 1)/n ≤ p) overshoots into the second loop, which steps back to floor(p·n)"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "EqualityOperator",
+    "replacement": "k + 1 > n",
+    "src": "while (k + 1 <= n && (k + 1) / n <= ECY_EXPENSIVE_P) k++;",
+    "orig": "k + 1 <= n",
+    "reason": "equivalent - at the shipped ECY_EXPENSIVE_P = 0.02 floor(p·n) already satisfies k/n ≤ p < (k+1)/n for every n ≤ 2e6 (checked 2026-10-26), so this loop never runs, and the one variant that does ((k − 1)/n ≤ p) overshoots into the second loop, which steps back to floor(p·n)"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "false",
+    "src": "while (k + 1 <= n && (k + 1) / n <= ECY_EXPENSIVE_P) k++;",
+    "orig": "k + 1 <= n && (k + 1) / n <= ECY_EXPENSIVE_P",
+    "reason": "equivalent - at the shipped ECY_EXPENSIVE_P = 0.02 floor(p·n) already satisfies k/n ≤ p < (k+1)/n for every n ≤ 2e6 (checked 2026-10-26), so this loop never runs, and the one variant that does ((k − 1)/n ≤ p) overshoots into the second loop, which steps back to floor(p·n)"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ArithmeticOperator",
+    "replacement": "(k + 1) * n",
+    "src": "while (k + 1 <= n && (k + 1) / n <= ECY_EXPENSIVE_P) k++;",
+    "orig": "(k + 1) / n",
+    "reason": "equivalent - at the shipped ECY_EXPENSIVE_P = 0.02 floor(p·n) already satisfies k/n ≤ p < (k+1)/n for every n ≤ 2e6 (checked 2026-10-26), so this loop never runs, and the one variant that does ((k − 1)/n ≤ p) overshoots into the second loop, which steps back to floor(p·n)"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "EqualityOperator",
+    "replacement": "(k + 1) / n < ECY_EXPENSIVE_P",
+    "src": "while (k + 1 <= n && (k + 1) / n <= ECY_EXPENSIVE_P) k++;",
+    "orig": "(k + 1) / n <= ECY_EXPENSIVE_P",
+    "reason": "equivalent - at the shipped ECY_EXPENSIVE_P = 0.02 floor(p·n) already satisfies k/n ≤ p < (k+1)/n for every n ≤ 2e6 (checked 2026-10-26), so this loop never runs, and the one variant that does ((k − 1)/n ≤ p) overshoots into the second loop, which steps back to floor(p·n)"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "true",
+    "src": "while (k > 0 && k / n > ECY_EXPENSIVE_P) k--;",
+    "orig": "k > 0",
+    "reason": "equivalent - at the shipped ECY_EXPENSIVE_P = 0.02 floor(p·n) already satisfies k/n ≤ p < (k+1)/n for every n ≤ 2e6 (checked 2026-10-26), so k/n > p is already false and this loop never runs"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "EqualityOperator",
+    "replacement": "k <= 0",
+    "src": "while (k > 0 && k / n > ECY_EXPENSIVE_P) k--;",
+    "orig": "k > 0",
+    "reason": "equivalent - at the shipped ECY_EXPENSIVE_P = 0.02 floor(p·n) already satisfies k/n ≤ p < (k+1)/n for every n ≤ 2e6 (checked 2026-10-26), so k/n > p is already false and this loop never runs"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "EqualityOperator",
+    "replacement": "k >= 0",
+    "src": "while (k > 0 && k / n > ECY_EXPENSIVE_P) k--;",
+    "orig": "k > 0",
+    "reason": "equivalent - at the shipped ECY_EXPENSIVE_P = 0.02 floor(p·n) already satisfies k/n ≤ p < (k+1)/n for every n ≤ 2e6 (checked 2026-10-26), so k/n > p is already false and this loop never runs"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "false",
+    "src": "while (k > 0 && k / n > ECY_EXPENSIVE_P) k--;",
+    "orig": "k > 0 && k / n > ECY_EXPENSIVE_P",
+    "reason": "equivalent - at the shipped ECY_EXPENSIVE_P = 0.02 floor(p·n) already satisfies k/n ≤ p < (k+1)/n for every n ≤ 2e6 (checked 2026-10-26), so k/n > p is already false and this loop never runs"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "true",
+    "src": "return k < n ? at(sorted, k) : Infinity; // k === n only if p ≥ 1: every value ranks expensive",
+    "orig": "k < n",
+    "reason": "equivalent - k ≤ p·n < n for p < 1, so `k < n` is always true"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "EqualityOperator",
+    "replacement": "k <= n",
+    "src": "return k < n ? at(sorted, k) : Infinity; // k === n only if p ≥ 1: every value ranks expensive",
+    "orig": "k < n",
+    "reason": "equivalent - k ≤ p·n < n for p < 1, so `k < n` is always true"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "EqualityOperator",
+    "replacement": "o.date >= acc",
+    "src": "o.date > acc ? o.date : acc,",
+    "orig": "o.date > acc",
+    "reason": "equivalent - on a tie `acc` and `o.date` are the same string"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "true",
+    "src": "const amberKey = CHART_DESCRIPTOR_OF[\"ECY\"]?.bandCuts?.find((c) => c.level === \"amber\")?.key;",
+    "orig": "c.level === \"amber\"",
+    "reason": "equivalent - ECY's bandCuts holds only its amber row, so a match-anything find returns the same row"
+  },
+  {
+    "file": "src/scorers-composite.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "true",
+    "src": "const bc = amberKey !== undefined ? finiteBandCuts([[amberKey, ecyExpensiveCutSeries(f7, dfii10).at(-1)?.cut]]) : undefined;",
+    "orig": "amberKey !== undefined",
+    "reason": "equivalent - ECY's bandCuts carries an amber row, so amberKey is always defined here"
+  },
+  {
+    "file": "src/scorers-core.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "true",
+    "src": "for (const [k, v] of entries) if (v != null && Number.isFinite(v)) out[k] = v;",
+    "orig": "v != null",
+    "reason": "equivalent - Number.isFinite(null/undefined) is already false, so the `!= null` conjunct adds nothing"
+  },
+  {
+    "file": "src/scorers-core.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "false",
+    "src": "if (datesById.has(id)) continue;",
+    "orig": "datesById.has(id)",
+    "reason": "equivalent - an id with readings AND a feedDates entry already holds exactly new Set(feedDates[id]) (its r.date is never folded in), so re-setting it is a no-op"
+  },
+  {
+    "file": "src/scorers-core.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "false",
+    "src": "return f === null ? { ...r } : { ...r, ...f };",
+    "orig": "f === null",
+    "reason": "equivalent - spreading null copies nothing, so { ...r, ...null } is { ...r }"
+  },
+  {
+    "file": "src/scorers-core.ts",
+    "mutator": "LogicalOperator",
+    "replacement": "spec.confirm && true",
+    "src": "spec.confirm ?? true,",
+    "orig": "spec.confirm ?? true",
+    "reason": "equivalent - an omitted confirm passes undefined, which takes buildReadings' `confirm = true` default parameter"
+  },
+  {
+    "file": "src/scorers-core.ts",
+    "mutator": "EqualityOperator",
+    "replacement": "j <= i",
+    "src": "for (let j = i - window; j < i; j++) if (at(values, j) > peak) peak = at(values, j);",
+    "orig": "j < i",
+    "reason": "equivalent - folding today into the peak changes it only when values[i] exceeds the prior peak, and then values[i] >= peak holds against either peak (RED / gate on); below it the peak is unchanged"
+  },
+  {
+    "file": "src/scorers-core.ts",
+    "mutator": "EqualityOperator",
+    "replacement": "at(values, j) >= peak",
+    "src": "for (let j = i - window; j < i; j++) if (at(values, j) > peak) peak = at(values, j);",
+    "orig": "at(values, j) > peak",
+    "reason": "equivalent - on a tie the peak is reassigned an equal value, and every caller only compares values[i] >= peak (±0 compare equal)"
+  },
+  {
+    "file": "src/scorers-core.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "true",
+    "src": "b !== undefined && (indicator.direction === \"LOW\" ? level < b : level > b);",
+    "orig": "b !== undefined",
+    "reason": "equivalent - a relational compare against an undefined bound is already false"
+  },
+  {
+    "file": "src/scorers-core.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "false",
+    "src": "if (levelWindow == null) throw new Error(`[${indicator.id}] geo-hybrid descriptor has no levelWindow`);",
+    "orig": "levelWindow == null",
+    "reason": "equivalent - live only under another source constant: every GEO_HYBRID_DESCRIPTOR_OF row with level \"trailing-peak\" (G1/BRENT/NG) carries a levelWindow, so the guard never fires"
+  },
+  {
+    "file": "src/scorers-core.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "false",
+    "src": "if (desc.combine === \"split\" && proximity == null)",
+    "orig": "desc.combine === \"split\" && proximity == null",
+    "reason": "equivalent - live only under another source constant: every GEO_HYBRID_DESCRIPTOR_OF row with level \"trailing-peak\" (G1/BRENT/NG) is combine \"split\" WITH a peakProximity, so the guard never fires"
+  },
+  {
+    "file": "src/scorers-core.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "true",
+    "src": "if (desc.combine === \"split\" && proximity == null)",
+    "orig": "desc.combine === \"split\"",
+    "reason": "equivalent - live only under another source constant: every GEO_HYBRID_DESCRIPTOR_OF row with level \"trailing-peak\" (G1/BRENT/NG) is combine \"split\", so the conjunct is already true"
+  },
+  {
+    "file": "src/scorers-core.ts",
+    "mutator": "EqualityOperator",
+    "replacement": "desc.combine !== \"split\"",
+    "src": "if (desc.combine === \"split\" && proximity == null)",
+    "orig": "desc.combine === \"split\"",
+    "reason": "equivalent - live only under another source constant: every GEO_HYBRID_DESCRIPTOR_OF row with level \"trailing-peak\" (G1/BRENT/NG) is combine \"split\" WITH a peakProximity, so neither form of the guard fires"
+  },
+  {
+    "file": "src/scorers-core.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "false",
+    "src": "if (velocityWindow === undefined) throw new Error(`[${indicator.id}] geo-hybrid descriptor has no velocityWindow`);",
+    "orig": "velocityWindow === undefined",
+    "reason": "equivalent - live only under another source constant: every GEO_HYBRID_DESCRIPTOR_OF row with level \"fixed\" (OVX) carries a velocityWindow, so the guard never fires"
+  },
+  {
+    "file": "src/scorers-core.ts",
+    "mutator": "EqualityOperator",
+    "replacement": "at(pool, mid) <= v",
+    "src": "if (at(pool, mid) < v) lo = mid + 1;",
+    "orig": "at(pool, mid) < v",
+    "reason": "equivalent - inserting an equal value before or after its ties leaves the same sorted array"
+  },
+  {
+    "file": "src/scorers-core.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "false",
+    "src": "if (shortLeg === undefined || shortLeg.length === 0) return { idx, shorts };",
+    "orig": "shortLeg.length === 0",
+    "reason": "equivalent - an empty short leg builds an empty date map, so the join below pushes nothing and returns the same empty idx/shorts"
+  },
+  {
+    "file": "src/scorers-core.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "true",
+    "src": "if (m !== null) out[at(idx, j)] = m;",
+    "orig": "m !== null",
+    "reason": "equivalent - `out` is pre-filled with null, so writing a null move is a no-op"
+  },
+  {
+    "file": "src/scorers-core.ts",
+    "mutator": "EqualityOperator",
+    "replacement": "at(values, j) >= hi",
+    "src": "for (let j = i - cfg.window + 1; j <= i; j++) if (at(values, j) > hi) hi = at(values, j);",
+    "orig": "at(values, j) > hi",
+    "reason": "equivalent - on a tie hi is reassigned an equal value; hi - dropPp is the same number (±0 compare equal downstream)"
+  },
+  {
+    "file": "src/scorers-core.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "true",
+    "src": "b !== null && b !== undefined && (indicator.direction === \"LOW\" ? mean < b : mean > b);",
+    "orig": "b !== undefined",
+    "reason": "equivalent - the R8 cut arrays hold number | null, never undefined, and a relational compare against undefined is false anyway"
+  },
+  {
+    "file": "src/scorers-core.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "true",
+    "src": "const velFired = (b: number | undefined): boolean => b !== undefined && move > b;",
+    "orig": "b !== undefined",
+    "reason": "equivalent - a relational compare against an undefined bound is already false"
+  },
+  {
+    "file": "src/scorers-core.ts",
+    "mutator": "ConditionalExpression",
+    "replacement": "true",
+    "src": "b !== null && b !== undefined && (indicator.direction === \"LOW\" ? level < b : level > b);",
+    "orig": "b !== undefined",
+    "reason": "equivalent - a relational compare against an undefined bound is already false"
+  }
+]

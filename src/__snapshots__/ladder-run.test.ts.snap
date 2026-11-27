@@ -1,0 +1,205 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`applyRun characterization — patch-shape vetting + event-patch arms > event-patch state: pre-read stores its preRead, a re-sent landing keeps sources, a patched called: is replaced, a pending sources-only patch keeps its pre read 1`] = `
+{
+  "pressOnly": "NOT DUE until 2026-10-09 · pre 2026-10-08: hold",
+  "recalled": "fizzle: deal, 10-08 · called: budget=open",
+  "resent": {
+    "date": "2026-10-09",
+    "escalationIf": "censure",
+    "event": "Votes",
+    "fizzleIf": "deal",
+    "holds": [
+      "T2",
+      "T3",
+    ],
+    "secondary": false,
+    "signs": [
+      "budget",
+    ],
+    "sources": [
+      {
+        "date": "2026-10-08",
+        "url": "https://rating.example/Votes",
+      },
+      {
+        "date": "2026-10-08",
+        "url": "https://budget.example/Votes",
+      },
+    ],
+    "status": "fizzle: deal, 10-08 · called: budget=open",
+    "verified": true,
+  },
+  "withRead": {
+    "date": "2026-10-09",
+    "escalationIf": "hike",
+    "event": "FOMC",
+    "fizzleIf": "hold",
+    "holds": [],
+    "preRead": {
+      "sources": [
+        "https://www.investing.com/central-banks/fed-rate-monitor",
+      ],
+      "text": "CME FedWatch hike odds",
+    },
+    "secondary": true,
+    "signs": [],
+    "status": "NOT DUE until 2026-10-09 · pre 2026-10-08: hold 84 % (investing.com)",
+  },
+}
+`;
+
+exports[`applyRun characterization — patch-shape vetting + event-patch arms > mis-shaped patch, unit and event entries: today's thrown error per case 1`] = `
+{
+  "eventNull": "TypeError: Cannot read properties of null (reading 'date')",
+  "eventUnknown": "Defect: eufin:apply — event "Nope" not found
+situation not rewritten — write all five slots (lean, slow, fast, decides, flips): event status change.",
+  "eventsAddObject": "Defect: eufin:apply — patch: eventsAdd is a list",
+  "eventsList": "Defect: eufin:apply — patch: events is an object keyed by name",
+  "nullPatch": "Defect: eufin:apply — patch: is not an object",
+  "rowNotObject": "Defect: eufin:apply — rating: a row patch is an object",
+  "situationKeyAndSlot": "Defect: eufin:apply — situation: "bogus" is not writable here (lean, slow, fast, decides, flips)
+situation.lean: a patched slot is a non-empty string",
+}
+`;
+
+exports[`applySign characterization — sign-patch vetting + merge arms > merged row state: CHANGED + draft + unblocking + block, a fail count, a bare row's searchNext + quiet, an extended stamp, an unblock 1`] = `
+{
+  "again": {
+    "block": false,
+    "blocked": undefined,
+    "checked": "2026-10-15",
+    "extendedOn": "2026-10-15",
+    "fails": undefined,
+    "finding": "ecb fact",
+    "label": "UNSOURCED",
+    "lean": "open",
+    "leanLog": undefined,
+    "measurable": "",
+    "primary": [
+      "https://ecb.example/list",
+    ],
+    "quiet": undefined,
+    "searchNext": [
+      "ecb old stem",
+      "ecb hike odds",
+    ],
+    "sources": [],
+  },
+  "changed": {
+    "block": true,
+    "blocked": {
+      "cause": "manual",
+      "lifts": [
+        "ECB",
+        "UNBLOCKING clause",
+      ],
+      "on": "2026-10-08",
+      "reviewBy": "2026-11-05",
+      "setRun": "2026-10-08",
+    },
+    "checked": "2026-10-08",
+    "extendedOn": undefined,
+    "fails": {
+      "https://ecb.example/list": 1,
+    },
+    "finding": "hike priced, 10-08",
+    "label": "CHANGED",
+    "lean": "escalation-leaning (draft)",
+    "leanLog": [
+      {
+        "date": "2026-10-07",
+        "lean": "open",
+      },
+      {
+        "date": "2026-10-08",
+        "lean": "escalation-leaning",
+      },
+    ],
+    "measurable": "date yes; BLOCKING = a hike; UNBLOCKING = a pause · draft: escalation-leaning = a ; fizzle-leaning = b",
+    "primary": [
+      "https://ecb.example/list",
+    ],
+    "quiet": undefined,
+    "searchNext": undefined,
+    "sources": [
+      {
+        "date": "2026-10-08",
+        "url": "https://x.example/8",
+      },
+      {
+        "date": "2026-10-01",
+        "url": "https://ecb.example/1",
+      },
+    ],
+  },
+  "quietRow": {
+    "block": false,
+    "blocked": undefined,
+    "checked": "2026-10-08",
+    "extendedOn": "2026-10-08",
+    "fails": undefined,
+    "finding": "ecb fact",
+    "label": "UNSOURCED",
+    "lean": "open",
+    "leanLog": undefined,
+    "measurable": "",
+    "primary": [
+      "https://ecb.example/list",
+    ],
+    "quiet": undefined,
+    "searchNext": [
+      "ecb old stem",
+      "ecb hike odds",
+    ],
+    "sources": [],
+  },
+  "unblocked": {
+    "block": false,
+    "blocked": undefined,
+    "checked": "2026-10-08",
+    "extendedOn": undefined,
+    "fails": undefined,
+    "finding": "ecb fact",
+    "label": "UNCHANGED 10-01",
+    "lean": "open",
+    "leanLog": undefined,
+    "measurable": "date yes; BLOCKING = a hike; UNBLOCKING = a pause",
+    "primary": [
+      "https://ecb.example/list",
+    ],
+    "quiet": 1,
+    "searchNext": undefined,
+    "sources": [
+      {
+        "date": "2026-10-01",
+        "url": "https://ecb.example/1",
+      },
+    ],
+  },
+}
+`;
+
+exports[`applySign characterization — sign-patch vetting + merge arms > mis-vetted sign patches: today's thrown error per case 1`] = `
+{
+  "badKeyAndTyped": "Defect: eufin:apply — ecb: "bogus" is not writable here (label, finding, lean, sources, block, failed, primary, measurableDraft, searchNext, unblocking, pin, causeFalse, measuredOnly)
+ecb: finding is a string",
+  "boardNumber": "Defect: eufin:apply — ecb: finding carries a board number "(10-07 close)" — the board column prints the live reading; say it in words (above the line, rising)",
+  "changedBare": "Defect: eufin:apply — ecb: CHANGED carries finding + lean",
+  "contextBlock": "Defect: eufin:apply — ecb: block: true needs an UNBLOCKING = … clause — add unblocking: "<clause>"
+ecb: a context row (BLOCKING = none) never blocks — a block there would hold nothing",
+  "draftBad": "Defect: eufin:apply — ecb: measurableDraft "garbage" is not \`<lean> = … ; <lean> = …\` (one clause per side, each of escalation-leaning/open/mixed/fizzle-leaning/quiet)
+ecb: lean "nope" is not one of escalation-leaning/open/mixed/fizzle-leaning/quiet/unknown (only unknown may carry \` until YYYY-MM-DD\`)",
+  "draftOnThreshold": "Defect: eufin:apply — ecb: measurable already carries a threshold",
+  "findingOffChanged": "no throw",
+  "inWindowSearchNext": "no throw",
+  "labelDateOff": "Defect: eufin:apply — ecb: STALE but the newest source 2026-10-08 is in-window — label it UNCHANGED or CHANGED",
+  "labelNotString": "Defect: eufin:apply — ecb: label "5" is not a research label",
+  "leanOffChanged": "Defect: eufin:apply — ecb: lean only on CHANGED",
+  "primaryNoReplace": "Defect: eufin:apply — ecb: searchNext is one non-empty stem with no current/past year, quarter, month or date — the plan appends the month
+ecb: primary only swaps a page failed on two runs, in place, or drops it
+ecb: dropping the last primary page would leave none — swap it instead",
+  "sourcesNotList": "Defect: eufin:apply — ecb: sources is a list of {date, url}
+ecb: searchNext is one non-empty stem with no current/past year, quarter, month or date — the plan appends the month",
+}
+`;

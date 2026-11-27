@@ -1,0 +1,1368 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`chart rail - level-branch characterization (sweep 5.6) > every live id with a registry level pair 1`] = `
+{
+  "BONOS": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "bp",
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "velocity z (worst of Δ5/Δ20 bp · 750d σ)",
+        "side": "right",
+        "unit": "",
+      },
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "secondary",
+        "label": "amber 1.5σ",
+        "level": "amber",
+        "source": "displayBand",
+        "value": 1.5,
+      },
+      {
+        "axis": "secondary",
+        "label": "red 2.5σ",
+        "level": "red",
+        "source": "displayBand",
+        "value": 2.5,
+      },
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary",
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "velZ",
+        "style": "primary",
+      },
+    ],
+  },
+  "CCC": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "%",
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "CCC OAS Δ20d",
+        "side": "right",
+        "unit": "pp",
+      },
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "metric": "velocity",
+        "source": "threshold",
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "metric": "velocity",
+        "source": "threshold",
+      },
+    ],
+    "lead": 200,
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary",
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "delta20",
+        "style": "derived",
+      },
+      {
+        "axis": "primary",
+        "compute": "delta",
+        "fit": true,
+        "label": "Δ5d",
+        "style": "trend",
+        "window": 5,
+      },
+      {
+        "axis": "primary",
+        "compute": "ma200",
+        "readout": true,
+        "style": "trend",
+        "toggle": true,
+        "tone": "alt",
+      },
+    ],
+  },
+  "EBP": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "",
+      },
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold",
+      },
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary",
+      },
+    ],
+  },
+  "ECISS": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "",
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "CISS Δ20d",
+        "side": "right",
+        "unit": "",
+      },
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "metric": "velocity",
+        "source": "threshold",
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "metric": "velocity",
+        "source": "threshold",
+      },
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary",
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "delta20",
+        "style": "derived",
+      },
+    ],
+  },
+  "F1": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "%",
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "OAS Δ30d",
+        "side": "right",
+        "unit": "pp",
+      },
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "metric": "velocity",
+        "source": "threshold",
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "metric": "velocity",
+        "source": "threshold",
+      },
+    ],
+    "lead": 200,
+    "legBands": true,
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary",
+      },
+      {
+        "axis": "secondary",
+        "compute": "roc30",
+        "style": "derived",
+      },
+      {
+        "axis": "primary",
+        "compute": "delta",
+        "fit": true,
+        "label": "Δ5d",
+        "style": "trend",
+        "window": 5,
+      },
+      {
+        "axis": "primary",
+        "compute": "ma200",
+        "readout": true,
+        "style": "trend",
+        "toggle": true,
+        "tone": "alt",
+      },
+    ],
+    "window": 504,
+  },
+  "F10": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "",
+      },
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold",
+      },
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary",
+      },
+    ],
+  },
+  "F2": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "%",
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "IG OAS Δ20d",
+        "side": "right",
+        "unit": "pp",
+      },
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "metric": "velocity",
+        "source": "threshold",
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "metric": "velocity",
+        "source": "threshold",
+      },
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary",
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "delta20",
+        "style": "derived",
+      },
+    ],
+  },
+  "F3": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "",
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "NFCI Risk Δ4w",
+        "side": "right",
+        "unit": "",
+      },
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "fromPoint": "levelAmber",
+        "label": "amber >p85 of own history",
+        "level": "amber",
+        "source": "perPoint",
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "levelRed",
+        "label": "red >p95 of own history",
+        "level": "red",
+        "source": "perPoint",
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "velAmber",
+        "label": "amber >p85 of |Δ|",
+        "level": "amber",
+        "source": "perPoint",
+      },
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary",
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "delta20",
+        "style": "derived",
+      },
+    ],
+  },
+  "HICP": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "",
+      },
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold",
+      },
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary",
+      },
+    ],
+  },
+  "OVX": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "",
+      },
+      {
+        "format": "derived",
+        "id": "secondary",
+        "label": "5-day return",
+        "side": "right",
+        "unit": "%",
+      },
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "source": "derived",
+        "value": 0.24,
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "source": "derived",
+        "value": 0.35,
+      },
+    ],
+    "renderer": "derived",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary",
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "decision",
+        "style": "derived",
+      },
+    ],
+  },
+  "R1": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "%",
+      },
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "label": "63-obs mean < 0",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "postInvAmber",
+        "label": "post-inversion amber floor on the 21-obs mean (releases on 10 above)",
+        "level": "amber",
+        "source": "perPoint",
+      },
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary",
+      },
+      {
+        "axis": "primary",
+        "fromPoint": "redMean",
+        "label": "63-obs mean",
+        "style": "scored-mean",
+      },
+    ],
+  },
+  "R5": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "",
+      },
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold",
+      },
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary",
+      },
+    ],
+  },
+  "R6": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "",
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "velocity z (Δlog5 · 250d σ)",
+        "side": "right",
+        "unit": "",
+      },
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold",
+        "style": "evt",
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold",
+        "style": "evt",
+      },
+      {
+        "axis": "secondary",
+        "label": "amber 1.5σ",
+        "level": "amber",
+        "source": "displayBand",
+        "value": 1.5,
+      },
+      {
+        "axis": "secondary",
+        "label": "red 2.5σ",
+        "level": "red",
+        "source": "displayBand",
+        "value": 2.5,
+      },
+    ],
+    "lead": 250,
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary",
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "velZ",
+        "style": "primary",
+      },
+      {
+        "axis": "primary",
+        "compute": "median",
+        "label": "1.3× 250d median",
+        "readout": true,
+        "scale": 1.3,
+        "style": "trend",
+        "toggle": true,
+        "window": 250,
+      },
+    ],
+  },
+  "T10YIE": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "%",
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "10y breakeven Δ20d",
+        "side": "right",
+        "unit": "pp",
+      },
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "metric": "velocity",
+        "source": "threshold",
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "metric": "velocity",
+        "source": "threshold",
+      },
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary",
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "delta20",
+        "style": "derived",
+      },
+    ],
+  },
+  "T5YIFR": {
+    "axes": [
+      {
+        "format": "value",
+        "id": "primary",
+        "side": "left",
+        "unit": "%",
+      },
+      {
+        "format": "value",
+        "id": "secondary",
+        "label": "5y5y forward Δ20d",
+        "side": "right",
+        "unit": "pp",
+      },
+    ],
+    "bands": [
+      {
+        "axis": "primary",
+        "level": "amber",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "primary",
+        "level": "red",
+        "metric": "level",
+        "source": "threshold",
+      },
+      {
+        "axis": "secondary",
+        "level": "amber",
+        "metric": "velocity",
+        "source": "threshold",
+      },
+      {
+        "axis": "secondary",
+        "level": "red",
+        "metric": "velocity",
+        "source": "threshold",
+      },
+    ],
+    "renderer": "single",
+    "series": [
+      {
+        "axis": "primary",
+        "fromPoint": "value",
+        "style": "primary",
+      },
+      {
+        "axis": "secondary",
+        "fromPoint": "delta20",
+        "style": "derived",
+      },
+    ],
+  },
+}
+`;
+
+exports[`chart rail - level-branch characterization (sweep 5.6) > fixture variant amberOnly 1`] = `
+{
+  "axes": [
+    {
+      "format": "value",
+      "id": "primary",
+      "side": "left",
+      "unit": "%",
+    },
+  ],
+  "bands": "context-only",
+  "renderer": "single",
+  "series": [
+    {
+      "axis": "primary",
+      "fromPoint": "value",
+      "style": "primary",
+    },
+  ],
+}
+`;
+
+exports[`chart rail - level-branch characterization (sweep 5.6) > fixture variant bare 1`] = `
+{
+  "axes": [
+    {
+      "format": "value",
+      "id": "primary",
+      "side": "left",
+      "unit": "%",
+    },
+  ],
+  "bands": [
+    {
+      "axis": "primary",
+      "level": "red",
+      "metric": "level",
+      "source": "threshold",
+    },
+  ],
+  "renderer": "single",
+  "series": [
+    {
+      "axis": "primary",
+      "fromPoint": "value",
+      "style": "primary",
+    },
+  ],
+}
+`;
+
+exports[`chart rail - level-branch characterization (sweep 5.6) > fixture variant ddless 1`] = `
+{
+  "axes": [
+    {
+      "format": "value",
+      "id": "primary",
+      "side": "left",
+      "unit": "%",
+    },
+    {
+      "format": "value",
+      "id": "secondary",
+      "label": "DGS3MO Δ over 42 obs",
+      "side": "right",
+      "unit": "%",
+    },
+  ],
+  "bands": [
+    {
+      "axis": "primary",
+      "level": "red",
+      "metric": "level",
+      "source": "threshold",
+    },
+    {
+      "axis": "primary",
+      "fromPoint": "postInvAmber",
+      "label": "post-inversion amber floor (releases on 10 closes above)",
+      "level": "amber",
+      "source": "perPoint",
+    },
+    {
+      "axis": "secondary",
+      "label": "−10bp: RED (armed)",
+      "level": "red",
+      "source": "derived",
+      "value": -0.1,
+    },
+  ],
+  "renderer": "single",
+  "series": [
+    {
+      "axis": "primary",
+      "fromPoint": "value",
+      "style": "primary",
+    },
+    {
+      "axis": "secondary",
+      "fromPoint": "shortMove",
+      "style": "primary",
+    },
+  ],
+}
+`;
+
+exports[`chart rail - level-branch characterization (sweep 5.6) > fixture variant diverged 1`] = `
+{
+  "axes": [
+    {
+      "format": "value",
+      "id": "primary",
+      "side": "left",
+      "unit": "%",
+    },
+    {
+      "format": "value",
+      "id": "secondary",
+      "label": "DGS3MO Δ over 42 obs",
+      "side": "right",
+      "unit": "%",
+    },
+  ],
+  "bands": [
+    {
+      "axis": "primary",
+      "level": "red",
+      "metric": "level",
+      "source": "threshold",
+    },
+    {
+      "axis": "primary",
+      "fromPoint": "postInvAmber",
+      "label": "post-inversion amber floor (releases on 10 closes above)",
+      "level": "amber",
+      "source": "perPoint",
+    },
+    {
+      "axis": "primary",
+      "fromPoint": "drawdownAmber",
+      "label": "regime-relative drawdown cut (126d high − 0.4pp)",
+      "level": "amber",
+      "pair": "drop",
+      "source": "perPoint",
+    },
+    {
+      "axis": "secondary",
+      "label": "−10bp: RED (armed)",
+      "level": "red",
+      "source": "derived",
+      "value": -0.1,
+    },
+    {
+      "axis": "secondary",
+      "label": "±20bp: move gate",
+      "level": "amber",
+      "source": "derived",
+      "value": 0.2,
+    },
+    {
+      "axis": "secondary",
+      "label": "±20bp: move gate",
+      "level": "amber",
+      "source": "derived",
+      "value": -0.2,
+    },
+  ],
+  "renderer": "single",
+  "series": [
+    {
+      "axis": "primary",
+      "fromPoint": "value",
+      "style": "primary",
+    },
+    {
+      "axis": "secondary",
+      "fromPoint": "shortMove",
+      "style": "primary",
+    },
+  ],
+}
+`;
+
+exports[`chart rail - level-branch characterization (sweep 5.6) > fixture variant levelCuts 1`] = `
+{
+  "axes": [
+    {
+      "format": "value",
+      "id": "primary",
+      "side": "left",
+      "unit": "%",
+    },
+    {
+      "format": "value",
+      "id": "secondary",
+      "label": "short leg Δ over 42 obs",
+      "side": "right",
+      "unit": "%",
+    },
+  ],
+  "bands": [
+    {
+      "axis": "primary",
+      "level": "red",
+      "metric": "level",
+      "source": "threshold",
+    },
+    {
+      "axis": "primary",
+      "fromPoint": "drawdownAmber",
+      "label": "regime-relative drawdown cut (126d high − 0.4pp)",
+      "level": "amber",
+      "pair": "drop",
+      "source": "perPoint",
+    },
+    {
+      "axis": "secondary",
+      "label": "±10bp: move gate",
+      "level": "amber",
+      "source": "derived",
+      "value": 0.1,
+    },
+    {
+      "axis": "secondary",
+      "label": "±10bp: move gate",
+      "level": "amber",
+      "source": "derived",
+      "value": -0.1,
+    },
+  ],
+  "renderer": "single",
+  "series": [
+    {
+      "axis": "primary",
+      "fromPoint": "value",
+      "style": "primary",
+    },
+    {
+      "axis": "secondary",
+      "fromPoint": "shortMove",
+      "style": "primary",
+    },
+  ],
+}
+`;
+
+exports[`chart rail - level-branch characterization (sweep 5.6) > fixture variant offWindow 1`] = `
+{
+  "axes": [
+    {
+      "format": "value",
+      "id": "primary",
+      "side": "left",
+      "unit": "%",
+    },
+    {
+      "format": "value",
+      "id": "secondary",
+      "label": "DGS3MO Δ over 42 obs",
+      "side": "right",
+      "unit": "%",
+    },
+  ],
+  "bands": [
+    {
+      "axis": "primary",
+      "level": "red",
+      "metric": "level",
+      "source": "threshold",
+    },
+    {
+      "axis": "primary",
+      "fromPoint": "postInvAmber",
+      "label": "post-inversion amber floor (releases on 10 closes above)",
+      "level": "amber",
+      "source": "perPoint",
+    },
+    {
+      "axis": "primary",
+      "fromPoint": "drawdownAmber",
+      "label": "regime-relative drawdown cut (126d high − 0.4pp)",
+      "level": "amber",
+      "pair": "drop",
+      "source": "perPoint",
+    },
+    {
+      "axis": "secondary",
+      "label": "−10bp: RED (armed)",
+      "level": "red",
+      "source": "derived",
+      "value": -0.1,
+    },
+  ],
+  "renderer": "single",
+  "series": [
+    {
+      "axis": "primary",
+      "fromPoint": "value",
+      "style": "primary",
+    },
+    {
+      "axis": "secondary",
+      "fromPoint": "shortMove",
+      "style": "primary",
+    },
+  ],
+}
+`;
+
+exports[`chart rail - level-branch characterization (sweep 5.6) > fixture variant raw 1`] = `
+{
+  "axes": [
+    {
+      "format": "value",
+      "id": "primary",
+      "side": "left",
+      "unit": "%",
+    },
+    {
+      "format": "value",
+      "id": "secondary",
+      "label": "DGS3MO Δ over 42 obs",
+      "side": "right",
+      "unit": "%",
+    },
+  ],
+  "bands": [
+    {
+      "axis": "primary",
+      "level": "red",
+      "metric": "level",
+      "source": "threshold",
+    },
+    {
+      "axis": "primary",
+      "fromPoint": "postInvAmber",
+      "label": "post-inversion amber floor (releases on 10 closes above)",
+      "level": "amber",
+      "source": "perPoint",
+    },
+    {
+      "axis": "primary",
+      "fromPoint": "drawdownAmber",
+      "label": "regime-relative drawdown cut (126d high − 0.4pp)",
+      "level": "amber",
+      "pair": "drop",
+      "source": "perPoint",
+    },
+    {
+      "axis": "secondary",
+      "label": "−10bp: RED (armed), else move gate",
+      "level": "red",
+      "source": "derived",
+      "value": -0.1,
+    },
+    {
+      "axis": "secondary",
+      "label": "±10bp: move gate",
+      "level": "amber",
+      "source": "derived",
+      "value": 0.1,
+    },
+  ],
+  "renderer": "single",
+  "series": [
+    {
+      "axis": "primary",
+      "fromPoint": "value",
+      "style": "primary",
+    },
+    {
+      "axis": "secondary",
+      "fromPoint": "shortMove",
+      "style": "primary",
+    },
+  ],
+}
+`;
+
+exports[`chart rail - level-branch characterization (sweep 5.6) > fixture variant redOnly 1`] = `
+{
+  "axes": [
+    {
+      "format": "value",
+      "id": "primary",
+      "side": "left",
+      "unit": "%",
+    },
+    {
+      "format": "value",
+      "id": "secondary",
+      "label": "DGS3MO Δ over 42 obs",
+      "side": "right",
+      "unit": "%",
+    },
+  ],
+  "bands": [
+    {
+      "axis": "primary",
+      "level": "red",
+      "metric": "level",
+      "source": "threshold",
+    },
+    {
+      "axis": "primary",
+      "fromPoint": "postInvAmber",
+      "label": "post-inversion amber floor (releases on 10 closes above)",
+      "level": "amber",
+      "source": "perPoint",
+    },
+    {
+      "axis": "primary",
+      "fromPoint": "drawdownAmber",
+      "label": "regime-relative drawdown cut (126d high − 0.4pp)",
+      "level": "amber",
+      "pair": "drop",
+      "source": "perPoint",
+    },
+    {
+      "axis": "secondary",
+      "label": "−10bp: RED (armed), else move gate",
+      "level": "red",
+      "source": "derived",
+      "value": -0.1,
+    },
+    {
+      "axis": "secondary",
+      "label": "±10bp: move gate",
+      "level": "amber",
+      "source": "derived",
+      "value": 0.1,
+    },
+  ],
+  "renderer": "single",
+  "series": [
+    {
+      "axis": "primary",
+      "fromPoint": "value",
+      "style": "primary",
+    },
+    {
+      "axis": "secondary",
+      "fromPoint": "shortMove",
+      "style": "primary",
+    },
+  ],
+}
+`;
+
+exports[`chart rail - level-branch characterization (sweep 5.6) > fixture variant rungless 1`] = `
+{
+  "axes": [
+    {
+      "format": "value",
+      "id": "primary",
+      "side": "left",
+      "unit": "%",
+    },
+    {
+      "format": "value",
+      "id": "secondary",
+      "label": "short leg Δ over 42 obs",
+      "side": "right",
+      "unit": "%",
+    },
+  ],
+  "bands": [
+    {
+      "axis": "primary",
+      "level": "red",
+      "metric": "level",
+      "source": "threshold",
+    },
+    {
+      "axis": "primary",
+      "fromPoint": "drawdownAmber",
+      "label": "regime-relative drawdown cut (126d high − 0.4pp)",
+      "level": "amber",
+      "pair": "drop",
+      "source": "perPoint",
+    },
+    {
+      "axis": "secondary",
+      "label": "±10bp: move gate",
+      "level": "amber",
+      "source": "derived",
+      "value": 0.1,
+    },
+    {
+      "axis": "secondary",
+      "label": "±10bp: move gate",
+      "level": "amber",
+      "source": "derived",
+      "value": -0.1,
+    },
+  ],
+  "renderer": "single",
+  "series": [
+    {
+      "axis": "primary",
+      "fromPoint": "value",
+      "style": "primary",
+    },
+    {
+      "axis": "secondary",
+      "fromPoint": "shortMove",
+      "style": "primary",
+    },
+  ],
+}
+`;
+
+exports[`chart rail - level-branch characterization (sweep 5.6) > fixture variant smoothedNoRedWindow (R8's row shape on the generic route) 1`] = `
+{
+  "axes": [
+    {
+      "format": "value",
+      "id": "primary",
+      "side": "left",
+      "unit": "%",
+    },
+  ],
+  "bands": [
+    {
+      "axis": "primary",
+      "level": "red",
+      "metric": "level",
+      "source": "threshold",
+    },
+  ],
+  "renderer": "single",
+  "series": [
+    {
+      "axis": "primary",
+      "fromPoint": "value",
+      "style": "primary",
+    },
+  ],
+}
+`;
+
+exports[`chart rail - level-branch characterization (sweep 5.6) > fixture variant smoothedRedWindowWithDd 1`] = `
+{
+  "axes": [
+    {
+      "format": "value",
+      "id": "primary",
+      "side": "left",
+      "unit": "%",
+    },
+  ],
+  "bands": [
+    {
+      "axis": "primary",
+      "label": "63-obs mean < 0",
+      "level": "red",
+      "metric": "level",
+      "source": "threshold",
+    },
+    {
+      "axis": "primary",
+      "fromPoint": "postInvAmber",
+      "label": "post-inversion amber floor on the 21-obs mean (releases on 10 above)",
+      "level": "amber",
+      "source": "perPoint",
+    },
+  ],
+  "renderer": "single",
+  "series": [
+    {
+      "axis": "primary",
+      "fromPoint": "value",
+      "style": "primary",
+    },
+    {
+      "axis": "primary",
+      "fromPoint": "redMean",
+      "label": "63-obs mean",
+      "style": "scored-mean",
+    },
+  ],
+}
+`;

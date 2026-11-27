@@ -1,0 +1,7 @@
+# ripgrep-only: keeps the archives out of Claude's default Grep/Glob results.
+# An explicit-path search (Grep path=docs/plans/archive) still reaches it.
+# git and Bash grep (ugrep) do not read this file.
+# Never use a permissions.deny Read() rule for this: it also blocks Bash
+# (ls/cat) and explicit-path Grep, so a task that must touch the archive
+# burns retries on denials.
+docs/plans/archive/

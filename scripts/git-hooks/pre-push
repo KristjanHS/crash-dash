@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+#
+# pre-push (BLOCKING) — tracked source; `make setup-hooks` installs it to .git/hooks/pre-push.
+#
+# On a push whose range touches src/store* or supabase/migrations/**, run the integration
+# suite against the isolated crash-dash-ci stack and BLOCK the push unless it is green.
+# Every push first runs scripts/check-ruling-ids.ts (no net-new plan-local ruling IDs in code prose).
+#
+# Why blocking, and why here rather than in CI: integration.yml's `push:` trigger is
+# deliberately still commented out. A push-triggered check would fire AFTER the migration
+# already applied to prod (`make ship` migrates locally), so it could only report damage, and
+# a push made while this WSL host is asleep would hang as a permanently-queued check. This
+# hook fails at the moment of action instead, with no runner required.
+#
+# The sanctioned route (`make ship`) already ran the DB-armed vitest in §2 and pushes with
+# SKIP_TESTS=1, so this hook exists to cover the BYPASS path: a raw `git push` that never went
+# through ship.sh. On that path it is the only DB-backed gate there is.
+#
+#   SKIP_TESTS=1 git push   → skip the integration run (what ship.sh uses — it already tested)
+#   git push --no-verify    → bypass this hook (git builtin)
+#
+# Fails closed: if the suite cannot RUN (CI stack won't start, docker relay down) that is a
+# non-zero exit and the push is blocked too. Deliberate — "couldn't verify" must not read as
+# "verified". Use one of the two escapes above when you have decided the risk is acceptable.
+#
+set -uo pipefail   # not `-e`: we handle the suite's exit code explicitly below
+
+REPO="$(git rev-parse --show-toplevel)"
+
+# git feeds "<local ref> <local sha> <remote ref> <remote sha>" lines on stdin. Build the
+# push range: origin/main...<sha> for a new branch (zero remote sha), origin/main..HEAD on empty stdin.
+ZERO="0000000000000000000000000000000000000000"
+range=""
+while read -r _local_ref local_sha _remote_ref remote_sha; do
+  [ -z "${local_sha:-}" ] && continue
+  if [ "${remote_sha:-$ZERO}" = "$ZERO" ]; then
+    range="origin/main...$local_sha"
+  else
+    range="$remote_sha..$local_sha"
+  fi
+done
+[ -z "$range" ] && range="origin/main..HEAD"
+
+# Ruling-ID lint runs before the SKIP_TESTS exit: `make ship` pushes with SKIP_TESTS=1.
+# A code-free push (the `backups` DR worktree) has no code diff and no scripts/ — skip, or lint from the main checkout.
+code_diff="$(git diff -U0 -M --no-color --no-ext-diff --src-prefix=a/ --dst-prefix=b/ "$range" -- src api scripts public 2>/dev/null || true)"
+if [ -n "$code_diff" ]; then
+  lint_root="$REPO"
+  [ -f "$lint_root/scripts/check-ruling-ids.ts" ] || lint_root="$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")"
+  printf '%s\n' "$code_diff" | (cd "$lint_root" && npx --no-install tsx scripts/check-ruling-ids.ts) || exit 1
+fi
+
+[ "${SKIP_TESTS:-0}" = "1" ] && { echo "[pre-push] SKIP_TESTS=1 — skipping integration check"; exit 0; }
+
+changed="$(git diff --name-only "$range" 2>/dev/null || git diff --name-only origin/main..HEAD 2>/dev/null || true)"
+
+if ! printf '%s\n' "$changed" | grep -qE '^(src/store|supabase/migrations/)'; then
+  exit 0   # nothing store/migration-touching — fast, silent exit
+fi
+
+echo "[pre-push] store/migration change detected — running integration suite (BLOCKING)."
+if bash "$REPO/scripts/run-integration-tests.sh" >&2; then
+  echo "[pre-push] integration green ✓"
+  exit 0
+fi
+
+cat >&2 <<'MSG'
+[pre-push] ✖ PUSH BLOCKED — the DB-backed integration suite did not pass.
+[pre-push]
+[pre-push]   This push touches src/store* or supabase/migrations/**, and the suite either
+[pre-push]   failed or could not run at all (CI stack down / docker relay off count as failure
+[pre-push]   — "couldn't verify" is not "verified").
+[pre-push]
+[pre-push]   Fix it:            npm run check:integration
+[pre-push]   Ship properly:     make ship          (runs this suite, migrates, deploys, pushes)
+[pre-push]   Override:          SKIP_TESTS=1 git push       (or: git push --no-verify)
+MSG
+exit 1

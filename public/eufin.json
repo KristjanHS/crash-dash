@@ -1,0 +1,1227 @@
+{
+  "run": "2026-11-02",
+  "rules": [
+    "A clean outcome on all three deciding events (budget part 1 passes, Moody's affirms, gilts calm after the Budget) is a same-day catalyst: taking T2 together with T1 is then defensible. Not a trigger by itself.",
+    "An escalation outcome on any one deciding event ends re-entry on the fizzle path: no tranche is bought, every filled tranche is reviewed against the bear-path levels — a user step off-run, not a skill call."
+  ],
+  "brief": {
+    "fund": "EXSH (`EXSH.DE`) — a 30-stock dividend basket, never a euro-bank fund: ~62% financials (life insurers + UK/NL banks), ~29% UK (gilts/GBP matter, not only Bunds/ECB), ~21% NL, ~24% France of which banks ≈ 6% (French sovereign risk is an indirect channel). Composition as of 2026-08-31; re-ask the user when stale.",
+    "primaryTier": [
+      {
+        "name": "agency",
+        "hosts": [
+          "moodys.com",
+          "spglobal.com",
+          "fitchratings.com"
+        ]
+      },
+      {
+        "name": "ECB",
+        "hosts": [
+          "ecb.europa.eu",
+          "bankingsupervision.europa.eu"
+        ]
+      },
+      {
+        "name": "HM Treasury",
+        "hosts": [
+          "gov.uk"
+        ]
+      },
+      {
+        "name": "Assemblée nationale",
+        "hosts": [
+          "assemblee-nationale.fr"
+        ]
+      }
+    ],
+    "holdsPolicy": "`holds: [\"T2\",\"T3\"]` on the deciding events (the French budget votes, Moody's, the UK Budget); a fizzle outcome frees them on the next run, with no pad — the relief is mostly priced on day 0–1.",
+    "gates": "The UK Budget is also a gate inside the fast set's T2/T3 tally — the same event, not a second signal.",
+    "eventScope": "French or UK sovereign debt, or the UK bank tax"
+  },
+  "signs": [
+    {
+      "sign": "Rating reviews (FR / IT / UK)",
+      "label": "CHANGED",
+      "lean": "fizzle-leaning (draft)",
+      "finding": "Fitch moved France's outlook to negative from stable in an unscheduled review on 10-30, affirming A+ and citing a credit profile that deteriorated since its August review, a 2027 deficit it sees staying wide and a third-quarter GDP contraction; it credits the banks' capital buffers with limiting the state's contingent liabilities and sets its next review by end-February 2027 (Bloomberg, Yahoo Finance 10-30). No cut, no French-bank rating action. Moody's kept Aa3 negative on 10-23 (its rating assumes a deficit-cutting 2027 budget is adopted). S&P sits A+ stable and reviews Italy 11-13 and France 11-27 (orafinanza, AFT). Italy: Moody's Baa2 stable 09-25, no November review",
+      "why": "a downgrade can force sellers out (index and collateral rules) and drag the country's banks down with it (Moody's cut 7 French banks in Dec 2024)",
+      "measurable": "date yes, outcome no; BLOCKING = a sovereign or bank downgrade · draft: escalation-leaning = an agency cuts France, Italy or the UK, or puts a bank of theirs on review for downgrade ; open = a review is dated inside the window with no outcome yet ; fizzle-leaning = the dated review affirms the rating or only moves the outlook ; quiet = no review dated inside the window",
+      "block": false,
+      "checked": "2026-11-02",
+      "due": "2026-11-05",
+      "primary": [],
+      "press": [
+        "https://countryeconomy.com/ratings/france"
+      ],
+      "search": [
+        "Moody's note souveraine France",
+        "rating Italia Moody's DBRS Fitch",
+        "UK sovereign credit rating review"
+      ],
+      "seed": [
+        "https://investing.com/news/stock-market-news/french-bond-investors-brace-for-moodys-rating-review-3677896",
+        "https://www.france24.com/en/europe/20251025-moody-s-keeps-france-s-credit-rating-but-warns-about-negative-outlook",
+        "https://fortune.com/europe/2024/12/19/moodys-downgrades-7-french-banks-debt-political-chaos-spill-2025/",
+        "https://www.mnimarkets.com/articles/mondays-early-widening-vs-bunds-reversed-still-lagging-iberians-and-btps-1758006781554",
+        "https://www.euronews.com/2025/10/20/french-bond-prices-decline-after-unexpected-sp-downgrade",
+        "https://en.ilsole24ore.com/art/sp-updates-italias-rating-expected-to-be-confirmed-as-went-the-other-reviews-2026-AIVBLj4C"
+      ],
+      "sources": [
+        {
+          "date": "2026-10-30",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/france-gets-budget-warning-as-fitch-turns-negative-on-rating"
+        },
+        {
+          "date": "2026-10-30",
+          "url": "https://finance.yahoo.com/economy/policy/articles/fitch-cuts-france-outlook-negative-220454290.html"
+        }
+      ],
+      "extendedOn": "2026-11-02",
+      "leanLog": [
+        {
+          "date": "2026-10-23",
+          "lean": "open"
+        },
+        {
+          "date": "2026-10-25",
+          "lean": "fizzle-leaning"
+        }
+      ]
+    },
+    {
+      "sign": "Budget votes, 49.3, no-confidence",
+      "label": "UNCHANGED 10-28",
+      "lean": "open (draft)",
+      "finding": "The solemn vote on the PLF 2027 revenue part stays dated 11-03 (afternoon) after the article-by-article examination running 10-27 to 11-02; the ensemble vote is 11-17 and the 70-day constitutional clock runs out 12-09 (Assemblée agenda, franceinfo). No 49.3 and no censure motion: the dossier's newest entries are committee opinions of 10-22 and 10-28, no public-session entry since 10-13 (Assemblée dossier, read 11-02). Earlier: the PS motion de rejet préalable was rejected 236–149 on 10-13 with the RN voting against it so the debate runs; commission rejected the revenue part 31–3 on 10-09. Standing positions: Glucksmann 'pas de censure a priori' but censure if the text does not move; Lescure does not rule out ordinances; LFI would censure on 49.3; RN 'jamais de censure automatique', pension de-indexation a red line. Adoption before year-end uncertain (abcbourse 10-21)",
+      "why": "a fallen government with no budget leaves the deficit unaddressed and the risk carries into the April 2027 election; in Dec 2024 and Sep 2025 spreads repriced, but banks recovered within months",
+      "measurable": "dates yes; BLOCKING = none (context row) · draft: escalation-leaning = a censure motion is filed or announced, the government invokes 49.3 on the revenue part, or a loi spéciale / ordinances are announced ; open = the debate runs with censure threatened but neither filed nor withdrawn ; fizzle-leaning = the PS or RN says it will not censure, a deal is reported, or part 1 passes a solemn vote ; quiet = no budget-vote news inside the window",
+      "block": false,
+      "checked": "2026-11-02",
+      "due": "2026-11-02",
+      "primary": [
+        "https://www.assemblee-nationale.fr/dyn/17/dossiers/PLF_2027"
+      ],
+      "search": [
+        "PLF 2027 vote Assemblée 49.3 censure"
+      ],
+      "seed": [
+        "https://www.franceinfo.fr/politique/parlement-francais/assemblee-nationale/les-dates-cles-du-calendrier-parlementaire-pour-le-projet-de-loi-de-finance-2027_8159534.html",
+        "https://www.ilfoglio.it/en/economy/2026/10/01/news/lecornus-government-and-the-54-billion-save-france-budget--409252",
+        "https://www.cnbc.com/2026/09/24/france-budget-debt-deficit-government.html",
+        "https://www.techtimes.com/articles/328349/20260930/french-borrowing-costs-cross-2012-threshold-54-billion-budget-vote-nears.htm",
+        "https://www.zerohedge.com/economics/french-bonds-rally-le-pen-unveils-shadow-budget-pull-france-back-fiscal-brink",
+        "https://www.gurufocus.com/news/9109892/france-and-germany-10year-bond-yield-spread-narrows-amid-market-movements"
+      ],
+      "sources": [
+        {
+          "date": "2026-10-28",
+          "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/PLF_2027"
+        }
+      ],
+      "extendedOn": "2026-11-02",
+      "leanLog": [
+        {
+          "date": "2026-10-18",
+          "lean": "fizzle-leaning"
+        },
+        {
+          "date": "2026-10-23",
+          "lean": "open"
+        }
+      ]
+    },
+    {
+      "sign": "ECB backstop (TPI)",
+      "label": "CHANGED",
+      "lean": "mixed (draft)",
+      "finding": "The 10-29 decision text names the TPI as 'available to counter unwarranted, disorderly market dynamics' and the Council 'stands ready to adjust all of its instruments'; asked about French spreads, Lagarde said instruments are available for unwarranted and disorderly moves under published criteria, that there is 'no behind-the-scene arrangement', that redemptions keep running off without purchases, and that 'November is a pretty heavy month when it comes to France' (ECB 10-29). Tools named, conditions not declared met, no buying. Earlier: Lagarde mid-October 'the first solution lies at home in France'; BdF's Moulin 10-16 saw no fragmentation",
+      "why": "without a backstop, spreads can keep widening (2011 until LTRO / \"whatever it takes\")",
+      "measurable": "no (read ECB speeches); BLOCKING = none (context row) · draft: escalation-leaning = the ECB or a national governor rules out support for France or ties it to conditions France visibly fails ; mixed = the ECB says it has tools but the conditions for intervention are not met ; fizzle-leaning = the ECB signals TPI readiness or buys ; quiet = no ECB comment on spreads inside the window",
+      "block": false,
+      "checked": "2026-11-02",
+      "due": "2026-11-05",
+      "primary": [
+        "https://www.ecb.europa.eu/rss/press.html"
+      ],
+      "search": [
+        "ECB TPI France spreads Lagarde Nagel"
+      ],
+      "seed": [
+        "https://www.globalbankingandfinance.com/ecb-focuses-inflation-bond-spreads-nagel/",
+        "https://www.techtimes.com/articles/328563/20261005/france-bond-yields-top-italy-greece-ecb-crisis-rescue-tool-blocked.htm"
+      ],
+      "sources": [
+        {
+          "date": "2026-10-29",
+          "url": "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp261029~9a493adf17.en.html"
+        },
+        {
+          "date": "2026-10-29",
+          "url": "https://www.ecb.europa.eu/press/press_conference/monetary-policy-statement/2026/html/ecb.is261029~5c5ffe99e5.en.html"
+        }
+      ],
+      "extendedOn": "2026-11-02"
+    },
+    {
+      "sign": "Sovereign–bank doom loop",
+      "label": "UNCHANGED 10-30",
+      "lean": "mixed (draft)",
+      "finding": "Fitch's 10-30 outlook move to negative on France explicitly credits the banking sector's capital buffers with limiting contingent liabilities for the state, and took no bank action (Yahoo Finance 10-30); Moody's left the French banks untouched on 10-23. Lagarde was asked on 10-29 why French banks' sovereign holdings fell less than Italian or German peers and gave no supervisory signal (ECB 10-29). French sovereign protection is at its dearest since 2013 (finews 10-22); French banks still trade as proxies for the sovereign, their 5y CDS above European peers (AlphaValue via S&P Global MI 10-13; Bloomberg via France Épargne 10-05); ACPR calls their domestic sovereign holdings small relative to assets. No bank-specific CDS print or supervisory action in the window (ECB banking supervision feed through 10-30)",
+      "why": "banks loaded with home-country bonds take losses, funding gets dearer, and the state has to back the banks (Italy 2018, 2011)",
+      "measurable": "partly (EBA transparency exercise, bank vs sovereign CDS); BLOCKING = a sovereign or bank downgrade, or an institution needing support or resolution · draft: escalation-leaning = a French bank's CDS or rating moves with the sovereign and an agency puts a bank on review ; mixed = bank CDS track the sovereign above peers with no rating action ; fizzle-leaning = bank CDS decouple from the sovereign or tighten back toward peers ; quiet = no bank-CDS or exposure report inside the window",
+      "block": false,
+      "checked": "2026-11-02",
+      "due": "2026-11-05",
+      "primary": [
+        "https://www.bankingsupervision.europa.eu/rss/press.html"
+      ],
+      "search": [
+        "banques françaises CDS exposition dette souveraine",
+        "French bank CDS sovereign exposure"
+      ],
+      "seed": [
+        "https://global.morningstar.com/en-gb/stocks/french-bank-stocks-rattled-by-political-turmoil-market-reaction-looks-overdone",
+        "https://www.roic.ai/news/french-sovereign-risk-premium-spikes-as-five-year-cds-hits-81-basis-points-10-02-2026"
+      ],
+      "sources": [
+        {
+          "date": "2026-10-30",
+          "url": "https://finance.yahoo.com/economy/policy/articles/fitch-cuts-france-outlook-negative-220454290.html"
+        },
+        {
+          "date": "2026-10-30",
+          "url": "https://www.bankingsupervision.europa.eu/rss/press.html"
+        }
+      ],
+      "extendedOn": "2026-11-02"
+    },
+    {
+      "sign": "Bank / insurer windfall taxes",
+      "label": "CHANGED",
+      "lean": "fizzle-leaning (draft)",
+      "finding": "UK Budget 10-28: the bank corporation-tax surcharge rises from 3 % to 6 % for 15 months, 01-2027 to 03-2028, 'will not be extended', the £100m allowance untouched, no new windfall levy and no insurer tax (gov.uk speech and surcharge policy paper 10-28; ITV 10-28 'less than some feared'); below the 8 % restoration reported pre-Budget. France: PLF 2027 raises the TSCA on optional motor guarantees only (Meilleurtaux 10-16); no bank levy in the text. Italy: nothing in the window",
+      "why": "earnings hit directly and the sector de-rates (Italy Aug 2023: −8% in a day, later diluted)",
+      "measurable": "no, until a draft exists; BLOCKING = a tabled tax · draft: escalation-leaning = a bank or insurer levy is tabled in a budget text ; open = a levy is reported under consideration with no text ; fizzle-leaning = the government rules out a new levy or the Budget carries none ; quiet = no levy report inside the window",
+      "block": false,
+      "checked": "2026-11-02",
+      "due": "2026-11-09",
+      "primary": [
+        "https://www.gov.uk/search/news-and-communications?organisations[]=hm-treasury&order=updated-newest"
+      ],
+      "search": [
+        "UK bank windfall tax surcharge Budget",
+        "taxe banques assureurs PLF 2027",
+        "tassa extraprofitti banche 2027"
+      ],
+      "seed": [
+        "https://bmmagazine.co.uk/news/healey-bank-windfall-tax-talks/",
+        "https://www.moneyvox.fr/assurance/actualites/110601/budget-2027-le-gouvernement-veut-renouveler-cette-taxe-de-2-05-sur-les-mutuelles-sante"
+      ],
+      "sources": [
+        {
+          "date": "2026-10-28",
+          "url": "https://www.gov.uk/government/speeches/budget-2026-speech"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://www.gov.uk/government/publications/increase-in-the-banking-surcharge-rate-for-a-temporary-period/increase-in-rate-of-banking-surcharge-for-temporary-period"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://www.itv.com/news/2026-10-28/bank-taxes-to-rise-by-less-than-some-feared-to-help-fund-breathing-space"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://paymentexpert.com/2026/10/28/uk-budget-2026-bank-surcharge-payment/"
+        }
+      ],
+      "extendedOn": "2026-11-02",
+      "leanLog": [
+        {
+          "date": "2026-10-28",
+          "lean": "open"
+        },
+        {
+          "date": "2026-11-02",
+          "lean": "fizzle-leaning"
+        }
+      ]
+    },
+    {
+      "sign": "Insurer lapse / sovereign-holding risk",
+      "label": "CHANGED",
+      "lean": "fizzle-leaning (draft)",
+      "finding": "France Assureurs September flows (10-29): contributions a record for a September, up 2 % y/y; payouts up 6 % y/y; net inflow still positive and only slightly below a year earlier, with euro funds net positive and unit-linked the bulk; outstandings up 4.6 % y/y (Option Finance, MoneyVox, Previssima 10-29). Surrenders drift up but inflows hold. No ACPR note on euro-fund surrenders (feed through 10-22); no UK LDI collateral-call report",
+      "why": "rising yields usually help solvency; the danger is savers surrendering French fonds euros life policies when new bonds pay more (ACPR watched this in 2022–23), plus 2022-style UK LDI collateral calls",
+      "measurable": "partly (French 10y yield vs credited rate, France Assureurs flows); BLOCKING = an institution needing support or resolution · draft: escalation-leaning = France Assureurs or ACPR reports rising euro-fund surrenders, or UK schemes face collateral calls ; fizzle-leaning = net inflows hold with surrenders flat or falling ; quiet = no flows or collateral report inside the window",
+      "block": false,
+      "checked": "2026-11-02",
+      "due": "2026-11-09",
+      "primary": [
+        "https://acpr.banque-france.fr/fr/communiques-de-presse"
+      ],
+      "search": [
+        "rachats fonds euros assurance vie collecte France Assureurs",
+        "UK pension LDI collateral calls gilts"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-10-29",
+          "url": "https://tribune-assurance.optionfinance.fr/depeches/d/2026-10-29-assurance-vie-collecte-record-pour-un-mois-de-septembre-a-154-milliards-deuros.html"
+        },
+        {
+          "date": "2026-10-29",
+          "url": "https://www.moneyvox.fr/assurance-vie/actualites/111031/assurance-vie-connait-le-meilleur-mois-de-septembre-de-son-histoire-15-4-milliards-euros-deposes"
+        },
+        {
+          "date": "2026-10-29",
+          "url": "https://www.previssima.fr/actualite/assurance-vie-septembre-2026-un-nouveau-mois-record.html"
+        }
+      ],
+      "extendedOn": "2026-11-02",
+      "leanLog": [
+        {
+          "date": "2026-10-23",
+          "lean": "quiet"
+        },
+        {
+          "date": "2026-11-02",
+          "lean": "fizzle-leaning"
+        }
+      ]
+    },
+    {
+      "sign": "Supervisors pressuring dividends / buybacks",
+      "label": "QUIET since 10-26 https://www.bankingsupervision.europa.eu/rss/press.html",
+      "lean": "quiet (draft)",
+      "finding": "nothing found",
+      "why": "a direct hit to a dividend fund like EXSH (ECB 2020 recommendation)",
+      "measurable": "no; BLOCKING = a supervisor's payout restriction · draft: escalation-leaning = the ECB or PRA restricts or recommends against distributions ; open = a supervisor warns on payouts without a measure ; quiet = no supervisor comment on payouts inside the window",
+      "block": false,
+      "checked": "2026-11-02",
+      "due": "2026-11-09",
+      "primary": [
+        "https://www.bankingsupervision.europa.eu/rss/press.html"
+      ],
+      "search": [
+        "ECB banks dividend buyback restriction",
+        "PRA bank dividend restriction"
+      ],
+      "seed": [
+        "https://www.bankingsupervision.europa.eu/press/pr/date/2021/html/ssm.pr210723~7ef2cdf6b7.en.html"
+      ],
+      "sources": [],
+      "extendedOn": "2026-11-02"
+    },
+    {
+      "sign": "Single-institution stress",
+      "label": "QUIET since 10-26 https://www.bankingsupervision.europa.eu/rss/press.html",
+      "lean": "fizzle-leaning (draft)",
+      "finding": "none found",
+      "why": "CS/SVB 2023 came from one name, not from macro data",
+      "measurable": "partly (single-name CDS, AT1); BLOCKING = an institution needing support or resolution · draft: escalation-leaning = a named bank's CDS or AT1 gaps versus peers, or a liquidity or support report ; fizzle-leaning = sector-wide moves with no name standing out ; quiet = no bank-stress report inside the window",
+      "block": false,
+      "checked": "2026-11-02",
+      "due": "2026-11-09",
+      "primary": [
+        "https://www.bankingsupervision.europa.eu/rss/press.html"
+      ],
+      "search": [
+        "European bank CDS spike liquidity AT1"
+      ],
+      "seed": [],
+      "sources": [],
+      "extendedOn": "2026-11-02"
+    },
+    {
+      "sign": "Earnings revisions / guidance tone",
+      "label": "HELD until 2026-11-04",
+      "lean": "fizzle-leaning (draft)",
+      "finding": "Barclays Q3 (10-21): the impairment charge fell a fifth year on year and the quarterly loan-loss rate came in well below last year's, with full-year guidance kept 'around the top of the 50–60 bp through-the-cycle range' — cautious, not raised; income up, RoTE held. HSBC published its 3Q26 earnings release on 10-27 (hsbc.com); its ECL charge and guidance were not read this run. BNP date not found",
+      "why": "a fizzle is prices falling while earnings hold (a de-rating); a bear shows up as cost-of-risk guidance being raised",
+      "measurable": "on results dates; BLOCKING = none (context row) · draft: escalation-leaning = a held bank raises cost-of-risk guidance or cuts payout ; mixed = results split across the roster ; fizzle-leaning = cost of risk at or below guidance with payouts kept ; quiet = no held-bank results inside the window",
+      "block": false,
+      "checked": "2026-10-28",
+      "due": "2026-11-04",
+      "primary": [],
+      "search": [
+        "Barclays Q3 2026 results cost of risk",
+        "HSBC Q3 2026 results",
+        "BNP Paribas résultats T3 2026 coût du risque"
+      ],
+      "seed": [],
+      "sources": [
+        {
+          "date": "2026-10-27",
+          "url": "https://www.hsbc.com/investors/results-and-announcements"
+        },
+        {
+          "date": "2026-10-21",
+          "url": "https://www.sec.gov/Archives/edgar/data/0000312069/000031206926000240/bplcq326resultsannouncement.htm"
+        }
+      ],
+      "leanLog": [
+        {
+          "date": "2026-10-23",
+          "lean": "unknown"
+        },
+        {
+          "date": "2026-10-23",
+          "lean": "fizzle-leaning"
+        }
+      ]
+    },
+    {
+      "sign": "UK fiscal event",
+      "label": "CHANGED",
+      "lean": "fizzle-leaning (draft)",
+      "finding": "Budget delivered 10-28: the OBR puts headroom against the stability rule at £15bn in 2029/30 rising to £22bn in 2030/31, the rules met in the third forecast year; banks pay an extra 3 points of surcharge for 15 months, no new levy (gov.uk speech 10-28). Gilts steady, the Budget 'broadly consistent with market expectations', outperforming Treasuries on the day, a 'boring Budget' in a fund manager's words (Portfolio Adviser 10-28); BBH calls it neutral for sterling and gilts with slightly more issuance (FXStreet 10-29)",
+      "why": "a budget the UK bond market rejects risks a 2022-style spiral; that ended with a BoE backstop and a U-turn (a fizzle for banks)",
+      "measurable": "dated; BLOCKING = a tabled tax · draft: escalation-leaning = gilts sell off on the day or a bank levy lands beyond a surcharge restoration ; open = the Budget is dated with headroom reported thin and no measures tabled ; fizzle-leaning = gilts rally on the day with no new bank levy ; quiet = no Budget or UK bond report inside the window",
+      "block": false,
+      "checked": "2026-11-02",
+      "due": "2026-11-09",
+      "primary": [
+        "https://www.gov.uk/search/news-and-communications?organisations[]=hm-treasury&order=updated-newest",
+        "https://obr.uk/"
+      ],
+      "search": [
+        "UK Autumn Budget gilts fiscal headroom"
+      ],
+      "seed": [
+        "https://www.optionstradingreport.com/2026/09/uk-gilts-near-6-the-bond-market-is-writing-the-budget/"
+      ],
+      "sources": [
+        {
+          "date": "2026-10-29",
+          "url": "https://www.fxstreet.com/news/british-pound-budget-impact-limited-for-sterling-bbh-202610291209"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://www.gov.uk/government/speeches/budget-2026-speech"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://portfolio-adviser.com/autumn-budget-2026-gilts-steady-after-budget-broadly-consistent-with-market-expectations/"
+        },
+        {
+          "date": "2026-10-26",
+          "url": "https://www.gov.uk/search/news-and-communications?organisations[]=hm-treasury&order=updated-newest"
+        }
+      ],
+      "extendedOn": "2026-11-02",
+      "leanLog": [
+        {
+          "date": "2026-10-28",
+          "lean": "open"
+        },
+        {
+          "date": "2026-11-02",
+          "lean": "fizzle-leaning"
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "date": "2026-11-03",
+      "event": "French budget votes (+ any 49.3 / no-confidence motion)",
+      "signs": [
+        "Budget votes, 49.3, no-confidence"
+      ],
+      "escalationIf": "a no-confidence motion passes, or the budget slides into a loi spéciale",
+      "fizzleIf": "a deal with the PS, or RN abstains — watch the 1–2 days before the vote: the PS saying it will not vote censure and the French–German spread tightening (the Oct 2025 survival was priced 2 days early)",
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "NOT DUE until 2026-11-03",
+      "verified": true,
+      "sources": [
+        {
+          "date": "2026-10-23",
+          "url": "https://www.assemblee-nationale.fr/dyn/actualites-accueil-hub"
+        }
+      ]
+    }
+  ],
+  "calendar": [
+    {
+      "date": "2026-11-05",
+      "sign": "UK fiscal event",
+      "event": "BoE MPC",
+      "matters": "UK rates path",
+      "verified": true,
+      "verifyChecked": "2026-10-17"
+    },
+    {
+      "date": "2026-11-17",
+      "sign": "Budget votes, 49.3, no-confidence",
+      "event": "French parliamentary budget vote — 49.3 + no-confidence votes likely",
+      "matters": "the main fizzle-or-bear fork for French sovereign spreads",
+      "verified": true
+    },
+    {
+      "date": "2026-11-27",
+      "sign": "Rating reviews (FR / IT / UK)",
+      "event": "S&P review of France (A+ stable)",
+      "matters": "second rating event",
+      "verified": true
+    },
+    {
+      "date": "2026-11-17",
+      "sign": "Budget votes, 49.3, no-confidence",
+      "event": "PLF 2027 solemn vote on the whole bill",
+      "matters": "the second 49.3 / censure window after the 10-20 part-1 vote; art. 47 70-day clock runs out 12-17 (NosParlementaires 10-11)",
+      "verified": true
+    },
+    {
+      "matters": "BBB+ positive outlook — an upgrade would tighten Italian spreads",
+      "verified": true,
+      "event": "S&P on Italy",
+      "date": "2026-11-13",
+      "sign": "Rating reviews (FR / IT / UK)",
+      "verifyChecked": "2026-11-02"
+    },
+    {
+      "matters": "A+ stable; a second agency after Moody's 10-23",
+      "verified": false,
+      "event": "S&P on France",
+      "date": "2026-11-27",
+      "sign": "Rating reviews (FR / IT / UK)"
+    },
+    {
+      "matters": "—",
+      "verified": false,
+      "event": "S&P on Italy",
+      "date": "2026-11-13",
+      "sign": "Rating reviews (FR / IT / UK)",
+      "verifyChecked": "2026-11-02"
+    },
+    {
+      "matters": "—",
+      "verified": false,
+      "event": "S&P on France",
+      "date": "2026-11-27",
+      "sign": "Rating reviews (FR / IT / UK)"
+    },
+    {
+      "matters": "the second scheduled agency verdict after Fitch's negative outlook",
+      "verified": false,
+      "event": "S&P on France",
+      "date": "2026-11-27",
+      "sign": "Rating reviews (FR / IT / UK)"
+    },
+    {
+      "matters": "the whole-text vote where a 49.3 or a censure motion lands if not before",
+      "verified": false,
+      "event": "PLF 2027 ensemble vote, first reading",
+      "date": "2026-11-17",
+      "sign": "Budget votes, 49.3, no-confidence"
+    }
+  ],
+  "runs": [
+    {
+      "date": "2026-11-02",
+      "t1": "4/5 ✗",
+      "t2": "2/4 ✗",
+      "t3": "1/5 ✗",
+      "live": "✗✗✗"
+    },
+    {
+      "date": "2026-10-28",
+      "t1": "3/5 ✗",
+      "t2": "0/4 ✗",
+      "t3": "0/5 ✗",
+      "live": "✗✗✗"
+    },
+    {
+      "date": "2026-10-26",
+      "t1": "3/5 ✗",
+      "t2": "0/4 ✗",
+      "t3": "0/5 ✗",
+      "live": "✗✗✗"
+    },
+    {
+      "date": "2026-10-25",
+      "t1": "3/5 ✗",
+      "t2": "0/4 ✗",
+      "t3": "0/5 ✗",
+      "live": "✗✗✗"
+    },
+    {
+      "date": "2026-10-23",
+      "t1": "3/5 ✗",
+      "t2": "0/4 ✗",
+      "t3": "1/5 ✗",
+      "live": "✗✗✗ prov."
+    }
+  ],
+  "verdict": {
+    "legs": [
+      {
+        "key": "t1-vol",
+        "tranche": "T1",
+        "gate": false,
+        "leg": "vol EXSH realized",
+        "rule": "RV10 fading, or ≤ 1.5× base",
+        "tag": {
+          "indicator": "EXSH",
+          "series": [
+            "EXSH_GATE"
+          ],
+          "job": "composite",
+          "agg": "kOfN"
+        },
+        "tip": "RV10 = EXSH's annualised 10-close realized vol; base = its RV over the 60 closes before the drawdown's shock start. Fading = ≥ 20% under its post-shock peak and below its value 5 closes back; or already ≤ 1.5× base.",
+        "value": "— ≤18.6 (— 10-14)✓ <— (10-28)✗ | ≤15.7✗",
+        "verdict": "unmet",
+        "live": {
+          "value": "— ≤18.6 (— 10-14)✓ <— (10-29)✗ | ≤15.7✗",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t1-price",
+        "tranche": "T1",
+        "gate": false,
+        "leg": "price EXSH",
+        "rule": "no post-shock low ×5",
+        "tag": {
+          "indicator": "EXSH",
+          "series": [
+            "EXSH_GATE"
+          ],
+          "job": "recovery",
+          "agg": "kOfN"
+        },
+        "tip": "EXSH closes above its lowest close since the drawdown opened for 5 closes in a row — the sell-off no longer making new lows.",
+        "value": "—/— (10-08)",
+        "verdict": "met",
+        "count": {
+          "got": 5,
+          "need": 5
+        },
+        "live": {
+          "value": "—/— (10-08)",
+          "verdict": "met",
+          "count": {
+            "got": 5,
+            "need": 5
+          }
+        }
+      },
+      {
+        "key": "t1-esc",
+        "tranche": "T1",
+        "gate": true,
+        "leg": "gate: escalation box",
+        "rule": "no veto · T2·T3: live ≥ 70%",
+        "tag": {
+          "indicator": "escalation box",
+          "series": [
+            "AT1"
+          ],
+          "job": "composite",
+          "agg": "allOf"
+        },
+        "tip": "Cluster credit (coincident) votes on a strict majority of its live members — shown, it holds nothing alone; a block on Supervisors pressuring dividends / buybacks / Single-institution stress holds every tranche; below quorum T2/T3 hold too.",
+        "value": "votes sovereign · live 5/5 need 4",
+        "verdict": "unmet",
+        "live": {
+          "value": "votes sovereign · live 5/5 need 4 @11-04",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t2-vol",
+        "tranche": "T2",
+        "gate": false,
+        "leg": "vol EXSH realized",
+        "rule": "RV10 ≤ 1.5× base",
+        "tag": {
+          "indicator": "EXSH",
+          "series": [
+            "EXSH_GATE"
+          ],
+          "job": "recovery",
+          "agg": "kOfN"
+        },
+        "tip": "RV10 = EXSH's annualised 10-close realized vol; base = its RV over the 60 closes before the drawdown's shock start. Needs RV10 ≤ 1.5× base on the latest close — equity vol back near its pre-shock norm.",
+        "value": "—/15.7",
+        "verdict": "unmet",
+        "live": {
+          "value": "—/15.7",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t2-price",
+        "tranche": "T2",
+        "gate": false,
+        "leg": "price EXSH",
+        "rule": "no post-shock low ×15",
+        "tag": {
+          "indicator": "EXSH",
+          "series": [
+            "EXSH_GATE"
+          ],
+          "job": "recovery",
+          "agg": "kOfN"
+        },
+        "tip": "EXSH closes above its lowest close since the drawdown opened for 15 closes in a row — the sell-off no longer making new lows.",
+        "value": "—/— (10-08)",
+        "verdict": "met",
+        "count": {
+          "got": 15,
+          "need": 15
+        },
+        "live": {
+          "value": "—/— (10-08)",
+          "verdict": "met",
+          "count": {
+            "got": 15,
+            "need": 15
+          }
+        }
+      },
+      {
+        "key": "t2-at1-guard",
+        "tranche": "T2",
+        "gate": true,
+        "leg": "guard: AT1 no new low",
+        "rule": "no 20-close low ×10",
+        "tag": {
+          "indicator": "AT1",
+          "series": [
+            "AT1"
+          ],
+          "job": "relative",
+          "agg": "allOf"
+        },
+        "value": "0.1289/0.1266 (10-22)",
+        "verdict": "unmet",
+        "count": {
+          "got": 9,
+          "need": 10
+        },
+        "live": {
+          "value": "0.1287/0.1266 (10-22)",
+          "verdict": "met",
+          "count": {
+            "got": 10,
+            "need": 10
+          }
+        }
+      },
+      {
+        "key": "t2-esc",
+        "tranche": "T2",
+        "gate": true,
+        "leg": "gate: escalation box",
+        "rule": "no veto · T2·T3: live ≥ 70%",
+        "tag": {
+          "indicator": "escalation box",
+          "series": [
+            "AT1"
+          ],
+          "job": "composite",
+          "agg": "allOf"
+        },
+        "tip": "Cluster credit (coincident) votes on a strict majority of its live members — shown, it holds nothing alone; a block on Supervisors pressuring dividends / buybacks / Single-institution stress holds every tranche; below quorum T2/T3 hold too.",
+        "value": "votes sovereign · live 5/5 need 4",
+        "verdict": "unmet",
+        "live": {
+          "value": "votes sovereign · live 5/5 need 4 @11-04",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t3-trend",
+        "tranche": "T3",
+        "gate": true,
+        "leg": "gate: EXSH > MA200",
+        "rule": "close > MA200",
+        "tag": {
+          "indicator": "EXSH",
+          "series": [
+            "EXSH_GATE"
+          ],
+          "job": "regime",
+          "agg": "allOf"
+        },
+        "value": "—/24.73 (+8.9%)",
+        "verdict": "met",
+        "live": {
+          "value": "—/24.73 (+9.4%)",
+          "verdict": "met"
+        }
+      },
+      {
+        "key": "t3-vol",
+        "tranche": "T3",
+        "gate": false,
+        "leg": "vol EXSH realized",
+        "rule": "RV20 ≤ 1.2× base",
+        "tag": {
+          "indicator": "EXSH",
+          "series": [
+            "EXSH_GATE"
+          ],
+          "job": "recovery",
+          "agg": "kOfN"
+        },
+        "tip": "RV20 = EXSH's annualised 20-close realized vol; base = its RV over the 60 closes before the drawdown's shock start. Needs RV20 ≤ 1.2× base on the latest close — equity vol back near its pre-shock norm.",
+        "value": "—/12.5",
+        "verdict": "unmet",
+        "live": {
+          "value": "—/12.5",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t3-price",
+        "tranche": "T3",
+        "gate": false,
+        "leg": "price EXSH",
+        "rule": "> MA50, MA50 rising",
+        "tag": {
+          "indicator": "EXSH",
+          "series": [
+            "EXSH_GATE"
+          ],
+          "job": "regime",
+          "agg": "kOfN"
+        },
+        "tip": "EXSH closes above its 50-close average, and its 50-close average is above its value 10 closes back — the trend turned up.",
+        "value": "— >MA50 —✓ · MA50 — >— (10-21)✗",
+        "verdict": "unmet",
+        "live": {
+          "value": "— >MA50 —✓ · MA50 — >— (10-22)✗",
+          "verdict": "unmet"
+        }
+      },
+      {
+        "key": "t3-at1-guard",
+        "tranche": "T3",
+        "gate": true,
+        "leg": "guard: AT1 no new low",
+        "rule": "no 20-close low ×10",
+        "tag": {
+          "indicator": "AT1",
+          "series": [
+            "AT1"
+          ],
+          "job": "relative",
+          "agg": "allOf"
+        },
+        "value": "0.1289/0.1266 (10-22)",
+        "verdict": "unmet",
+        "count": {
+          "got": 9,
+          "need": 10
+        },
+        "live": {
+          "value": "0.1287/0.1266 (10-22)",
+          "verdict": "met",
+          "count": {
+            "got": 10,
+            "need": 10
+          }
+        }
+      },
+      {
+        "key": "t3-esc",
+        "tranche": "T3",
+        "gate": true,
+        "leg": "gate: escalation box",
+        "rule": "no veto · T2·T3: live ≥ 70%",
+        "tag": {
+          "indicator": "escalation box",
+          "series": [
+            "AT1"
+          ],
+          "job": "composite",
+          "agg": "allOf"
+        },
+        "tip": "Cluster credit (coincident) votes on a strict majority of its live members — shown, it holds nothing alone; a block on Supervisors pressuring dividends / buybacks / Single-institution stress holds every tranche; below quorum T2/T3 hold too.",
+        "value": "votes sovereign · live 5/5 need 4",
+        "verdict": "unmet",
+        "live": {
+          "value": "votes sovereign · live 5/5 need 4 @11-04",
+          "verdict": "unmet"
+        }
+      }
+    ],
+    "asOf": {
+      "close": "2026-11-04",
+      "live": "2026-11-05",
+      "est": false
+    },
+    "escalation": {
+      "tripped": 1,
+      "need": 2,
+      "hits": [
+        "sovereign"
+      ],
+      "families": [
+        {
+          "name": "bank actions",
+          "rule": "a block sign",
+          "value": "—",
+          "verdict": "met",
+          "live": {
+            "value": "—",
+            "verdict": "met"
+          },
+          "signs": [
+            {
+              "sign": "Bank / insurer windfall taxes",
+              "lean": "fizzle-leaning (draft)",
+              "block": false
+            },
+            {
+              "sign": "Supervisors pressuring dividends / buybacks",
+              "lean": "quiet (draft)",
+              "block": false
+            },
+            {
+              "sign": "Earnings revisions / guidance tone",
+              "lean": "fizzle-leaning (draft)",
+              "block": false
+            },
+            {
+              "sign": "Insurer lapse / sovereign-holding risk",
+              "lean": "fizzle-leaning (draft)",
+              "block": false
+            }
+          ],
+          "tag": {
+            "indicator": "bank actions",
+            "series": [],
+            "job": "manual",
+            "agg": "box"
+          }
+        },
+        {
+          "name": "sovereign events",
+          "rule": "a block sign",
+          "value": "—",
+          "verdict": "met",
+          "live": {
+            "value": "—",
+            "verdict": "met"
+          },
+          "signs": [
+            {
+              "sign": "Budget votes, 49.3, no-confidence",
+              "lean": "open (draft)",
+              "block": false
+            },
+            {
+              "sign": "Rating reviews (FR / IT / UK)",
+              "lean": "fizzle-leaning (draft)",
+              "block": false
+            },
+            {
+              "sign": "Sovereign–bank doom loop",
+              "lean": "mixed (draft)",
+              "block": false
+            },
+            {
+              "sign": "ECB backstop (TPI)",
+              "lean": "mixed (draft)",
+              "block": false
+            },
+            {
+              "sign": "UK fiscal event",
+              "lean": "fizzle-leaning (draft)",
+              "block": false
+            }
+          ],
+          "tag": {
+            "indicator": "sovereign events",
+            "series": [],
+            "job": "manual",
+            "agg": "box"
+          }
+        }
+      ],
+      "clusters": [
+        {
+          "name": "credit",
+          "kind": "coincident",
+          "members": [
+            {
+              "id": "at1",
+              "cell": false,
+              "rule": "AT1 RS at a 60-close low in the last 5",
+              "value": "AT1 RS 0.1289/0.1266 (10-22)",
+              "tag": {
+                "indicator": "AT1",
+                "series": [
+                  "AT1"
+                ],
+                "job": "relative",
+                "agg": "box"
+              },
+              "signs": [
+                {
+                  "sign": "Single-institution stress",
+                  "lean": "fizzle-leaning (draft)",
+                  "block": false
+                }
+              ],
+              "live": "AT1 RS 0.1287/0.1266 (10-22)",
+              "liveCell": false
+            }
+          ],
+          "hits": 0,
+          "live": 1,
+          "n": 1,
+          "vote": false
+        }
+      ],
+      "veto": [],
+      "quorum": {
+        "live": 5,
+        "n": 5,
+        "need": 4,
+        "t1Only": false
+      },
+      "hold": true
+    },
+    "sessionsSinceExit": 24,
+    "regime": {
+      "set": "fast",
+      "exshVsMa200": 0.0888316507220372
+    },
+    "inactive": {
+      "set": "strict",
+      "tranches": [
+        {
+          "tranche": "T1",
+          "metCount": 2,
+          "total": 4,
+          "need": 4,
+          "gates": [
+            "unmet"
+          ],
+          "ready": false,
+          "clear": false
+        },
+        {
+          "tranche": "T2",
+          "metCount": 1,
+          "total": 3,
+          "need": 3,
+          "gates": [
+            "unmet",
+            "unmet",
+            "unmet"
+          ],
+          "ready": false,
+          "clear": false
+        },
+        {
+          "tranche": "T3",
+          "metCount": 0,
+          "total": 2,
+          "need": 2,
+          "gates": [
+            "unmet",
+            "unmet",
+            "unmet",
+            "unmet"
+          ],
+          "ready": false,
+          "clear": false
+        }
+      ]
+    },
+    "tranches": [
+      {
+        "id": "T1",
+        "met": 1,
+        "total": 2,
+        "need": 1,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "unmet",
+          "unmet"
+        ],
+        "filledSince": null
+      },
+      {
+        "id": "T2",
+        "met": 1,
+        "total": 2,
+        "need": 2,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "unmet",
+          "unmet",
+          "unmet"
+        ],
+        "filledSince": null
+      },
+      {
+        "id": "T3",
+        "met": 0,
+        "total": 2,
+        "need": 3,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "met",
+          "unmet",
+          "unmet",
+          "unmet"
+        ],
+        "filledSince": null
+      }
+    ],
+    "live": [
+      {
+        "id": "T1",
+        "met": 2,
+        "total": 4,
+        "need": 1,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "unmet",
+          "unmet"
+        ],
+        "filledSince": null
+      },
+      {
+        "id": "T2",
+        "met": 2,
+        "total": 4,
+        "need": 2,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "unmet",
+          "met",
+          "unmet"
+        ],
+        "filledSince": null
+      },
+      {
+        "id": "T3",
+        "met": 1,
+        "total": 4,
+        "need": 3,
+        "ok": false,
+        "ready": false,
+        "gates": [
+          "met",
+          "unmet",
+          "met",
+          "unmet"
+        ],
+        "filledSince": null
+      }
+    ],
+    "prov": true
+  },
+  "runAt": "2026-11-02T07:00:42.779Z",
+  "situation": {
+    "lean": "The leg leans fizzle: the UK Budget and the ECB both passed without a shock, leaving the French revenue-part ballot on 11-03 as the last hold on the deeper tranches. Nothing is bought until it passes.",
+    "slow": "The grind is the French sovereign: Fitch has joined Moody's on a negative outlook, French sovereign protection stays the dearest in over a decade, and the ECB calls November a heavy month for France while declining to buy. Bank earnings and capital hold, so the de-rating is still a spread story, not a credit-loss one.",
+    "fast": "The gap is the 11-03 ballot: a filed censure motion, a 49.3 on the revenue part or a slide into a loi spéciale would reprice French paper past its peak, with Moody's and Fitch both tying their ratings to a deficit-cutting budget. A December ECB hike into wide spreads is the second gap, now openly signalled.",
+    "decides": "The French revenue-part ballot on 11-03 moves the fast slot: passage or a no-censure pledge frees the last hold, a censure filing or a 49.3 blocks. S&P on Italy 11-13 and on France 11-27 move the slow slot, and the ECB in December moves the fast slot if it hikes.",
+    "flips": "A PS or RN no-censure pledge or a passed revenue part moves the lean to fizzle and frees the holds; a filed censure motion, a 49.3, a loi spéciale or an agency cut moves it to escalation-leaning and blocks."
+  },
+  "scannedOn": "2026-11-02",
+  "eventsDone": [
+    {
+      "date": "2026-10-13",
+      "event": "French budget debate opens",
+      "signs": [
+        "Budget votes, 49.3, no-confidence"
+      ],
+      "holds": [],
+      "secondary": true,
+      "status": "fizzle: PS motion de rejet préalable rejected 236–149 with the RN voting against so the debate runs; no censure motion filed, no 49.3 signalled on the day (LCP 10-14); French spreads tightened from their 10-12 peak by the 10-13 close, 10-13"
+    },
+    {
+      "date": "2026-10-23",
+      "event": "Moody's on France",
+      "signs": [
+        "Rating reviews (FR / IT / UK)"
+      ],
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "fizzle: Moody's kept France at Aa3, negative outlook, no cut and no French-bank action, 10-23 · called: Rating reviews (FR / IT / UK)=open (press only)",
+      "sources": [
+        {
+          "date": "2026-10-24",
+          "url": "https://www.euronews.com/2026/10/24/debt-moodys-spares-france-a-brief-respite-not-a-vote-of-confidence"
+        },
+        {
+          "date": "2026-10-23",
+          "url": "https://www.cnbc.com/2026/10/23/moodys-holds-steady-on-frances-credit-rating-as-country-grapples-with-turmoil-and-higher-yields.html"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-28",
+      "event": "UK Autumn Budget",
+      "signs": [
+        "UK fiscal event",
+        "Bank / insurer windfall taxes"
+      ],
+      "holds": [
+        "T2",
+        "T3"
+      ],
+      "secondary": false,
+      "status": "fizzle: bank surcharge raised from 3 % to 6 % for 15 months from 01-2027, no new bank levy, gilts steady on the day with headroom kept, 10-28 · called: Bank / insurer windfall taxes=open, UK fiscal event=open",
+      "sources": [
+        {
+          "date": "2026-10-28",
+          "url": "https://www.gov.uk/government/speeches/budget-2026-speech"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://portfolio-adviser.com/autumn-budget-2026-gilts-steady-after-budget-broadly-consistent-with-market-expectations/"
+        },
+        {
+          "date": "2026-10-28",
+          "url": "https://www.itv.com/news/2026-10-28/bank-taxes-to-rise-by-less-than-some-feared-to-help-fund-breathing-space"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-29",
+      "event": "ECB decision",
+      "signs": [
+        "ECB backstop (TPI)"
+      ],
+      "holds": [],
+      "secondary": true,
+      "status": "fizzle: deposit rate held at 2.50 %, the TPI named as available against unwarranted, disorderly market dynamics, a hike debated and deferred to December, 10-29 · called: ECB backstop (TPI)=mixed",
+      "sources": [
+        {
+          "date": "2026-10-29",
+          "url": "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp261029~9a493adf17.en.html"
+        },
+        {
+          "date": "2026-10-29",
+          "url": "https://www.ecb.europa.eu/press/press_conference/monetary-policy-statement/2026/html/ecb.is261029~5c5ffe99e5.en.html"
+        }
+      ]
+    }
+  ]
+}

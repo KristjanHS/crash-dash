@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Sign in - crash-dash</title>
+    <meta name="description" content="Sign in to your existing crash-dash account with a link mailed to your address, or sign out to see the public page only. Accounts are created on the email-alerts page." />
+    <!-- Static shell only: vanilla ES modules, no framework/bundler/build. Auth is raw GoTrue REST
+         (magic link, create_user: false). Styles reuse journal.css. -->
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./journal.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='%235f7a5f'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <div class="pagenav-bar">
+      <a class="pagenav" href="/overview">Public page <span aria-hidden="true">↗</span></a>
+      <a class="pagenav pagenav-gap" href="/">Dashboard <span aria-hidden="true">↗</span></a>
+      <a class="pagenav pagenav-gap" href="/lab">Lab <span aria-hidden="true">↗</span></a>
+      <a class="pagenav pagenav-gap" href="/subscribe">✉ Email alerts <span aria-hidden="true">↗</span></a>
+    </div>
+
+    <main class="journal">
+      <h1 class="journal-title">Sign in</h1>
+
+      <!-- Signed-out card: one field, one button. The link the mail carries lands back here. -->
+      <section id="in-card" class="jr-card">
+        <p class="jr-h">Already have an account?</p>
+        <p>
+          Enter the address you subscribed with and open the link we mail you. That signs this tab
+          in to the full dashboard, the lab, exposure and your private holdings journal. The sign-in
+          lasts for this tab only - a new tab needs a new link.
+        </p>
+        <p>
+          No account yet? <a href="/subscribe">Subscribe to the email alerts</a> - that one
+          confirmation mail creates it.
+        </p>
+        <div class="jr-fields">
+          <label class="jr-field jr-wide"
+            >Email
+            <input id="email" type="email" placeholder="you@example.com" autocomplete="email" />
+          </label>
+        </div>
+        <div class="jr-actions">
+          <button id="send" class="jr-btn" type="button">Email me a sign-in link</button>
+        </div>
+      </section>
+
+      <!-- Signed-in card: who, where to go, and the one way out. -->
+      <section id="out-card" class="jr-card" hidden>
+        <p class="jr-h">Signed in as <span id="who"></span></p>
+        <p>
+          This tab can open the <a href="/">dashboard</a>, the <a href="/lab">lab</a>,
+          <a href="/exposure">exposure</a> and your <a href="/journal">journal</a>. Email alerts are
+          managed on the <a href="/subscribe">email alerts page</a>.
+        </p>
+        <div class="jr-actions">
+          <button id="out" class="jr-btn" type="button">Sign out</button>
+          <a class="jr-link" href="/overview">Public page</a>
+        </div>
+      </section>
+
+      <p id="msg" class="jr-msg"></p>
+    </main>
+
+    <footer class="site-footer">
+      <nav class="site-footer-links" aria-label="Legal">
+        <a href="/imprint">Imprint</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/cookies">Cookies</a>
+        <a href="/attribution">Attribution</a>
+      </nav>
+      <p class="site-footer-donate">
+        Free to use. <a href="https://paypal.me/kristjanhs" rel="noopener noreferrer external">Send a gift</a>
+        - voluntary, and it buys nothing.
+      </p>
+    </footer>
+
+    <script type="module" src="./disclaimer.js"></script>
+    <script type="module" src="./signin.js"></script>
+  </body>
+</html>

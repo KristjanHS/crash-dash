@@ -1,0 +1,24 @@
+-- crash-dash — persist the assembled T1 dial: `dial_state` jsonb blob on alert_log.
+-- Compute the dial once at
+-- notify time and read it back — replacing the "N `computeT1Dial` call sites must agree" invariant
+-- with "compute once, read once".
+--
+-- ADDITIVE ONLY: one `add column if not exists`, NULLABLE, no DROP / ALTER TYPE / DELETE / UPDATE, so
+-- this is safe on the direct-to-main path (.claude/rules/migrations.md taxonomy) and
+-- `scripts/check-destructive-migrations.ts` needs no `-- destructive: reviewed` marker.
+--
+-- No `record_run` re-create is needed: since 20260716180000 the function inserts via
+-- `jsonb_populate_record(null::alert_log, ...)`, so a new column is picked up BY NAME from the
+-- `p_alert` jsonb (`store.ts:alertRow`). An unknown key raises loudly rather than NULL-dropping.
+--
+-- Behaviour-neutral on landing: pre-migration rows read back `dial_state = NULL`, and `rowToAlert`
+-- maps that to `dialState: null` — the read/notify paths keep using the scalar `dial_band` /
+-- `dial_target_rung` columns exactly as before. Once `dial_state` is written (Stage 2), those two
+-- scalars become DERIVED PROJECTIONS of the blob (`store.ts:alertRow`) so they can never disagree.
+--
+--   dial_state  — the whole `T1DialResult` (`src/t1dial.ts:204`) as jsonb. NULLABLE: null on legacy
+--                 (pre-migration) rows and on a degraded run with no dial — the read path is
+--                 hydrate-or-compute, so a null blob just falls back to the scalar / recompute. No
+--                 CHECK / schema constraint — the shape is owned by TypeScript's `T1DialResult` and
+--                 pinned by the `alertRow`↔`rowToAlert` round-trip test.
+alter table alert_log add column if not exists dial_state jsonb;

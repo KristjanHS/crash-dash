@@ -1,0 +1,32 @@
+-- crash-dash — persist the cut the scorer used: `band_cuts` jsonb on readings.
+-- The
+-- expanding-percentile seams recompute their cut on every read; this column records, per
+-- reading, the numeric cut legs the cron scorer actually classified against, so a later
+-- stage (2.2) can read that one number on the draw path instead of a coordinated recompute.
+--
+-- ADDITIVE ONLY: one `add column if not exists`, NULLABLE, no DROP / ALTER TYPE / DELETE /
+-- UPDATE, so this is safe on the direct-to-main path (.claude/rules/migrations.md taxonomy)
+-- and `scripts/check-destructive-migrations.ts` needs no `-- destructive: reviewed` marker.
+--
+-- No `record_run` re-create is needed: since 20260716180000 the function inserts readings via
+-- `jsonb_populate_recordset(null::readings, ...)`, so a new column is picked up BY NAME from
+-- the `p_readings` jsonb (`store.ts:readingRow`). Its key-guard admits `band_cuts` only once
+-- this column exists; an unknown key still raises loudly. Exactly the `dial_state` precedent
+-- (20260721120000).
+--
+-- Behaviour-neutral on landing: pre-migration rows read back `band_cuts = NULL`, and
+-- `rowToSeriesPoint`/`getReadingsForRun` leave every read path recomputing exactly as before
+-- (Stage 2.1 writes the column and leaves it unread; 2.2 moves the reads onto it).
+--
+--   band_cuts — the resolved numeric cut legs the scorer used for this reading (a
+--               `CalibrationCuts` subset, non-numeric `fold` stripped) as jsonb. NULLABLE:
+--               null on legacy (pre-migration) rows, on a degraded run with no resolved cut,
+--               and for ids whose bespoke scorer reads registry thresholds directly (the
+--               resolved cut object is `{}`). No CHECK — the shape is owned by TypeScript and
+--               pinned by the `readingRow`↔`getReadingsForRun` round-trip test.
+--
+-- ⚠ Backfill caveat (Stage 2.3, NOT this migration): a reconstructed old cut would be computed
+-- off TODAY's feed history — FRED revises `NFCI`, so a backfilled 2019 cut is what today's
+-- history says it was, not necessarily the value the cron saw at the time. This migration only
+-- adds the column; it backfills nothing, so every existing row stays NULL.
+alter table readings add column if not exists band_cuts jsonb;

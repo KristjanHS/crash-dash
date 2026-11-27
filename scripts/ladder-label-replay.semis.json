@@ -1,0 +1,1184 @@
+{
+ "generatedBy": "npm run ladder:replay-capture",
+ "sessions": [
+  {
+   "id": "a14892fe-a301-494e-bf4f-1ddceaec9148",
+   "today": "2026-11-03",
+   "rows": [
+    {
+     "sign": "mu_dio",
+     "since": "2026-10-27",
+     "held": null,
+     "label": "UNSOURCED",
+     "extended": false
+    }
+   ],
+   "tables": [
+    "scan | undated | https://semiconductor-today.com/event_calendar.shtml | search | Trade-event listing only. No dated semiconductor, memory, AI-capex or Taiwan export-control catalyst for 2026-11-03 to 2026-11-17 surfaced. | ok\nscan | 2026-11-15 | https://semiconductor-today.com/event_calendar.shtml | search | SC26 supercomputing conference, McCormick Place, Chicago, 15-20 Nov. This is a trade event, not among the listed catalysts. | ok\nscan | 2026-11-16 | https://semiconductor-today.com/event_calendar.shtml | search | 3D Power Electronics Integration & Manufacturing symposium, Tempe AZ, 16-19 Nov. This is a trade event, not among the listed catalysts. | ok\nscan | 2026-11-08 | https://semiconductor-today.com/event_calendar.shtml | search | 12th International Workshop on Nitride Semiconductors, Kumamoto, 8-13 Nov. This is a trade event with little bearing on the scan. | ok\nscan | 2026-11-03 | https://akrostec.com/indices/KGAIS/events/2026-03-16t00-00-00z-lattice-semiconductor-corporation-lscc-other-1e49811a | search | Only auto-generated akrostec catalyst pages surfaced, and none was dated in the 11-03 to 11-17 window. | ok\nmu_dio | undated | https://www.barchart.com/story/news/36677666/micron-nasdaqmu-reports-upbeat-q4-stock-soars | search | The snippet shows the latest figure as FQ4 2026: days of inventory up 9 days to 129. The article's publication date is not shown. | ok\nmu_dio | undated | https://www.barchart.com/story/news/828192/micron-nasdaqmu-delivers-strong-q1-numbers | search | No FQ1 2027 DIO figure found. The same search suggested FQ1 2027 results are not out yet, but the report date was not confirmed. | ok\nmu_dio | — | micron.com / sec.gov | search | No micron.com or sec.gov result returned for FQ1 2027 inventory days. | FAILED",
+    "mu_dio | — | https://www.barchart.com/story/news/36677666/micron-nasdaqmu-reports-upbeat-q4-stock-soars | fetch | Page returned empty content: no publication date, no DIO figure or change, no inventory guidance | FAILED"
+   ],
+   "applied": {
+    "mu_dio": {
+     "label": "UNSOURCED"
+    }
+   }
+  },
+  {
+   "id": "53320233-a333-4ac0-8da7-a5ee3f29613b",
+   "today": "2026-11-04",
+   "rows": [
+    {
+     "sign": "mu_dio",
+     "since": "2026-10-28",
+     "held": null,
+     "label": "UNSOURCED",
+     "extended": false
+    }
+   ],
+   "tables": [
+    "mu_dio | — | https://earningswhispers.com/article/MU/r53 | search | Snippet only: FQ4-26 days of inventory rose 9 days to 129 (below the ~140 line). Page undated, press source, not micron.com or sec.gov. No FQ1-27 print found. | ok\nmu_dio | — | https://stocks.observer-reporter.com/observerreporter/article/stockstory-2026-3-18-micron-nasdaqmu-delivers-strong-q1-numbers | search | Snippet only: FQ2-26 DIO 123, down from 125 the quarter before (StockStory). The URL carries 2026-3-18, but the article is dated by URL only. | ok\nmu_dio | — | https://www.barchart.com/story/news/36677666/micron-nasdaqmu-reports-upbeat-q4-stock-soars | search | FQ4 results article. The snippet gave no DIO figure and no date. | ok\nmu_dio | — | — | search | No item dated on or after 2026-10-28 on Micron inventory/DIO. No micron.com or sec.gov result came back. | ok",
+    "mu_dio | 2026-09-30 | https://earningswhispers.com/article/MU/r53 | fetch | Published 2026-09-30 7:50 PM ET. DIO rose nine days to 129. The page doesn't label the quarter; context suggests fiscal Q4 2026. No inventory guidance, and inventory appears only as a bear concern. | ok"
+   ],
+   "applied": {
+    "mu_dio": {
+     "label": "STALE 09-30",
+     "sources": [
+      {
+       "date": "2026-09-30",
+       "url": "https://earningswhispers.com/article/MU/r53"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "ba76dd21-1d67-4264-bacc-177825448c8d",
+   "today": "2026-11-05",
+   "rows": [
+    {
+     "sign": "tsmc_monthly",
+     "since": "2026-10-06",
+     "held": "2026-10-15",
+     "label": "HELD until 2026-11-16",
+     "extended": true
+    }
+   ],
+   "tables": [
+    "row | date | url | method | fact | status\ntsmc_monthly | 2026-10-08 | https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000680/tsm-revenue20261008.htm | search | TSMC Sep 2026 revenue NT$511.86B, y/y +54.6%, m/m -0.6% (Aug NT$514.81B). Jan-Sep NT$3.90T, +41.1% y/y. Figures are from the search summary, not the filing text. | ok\ntsmc_monthly | 2026-10-08 | https://www.devdiscourse.com/article/business/3988867-tsmc-september-revenue-surges-546-yoy-to-usd-1607-billion-slips-marginally-month-on-month | search | Press: Sep revenue +54.6% y/y, about US$16.07B, slightly down m/m. | ok\ntsmc_monthly | 2026-10-08 | https://fourweekmba.com/ai-tsmcs-q3-revenue-reaches-nt1-49-trillion-up-about-51/ | search | Q3 revenue NT$1.494T, +50.9% y/y. This beat the top of the US$44.6-45.8B guide. | ok\ntsmc_monthly | 2026-11-05 | https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000680/tsm-revenue20261008.htm | search | No October 2026 revenue found as of 2026-11-05. | ok\ntsmc_monthly | — | https://investor.tsmc.com/english/quarterly-results/2026/q3 | search | No source found stating the release date of October revenue (~2026-11-10 is not confirmed). tsmc.com's investor calendar was not fetched or returned. | FAILED\ntsmc_monthly | 2026-10-15 | https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000726/a3q26e_withguidancexfinal.htm | search | TSMC Q3 2026 release: revenue about US$46.7B, EPS NT$29.43, GM 66.4%, op margin 58.7%. Q4 guide US$52.3-54.3B. 7nm-and-below 79% of wafer revenue, 2nm 8%. | ok\ntsmc_monthly | 2026-10-15 | https://focustaiwan.tw/business/202610150018 | search | Q4 GM guide 65-67% (Q3 was 66.4%), op margin 56.5-58.5%. 2026 USD sales growth forecast raised to 44%. 2026 capex unchanged at US$60-64B. | ok\ntsmc_monthly | 2026-10-15 | https://cryptobriefing.com/tsmc-q4-revenue-forecast-record-q3-profit/ | search | Q4 guide US$52.3-54.3B, up to 61% y/y vs Q4 2025 US$33.73B. | ok\ntsmc_monthly | 2026-10-15 | https://www.metirai.com/blog/tsmc-q3-2026-earnings-gross-margin-hpc-mix-capex-guidance-2026 | search | Capex range kept at US$60-64B (raised in July from US$52-56B). Management said 2026-2028 capex will be significantly higher than the prior three years. No explicit 2027 capex figure. This source is secondary. | ok\ntsmc_monthly | 2026-10-15 | https://investor.tsmc.com/english/encrypt/files/encrypt_file/reports/2026-10/eba4fac72873bf546b669bd2b5d973df5c93215d/TSMC%203Q26%20Transcript.pdf | search | Q3 transcript listed in results but not fetched. It is the primary source for 2027 capex commentary. | ok\ntsmc_monthly | 2026-10-15 | https://www.allinvestview.com/earnings/2330.TW/q3-2026/ | search | EPS and revenue beat consensus. Shares fell about 2.8% after the report. No Q4 consensus figure found, and no UBS note found. | ok"
+   ],
+   "applied": {
+    "tsmc_monthly": {
+     "label": "UNCHANGED 10-15",
+     "sources": [
+      {
+       "date": "2026-10-08",
+       "url": "https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000680/tsm-revenue20261008.htm"
+      },
+      {
+       "date": "2026-10-15",
+       "url": "https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000726/a3q26e_withguidancexfinal.htm"
+      },
+      {
+       "date": "2026-10-15",
+       "url": "https://focustaiwan.tw/business/202610150018"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "562a048e-e855-46c8-8d7c-bc8038a76a1e",
+   "today": "2026-11-06",
+   "rows": [
+    {
+     "sign": "real_yield",
+     "since": "2026-10-30",
+     "held": "2026-11-03",
+     "label": "UNCHANGED 11-03 (+2d)",
+     "extended": false,
+     "measured": {
+      "asOf": "2026-11-04",
+      "text": "DFII10 2.64 % close 11-04 · Δ120 +65 bp vs +75 bp line under line",
+      "sources": [
+       {
+        "date": "2026-11-04",
+        "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10&cosd=2026-01-10"
+       }
+      ]
+     }
+    },
+    {
+     "sign": "dram_contract",
+     "since": "2026-08-07",
+     "held": "2026-10-31",
+     "label": "UNCHANGED 10-31 (+5d)",
+     "extended": true
+    },
+    {
+     "sign": "hbm",
+     "since": "2026-10-07",
+     "held": "2026-10-31",
+     "label": "UNCHANGED 10-31 (+5d)",
+     "extended": true
+    },
+    {
+     "sign": "tsmc_monthly",
+     "since": "2026-10-07",
+     "held": "2026-10-15",
+     "label": "UNCHANGED 10-15 (+21d)",
+     "extended": true
+    },
+    {
+     "sign": "capex_guides",
+     "since": "2026-10-30",
+     "held": "2026-11-04",
+     "label": "CHANGED",
+     "extended": true
+    },
+    {
+     "sign": "ai_funding",
+     "since": "2026-10-30",
+     "held": "2026-11-04",
+     "label": "CHANGED",
+     "extended": false
+    },
+    {
+     "sign": "pc_demand",
+     "since": "2026-10-07",
+     "held": "2026-11-03",
+     "label": "UNCHANGED 11-03 (+2d)",
+     "extended": true
+    }
+   ],
+   "tables": [
+    "Rung 0 and Rung A, run 2026-11-06. Search facts come from search snippets and summaries, not fetched pages.\n\nRow | Date | URL | Mode | Fact | Status\n--- | --- | --- | --- | --- | ---\nverify (Korea Nov 1–10) | — | https://www.wam.ae/en/article/15v6vi9-koreas-exports-64-during-first-days-november | search | No 2026 release date or announcement found. Only 2025 and earlier releases returned (2025 Nov 1–10 data came out Nov 11). Expected 2026-11-11 not confirmed by a 2026 source. | ok\nverify (Korea Nov 1–20) | — | https://www.asiae.co.kr/en/article/2025112109322051968 | search | No 2026 release date found. Only 2025 and earlier results returned (2025 Nov 1–20 published Nov 21). Nov 21 2026 is a Saturday; a Nov 23 slip is the searcher's inference, not sourced. | ok\nverify (Ga/Ge/Sb suspension) | 2025-11-09 | https://www.mlex.com/mlex/amp/articles/2409257 | search | Source is dated 2025, not 2026. Title: \"China suspends export curbs on critical minerals to US until late 2026\". Summary says suspension ends 2026-11-27 (MOFCOM statement of 2025-11-09). No extension news found. | ok\nverify (Ga/Ge/Sb suspension) | 2025-11-09 | https://www.freemalaysiatoday.com/category/business/2025/11/09/china-suspends-ban-on-exports-of-gallium-germanium-antimony-to-us | search | Source is dated 2025. Suspension of the ban on gallium, germanium, antimony and superhard-material dual-use exports to the US took effect Sunday 2025-11-09. Licensing still required. | ok\nverify (other upcoming) | — | https://investor.tsmc.com/english/quarterly-results/2026/q3 | search | No TSMC October 2026 revenue release found. No other dated upcoming memory, capex or Taiwan export-control item surfaced. One adjacent item: next 10-year TIPS reopening is 2026-11-19. | ok\nreal_yield | 2026-10-29 | https://fred.stlouisfed.org/graph/?id=DFII10 | search | DFII10 was 2.63 on 2026-10-29 (2.67 on 10-28, 2.64 on 10-27). This is before the since date of 2026-10-30. No November reading found. | ok\nreal_yield | 2026-10-02 | https://www.thetrading.tools/real-yields | search | Real Yields (10-year TIPS yield) stood at 2.92% as of 2026-10-02. This is out of window. | ok\ndram_contract | 2026-09-24 | https://www.trendforce.com/research-tags/dram?page=3&tab=reports | search | A \"4Q26 Memory Price Forecast\" is listed dated 2026/09/24, no figures in the snippet. No TrendForce 1Q27 DRAM contract QoQ forecast found. This is before the since date of 2026-10-07 but in the dram_contract window (since 2026-08-07). | ok\ndram_contract | — | https://iconnect007.com/article/150656/ai-server-demand-keeps-memory-prices-up-in-3q26-but-gains-moderate/150653/milaero | search | TrendForce: 3Q26 DRAM contract price rises moderate to 13–18% QoQ. A later summary has Q4 2026 PC DRAM at 3%–8% QoQ, up from 0%–5%. The snippet gives no date. | ok\ndram_contract | 2026-10-29 | https://www.mt.co.kr/en/industry/2026/10/29/2026102911044261630 | search | Samsung-related report: DRAM prices hit another record in October 2026. NAND stopped climbing after 21 straight monthly rises. Cites TrendForce 4Q PC DRAM contract +13% to +18% QoQ. Samsung says contract trends could lock in 60–70% of memory capacity in multi-year commitments through 2030. | ok\nhbm / dram_contract (escalation side) | — | https://www.trendforce.com/news/?p=65900 | search | No source found where Samsung guides conventional DRAM contract pace to flat or sharply slower. The deceleration comes from TrendForce estimates (Q4 conventional DRAM +10–15% QoQ), not Samsung. | ok\nhbm / dram_contract (fizzle side) | 2026-10-29 | https://mezha.ua/en/news/samsung-almost-sold-off-all-of-dram-and-hbm-for-2027-316357/ | search | Samsung says its planned 2027 HBM supply is effectively sold out, with customer negotiations concluded at target pricing. Major clients keep asking for more volume. Nothing on demand destruction was found. | ok\nhbm | 2026-10-28 | https://www.mt.co.kr/en/industry/2026/10/28/2026102809242617566 | search | Appeared in the HBM4 pricing/share search. The snippet carries no fact. | ok\nhbm | 2026-10-27 | https://www.sammyfans.com/2026/10/27/samsung-sk-hynix-q3-hbm-revenue-q4-share/ | search | Appeared in the HBM4 pricing/share search. The snippet carries no fact. | ok\nhbm | 2026-10-02 | https://www.sammyfans.com/2026/10/02/samsung-seeks-more-than-3x-hbm3e-pricing-for-hbm4/ | search | Samsung reportedly seeking more than 3x HBM3E price for HBM4. This is an asking price, not a disclosed contract. Date is from the URL and is before the hbm since date of 2026-10-07. | ok\nhbm | 2026-07-30 | https://www.itiger.com/news/1175901853 | search | UBS forecast of 2027 HBM bit share: Samsung 41%, SK hynix 39%, Micron 20%. This is before the since date. | ok\ndram_contract / hbm | 2026-10-29 | https://www.kucoin.com/blog/samsung-q3-2026-earnings-profit-miss-dividend-2027-chip-shortage | search | Samsung Q3 2026 audited results released 2026-10-29. Revenue KRW 195.3T, operating profit KRW 107.4T (prelim 10-08). Home appliances/TV combined operating loss KRW 0.2T. Sources differ on beat versus miss. | ok\ntsmc_monthly | 2026-10-08 | https://pr.tsmc.com/english/news/3343?cb=20261014-run1 | search | September 2026 revenue NT$511.86B, +54.6% YoY, -0.6% MoM. January–September NT$3.89873T, +41.1% YoY. Reported 2026-10-08. | ok\ntsmc_monthly | — | https://pr.tsmc.com/english/news/3343?cb=20261014-run1 | search | No TSMC October 2026 revenue release found (expected ~11-10). | ok\ntsmc_monthly | 2026-10-15 | https://investor.tsmc.com/english/quarterly-results/2026/q3 | search | Q3 2026 revenue NT$1,494.24B (US$46.72B), +50.9% YoY. EPS NT$29.43. Gross margin 66.4%, operating margin 58.7%. 2nm 8% of wafer revenue. | ok\ntsmc_monthly (escalation) | 2026-10-16 | https://www.trendforce.com/news/2026/10/16/news-after-tsmcs-3q26-earnings-key-brokerage-takeaways-as-2028-capex-forecasts-reach-us105b/ | search | Q4 gross margin guide 65–67%, not below 65%. 2026 capex kept at US$60–64B. UBS sees about US$90B in 2027 and US$105B in 2028 (the article also cites US$83B and US$92B). No Q4 revenue guide of about $50.3–50.4B found. | ok\ntsmc_monthly (fizzle) | 2026-10-15 | https://cryptobriefing.com/tsmc-q4-revenue-forecast-record-q3-profit/ | search | Q4 revenue guide US$52.3–54.3B. Q3 revenue was above the top of guidance. 2026 capex guide kept at US$60–64B, so capex was not raised. No Q4 consensus or FY26 growth guide found. | ok\ncapex_guides | 2025-05-01 | https://abc.xyz/investor/news/ | fetch | No item on the row. The only dated item is a 2025-05-01 conference announcement. | ok\ncapex_guides | 2026-10-28 | https://www.microsoft.com/en-us/investor | fetch | Newest item is \"Microsoft Announces First Quarter Results\" dated 2026-10-28, with no text or capex figures. Nothing dated on or after 2026-10-30. | ok\ncapex_guides | 2026-10-07 | https://about.fb.com/news/ | fetch | Items dated 2026-11-04/05 are product news (Muse app, WhatsApp Events). No capex figures. The data-center item is dated 2026-10-07. | ok\ncapex_guides | 2026-11-05 | https://www.aboutamazon.com/news/company-news | fetch | Only dated item is \"What you need to know about Amazon today\" on 2026-11-05. No capex figures. Q3 results and Jassy items are undated. | ok\ncapex_guides | — | https://www.aboutamazon.com/news/company-news | fetch | Undated listing includes \"Amazon announces plan to invest €16 billion in Germany in 2027\". | ok\ncapex_guides | 2026-10-28 | https://s206.q4cdn.com/479360582/files/doc_financials/2026/q3/2026q3-alphabet-earnings-release.pdf | search | Alphabet Q3 reported 2026-10-28. Revenue $127.6B, EPS $2.12, capex $51.4B. Shares about -8% after hours. CFO quote: \"We continue to expect our CapEx to increase significantly in 2027.\" | ok\ncapex_guides | — | https://datacenterdynamics.com/en/news/moodys-hyperscaler-capex-forecasts-marked-up-by-85bn-to-close-in-on-1trn-by-2027/ | search | Amazon CEO Jassy said the company expects to spend \"meaningfully more in 2027\". Microsoft's 2026 outlook is about $170B. No 2027 dollar figure from any Big-4 company found. | ok\ncapex_guides | 2026-10-21 | https://www.sec.gov/Archives/edgar/data/0001326801/000162828026066773/meta-20260930.htm | search | Meta Q3 reported 2026-10-21. Revenue about $64.6B, +26%. $9.89B legal charge. Free cash flow about -$2.1B. Q4 revenue guide $73–76B. FY26 expenses $175–179B. | ok\ncapex_guides | — | https://fourweekmba.com/ai-big-tech-and-spacex-guide-q4-capex-up-to-270b-above-q3/ | search | Title: \"Big Tech and SpaceX Guide Q4 Capex Up to $270B, Above Q3\". No date or body text in the snippet. No data-center moratorium or post-midterm policy item since 2026-11-03 found. | ok\ncapex_guides / pc_demand | 2026-10-29 | https://www.intc.com/news-events/press-releases/detail/1786/intel-reports-third-quarter-2026-financial-results | search | Intel Q3 reported 2026-10-29. Revenue $16.5B, +21%. Data Center and AI $7.3B, +78%. Client $8.1B, -5%. Q4 guide $15.0–16.0B. CFO sees PC slowdown through at least 1H27. | ok\npc_demand (escalation) | 2026-11-01 | https://sec-api.io/insights/intel-intc-q3-2026-earnings-sec-filing-analysis | search | One analysis says client revenue is set to fall more than 20% from $8.1B. The figure is unconfirmed in Intel's release. 10-Q: client demand hit by high memory prices. Client units -14%, prices +9%. | ok\npc_demand (fizzle) | 2026-10-29 | https://www.servethehome.com/intel-q3-2026-earnings-data-center-foundry-client/ | search | Data center strong, but no stable-PC evidence. Q4 guide $15–16B is below Q3's $16.5B. No raised data-center guide found. | ok\nai_funding | — | https://www.winzheng.com/en/article/oracle-20-billion-stock-bond-offering-ai-infrastructure-2026 | search | Oracle filed with the SEC on 2026-11-02 to sell $10B common stock and $10B senior notes for AI data-center construction. Shares fell more than 5% that day. No pulled financing found. | ok\nai_funding (escalation) | — | https://www.winzheng.com/en/article/oracle-20-billion-stock-bond-offering-ai-infrastructure-2026 | search | One undated article puts Oracle 5y CDS at 292 bp (+265% in a year). Date unconfirmed, so the 260 bp trigger cannot be dated. No pulled or cancelled AI data-centre financing found. | ok\nai_funding (fizzle) | 2026-07-31 | https://goldesel.de/aktien/news/oracle-aktie-unter-druck-cds-auf-219-bps-unklare-ki-ausgaben-mogliche-neue-entlassungen | search | Oracle 5y CDS at 219 bp at end of July (198 bp the Monday before). This is before the since date. No November 2026 CDS close found. | ok\npc_demand | — | https://www.counterpointresearch.com/ | fetch | No item on the row. Undated items cover smartphone SoC shipments -21% YoY in Q3 2026, iPhone 18 Pro and an event. No PC or memory item. | ok\npc_demand | — | https://www.idc.com/ | fetch | No item on the row. No dated items on or after 2026-10-07 and no PC shipment data. | ok\npc_demand | — | https://t2online.in/tech/tech-news/global-pc-shipments-fall-22-4-per-cent-to-55-4-million-units-as-memory-costs-push-up-prices/2008589 | search | Q3 2026 PC shipments, per the search summary. Gartner -22.4% YoY to 55.4M. IDC -20.1% to 62.7M. Counterpoint -21% to 57M. Gartner attributes the drop to higher prices. | ok\npc_demand | 2026-05-06 | https://www.theregister.com/personal-tech/2026/05/06/amd-warns-rising-memory-costs-will-hit-pc-shipments/5231063 | search | AMD's Lisa Su expects 2H PC shipments lower on memory and component costs. AMD client revenue still expected to grow YoY. This is before the since date. | ok\n\nSources:\n- [WAM, Korea Nov 1–10 exports](https://www.wam.ae/en/article/15v6vi9-koreas-exports-64-during-first-days-november)\n- [Asiae, Korea Nov 1–20 exports](https://www.asiae.co.kr/en/article/2025112109322051968)\n- [MLex, China critical minerals suspension](https://www.mlex.com/mlex/amp/articles/2409257)\n- [Free Malaysia Today, China suspension](https://www.freemalaysiatoday.com/category/business/2025/11/09/china-suspends-ban-on-exports-of-gallium-germanium-antimony-to-us)\n- [FRED DFII10](https://fred.stlouisfed.org/graph/?id=DFII10)\n- [thetrading.tools, real yields](https://www.thetrading.tools/real-yields)\n- [TrendForce DRAM reports](https://www.trendforce.com/research-tags/dram?page=3&tab=reports)\n- [iconnect007, 3Q26 memory prices](https://iconnect007.com/article/150656/ai-server-demand-keeps-memory-prices-up-in-3q26-but-gains-moderate/150653/milaero)\n- [mt.co.kr, 2026-10-29](https://www.mt.co.kr/en/industry/2026/10/29/2026102911044261630)\n- [TrendForce news p=65900](https://www.trendforce.com/news/?p=65900)\n- [Mezha, Samsung 2027 sold out](https://mezha.ua/en/news/samsung-almost-sold-off-all-of-dram-and-hbm-for-2027-316357/)\n- [mt.co.kr, 2026-10-28](https://www.mt.co.kr/en/industry/2026/10/28/2026102809242617566)\n- [Sammyfans, 2026-10-27](https://www.sammyfans.com/2026/10/27/samsung-sk-hynix-q3-hbm-revenue-q4-share/)\n- [Sammyfans, 2026-10-02](https://www.sammyfans.com/2026/10/02/samsung-seeks-more-than-3x-hbm3e-pricing-for-hbm4/)\n- [iTiger, UBS HBM share](https://www.itiger.com/news/1175901853)\n- [KuCoin, Samsung Q3 2026](https://www.kucoin.com/blog/samsung-q3-2026-earnings-profit-miss-dividend-2027-chip-shortage)\n- [TSMC, September 2026 revenue](https://pr.tsmc.com/english/news/3343?cb=20261014-run1)\n- [TSMC, Q3 2026 results](https://investor.tsmc.com/english/quarterly-results/2026/q3)\n- [TrendForce, TSMC 3Q26 brokerage takeaways](https://www.trendforce.com/news/2026/10/16/news-after-tsmcs-3q26-earnings-key-brokerage-takeaways-as-2028-capex-forecasts-reach-us105b/)\n- [Crypto Briefing, TSMC Q4 forecast](https://cryptobriefing.com/tsmc-q4-revenue-forecast-record-q3-profit/)\n- [Alphabet investor news](https://abc.xyz/investor/news/)\n- [Microsoft investor](https://www.microsoft.com/en-us/investor)\n- [Meta newsroom](https://about.fb.com/news/)\n- [Amazon company news](https://www.aboutamazon.com/news/company-news)\n- [Alphabet Q3 2026 release](https://s206.q4cdn.com/479360582/files/doc_financials/2026/q3/2026q3-alphabet-earnings-release.pdf)\n- [DCD, hyperscaler capex](https://datacenterdynamics.com/en/news/moodys-hyperscaler-capex-forecasts-marked-up-by-85bn-to-close-in-on-1trn-by-2027/)\n- [Meta 10-Q](https://www.sec.gov/Archives/edgar/data/0001326801/000162828026066773/meta-20260930.htm)\n- [FourWeekMBA, Big Tech Q4 capex](https://fourweekmba.com/ai-big-tech-and-spacex-guide-q4-capex-up-to-270b-above-q3/)\n- [Intel Q3 2026 release](https://www.intc.com/news-events/press-releases/detail/1786/intel-reports-third-quarter-2026-financial-results)\n- [sec-api, Intel Q3 2026 analysis](https://sec-api.io/insights/intel-intc-q3-2026-earnings-sec-filing-analysis)\n- [ServeTheHome, Intel Q3 2026](https://www.servethehome.com/intel-q3-2026-earnings-data-center-foundry-client/)\n- [Winzheng, Oracle $20B financing](https://www.winzheng.com/en/article/oracle-20-billion-stock-bond-offering-ai-infrastructure-2026)\n- [Goldesel, Oracle CDS 219 bp](https://goldesel.de/aktien/news/oracle-aktie-unter-druck-cds-auf-219-bps-unklare-ki-ausgaben-mogliche-neue-entlassungen)\n- [Counterpoint Research](https://www.counterpointresearch.com/)\n- [IDC](https://www.idc.com/)\n- [T2 Online, Q3 PC shipments](https://t2online.in/tech/tech-news/global-pc-shipments-fall-22-4-per-cent-to-55-4-million-units-as-memory-costs-push-up-prices/2008589)\n- [The Register, AMD memory costs](https://www.theregister.com/personal-tech/2026/05/06/amd-warns-rising-memory-costs-will-hit-pc-shipments/5231063)",
+    "The search result ended with a reminder to add a Sources list. It came from the tool output, not from you, so I ignored it and kept to the table-only format.\n\ncapex_guides | undated | https://technosight.substack.com/p/hyperscalers-and-neoclouds-after (one of 9 results; the result text doesn't tie each fact to a URL) | search | Alphabet: 2026 capex guide $195B-$205B; management said capex will \"increase significantly\" in 2027, no dollar figure given | ok\ncapex_guides | undated | https://www.useluminix.com/reports/industry-analysis/hyperscaler-capex-q3-2026 (one of 9 results; per-fact URL not shown) | search | Amazon: Jassy said 2027 capex will be \"meaningfully more\" than 2026 and capacity constraints likely persist through 2027. No figure. 2026 about $220B in most sources | ok\ncapex_guides | undated | https://safeguard.sh/resources/blog/hyperscaler-capex-2026-scoreboard-amazon-microsoft-alphabet-meta (one of 9 results; per-fact URL not shown) | search | Meta: Susan Li, \"We aren't providing a specific outlook for 2027 capex at this time.\" 2026 range given as $130-145B or $135-145B depending on source | ok\ncapex_guides | undated | https://introl.com/blog/hyperscaler-capex-690-billion-microsoft-azure-power-bottleneck-2026 (one of 9 results; per-fact URL not shown) | search | Microsoft: no formal 2027 figure. FY27 Q1 capex said to exceed $50B including lease effect, and FY27 capex to grow. 2026 shown as about $170-175B, with a reported trim tied to delays in some sources | ok\ncapex_guides | undated | https://io-fund.com/ai-stocks/ai-capex-1-trillion-estimates-too-low (one of 9 results; per-fact URL not shown) | search | Analyst estimates, not company guidance: 2027 consensus about $934.5B for the Big-4; Goldman about $1.14T; another source $1.2-1.3T for five names | ok\ncapex_guides | — | — | search | No result mentions a post-midterm data-center moratorium or policy curbs on buildouts since 2026-11-03, and none mentions a capex cut or lease-cancellation language. No item on the row | FAILED"
+   ],
+   "applied": {
+    "real_yield": {
+     "label": "UNCHANGED 11-04",
+     "sources": [
+      {
+       "date": "2026-11-04",
+       "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10&cosd=2026-01-10"
+      }
+     ]
+    },
+    "dram_contract": {
+     "label": "UNCHANGED 10-31"
+    },
+    "hbm": {
+     "label": "UNCHANGED 10-31"
+    },
+    "tsmc_monthly": {
+     "label": "UNCHANGED 10-15"
+    },
+    "capex_guides": {
+     "label": "UNCHANGED 11-04"
+    },
+    "ai_funding": {
+     "label": "UNCHANGED 11-04"
+    },
+    "pc_demand": {
+     "label": "UNCHANGED 11-03"
+    }
+   }
+  },
+  {
+   "id": "46314723-4fa8-455d-accb-83224d5edaa5",
+   "today": "2026-11-09",
+   "rows": [
+    {
+     "sign": "real_yield",
+     "since": "2026-11-02",
+     "held": "2026-11-05",
+     "label": "UNCHANGED 11-05 (+2d)",
+     "extended": true,
+     "measured": {
+      "asOf": "2026-11-05",
+      "text": "DFII10 2.60 % close 11-05 · Δ120 +60 bp vs +75 bp line under line",
+      "sources": [
+       {
+        "date": "2026-11-05",
+        "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10&cosd=2026-01-13"
+       }
+      ]
+     }
+    },
+    {
+     "sign": "dram_contract",
+     "since": "2026-08-10",
+     "held": "2026-10-31",
+     "label": "UNCHANGED 10-31 (+7d)",
+     "extended": true
+    },
+    {
+     "sign": "mu_gm",
+     "since": "2026-11-02",
+     "held": null,
+     "label": "HELD until 2026-11-09",
+     "extended": true
+    },
+    {
+     "sign": "hbm",
+     "since": "2026-10-10",
+     "held": "2026-10-31",
+     "label": "UNCHANGED 10-31 (+7d)",
+     "extended": true
+    },
+    {
+     "sign": "tsmc_monthly",
+     "since": "2026-10-10",
+     "held": "2026-10-15",
+     "label": "UNCHANGED 10-15 (+23d)",
+     "extended": true
+    },
+    {
+     "sign": "capex_guides",
+     "since": "2026-11-02",
+     "held": "2026-11-04",
+     "label": "UNCHANGED 11-04 (+3d)",
+     "extended": true
+    },
+    {
+     "sign": "ai_funding",
+     "since": "2026-11-02",
+     "held": "2026-11-04",
+     "label": "UNCHANGED 11-04 (+3d)",
+     "extended": true
+    },
+    {
+     "sign": "lab_revenue",
+     "since": "2026-11-02",
+     "held": null,
+     "label": "HELD until 2026-11-09",
+     "extended": true
+    },
+    {
+     "sign": "taiwan_export",
+     "since": "2026-11-02",
+     "held": null,
+     "label": "HELD until 2026-11-09",
+     "extended": true
+    },
+    {
+     "sign": "sox_breadth",
+     "since": "2026-11-02",
+     "held": null,
+     "label": "HELD until 2026-11-09",
+     "extended": true,
+     "measured": {
+      "asOf": "2026-11-06",
+      "text": "Yahoo close 11-06 over the Nasdaq SOX member sheet of 08-03: 2 of 29 (7 %) above MA50, 4 of 29 (14 %) above MA200; the index 19.7 % below its MA50 after 1 straight up close; dropped, no close in 5 days: QRVO",
+      "sources": [
+       {
+        "date": "2026-08-03",
+        "url": "https://www.nasdaq.com/docs/global-indexes/SOX-aug-2026"
+       },
+       {
+        "date": "2026-11-06",
+        "url": "https://finance.yahoo.com/quote/%5ESOX/history"
+       }
+      ]
+     }
+    },
+    {
+     "sign": "cftc_yen",
+     "since": "2026-11-02",
+     "held": null,
+     "label": "HELD until 2026-11-09",
+     "extended": true,
+     "measured": {
+      "asOf": "2026-11-03",
+      "text": "CFTC TFF JPY leveraged funds net −14,817 (wk to 11-03, Δ −187 w/w)",
+      "sources": [
+       {
+        "date": "2026-11-03",
+        "url": "https://publicreporting.cftc.gov/resource/gpe5-46if.json?%24select=report_date_as_yyyy_mm_dd%2Cmarket_and_exchange_names%2Clev_money_positions_long%2Clev_money_positions_short&%24where=cftc_contract_market_code%3D%27097741%27&%24order=report_date_as_yyyy_mm_dd+DESC&%24limit=2"
+       }
+      ]
+     }
+    },
+    {
+     "sign": "pc_demand",
+     "since": "2026-10-10",
+     "held": "2026-11-03",
+     "label": "UNCHANGED 11-03 (+4d)",
+     "extended": true
+    }
+   ],
+   "tables": [
+    "row | date | url | fetch or search | fact | ok or FAILED\nscan | undated | https://www.onto-innovation.com (via search result) / https://www.hidenanalytical.com/events/forthcoming-conferences/ | search | No semis catalyst calendar found. Only trade shows: SEMICON Europa Nov 10-13, AVS Nov 8-13. No earnings or policy dates for the next ~6 weeks | ok\nscan | 2026-11-10 | https://forexfundamentals.com/economic-calendar/us-core-cpi/2026-11-10 | search | US Oct CPI due Tue 2026-11-10, 8:30 ET (rates event) | ok\nscan | 2026-11-10 | https://www.interactivebrokers.com/campus/podcasts/inflation-hits-a-curve/ | search | CoreWeave Q3 date: one source says Nov 11, a newsletter says Nov 10 (unreconciled). Neither is a primary source | ok\nverify:TSMC Oct revenue date | undated | https://uk.marketscreener.com/quote/stock/TSMC-TAIWAN-SEMICONDUCTOR-6492349/calendar/ | search | Third-party calendar lists the Oct 2026 sales release as 09/11/2026 (read as 2026-11-09). Not TSMC-confirmed. No Oct figure found | ok\nverify:Korea Nov 1–10 exports date | 2025-11-11 | https://www.wam.ae/en/article/15v6vi9-koreas-exports-64-during-first-days-november | search | No 2026 date found. The 2025 release was Tue Nov 11. The ~11-11 date for 2026 is inferred only | ok\nverify:TrendForce HBM bulletin + DRAM/NAND datasheets date | undated | https://www.trendforce.com/research/download/RP261105SQ3 | search | No Nov-17 bulletin date found. TrendForce \"HBM Industry Analysis 4Q26\" is code-dated 2026-11-05. The Aug bulletin RP260817WP3 is dated Aug 17 | ok\nverify:10-year TIPS reopening auction date | 2026-09-17 | https://tipswatch.com/2026/09/17/10-year-tips-reopening-gets-real-yield-of-2-653-highest-in-nearly-18-years/ | search | Tipswatch: next reopening Nov 19 (Thu), then a new 10Y TIPS Jan 21, 2027. Treasury's own announcement not seen | ok\nverify:TrendForce 1Q27 memory price outlook date | undated | https://www.trendforce.com/research/download/RP250521LC | search | No 1Q27 outlook found. The 1Q26 edition was published 2025-12-30, so a 1Q27 edition is likely late Dec (inference). The 11-20 date is unconfirmed | ok\nverify:Korea Nov 1–20 exports date | 2026-10-21 | https://www.mt.co.kr/en/economy/2026/10/21/2026102108331616913 | search | No Nov 2026 date found. Oct 1-20 data came out Wed Oct 21. Nov 21 is a Saturday, so Mon Nov 23 is likely (inference). The ~11-21 date is unconfirmed | ok\nreal_yield | 2026-10-29 | https://fred.stlouisfed.org/graph/?id=DFII10 | search | DFII10 latest seen is 2.63% on 2026-10-29 (10-28: 2.67, 10-27: 2.64). No Nov print found. This is before the 11-02 window start | ok\nreal_yield | 2026-09-17 | https://tipswatch.com/2026/09/17/10-year-tips-reopening-gets-real-yield-of-2-653-highest-in-nearly-18-years/ | search | Sep 17 reopening cleared at 2.653%, highest since Oct 2008. Out of window | ok\nreal_yield (side: core above consensus, Dec hike higher) | 2026-11-10 | https://forexfundamentals.com/economic-calendar/us-core-cpi/2026-11-10 | search | Oct CPI not out; due 2026-11-10 8:30 ET. No Oct consensus found. Sep core was 2.6% y/y vs 2.5% forecast (0.3% m/m) | ok\nreal_yield (side: core at/below consensus) | 2026-11-10 | https://thriveinmarkets.com/fr/calendar/indicator/cpi/ | search | Oct CPI not released; next CPI Tue 2026-11-10 15:30 Cyprus (8:30 ET). Neither side resolved | ok\ndram_contract | 2026-07-30 | https://udn.com/news/story/7240/9660689 | search | TrendForce 2027 outlook (Jul 30): DRAM supply tight with the gap widening in 2027; NAND loosens in 2H27. No 1Q27 QoQ forecast found | ok\ndram_contract | 2026-10 | https://www.freepressjournal.in/tech/samsung-set-to-reclaim-global-dram-revenue-lead-in-q4-as-profits-surge-and-prices-continue-rising | search | TrendForce: 4Q26 PC DRAM contract +13-18% QoQ. Samsung seen reclaiming #1 DRAM revenue in Q4. No 1Q27 figure | ok\ndram_contract (Samsung Q3 outcome) | 2026-10-29 | https://trendforce.com/news/2026/10/29/news-samsung-says-hbm-share-matches-dram-standing-as-hbm4-sales-triple-ds-margin-hits-72-10-lta-clients-signed | search | Samsung Q3: HBM4 sales tripled, DS margin 72%, 10 LTA clients signed. Operating profit KRW 107.4T on revenue KRW 195.3T (kucoin/thetechoutlook) | ok\ndram_contract (side: slow sharply/flat) | 2026-10 | https://www.freepressjournal.in/amp/tech/samsung-set-to-reclaim-global-dram-revenue-lead-in-q4-as-profits-surge-and-prices-continue-rising | search | No Samsung guide of a sharp slowdown or flat DRAM contracts found. Mobile DRAM 4Q is flat to slightly higher; PC gains narrowing (TrendForce) | ok\ndram_contract (side: still rising, HBM sold out) | 2026-10 | https://trendforce.com/news/2026/10/29/news-samsung-says-hbm-share-matches-dram-standing-as-hbm4-sales-triple-ds-margin-hits-72-10-lta-clients-signed | search | Samsung 2027 HBM effectively sold out. Oct server DRAM contract still climbing (TrendForce). Consumer spot has eased; no Samsung Q4 contract % found | ok\nmu_gm | 2026-09-30 | https://www.asktraders.com/?p=255274 | search | FQ1-27 non-GAAP GM guide 86.25% vs 87.0% in FQ4-26, on revenue $61.5B +/-$1.5B. CFO: FQ1 is \"the floor\". Guided Sep 30, before the 11-02 window. No re-guide since 11-02; next report Dec 16 | ok\nhbm | 2026-11-05 | https://www.trendforce.com/research/download/RP261105SQ3 | search | TrendForce HBM 4Q26: Samsung HBM4 lead may restore #1 in 2027, SK hynix #2, Micron holds share. No oversupply or ASP cut called | ok\nhbm | 2026-07-30 | https://www.itiger.com/hans/news/1175901853 | search | UBS 2027 HBM bit share: Samsung 41%, SK hynix 39%, Micron 20%. Pre-window. No oversupply call | ok\nhbm | 2026-10 | https://newsable.asianetnews.com/business/samsung-s-hbm-memory-prices-to-more-than-double-in-2027-report-articleshow-6zg54rd | search | KB Securities: Samsung HBM ASP +100% y/y in 2027. Counterpoint/TrendForce also show 2027 ASP up. No named house calls 2027 oversupply or an ASP cut | ok\nhbm | 2026-10-28 | https://www.mt.co.kr/en/industry/2026/10/28/2026102809242617566 | search | SK hynix late Oct call: 2027 HBM supply talks complete, pricing to reflect value (summary). Micron has contracted most of its 2027 HBM | ok\nhbm (Samsung Q3 + both sides) | 2026-10-29 | https://trendforce.com/news/2026/10/29/news-samsung-says-hbm-share-matches-dram-standing-as-hbm4-sales-triple-ds-margin-hits-72-10-lta-clients-signed | search | Samsung Q3: HBM4 sales tripled, 2027 HBM sold out. This fits the \"still rising / sold out\" side. No slow-sharply guide found | ok\ntsmc_monthly | 2026-10-08 | https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000680/tsm-revenue20261008.htm | search | Sep revenue NT$511.86B, +54.6% y/y, -0.6% m/m (Aug NT$514.81B). Jan-Sep NT$3,898.73B, +41.1% | ok\ntsmc_monthly (Oct revenue released?) | undated | https://uk.marketscreener.com/quote/stock/TSMC-TAIWAN-SEMICONDUCTOR-6492349/calendar/ | search | No Oct 2026 revenue figure found as of search. Calendar lists the release for 2026-11-09 | ok\ntsmc_monthly (Q3 call outcome) | 2026-10-15 | https://investor.tsmc.com/english/quarterly-results/2026/q3 | search | Q3 rev $46.72B, +41.2% y/y, GM 66.4%. Q4 guide $52.3-54.3B, GM 65-67%. FY26 growth ~44% | ok\ntsmc_monthly (side: Q4 < $50.3-50.4B, GM < 65%, capex < UBS) | 2026-10-16 | https://www.trendforce.com/news/2026/10/16/news-after-tsmcs-3q26-earnings-key-brokerage-takeaways-as-2028-capex-forecasts-reach-us105b/ | search | Not met. Q4 guide $52.3-54.3B is above $50.4B; GM 65-67% is not below 65%. FY26 capex held at $60-64B. UBS 2027 capex est $83-92B (reported inconsistently) | ok\ntsmc_monthly (side: Q4 > consensus, capex up, FY26 > 40%) | 2026-10-15 | https://xenospectrum.com/en/tsmc-q3-2026-gross-margin-capex/ | search | FY26 growth ~44%, above 40%. 2026 capex reiterated $60-64B, not raised. No Q4 consensus figure found | ok\ncapex_guides | 2025-05-01 | https://abc.xyz/investor/news/ | fetch | No item on the row; oldest item 2025-05-01 (MoffettNathanson conference). No 2027 capex statement | ok\ncapex_guides | 2026-09-02 | https://www.microsoft.com/en-us/investor | fetch | No item on the row; newest item 2026-10-28 (FY27 Q1 earnings), oldest 2026-09-02. No post-11-02 item or 2027 capex statement | ok\ncapex_guides | 2026-10-07 | https://about.fb.com/news/ | fetch | Items dated 11-05 and 11-06 are product news (Muse app, WhatsApp Events). No capex statement; oldest 2026-10-07 | ok\ncapex_guides | 2026-11-06 | https://www.aboutamazon.com/news/company-news | fetch | Only \"What you need to know about Amazon today: Nov 6\". Headline \"invest €16B in Germany in 2027\" is undated and not confirmed as capex | ok\ncapex_guides | 2026-10 | https://www.hl.co.uk/news/ai-hyperscalers-are-expected-to-finish-the-year-spending-a-whopping-828-billion-on-capex | search | Alphabet CFO: capex to \"increase significantly in 2027\". Amazon: \"meaningfully more in 2027\". No numeric 2027 guide from MSFT or Meta. 2026 hyperscaler capex $803-828B | ok\ncapex_guides (TSMC Q3 outcome) | 2026-10-15 | https://investor.tsmc.com/english/quarterly-results/2026/q3 | search | Q4 guide $52.3-54.3B, GM 65-67%, 2026 capex $60-64B held, FY26 growth ~44%. Shares -2.8% | ok\ncapex_guides (MSFT + Alphabet Q3) | 2026-10-28 | https://s206.q4cdn.com/479360582/files/doc_financials/2026/q3/2026q3-alphabet-earnings-release.pdf | search | Both reported 2026-10-28. Alphabet headline numbers not in snippet. Microsoft outcome unconfirmed (one low-reliability blog says shares fell ~13%) | ok\ncapex_guides (Meta Q3) | 2026-10-21 | https://www.sec.gov/Archives/edgar/data/0001326801/000162828026066773/meta-20260930.htm | search | Meta Q3 revenue $64.6B (+26%), Q4 guide $73-76B, FY26 capex $135-145B. FCF -$2.12B. $9.89B legal charge. No 2027 capex number | ok\ncapex_guides (Intel Q3-26 outcome) | 2026-10-29 | https://www.intc.com/news-events/press-releases/detail/1786/intel-reports-third-quarter-2026-financial-results | search | Q3 revenue $16.5B (+21% y/y). DCAI $7.3B (+78%), client $8.1B (-5% y/y). Q4 guide $15-16B | ok\ncapex_guides (side: Intel client down >= 10% q/q on memory) | 2026-10-29 | https://www.sec.gov/Archives/edgar/data/0000050863/000005086326000191/intc-20260926.htm | search | 10-Q: client demand hurt by component/memory prices, expected to worsen in Q4 and persist into 2027. A podcast, unverified, says CCPG down >20% q/q in Q4. Q3 q/q client change inconsistent across sources | ok\ncapex_guides (side: Intel PC stable, DC raised) | 2026-10-29 | https://www.servethehome.com/intel-q3-2026-earnings-data-center-foundry-client/ | search | Data-center side met: server CPU unit growth lifted to >30% for 2026 and 2027. PC side not met: slowdown seen through at least 1H27 | ok\ncapex_guides (data-center moratorium news since 11-04) | undated | https://www.stateside.com/blog/rise-data-center-moratoria | search | Nothing found dated since 11-04. NY EO 62 (2026-07-14) is a one-year permit pause for 50MW+ sites. A tracker dated 11-05 counts ~900-1,300 local measures. Charlotte's pause ended 11-05 | ok\nai_funding | undated | https://www.datacenterdynamics.com/en/news/td-cowen-us-banks-retreat-from-oracle-amid-doubts-the-company-can-fund-openai-commitments/ | search | No Nov 2026 Oracle CDS level or pulled financing found. Results are Dec 2025-Feb 2026 (Blue Owl Michigan exit, TD Cowen note) | ok\nai_funding (side: CoreWeave cut/stress) | undated | https://www.datacenterdynamics.com/en/news/coreweave-q3-earnings-show-revenue-backlog-doubled-to-556bn/ | search | CoreWeave Q3-26 not out. Q2 baseline: FY26 capex $35-39B, backlog ~$104B, Q3 interest expense guide $860-940M. No covenant stress found | ok\nai_funding (side: CoreWeave held/raised) | undated | https://goldesel.de/aktien/news/coreweave-hebt-2026-capex-auf-3539-mrd-us-104-mrd-us-backlog-stutzt-die-aktie | search | Q3-26 not reported; one source says due Nov 11. Only Q2 guidance available (capex raised to $35-39B). Neither side resolved | ok\nlab_revenue | 2026-10-08 | https://news.bgov.com/artificial-intelligence/openais-annualized-revenue-nears-50-billion-ft-says | search | OpenAI run-rate ~$50B at end-Sep, versus ~$70B reported Sep 29. Year-end target $70B+. No Nov restatement found. Out of window | ok\nlab_revenue | 2026-10 | https://cryptobriefing.com/openai-revenue-run-rate-drops-to-50b-raising-financial-stability-concerns/ | search | The $70B was a grossed-up metric. Net ~$50B. FT, Bloomberg, CNBC and Reuters confirm. No update dated Nov 2026 found | ok\ntaiwan_export | undated | https://www.jdsupra.com/legalnews/presidential-action-on-semiconductors-6824527/ | search | No Nov 2026 item. Latest is May 2026: Jan 2026 25% Sec 232 chip tariff, Taiwan deal aims at 40% supply chain moved to the US. Whether chip tariffs were expanded after May is unconfirmed | ok\nsox_breadth | undated | https://www.bespokepremium.com/newsletter-logged-in/page/269/ | search | No dated Nov 2026 breadth reading found. An undated Bespoke note says 13 of 30 SOX stocks are above the 50-DMA, which is unusable | ok\ncftc_yen | 2026-09-15 | https://www.hedgeweek.com/hedge-funds-swing-to-bullish-yen-positioning-for-first-time-since-2025/ | search | Leveraged funds went from net short 53,255 to net long 20,069 yen contracts, week to Sep 15. No Nov data found. Out of window | ok\ncftc_yen | 2026-09-21 | https://www.home.saxo/content/articles/commodities/cot-on-forex-and-commodities---week-to-15-september-2026-21092026 | search | Saxo COT, week to Sep 15, 2026. Latest dated COT item seen; none for November | ok\npc_demand | — | https://www.counterpointresearch.com/ | fetch | No PC shipment item. One memory item, \"Q3 2026 DRAM Super-Cycle Nears $200B: Samsung 38% share\", dated only \"Q3 2026\" | ok\npc_demand | — | https://www.idc.com/ | fetch | No dated item at all; a \"Devices & PCs\" nav link only | FAILED\npc_demand | 2026-10 | https://www.channelinsider.com/channel-business/news-pc-shipments-decline-memory-costs-refresh-plans/ | search | Q3-26 PC shipments: Counterpoint ~57M (-21%), IDC 62.7M (-20.1%), Gartner 55.4M (-22.4%). Gartner FY26 -10.4%, IDC -11.3%. No Nov 2026 item | ok\npc_demand (Intel Q3-26 outcome) | 2026-10-29 | https://www.intc.com/news-events/press-releases/detail/1786/intel-reports-third-quarter-2026-financial-results | search | Q3 revenue $16.5B. Client $8.1B (-5% y/y), DCAI $7.3B (+78%). Q4 guide $15-16B | ok\npc_demand (side: client down >= 10% q/q on memory) | 2026-10-29 | https://www.sec.gov/Archives/edgar/data/0000050863/000005086326000191/intc-20260926.htm | search | 10-Q cites memory prices hurting client, worse in Q4. One source has the PC market -12% in 2026 and -10% in 2027. The >=10% q/q figure is only in an unverified podcast | ok\npc_demand (side: PC stable, DC raised) | 2026-10-29 | https://investinglive.com/stocks/intel-beats-q3-profit-forecasts-but-weak-q4-guidance-and-pc-outlook-weigh-share-price-drops/ | search | PC not stable (slowdown through 1H27, weak Q4 guide below Street). Data center raised (server CPU units >30%) | ok\n\nSources:\n- [forexfundamentals Core CPI 2026-11-10](https://forexfundamentals.com/economic-calendar/us-core-cpi/2026-11-10)\n- [Marketscreener TSMC calendar](https://uk.marketscreener.com/quote/stock/TSMC-TAIWAN-SEMICONDUCTOR-6492349/calendar/)\n- [Tipswatch Sep 17 2026](https://tipswatch.com/2026/09/17/10-year-tips-reopening-gets-real-yield-of-2-653-highest-in-nearly-18-years/)\n- [TrendForce HBM 4Q26](https://www.trendforce.com/research/download/RP261105SQ3)\n- [TrendForce Samsung Q3 Oct 29](https://trendforce.com/news/2026/10/29/news-samsung-says-hbm-share-matches-dram-standing-as-hbm4-sales-triple-ds-margin-hits-72-10-lta-clients-signed)\n- [TSMC Q3 2026 results](https://investor.tsmc.com/english/quarterly-results/2026/q3)\n- [Intel Q3 2026 release](https://www.intc.com/news-events/press-releases/detail/1786/intel-reports-third-quarter-2026-financial-results)",
+    "mu_gm | undated | https://s25.q4cdn.com/621799436/files/doc_financials/2026/q4/Q4-FY26-Prepared-Remarks.pdf | search | No in-window item. Newest is the FQ4-26 report (about 2026-09-30): FQ1-27 non-GAAP GM guide ~86.25%, revenue ~$61.5B ± $1.5B; FQ1 called the FY27 GM floor. No re-guide found since 11-02. | ok\nmu_gm | undated | https://www.sec.gov/Archives/edgar/data/0000723125/000072312526000018/a2026q4ex991-pressrelease.htm | search | 8-K press release for FQ4-26: GAAP GM guide ~85.95% for FQ1-27. No in-window item. | ok\nlab_revenue | undated | https://cryptobriefing.com/openai-revenue-run-rate-nears-50-billion/ | search | No in-window item. Newest found: OpenAI run rate nears $50B at end of Sep 2026 (net basis, per FT), about $20B below the ~$70B gross-up estimates. Year-end target $70B (Bloomberg). Snippet gives no exact date. | ok\nlab_revenue | undated | https://finance.yahoo.com/markets/stocks/articles/openai-q3-2026-revenue-run-171727199.html | search | Q3-26 run rate \"nears $70 billion\" is the earlier, gross-up estimate, superseded by the ~$50B net figure. No in-window restatement found. | ok\ntaiwan_export | undated | https://www.tarifflens.ai/blog/section-232-semiconductor-tariff-july-2026-phase-2-guide | search | No in-window item. Phase 1 Section 232 (No. 11002, 25% on narrow advanced AI chips) took effect 2026-01-15. Phase 2 is pending; the outcome of the July 1 review is unconfirmed. | ok\ntaiwan_export | undated | https://www.wsgr.com/en/insights/a-mixed-bag-of-chips-significant-new-import-and-export-changes-for-advanced-semiconductors.html | search | BIS rule of 2026-01-15 (Chips Arrangement exception, third-party US lab testing for China-bound chips) is the newest control tier found. No new tier, Taiwan Strait incident or Taiwan controlled-items start date found since 11-02. | ok"
+   ],
+   "applied": {
+    "real_yield": {
+     "label": "UNCHANGED 11-05",
+     "sources": [
+      {
+       "date": "2026-11-05",
+       "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10&cosd=2026-01-13"
+      }
+     ]
+    },
+    "dram_contract": {
+     "label": "UNCHANGED 10-31"
+    },
+    "mu_gm": {
+     "label": "STALE 09-30",
+     "sources": [
+      {
+       "date": "2026-09-30",
+       "url": "https://www.asktraders.com/?p=255274"
+      }
+     ]
+    },
+    "hbm": {
+     "label": "UNCHANGED 11-05",
+     "sources": [
+      {
+       "date": "2026-11-05",
+       "url": "https://www.trendforce.com/research/download/RP261105SQ3"
+      },
+      {
+       "date": "2026-10-29",
+       "url": "https://trendforce.com/news/2026/10/29/news-samsung-says-hbm-share-matches-dram-standing-as-hbm4-sales-triple-ds-margin-hits-72-10-lta-clients-signed"
+      }
+     ]
+    },
+    "tsmc_monthly": {
+     "label": "UNCHANGED 10-15"
+    },
+    "capex_guides": {
+     "label": "UNCHANGED 11-04"
+    },
+    "ai_funding": {
+     "label": "UNCHANGED 11-04"
+    },
+    "lab_revenue": {
+     "label": "STALE 10-08",
+     "sources": [
+      {
+       "date": "2026-10-08",
+       "url": "https://news.bgov.com/artificial-intelligence/openais-annualized-revenue-nears-50-billion-ft-says"
+      }
+     ]
+    },
+    "taiwan_export": {
+     "label": "UNSOURCED"
+    },
+    "sox_breadth": {
+     "label": "CHANGED",
+     "sources": [
+      {
+       "date": "2026-08-03",
+       "url": "https://www.nasdaq.com/docs/global-indexes/SOX-aug-2026"
+      },
+      {
+       "date": "2026-11-06",
+       "url": "https://finance.yahoo.com/quote/%5ESOX/history"
+      }
+     ]
+    },
+    "cftc_yen": {
+     "label": "UNCHANGED 11-03",
+     "sources": [
+      {
+       "date": "2026-11-03",
+       "url": "https://publicreporting.cftc.gov/resource/gpe5-46if.json?%24select=report_date_as_yyyy_mm_dd%2Cmarket_and_exchange_names%2Clev_money_positions_long%2Clev_money_positions_short&%24where=cftc_contract_market_code%3D%27097741%27&%24order=report_date_as_yyyy_mm_dd+DESC&%24limit=2"
+      }
+     ]
+    },
+    "pc_demand": {
+     "label": "UNCHANGED 11-03"
+    }
+   }
+  },
+  {
+   "id": "6fc7207c-3fbd-41b4-be4e-14846e865c59",
+   "today": "2026-11-10",
+   "rows": [
+    {
+     "sign": "dram_contract",
+     "since": "2026-08-11",
+     "held": "2026-10-31",
+     "label": "UNCHANGED 10-31 (+9d)",
+     "extended": true
+    },
+    {
+     "sign": "mu_gm",
+     "since": "2026-11-03",
+     "held": null,
+     "label": "STALE 10-08 (+32d)",
+     "extended": false
+    },
+    {
+     "sign": "hbm",
+     "since": "2026-10-11",
+     "held": "2026-11-05",
+     "label": "UNCHANGED 11-05 (+4d)",
+     "extended": true
+    },
+    {
+     "sign": "tsmc_monthly",
+     "since": "2026-10-11",
+     "held": "2026-10-15",
+     "label": "UNCHANGED 10-15 (+25d)",
+     "extended": true
+    },
+    {
+     "sign": "capex_guides",
+     "since": "2026-11-03",
+     "held": "2026-11-04",
+     "label": "UNCHANGED 11-04 (+5d)",
+     "extended": true
+    },
+    {
+     "sign": "lab_revenue",
+     "since": "2026-11-03",
+     "held": null,
+     "label": "STALE 10-08 (+32d)",
+     "extended": false
+    },
+    {
+     "sign": "mu_strike",
+     "since": "2026-11-03",
+     "held": null,
+     "label": "HELD until 2026-11-10",
+     "extended": true
+    },
+    {
+     "sign": "pc_demand",
+     "since": "2026-10-11",
+     "held": "2026-11-03",
+     "label": "UNCHANGED 11-03 (+6d)",
+     "extended": true
+    }
+   ],
+   "tables": [
+    "calendar | 2026-11-10 | https://semiconductor-today.com/event_calendar.htm | search | No investor catalyst calendar found. Trade events only: SEMICON Europa Nov 10–13, AVS Nov 8–13, NepCon Nagoya Nov 25–27 | ok\ncalendar | 2026-10-08 | https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000680/tsm-revenue20261008.htm | search | TSMC Sep revenue (released Oct 8) NT$511.86B, -0.6% m/m, +54.6% y/y. Oct figure not found in the results as of 11-10 | ok\ncalendar | — | https://pr.tsmc.com/english/news/3343 | search | Newest TSMC monthly report found is September 2026. No October 2026 release found | ok\ncalendar | 2026-10-12 | https://www.koreatimes.co.kr/economy/20261012/exports-double-in-first-10-days-of-october | search | Korea Oct 1–10 exports more than doubled y/y. No Nov 1–10 2026 release found; the search says it normally comes ~11-11 | ok\ncalendar | 2026-09-17 | https://tipswatch.com/2026/09/17/10-year-tips-reopening-gets-real-yield-of-2-653-highest-in-nearly-18-years/ | search | 10y TIPS reopening is Nov 19. The Sep 17 reopening was $19B at a 2.653% real yield. New 10y TIPS auction Jan 21 2027 | ok\ncalendar | — | https://www.asiae.co.kr/en/article/2025120109243746920 | search | No 2026 item. MOTIE full-month exports are normally released on the 1st of the following month (Dec 1); the Nov 2025 release was dated 2025-12-01. 2026 date not confirmed | ok\ncalendar | 2026-10-06 | https://ir.amd.com/news-events/press-releases/detail/1300/amd-to-report-fiscal-third-quarter-2026-financial-results | search | AMD (Oct 6 announcement) at UBS Global Technology and AI Conference on Tue Dec 1 2026; conference Nov 30–Dec 3, Scottsdale | ok\ndram_contract | — | https://www.trendforce.com/research/category/DRAM | search | No 1Q27 QoQ forecast found. Latest TrendForce view in the results: conventional DRAM contract +10–15% QoQ in 4Q26 (+13–18% in 3Q26) | ok\ndram_contract | 2026-10-30 | https://www.trendforce.com/research/category/DRAM | search | TrendForce Oct 30 bulletins: server DRAM contract prices still climbing, PC DRAM gains narrowing, consumer DRAM flat to slightly higher | ok\ndram_contract | 2026-10-08 | https://news.samsung.com/global/samsung-electronics-announces-earnings-guidance-for-third-quarter-2026 | search | Samsung Q3 prelim (Oct 8): sales ~KRW 195T, OP ~KRW 107.4T; shares -2.42%. Final report/call scheduled Oct 29 | ok\ndram_contract | 2026-10-29 | https://trendforce.com/news/2026/10/29/news-samsung-says-hbm-share-matches-dram-standing-as-hbm4-sales-triple-ds-margin-hits-72-10-lta-clients-signed | search | Samsung Q3 call (Oct 29), per the TrendForce headline: HBM share matches DRAM standing, HBM4 sales triple, DS margin 72%, 10 LTA clients signed | ok\ndram_contract | 2026-10-29 | https://www.mt.co.kr/en/industry/2026/10/29/2026102911044261630 | search | Fizzle side: Samsung reportedly said DRAM ASP up ~20% QoQ in 3Q26 and 2027 HBM supply effectively sold out. No demand-destruction source found | ok\ndram_contract | 2026-10-29 | https://www.mt.co.kr/en/industry/2026/10/29/2026102911044261630 | search | Escalation side (conventional DRAM guided to slow sharply or flat): no source found. Deceleration only, +10–15% in 4Q26; no flat guide found | ok\nmu_gm | — | https://www.asktraders.com/?p=255274 | search | FQ1-27 non-GAAP GM guide ~86.25% (Q4 actual 87.0%); revenue $61.5B ±$1.5B; CFO: \"fiscal Q1 to be the floor\". Guide dates to the late-Sep report, before the 11-03 window | ok\nmu_gm | 2026-09-30 | https://www.benzinga.com/quote/MU/earnings-forecasts | search | Last Micron guidance was 2026-09-30 for Q1 FY27. No mid-quarter re-guide found since; next report ~Dec 15–16 | ok\nhbm | 2026-11-05 | https://www.trendforce.com/research/download/RP261105SQ3 | search | TrendForce HBM Industry Analysis 4Q26 (Nov 5): suppliers gain pricing power in 2027, ASP and revenue up sharply, growth moderates later; Samsung to regain #1 in 2027 | ok\nhbm | — | https://www.itiger.com/news/1175901853 | search | UBS: 2027 HBM bit share Samsung 41%, SK hynix 39%, Micron 20%; per-bit price assumption raised from flat to +30% y/y. Date not shown | ok\nhbm | — | https://www.koreaherald.com/article/10895833 | search | KB Securities: Samsung HBM selling prices +100% y/y in 2027, HBM4 may be the highest-priced of the three. One report: Samsung HBM4 ~$4.50/Gb vs HBM3E ~$1.50/Gb. Micron has contracted most 2027 supply | ok\ntsmc_monthly | 2026-10-08 | https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000680/tsm-revenue20261008.htm | search | Sep 2026: NT$511.86B, -0.6% m/m, +54.6% y/y; Jan–Sep NT$3,898.73B, +41.1% y/y. Q3 NT$1.494T, ~+51% y/y | ok\ntsmc_monthly | 2026-11-10 | https://pr.tsmc.com/english/news/3343 | search | Oct 2026 revenue not found as of 11-10. Newest indexed report is September | ok\ntsmc_monthly | 2026-10-15 | https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000726/a3q26e_withguidancexfinal.htm | search | TSMC Q3 call (Oct 15): revenue $46.7B, GM 66.4%, EPS NT$29.43. Q4 guide $52.3–54.3B, GM 65–67%. FY26 growth ~44% (USD). Shares -2.8% | ok\ntsmc_monthly | 2026-10-15 | https://xenospectrum.com/en/tsmc-q3-2026-gross-margin-capex/ | search | Escalation side: Q4 guide $52.3–54.3B is above the <$50.3–50.4B threshold; GM 65–67% vs <65%; 2026 capex held at $60–64B. No 2027 capex figure. Not met on guide | ok\ntsmc_monthly | 2026-10-15 | https://xenospectrum.com/en/tsmc-q3-2026-gross-margin-capex/ | search | Fizzle side: FY26 ~+44% (>40%) met; capex held at $60–64B, not raised; 2026–28 capex direction \"significantly higher\"; no Q4 consensus found to test | ok\ncapex_guides | — | https://abc.xyz/investor/news/ | fetch | no item on the row | ok\ncapex_guides | 2026-10-28 | https://www.microsoft.com/en-us/investor | fetch | Newest dated item is the FY27 Q1 earnings release, 2026-10-28. Nothing dated on/after 11-03 | ok\ncapex_guides | 2026-11-09 | https://about.fb.com/news/ | fetch | Items 11-05 to 11-09 are product and teen-safety news. No capex guidance | ok\ncapex_guides | 2026-11-09 | https://www.aboutamazon.com/news/company-news | fetch | Only item on/after 11-03 is \"What you need to know about Amazon today: November 9, 2026\". Headline only, no capex | ok\ncapex_guides | — | https://www.hl.co.uk/news/ai-hyperscalers-are-expected-to-finish-the-year-spending-a-whopping-828-billion-on-capex | search | Alphabet CFO: capex to \"increase significantly in 2027\". Amazon CEO: \"meaningfully more in 2027\". MSFT CY26 ~$170B; Amazon ~$220B; no formal 2027 dollar guide | ok\ncapex_guides | 2026-10-28 | https://rbnenergy.com/daily-posts/analyst-insight/q3-2026-earnings-calls-alphabet-microsoft-report-record-capex-data | search | Alphabet Q3 capex ~$51.4B, 2026 outlook $195–205B kept, stock -10%+. Microsoft capex ~$45.2B below forecast, Azure +48% | ok\ncapex_guides | 2026-10-21 | https://letsdatascience.com/news/meta-narrows-2026-capital-spending-range-to-135-billion-145-46f12e07 | search | Meta Q3 (Oct 21): capex $34.91B; 2026 range narrowed to $135–145B (low end up from $130B); Q4 revenue guide $73–76B | ok\ncapex_guides | 2026-10-29 | https://www.intc.com/news-events/press-releases/detail/1786/intel-reports-third-quarter-2026-financial-results | search | Intel Q3 (Oct 29): revenue $16.5B +21% y/y; DCAI $7.3B +78%; Q4 guide $15.0–16.0B, non-GAAP EPS $0.25; PC slowdown through at least 1H27 | ok\ncapex_guides | 2026-11-05 | https://eetimes.itmedia.co.jp/ee/articles/2611/05/news059_2.html | search | Escalation side: Intel client down >20% q/q in Q4, per CRN-reported call comments (via Gadgetscout). Threshold ≥10% met; secondary source | ok\ncapex_guides | 2026-10-29 | https://www.servethehome.com/intel-q3-2026-earnings-data-center-foundry-client/ | search | Fizzle side: data center strong, but PC not stable. Q3 client $8.1B (-5% y/y), memory relief not expected in 2027 | ok\ncapex_guides | 2026-11-05 | https://stocktwits.com/news-articles/markets/equity/soxx-etf-semiconductor-is-set-for-its-worst-week-in-over-18-months/cNG1sEhR94Z | search | After the Democratic sweep: Nov 5 Nasdaq -5% to -6.4% (sources disagree); one report has SOX -12%. Congress seated Jan 3; Sanders/AOC moratorium bill from March. No new federal follow-through found | ok\ncapex_guides | 2026-11-05 | https://www.eenews.net/articles/i-wouldnt-call-it-panic-industry-quails-at-hochuls-data-center-pause/ | search | NY Gov. Hochul signed a state data center moratorium; Texas's incoming governor called for one. Dates not shown in the snippet | ok\nlab_revenue | 2026-10-08 | https://www.roic.ai/news/openais-revenue-run-rate-approaches-70-billion-but-cash-burn-and-reporting-gaps-cloud-the-picture-10-08-2026 | search | OpenAI: run rate ~$50B end-Sep vs the \"nearing $70B\" figure (reported by Reuters Sep 29); year-end target $70B. No Nov 2026 restatement found | ok\nlab_revenue | — | https://ground.news/article/openai-tops-25-billion-in-annualized-revenue-the-information-reports | search | No Nov 2026 Information report found. Newest is March 2026 ($25B+ run rate end-Feb, 4-week x12 method) | ok\nmu_strike | 2026-11-06 | https://focustaiwan.tw/business/202611060009 | search | Newest Micron Taiwan item found is dated 11-06 (content not shown). No November strike reported. Taichung settled late Oct; Taoyuan holds strike authorization (1,994 of 2,012 votes) and staged a 24-hour strike on Oct 22 | ok\nmu_strike | 2026-10-22 | https://focustaiwan.tw/business/202610220016 | search | Taoyuan union staged a symbolic 24-hour strike Oct 22; Taoyuan talks unresolved | ok\npc_demand | — | https://www.counterpointresearch.com/ | fetch | no item on the row (items undated; no PC shipment item. Q3 DRAM $200B, Samsung 38%, is the closest) | ok\npc_demand | — | https://www.idc.com/ | fetch | no item on the row (no dated items; page appears last updated ~2026-06) | ok\npc_demand | 2026-10 | https://t2online.in/tech/tech-news/global-pc-shipments-fall-22-4-per-cent-to-55-4-million-units-as-memory-costs-push-up-prices/2008589 | search | Q3-26 PC shipments: Gartner -22.4% to 55.4M; IDC -20.1% to 62.7M; Counterpoint -21% to 57M (Q4 forecast -27%, per EE Times Japan). Exact publication dates not shown | ok\nai_funding | 2026-11-10 | https://investors.coreweave.com/news/news-details/2026/CoreWeave-Announces-Date-of-Third-Quarter-2026-Financial-Results-and-Conference-Call/default.aspx | search | CoreWeave Q3-26 call is Nov 10, 5:00 PM ET. Results not yet found (not out) | ok\n\nSources:\n- [Event Calendar](https://semiconductor-today.com/event_calendar.htm)\n- [TSMC 6-K, Sep revenue](https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000680/tsm-revenue20261008.htm)\n- [TSMC September 2026 Revenue Report](https://pr.tsmc.com/english/news/3343)\n- [Korea Times, Oct 1–10 exports](https://www.koreatimes.co.kr/economy/20261012/exports-double-in-first-10-days-of-october)\n- [TipsWatch](https://tipswatch.com/2026/09/17/10-year-tips-reopening-gets-real-yield-of-2-653-highest-in-nearly-18-years/)\n- [Asiae, MOTIE Nov 2025 release](https://www.asiae.co.kr/en/article/2025120109243746920)\n- [AMD IR](https://ir.amd.com/news-events/press-releases/detail/1300/amd-to-report-fiscal-third-quarter-2026-financial-results)\n- [TrendForce DRAM](https://www.trendforce.com/research/category/DRAM)\n- [Samsung Q3 guidance](https://news.samsung.com/global/samsung-electronics-announces-earnings-guidance-for-third-quarter-2026)\n- [TrendForce, Samsung Oct 29](https://trendforce.com/news/2026/10/29/news-samsung-says-hbm-share-matches-dram-standing-as-hbm4-sales-triple-ds-margin-hits-72-10-lta-clients-signed)\n- [MT, Samsung Oct 29](https://www.mt.co.kr/en/industry/2026/10/29/2026102911044261630)\n- [AskTraders, Micron](https://www.asktraders.com/?p=255274)\n- [Benzinga, MU](https://www.benzinga.com/quote/MU/earnings-forecasts)\n- [TrendForce HBM 4Q26](https://www.trendforce.com/research/download/RP261105SQ3)\n- [UBS HBM share](https://www.itiger.com/news/1175901853)\n- [Korea Herald](https://www.koreaherald.com/article/10895833)\n- [TSMC Q3 6-K](https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000726/a3q26e_withguidancexfinal.htm)\n- [Xenospectrum, TSMC Q3](https://xenospectrum.com/en/tsmc-q3-2026-gross-margin-capex/)\n- [Alphabet IR](https://abc.xyz/investor/news/)\n- [Microsoft IR](https://www.microsoft.com/en-us/investor)\n- [Meta newsroom](https://about.fb.com/news/)\n- [Amazon news](https://www.aboutamazon.com/news/company-news)\n- [HL, hyperscaler capex](https://www.hl.co.uk/news/ai-hyperscalers-are-expected-to-finish-the-year-spending-a-whopping-828-billion-on-capex)\n- [RBN Energy](https://rbnenergy.com/daily-posts/analyst-insight/q3-2026-earnings-calls-alphabet-microsoft-report-record-capex-data)\n- [LetsDataScience, Meta](https://letsdatascience.com/news/meta-narrows-2026-capital-spending-range-to-135-billion-145-46f12e07)\n- [Intel Q3 release](https://www.intc.com/news-events/press-releases/detail/1786/intel-reports-third-quarter-2026-financial-results)\n- [EE Times Japan, Intel](https://eetimes.itmedia.co.jp/ee/articles/2611/05/news059_2.html)\n- [ServeTheHome, Intel](https://www.servethehome.com/intel-q3-2026-earnings-data-center-foundry-client/)\n- [Stocktwits, SOXX](https://stocktwits.com/news-articles/markets/equity/soxx-etf-semiconductor-is-set-for-its-worst-week-in-over-18-months/cNG1sEhR94Z)\n- [E&E News, Hochul](https://www.eenews.net/articles/i-wouldnt-call-it-panic-industry-quails-at-hochuls-data-center-pause/)\n- [ROIC, OpenAI](https://www.roic.ai/news/openais-revenue-run-rate-approaches-70-billion-but-cash-burn-and-reporting-gaps-cloud-the-picture-10-08-2026)\n- [Ground News, OpenAI](https://ground.news/article/openai-tops-25-billion-in-annualized-revenue-the-information-reports)\n- [Focus Taiwan, 11-06](https://focustaiwan.tw/business/202611060009)\n- [Focus Taiwan, 10-22](https://focustaiwan.tw/business/202610220016)\n- [Counterpoint](https://www.counterpointresearch.com/)\n- [IDC](https://www.idc.com/)\n- [T2 Online, PC shipments](https://t2online.in/tech/tech-news/global-pc-shipments-fall-22-4-per-cent-to-55-4-million-units-as-memory-costs-push-up-prices/2008589)\n- [CoreWeave IR](https://investors.coreweave.com/news/news-details/2026/CoreWeave-Announces-Date-of-Third-Quarter-2026-Financial-Results-and-Conference-Call/default.aspx)",
+    "1 | 2026-11-05 | https://eetimes.itmedia.co.jp/ee/articles/2611/05/news059_2.html | fetch | No Q4-26 CCG q/q guide in the page text (garbled). It names DRAM cost rises (Samsung, SK hynix, Micron) as pushing up PC component costs. Cited: Intel's Zinsner, Counterpoint analysts Minsoo Kang and David Naranjo. No CRN or transcript cited. | ok\n2 | 2026-10-12 | https://www.t2online.in/tech/tech-news/global-pc-shipments-fall-22-4-per-cent-to-55-4-million-units-as-memory-costs-push-up-prices/2008589 | fetch | Gartner preliminary 3Q26: 55.4M units, down 22.4% y/y from 71.3M. Gartner said DRAM costs rose 5x y/y in Q2. The page has no 2Q26 shipment figures and no IDC, Counterpoint or Canalys data. | ok\n3 | 2026-07-15 | https://www.eenews.net/articles/i-wouldnt-call-it-panic-industry-quails-at-hochuls-data-center-pause/ | fetch | Hochul signed an executive order on 2026-07-14 pausing construction of new data centers at or above 50 MW for one year. A separate legislative bill (12 months, over 20 MW) was unsigned as of the article. | ok\n4 | 2026-11-06 | https://focustaiwan.tw/business/202611060009 | fetch | Micron said Taiwan operations continue as normal after a Bloomberg report that a US$3–4.5B Taoyuan investment was halted. It will keep negotiating with the Taoyuan union, with the Taoyuan City government facilitating. The union wants a profit-sharing program. The Taichung union deal was reached in late October. The Taoyuan union held a 24-hour strike on Oct 22 and still has strike authorization. The Ministry of Economic Affairs will help facilitate. | ok\n5 | undated | https://www.taipeitimes.com/News/biz/archives/2026/10/21/2003866321 | search | Taoyuan union strike. The search found no November settlement report. Latest coverage is around the Oct 22 strike, with talks ongoing and the union demanding 15% of operating profit. No item dated 2026-11-03 or later turned up in this search. | ok\n5 | undated | https://www.tradingkey.com/analysis/stocks/us-stocks/262231152-micron-taichung-plant-union-agreement-taoyuan-union-24-hour-strike-tradingkey | search | The Taoyuan union went ahead with its 24-hour strike despite the Taichung deal, signed Oct 21. Talks continue. | ok\n5 | undated | https://finance.biggo.com/news/faf42e4d-ae21-476e-aa37-d2e1206cd0c5 | search | Micron's first labor mediation in Taiwan ended without a deal, and the strike threat still looms. No date is shown in the snippet. | ok\n\nSources:\n- https://eetimes.itmedia.co.jp/ee/articles/2611/05/news059_2.html\n- https://www.t2online.in/tech/tech-news/global-pc-shipments-fall-22-4-per-cent-to-55-4-million-units-as-memory-costs-push-up-prices/2008589\n- https://www.eenews.net/articles/i-wouldnt-call-it-panic-industry-quails-at-hochuls-data-center-pause/\n- https://focustaiwan.tw/business/202611060009\n- https://www.taipeitimes.com/News/biz/archives/2026/10/21/2003866321\n- https://www.tradingkey.com/analysis/stocks/us-stocks/262231152-micron-taichung-plant-union-agreement-taoyuan-union-24-hour-strike-tradingkey\n- https://finance.biggo.com/news/faf42e4d-ae21-476e-aa37-d2e1206cd0c5"
+   ],
+   "applied": {
+    "dram_contract": {
+     "label": "UNCHANGED 10-31"
+    },
+    "mu_gm": {
+     "label": "STALE 09-30",
+     "sources": [
+      {
+       "date": "2026-09-30",
+       "url": "https://www.benzinga.com/quote/MU/earnings-forecasts"
+      }
+     ]
+    },
+    "hbm": {
+     "label": "UNCHANGED 11-05"
+    },
+    "tsmc_monthly": {
+     "label": "UNCHANGED 10-15"
+    },
+    "capex_guides": {
+     "label": "UNCHANGED 11-04"
+    },
+    "lab_revenue": {
+     "label": "STALE 10-08",
+     "sources": [
+      {
+       "date": "2026-10-08",
+       "url": "https://www.roic.ai/news/openais-revenue-run-rate-approaches-70-billion-but-cash-burn-and-reporting-gaps-cloud-the-picture-10-08-2026"
+      }
+     ]
+    },
+    "mu_strike": {
+     "label": "CHANGED",
+     "sources": [
+      {
+       "date": "2026-11-06",
+       "url": "https://focustaiwan.tw/business/202611060009"
+      }
+     ]
+    },
+    "pc_demand": {
+     "label": "UNCHANGED 11-03"
+    }
+   }
+  },
+  {
+   "id": "0124ee9e-6c13-481a-93c6-78f77eb526eb",
+   "today": "2026-11-11",
+   "rows": [
+    {
+     "sign": "real_yield",
+     "since": "2026-11-04",
+     "held": "2026-11-05",
+     "label": "HELD until 16:00",
+     "extended": true,
+     "measured": {
+      "asOf": "2026-11-09",
+      "text": "DFII10 2.66 % close 11-09 · Δ120 +53 bp vs +75 bp line under line",
+      "sources": [
+       {
+        "date": "2026-11-09",
+        "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10&cosd=2026-01-15"
+       }
+      ]
+     }
+    },
+    {
+     "sign": "dram_contract",
+     "since": "2026-08-12",
+     "held": "2026-10-31",
+     "label": "UNCHANGED 10-31 (+10d)",
+     "extended": true
+    },
+    {
+     "sign": "mu_gm",
+     "since": "2026-11-04",
+     "held": null,
+     "label": "STALE 09-30 (+41d)",
+     "extended": false
+    },
+    {
+     "sign": "korea_exports",
+     "since": "2026-11-01",
+     "held": "2026-11-01",
+     "label": "HELD until 2026-11-12",
+     "extended": false
+    },
+    {
+     "sign": "hbm",
+     "since": "2026-10-12",
+     "held": "2026-11-05",
+     "label": "UNCHANGED 11-05 (+5d)",
+     "extended": true
+    },
+    {
+     "sign": "tsmc_monthly",
+     "since": "2026-10-12",
+     "held": "2026-10-15",
+     "label": "UNCHANGED 10-15 (+26d)",
+     "extended": true
+    },
+    {
+     "sign": "capex_guides",
+     "since": "2026-11-04",
+     "held": "2026-11-04",
+     "label": "UNCHANGED 11-04 (+6d)",
+     "extended": true
+    },
+    {
+     "sign": "ai_funding",
+     "since": "2026-11-04",
+     "held": "2026-11-04",
+     "label": "HELD until 2026-11-11",
+     "extended": true
+    },
+    {
+     "sign": "lab_revenue",
+     "since": "2026-11-04",
+     "held": null,
+     "label": "STALE 10-08 (+33d)",
+     "extended": false
+    },
+    {
+     "sign": "pc_demand",
+     "since": "2026-10-12",
+     "held": "2026-11-03",
+     "label": "UNCHANGED 11-03 (+7d)",
+     "extended": true
+    }
+   ],
+   "tables": [
+    "verify | — | https://www.wam.ae/en/article/15v6vi9-koreas-exports-64-during-first-days-november | search | No Nov 1-10 2026 Korea export release indexed. Latest result is the 2025 release (total exports +6.4% y/y, $15.8B), which is another year. | FAILED\nverify | — | https://www.kedglobal.com/newsView/ked202311130010 | search | The second Korea search also returned no 2026 release. Only 2021, 2023, 2024 and 2025 items appeared, with no chip y/y or per-working-day figure for 2026. | FAILED\ncalendarOwed | 2026-11-10 | https://investor.tsmc.com/english/monthly-revenue | fetch | Oct 2026 revenue NT$586,890M, +59.7% y/y. The m/m of +14.7% is the fetch tool's own calculation (Sep NT$511,857M). Jan-Oct NT$4,485,617M, +43.3% y/y. | ok\ncalendarOwed | 2026-11-10 | https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000796/tsm-revenue20261110.htm | search | TSMC 6-K dated 2026-11-10. Snippet: Oct revenue about NT$586.89B, +14.7% m/m, +59.7% y/y. Jan-Oct NT$4,485.62B, +43.3%. | ok\nreal_yield | 2026-10-29 | https://fred.stlouisfed.org/graph/?id=DFII10 | search | FRED DFII10 latest indexed value is 2026-10-29: 2.63 (prior days 2.67, 2.64). No Nov 2026 reading found. | ok\nreal_yield | 2026-09-17 | https://tipswatch.com/2026/09/17/10-year-tips-reopening-gets-real-yield-of-2-653-highest-in-nearly-18-years/ | search | Sep 2026 10-year TIPS reopening real yield 2.653%, the highest in nearly 18 years. Next reopening auction is 2026-11-19. | ok\nreal_yield | 2026-11-09 | https://www.kiplinger.com/investing/economy/october-2026-cpi-report-what-to-expect | search | Pre-release: Oct CPI due 2026-11-10 8:30 ET. Consensus headline +0.3% m/m, core +0.2% m/m. Cleveland Fed nowcast headline 0.24%, core 0.21%. No y/y published for Oct (shutdown data gap). Actual print not found. | FAILED\nreal_yield | 2026-11-10 | https://www.mufgresearch.com/macro/us-inflation-update-november-10-2026/ | search | MUFG expected core +0.23% m/m, in line with the Bloomberg median. Actual Oct core CPI print not found in any result. | FAILED\nreal_yield | 2026-11-09 | https://www.morningstar.com/economy/october-cpi-forecasts-show-inflation-softening-december-rate-hike-still-looks-likely | search | CME FedWatch: Dec 25bp hike about 80% priced, up from 67% before \"the report\". Funds rate 3.75%-4.00%. Snippet does not say which report or give the core print. | ok\nreal_yield | 2026-11-09 | https://www.kitco.com/news/article/2026-11-09/october-cpi-likely-line-we-think-another-hike-will-be-warranted-december | search | Natixis expected core +22bp and headline +29bp m/m and backed a December hike. Pre-release only. | ok\ndram_contract | 2026-10-30 | https://www.trendforce.com/research/category/DRAM | search | A TrendForce listing dated 2026-10-30 says consumer DRAM contract shortages persist, supporting gradual quarterly increases next year. No 1Q27 QoQ % found. | ok\ndram_contract | 2026-10-29 | https://news.samsung.com/global/samsung-electronics-announces-third-quarter-2026-results | search | Samsung Q3-26 (released 2026-10-29): operating profit KRW 107.4T on revenue KRW 195.3T. Device business operating loss KRW 0.6T, attributed to rising memory chip costs. | ok\ndram_contract | 2026-10-29 | https://trendforce.com/news/2026/10/29/news-samsung-says-hbm-share-matches-dram-standing-as-hbm4-sales-triple-ds-margin-hits-72-10-lta-clients-signed | search | Samsung: Q3 HBM4 revenue about tripled q/q (60% of HBM sales). DS margin 72%. 10 long-term-agreement clients signed. 2027 HBM supply effectively sold out. DRAM ASP about +20% q/q in 3Q26. | ok\ndram_contract | 2026-10-20 | https://www.sammobile.com/?p=16683316 | search | TrendForce had 4Q26 conventional DRAM contract +10-15% q/q (PC DRAM +13-18%). KB Securities (analyst estimate): Samsung about 80% of 2027 output contracted, and double-digit q/q DRAM price rise in 1Q27. No source found for a slowing or flat conventional DRAM pace. | ok\nmu_gm | 2026-09-30 | https://www.asktraders.com/?p=255274 | search | Micron FQ1-27 guide: revenue $61.5B ±$1.5B, non-GAAP GM about 86.25% (FQ4-26: 87.0%). CFO: FQ1 is \"the floor for gross margins in fiscal 2027\". | ok\nmu_gm | 2026-09-30 | https://www.earningswhispers.com/epsdetails/MU | search | FQ1-27 guide: revenue $60.0-63.0B, EPS $37.15-39.15, quarter ends 2026-11-30. No re-guide or event dated after 10-28 found. | ok\nkorea_exports | — | https://www.kedglobal.com/newsView/ked202311130010 | search | No first-10-days Nov 2026 Korea chip export item found. Results were 2023-2025 only. | FAILED\nhbm | 2026-11-05 | https://www.trendforce.com/research/download/RP261105SQ3 | search | TrendForce \"HBM Industry Analysis - 4Q26\", dated 2026-11-05. Suppliers gain pricing power in 2027. Samsung's HBM4 lead may restore it to #1 in 2027, SK hynix second, Micron holds share. | ok\nhbm | 2026-09-29 | https://www.trendforce.com/presscenter/news/20260929-13255.html | search | TrendForce Sep 2026: HBM stays supply-constrained in 2027, blended HBM price +121% y/y. 2027 HBM bit shipments +50-60% y/y. | ok\nhbm | — | https://biz.heraldcorp.com/article/10852833 | search | Herald, citing TrendForce: HBM contract prices up to +140% next year. UBS: 2027 HBM ASP about +79%. | ok\nhbm | — | https://www.igorslab.de/en/sk-hynix-warns-of-the-industrys-worst-memory-shortage-in-2027/ | search | Oversupply search: no Nov 2026 oversupply call found. SK hynix CEO (July 2026) calls 2027 potentially the worst supply year. Bloomberg model (July 2026): balance in Q4-27, possible oversupply in 2028. | ok\ntsmc_monthly | 2026-11-10 | https://investor.tsmc.com/english/monthly-revenue | fetch | Monthly series, NT$M: Jul 467,580 (+44.7% y/y), Aug 514,806 (+53.3%), Sep 511,857 (+54.6%), Oct 586,890 (+59.7%). | ok\ntsmc_monthly | 2026-10-15 | https://xenospectrum.com/en/tsmc-q3-2026-gross-margin-capex/ | search | TSMC Q3-26 (call 2026-10-15): revenue US$46.72B, EPS NT$29.43, GM 66.4% (Q2: 67.7%). Q4 guide $52.3-54.3B, GM 65-67%. Capex $60-64B. Demand exceeds supply. Shares slipped. | ok\ncapex_guides | 2026-11-11 | https://abc.xyz/investor/news/ | fetch | Only dated item is 2025-05-01 (MoffettNathanson conference). No capex item. | ok\ncapex_guides | 2026-10-28 | https://www.microsoft.com/en-us/investor | fetch | Newest item is the Q1 FY27 results release of 2026-10-28, with no text. Nothing dated on or after 11-04. | ok\ncapex_guides | 2026-11-09 | https://about.fb.com/news/ | fetch | Items dated 2026-11-05 to 11-09 (Muse app, Teen Accounts, WhatsApp Events). No capex or financial item. | ok\ncapex_guides | 2026-11-10 | https://www.aboutamazon.com/news/company-news | fetch | Only item since 11-04 is \"What you need to know about Amazon today: November 10, 2026\". No capex figures. Q3 results item dated 2026-10-29. | ok\ncapex_guides | — | https://paasa.com/blog/the-capex-verdict-what-fy-2027-guidance-signals-about-ai-margins | search | No formal 2027 capex numbers. Alphabet CFO: capex up significantly in 2027 (2026 guide $195-205B). Amazon: spend meaningfully more in 2027. Meta: 2027 budget still in build. | ok\ncapex_guides | 2026-10-28 | https://letsdatascience.com/news/microsoft-reports-strong-results-but-flags-massive-ai-capex-52d79656 | search | MSFT FQ1-27 capex $45.2B vs >$50B expected. CFO: capex above $50B next quarter. Alphabet Q3: Q4 capex about $50B vs $56.02B expected, FCF -$9.07B, shares down more than 10%. | ok\ncapex_guides | 2026-10-21 | https://letsdatascience.com/news/meta-narrows-2026-capital-spending-range-to-135-billion-145-46f12e07 | search | Meta Q3-26: revenue $64.6B (+26%), 2026 capex range narrowed to $135-145B (prior $130-145B). Q3 capex about $34.9B, FCF -$2.12B. | ok\ncapex_guides | 2026-10-29 | https://www.intc.com/news-events/press-releases/detail/1786/ | search | Intel Q3-26: revenue $16.5B (+21%), client (CCPG) $8.1B (-5%). Q4 guide $15.0-16.0B, non-GAAP EPS $0.25 (analysts about $17B). PC slowdown seen through at least 1H27. | ok\ncapex_guides | 2026-11-06 | https://247wallst.com/investing/2026/11/06/chip-stocks-just-had-their-second-worst-day-on-record/ | search | Data-center moratorium search: SOX fell 12.25% on 2026-11-05 to 9,011.14, its second-worst day on record, tied to Democratic midterm gains and fears of slower data-center buildout. Sanders/AOC moratorium bill dates from 2026-03. | ok\nai_funding | 2026-11-02 | https://octus.com/resources/articles/banks-prep-series-of-multibillion-dollar-debt-offerings-for-oracle/ | search | Oracle: a secondary source says an SEC filing on 2026-11-02 for $10B common stock plus $10B senior notes, with shares down more than 5% that day. No report of a pulled financing or CDS figure in November. | ok\nai_funding | 2026-08-11 | https://fortune.com/2026/08/11/coreweave-ceo-michael-intrator-cites-sold-out-capacity-as-revenue-more-than-doubles-and-backlog-swells-to-104-billion/ | search | CoreWeave Q2-26 (2026-08-11): backlog $104.2B. Q3-26 results not found in search. | FAILED\nai_funding | — | https://finimize.com/content/coreweaves-next-test-is-paying-for-its-ai-buildout | search | Preview: BofA says CoreWeave must fund about $20B more against a $129B backlog. Q3 results due 2026-11-11, Q3 revenue estimate $3.66B. Not an actual result. No stock reaction found. | FAILED\nlab_revenue | 2026-10-09 | https://news.bgov.com/artificial-intelligence/openais-annualized-revenue-nears-50-billion-ft-says | search | FT: OpenAI told investors annualized run-rate revenue was nearing $50B at end-Sep, not the $70B in circulation (Axios 2026-09-29). Gap from net vs gross cloud-partner accounting. No November restatement found. | ok\nlab_revenue | 2026-09-29 | https://www.implicator.ai/openai-puts-revenue-run-rate-near-50-billion-sets-70-billion-year-end-target/ | search | Year-end 2026 run-rate target reported as $70B (Bloomberg). The dated item is before the 11-04 window. | ok\nlab_revenue | 2026-11-02 | https://app.sentisense.ai/stories/openais-ad-business-hits-1-billion-run-rate-as-it-ramps-up-after-7-billion-share-08312026 | search | The only November item is a user stat, not revenue. Consumer lead said on 2026-11-02 that ChatGPT has 1.2B weekly active users, up from 1B two months earlier. | ok\npc_demand | — | https://www.counterpointresearch.com/ | fetch | Headlines with no dates on the page: Q3 2026 smartphone SoC shipments -21% y/y; Q3 2026 DRAM market near $200B (Samsung 38%, SK hynix gaining). No PC shipment data. | FAILED\npc_demand | — | https://www.idc.com/ | fetch | No dated items after 2026-10-12. Nothing on PCs or memory. | FAILED\npc_demand | 2026-10-24 | https://247wallst.com/investing/2026/10/24/pc-sales-just-crashed-21-as-ai-eats-the-worlds-memory-chips/ | search | Q3-26 PC shipments: IDC -20% y/y, Counterpoint -21% to 57M, Gartner -22.4% to 55.4M. IDC expects 2026 PC ASP +17%. | ok\npc_demand | 2026-11-03 | https://www.digitalcitizen.life/global-pc-shipments-fall-4-9-percent-as-memory-shortages-push-prices-higher/ | search | AMD CEO (2026-11-03): expects a double-digit % drop in the 2027 PC market on memory costs. Intel expects PC shipments about -10% in 2027 after -12% in 2026 (snippet, secondary). | ok\ngeneral | — | https://www.earningswhispers.com/stocks/Nvda | search | Nvidia FQ3-27 earnings: Earnings Whispers says confirmed 2026-11-17 after close. Other calendars project 2026-11-18. A separate result says the call is Tuesday 2026-11-17, 2pm PT. | ok\ngeneral | 2026-11-06 | https://247wallst.com/investing/2026/11/06/chip-stocks-just-had-their-second-worst-day-on-record/ | search | SOX closed 9,011.14 on 2026-11-05 (-12.25%). SOX +2.63% on 11-03, -3.13% on 11-04. No 2026-11-10 close found. | ok\n\nSources:\n- https://investor.tsmc.com/english/monthly-revenue\n- https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000796/tsm-revenue20261110.htm\n- https://247wallst.com/investing/2026/11/06/chip-stocks-just-had-their-second-worst-day-on-record/",
+    "real_yield | 2026-11-11 | https://mitrade.com/insights/more/inflation/core-cpi-third-straight-20261111J1108 | search | Oct CPI: core +0.3% m/m vs 0.2% consensus, third straight month at 0.3%; headline +0.4% vs 0.3% consensus. BLS published no 12-month figures for Oct 2026. | ok\nreal_yield | 2026-11-10 | https://verifiedinvesting.com/blogs/us-economic-metrics/cpi-mom-october-2026 | search | Oct 2026 CPI: headline +0.35% m/m (vs 0.3% consensus), core +0.30% (vs 0.20%), services-driven | ok\nreal_yield | 2026-11-10 | https://seekingalpha.com/news/4284374-cpi-stays-firm-in-october-as-expected-core-cpi-holds-3-3-pace | search | Title only: \"CPI stays firm in October, as expected, core CPI holds 3.3% pace\"; conflicts with the other two sources on the \"as expected\" framing and with the BLS no-YoY note | ok\nreal_yield | — | — | search | No FedWatch December hike odds and no 10-year or TIPS yield reaction on 11-10 found in the results | FAILED\nai_funding | 2026-11-10 | https://www.cnbc.com/2026/11/10/coreweave-crwv-q3-earnings-report-2026.html | search | CoreWeave reported Q3 on 2026-11-10: revenue $3.66B (+168%), raised guidance. Full-year revenue guide $13.0–13.3B, adj. operating income $1.275–1.375B. | ok\nai_funding | 2026-11-10 | https://www.tradingkey.com/analysis/stocks/us-stocks/262299527-coreweave-earnings-report-q3-revenue-growth-backlog-capital-expenditures-net-loss-tradingkey | search | Backlog about $132.5B at 9/30 (about +138% y/y). Q3 capex $14.511B, above guidance because Q4 deliveries were pulled forward. 2026 capex guide $37–39B (Benzinga lists prior $35–39B). | ok\nai_funding | 2026-11-10 | https://www.investing.com/news/transcripts/earnings-call-transcript-coreweave-tops-q3-2026-forecast-and-shares-rise-57-93CH-5017354 | search | Title: shares rise 5.7%. TradingKey's headline describes a \"sharp after-hours divide\". Neither source's exact after-hours figure was retrieved. | ok\nai_funding | 2026-11-10 | https://finance.yahoo.com/markets/stocks/articles/coreweave-q3-earnings-call-highlights-021441959.html | search | Financing: CEO said no unsecured debt at current yields. CFO expects under $5B incremental parent-level capital through 2027. 2027 capex roughly flat vs 2026 on committed backlog only. Active power over 1.7GW, over 1.85GW expected by year-end, year-end run rate $20–21B. | ok\nai_funding | — | — | search | No covenant language, customer-concentration figures, or Oracle 5y CDS level dated 2026-11-04 or later found | FAILED\npc_demand | — | https://www.digitalcitizen.life/global-pc-shipments-fall-4-9-percent-as-memory-shortages-push-prices-higher/ | fetch | HTTP 403 Forbidden, so no quarter, measurer, date, or AMD/Intel statements retrieved | FAILED\n\nSources:\n- [Mitrade](https://mitrade.com/insights/more/inflation/core-cpi-third-straight-20261111J1108)\n- [Verified Investing](https://verifiedinvesting.com/blogs/us-economic-metrics/cpi-mom-october-2026)\n- [Seeking Alpha](https://seekingalpha.com/news/4284374-cpi-stays-firm-in-october-as-expected-core-cpi-holds-3-3-pace)\n- [CNBC](https://www.cnbc.com/2026/11/10/coreweave-crwv-q3-earnings-report-2026.html)\n- [TradingKey](https://www.tradingkey.com/analysis/stocks/us-stocks/262299527-coreweave-earnings-report-q3-revenue-growth-backlog-capital-expenditures-net-loss-tradingkey)\n- [Investing.com](https://www.investing.com/news/transcripts/earnings-call-transcript-coreweave-tops-q3-2026-forecast-and-shares-rise-57-93CH-5017354)\n- [Yahoo Finance](https://finance.yahoo.com/markets/stocks/articles/coreweave-q3-earnings-call-highlights-021441959.html)"
+   ],
+   "applied": {
+    "real_yield": {
+     "label": "UNCHANGED 11-11",
+     "sources": [
+      {
+       "date": "2026-11-09",
+       "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10&cosd=2026-01-15"
+      },
+      {
+       "date": "2026-11-10",
+       "url": "https://verifiedinvesting.com/blogs/us-economic-metrics/cpi-mom-october-2026"
+      },
+      {
+       "date": "2026-11-11",
+       "url": "https://mitrade.com/insights/more/inflation/core-cpi-third-straight-20261111J1108"
+      }
+     ]
+    },
+    "dram_contract": {
+     "label": "UNCHANGED 10-31"
+    },
+    "mu_gm": {
+     "label": "STALE 09-30",
+     "sources": [
+      {
+       "date": "2026-09-30",
+       "url": "https://www.asktraders.com/?p=255274"
+      }
+     ]
+    },
+    "korea_exports": {
+     "label": "UNCHANGED 11-01"
+    },
+    "hbm": {
+     "label": "UNCHANGED 11-05",
+     "sources": [
+      {
+       "date": "2026-11-05",
+       "url": "https://www.trendforce.com/research/download/RP261105SQ3"
+      }
+     ]
+    },
+    "tsmc_monthly": {
+     "label": "CHANGED",
+     "sources": [
+      {
+       "date": "2026-11-10",
+       "url": "https://investor.tsmc.com/english/monthly-revenue"
+      },
+      {
+       "date": "2026-11-10",
+       "url": "https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000796/tsm-revenue20261110.htm"
+      }
+     ]
+    },
+    "capex_guides": {
+     "label": "UNCHANGED 11-06",
+     "sources": [
+      {
+       "date": "2026-11-06",
+       "url": "https://247wallst.com/investing/2026/11/06/chip-stocks-just-had-their-second-worst-day-on-record/"
+      }
+     ]
+    },
+    "ai_funding": {
+     "label": "CHANGED",
+     "sources": [
+      {
+       "date": "2026-11-10",
+       "url": "https://www.tradingkey.com/analysis/stocks/us-stocks/262299527-coreweave-earnings-report-q3-revenue-growth-backlog-capital-expenditures-net-loss-tradingkey"
+      },
+      {
+       "date": "2026-11-10",
+       "url": "https://finance.yahoo.com/markets/stocks/articles/coreweave-q3-earnings-call-highlights-021441959.html"
+      },
+      {
+       "date": "2026-11-10",
+       "url": "https://www.cnbc.com/2026/11/10/coreweave-crwv-q3-earnings-report-2026.html"
+      }
+     ]
+    },
+    "lab_revenue": {
+     "label": "STALE 10-09",
+     "sources": [
+      {
+       "date": "2026-10-09",
+       "url": "https://news.bgov.com/artificial-intelligence/openais-annualized-revenue-nears-50-billion-ft-says"
+      }
+     ]
+    },
+    "pc_demand": {
+     "label": "CHANGED",
+     "sources": [
+      {
+       "date": "2026-10-24",
+       "url": "https://247wallst.com/investing/2026/10/24/pc-sales-just-crashed-21-as-ai-eats-the-worlds-memory-chips/"
+      },
+      {
+       "date": "2026-11-03",
+       "url": "https://www.digitalcitizen.life/global-pc-shipments-fall-4-9-percent-as-memory-shortages-push-prices-higher/"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "432729ab-6235-4c86-8d6e-14c5e36088fe",
+   "today": "2026-11-11",
+   "rows": [
+    {
+     "sign": "real_yield",
+     "since": "2026-11-04",
+     "held": "2026-11-11",
+     "label": "UNCHANGED 11-11",
+     "extended": true,
+     "measured": {
+      "asOf": "2026-11-09",
+      "text": "DFII10 2.66 % close 11-09 · Δ120 +53 bp vs +75 bp line under line",
+      "sources": [
+       {
+        "date": "2026-11-09",
+        "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10&cosd=2026-01-15"
+       }
+      ]
+     }
+    },
+    {
+     "sign": "mu_gm",
+     "since": "2026-11-04",
+     "held": null,
+     "label": "STALE 09-30 (+42d)",
+     "extended": false
+    },
+    {
+     "sign": "ai_funding",
+     "since": "2026-11-04",
+     "held": "2026-11-10",
+     "label": "CHANGED",
+     "extended": true
+    }
+   ],
+   "tables": [
+    "Korea's Nov 1–10 chip export figures, the Oracle 5y CDS close, and the Micron FQ1-27 gross margin update are not in the results, so those rows carry no data.\n\nRung 0 and Rung A:\n\nkorea_nov1-10_exports | 2025-11-11 | https://www.wam.ae/en/article/15v6vi9-koreas-exports-64-during-first-days-november | search | Only the 2025 release turned up (Nov 1-10 exports +6.4% y/y, $15.8B). KCS usually publishes around the 11th. No 2026 figures or chip y/y found, so the expected 2026-11-11 is not confirmed. | FAILED\ntips_10y_reopening | — | https://tipswatch.com/2026/09/17/10-year-tips-reopening-gets-real-yield-of-2-653-highest-in-nearly-18-years/ | search | One search snippet says \"another reopening auction on November 19\" for this TIPS, with the next new 10y on 2027-01-21. A third-party calendar lists the date as tentative. No TreasuryDirect confirmation. | ok\nreal_yield | 2026-11-09 | https://fred.stlouisfed.org/series/DFII10 | fetch | Latest DFII10 is 2.66% on 11-09 (page updated 11-10). Since 11-04: 11-04 2.64, 11-05 2.60, 11-06 2.63, 11-09 2.66. | ok\nreal_yield | 2026-10-29 | https://fred.stlouisfed.org/graph/?id=DFII10 | search | The search snippet shows only October readings (10-29 2.63, 10-28 2.67), which predate the window. No November data from this search. | ok\nreal_yield | 2026-11-10 | https://www.bls.gov/news.release/cpi.nr0.htm | fetch | October CPI released 2026-11-10. Core +0.3% m/m SA, same as Sep and Aug. Headline +0.4% SA, after +0.6% in Sep. No 12-month change was published because October 2025 data is missing. The page gives no consensus. | ok\nreal_yield | 2026-11-09 | https://www.roic.ai/news/us-october-cpi-preview-wall-street-braces-for-cooler-inflation-but-fed-hawks-remain-vigilant-11-09-2026 | search | Pre-release consensus: core +0.22% m/m (a Nov 9 preview), headline +0.23%. Other forecasts were core +0.2% or +0.3%. Core +0.3% therefore looks at or above consensus. | ok\nreal_yield | 2026-11-09 | https://political.org/2026/11/09/inflation-stays-hot-ahead-of-key-october-cpi-report-as-fed-rate-hike-odds-climb-before-december-meeting/ | search | Preview-day headline: hike odds were climbing ahead of the CPI. The December meeting is 12-8/9. No post-CPI Dec-hike pricing found. | ok\nreal_yield | — | https://www.kiplinger.com/investing/economy/october-2026-cpi-report-what-to-expect | fetch | Only a headline came back, \"October CPI Report Clears the Way for a December Rate Hike\". No date, consensus, actual or probability in the fetched text. | ok\nreal_yield | 2026-10 | https://investinglive.com/central-banks/icymi-citi-now-expects-a-december-fed-rate-hike-after-hotter-september-us-inflation/ | search | Context from the September print: roughly 94% December hike probability (per the search summary), and Citi expects a 25bp hike in December. The date comes from the search summary, not the page. | ok\nmu_gm | 2026-09-30 | https://www.asktraders.com/?p=255274 | search | FQ1-27 guide is non-GAAP GM about 86.25% on revenue of $61.5B ±$1.5B, from the Sep 30 FQ4 release. FQ4 GM was 87.0%. The CFO called FQ1 the \"floor\" for FY27. No re-guide, pre-announcement or analyst note dated on/after 2026-10-28 found. | ok\nai_funding | 2026-11-02 | https://winzheng.com/en/article/oracle-20-billion-stock-bond-offering-ai-infrastructure-2026 | search | One source says Oracle filed an SEC registration on Nov 2 for $10B common stock plus $10B senior notes, with shares down more than 5% that day. A filing, not a pulled deal. No 5y CDS bp close and no pulled AI data-center financing found. | ok\nai_funding | 2026-11-10 | https://investors.coreweave.com/news/news-details/2026/CoreWeave-Announces-Date-of-Third-Quarter-2026-Financial-Results-and-Conference-Call/ | search | CoreWeave Q3-26 call was set for 2026-11-10 at 5pm ET. | ok\nai_funding | 2026-11-10 | https://www.panabee.com/news/coreweave-earnings-q3-2026 | fetch | The page says it is AI-generated and may have number errors. Backlog about $132.5B at 9/30, up from $104B at 6/30. 2026 capex guide $37-39B, against $35-39B in August. Financing: about $4.2B in converts, a $2.6B DDTL 5.5 facility, and about $9B of customer prepayments expected in the next 3 months. Net interest expense $846M in Q3, with Q4 guided to $1.05-1.15B. No covenant stress named. Customers are \"AI labs and hyperscalers\", none named. | ok\nai_funding | — | https://investors.coreweave.com/financials/quarterly-results/default.aspx | fetch | Page did not render. No dated items, press release text or figures. | FAILED\nai_funding | — | https://investors.coreweave.com/news/default.aspx | fetch | News list showed \"Loading…\" only. No dated items, so the official Q3-26 press release could not be fetched. | FAILED\nai_funding | 2026-08-11 | https://futurumgroup.com/insights/coreweave-q2-fy-2026-ai-demand-drives-pricing-and-capacity-growth/ | search | Prior-quarter baseline, before the window. Backlog about $104B, 2026 revenue guide $12.4-13.2B, Q3 capex guide $11.5-13.5B, Q3 interest guide $860-940M. | ok\nai_funding | — | https://www.stocktwits.com/news-articles/markets/equity/core-weave-stock-slides-after-guidance-cut/cLPdBY1RE2s | search | The headline says \"guidance cut\" but the snippet describes the Q3 2025 print, so it was not used for the escalation or fizzle test. | ok\n\nSources:\n- [WAM, Korea Nov 1-10 exports](https://www.wam.ae/en/article/15v6vi9-koreas-exports-64-during-first-days-november)\n- [Tipswatch](https://tipswatch.com/2026/09/17/10-year-tips-reopening-gets-real-yield-of-2-653-highest-in-nearly-18-years/)\n- [FRED DFII10](https://fred.stlouisfed.org/series/DFII10)\n- [BLS CPI release](https://www.bls.gov/news.release/cpi.nr0.htm)\n- [Panabee CoreWeave Q3 2026](https://www.panabee.com/news/coreweave-earnings-q3-2026)"
+   ],
+   "applied": {
+    "real_yield": {
+     "label": "UNCHANGED 11-11",
+     "sources": [
+      {
+       "date": "2026-11-09",
+       "url": "https://fred.stlouisfed.org/series/DFII10"
+      },
+      {
+       "date": "2026-11-10",
+       "url": "https://www.bls.gov/news.release/cpi.nr0.htm"
+      }
+     ]
+    },
+    "mu_gm": {
+     "label": "STALE 09-30",
+     "sources": [
+      {
+       "date": "2026-09-30",
+       "url": "https://www.asktraders.com/?p=255274"
+      }
+     ]
+    },
+    "ai_funding": {
+     "label": "UNCHANGED 11-10",
+     "sources": [
+      {
+       "date": "2026-11-10",
+       "url": "https://www.panabee.com/news/coreweave-earnings-q3-2026"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "05c62328-44a1-4df0-8b57-c6695bfe5851",
+   "today": "2026-11-12",
+   "rows": [
+    {
+     "sign": "real_yield",
+     "since": "2026-11-05",
+     "held": "2026-11-11",
+     "label": "UNCHANGED 11-11",
+     "extended": true,
+     "measured": {
+      "asOf": "2026-11-09",
+      "text": "DFII10 2.66 % close 11-09 · Δ120 +53 bp vs +75 bp line under line",
+      "sources": [
+       {
+        "date": "2026-11-09",
+        "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10&cosd=2026-01-16"
+       }
+      ]
+     }
+    },
+    {
+     "sign": "dram_contract",
+     "since": "2026-08-13",
+     "held": "2026-10-31",
+     "label": "UNCHANGED 10-31 (+11d)",
+     "extended": true
+    },
+    {
+     "sign": "mu_dio",
+     "since": "2026-11-05",
+     "held": null,
+     "label": "HELD until 2026-11-12",
+     "extended": true
+    },
+    {
+     "sign": "mu_gm",
+     "since": "2026-11-05",
+     "held": null,
+     "label": "STALE 09-30 (+42d)",
+     "extended": false
+    },
+    {
+     "sign": "korea_exports",
+     "since": "2026-11-02",
+     "held": null,
+     "label": "HELD until 2026-11-21",
+     "extended": true
+    },
+    {
+     "sign": "hbm",
+     "since": "2026-10-13",
+     "held": "2026-11-05",
+     "label": "UNCHANGED 11-05 (+6d)",
+     "extended": true
+    },
+    {
+     "sign": "tsmc_monthly",
+     "since": "2026-10-13",
+     "held": "2026-11-10",
+     "label": "CHANGED",
+     "extended": true
+    },
+    {
+     "sign": "capex_guides",
+     "since": "2026-11-05",
+     "held": "2026-11-06",
+     "label": "UNCHANGED 11-06 (+5d)",
+     "extended": true
+    },
+    {
+     "sign": "pc_demand",
+     "since": "2026-10-13",
+     "held": "2026-11-03",
+     "label": "CHANGED",
+     "extended": true
+    }
+   ],
+   "tables": [
+    "calendar | 2026-07-30 | https://www.trendforce.com/presscenter/news/20260730-13158.html | search | No Nov-2026 TrendForce HBM bulletin or DRAM/NAND datasheet date found. Latest related release is 30 Jul 2026 (DRAM tight vs NAND easing in 2027) | ok\ncalendar | 2026-09-29 | https://www.trendforce.com/presscenter/news/20260929-13255.html | search | No 1Q27 memory price outlook date found. Nearest item: 2027 HBM blended ASP forecast raised to +121% YoY | ok\ncalendar | 2026-10-21 | https://www.mt.co.kr/en/economy/2026/10/21/2026102108331616913 | search | Oct 1-20 Korea exports released Wed 2026-10-21. No official Nov 1-20 date found. Nov 21 is a Saturday, so 11-20 or 11-23 is the search's inference | ok\ncalendar | 2026-11-03 | https://eetimes.itmedia.co.jp/ee/spv/2611/05/news043.html | search | SIA Q3-2026 sales $517.7B announced 2026-11-03. August data came out 10-05, July data 09-04. No official Oct-data date found; the Dec 2025 release was 12-04 | ok\nkorea_exports (calendar) | 2026-11-01 | https://www.koreatimes.co.kr/economy/20261101/koreas-monthly-exports-hit-1153-bil-in-oct-on-record-chip-sales | search | Oct 2026 exports $115.3B (+93.7% y/y), chips $56.44B (+259.4%). Nov 1-10 2026 figures not found in results | ok\nreal_yield | 2026-10-29 | https://fred.stlouisfed.org/graph/?id=DFII10 | search | Latest DFII10 found: 2.63% on 2026-10-29 (2.67 on 10-28, 2.64 on 10-27). No November 2026 readings found. Before the row's since date | ok\nreal_yield | 2026-11-09 | https://www.kitco.com/news/article/2026-11-09/october-cpi-likely-line-we-think-another-hike-will-be-warranted-december | search | Pre-release preview only: Natixis said \"we think another hike will be warranted in December\". Barclays baseline is a 25bp December hike. Funds rate 3.75%-4.00% | ok\nreal_yield | 2026-11-10 | https://www.mufgresearch.com/macro/us-inflation-update-november-10-2026/ | search | Oct CPI was due 2026-11-10. Consensus core +0.2% m/m (MUFG 0.23%, Cleveland Fed nowcast 0.21%). No actual Oct CPI print found in any result. No y/y published for Oct | ok\nreal_yield | 2026-11-19 | https://tipswatch.com/2026/09/17/10-year-tips-reopening-gets-real-yield-of-2-653-highest-in-nearly-18-years/ | search | Sep 17 10-year TIPS reopening real yield 2.653%. Next reopening auction is Nov 19 per the TIPS commentary | ok\ndram_contract | 2026-10-29 | https://trendforce.com/news/2026/10/29/news-samsung-says-hbm-share-matches-dram-standing-as-hbm4-sales-triple-ds-margin-hits-72-10-lta-clients-signed | search | Samsung (Kim Jae-june, per News1): DRAM ASP about +20% QoQ in 3Q26, NAND high-teens. HBM4 sales tripled in 3Q26. 2027 HBM supply effectively sold out at target prices; clients ask for more | ok\ndram_contract | 2026-10-29 | https://news.samsung.com/global/samsung-electronics-announces-third-quarter-2026-results | search | Samsung Q3-26 revenue KRW 195.3T, OP KRW 107.4T. DS revenue 147.1T, DS OP 106.5T. 2027 AI-driven demand to \"far exceed the industry supply\" | ok\ndram_contract | — | https://www.trendforce.com/research/download/RP260114DO | search | Goldman note on TrendForce outlook: conventional DRAM contract +10-15% QoQ in 4Q26, DRAM incl. HBM +15-20%. Publication date unconfirmed. No 1Q27 QoQ figure found | ok\ndram_contract | 2026-10-21 | https://www.trendforce.com/presscenter/news/20260602-13074.html | search | TrendForce 21 Oct bulletin: PC DRAM contract gains narrowing in 4Q26, supply to contract in 2027. No 1Q27 DRAM QoQ found. No source found describing Samsung conventional DRAM as slow or flat | ok\nmu_dio | — | https://finsee.ai/earnings/mu/2026/q4/en/ | search | No FQ1-27 DIO exists yet (quarter ends late Nov). Latest is FQ4-26: inventory $10.4B, 129 days, up 9 days. Micron expects days to fall | ok\nmu_gm | 2026-09-30 | https://www.asktraders.com/?p=255274 | search | FQ1-27 guide (given 09-30): revenue $61.5B ±$1.5B, non-GAAP GM about 86.25% (GAAP about 85.95%), EPS $38.15 ±$1.00. FQ4-26 GM 87.0%. Predates the row's since | ok\nmu_gm | — | https://www.webull.com/news/15672802111996928 | search | CFO Murphy: \"We anticipate fiscal Q1 to be the floor for gross margins in fiscal 2027.\" No re-guide since 10-28 found | ok\nkorea_exports | 2026-11-01 | https://www.koreatimes.co.kr/economy/20261101/koreas-monthly-exports-hit-1153-bil-in-oct-on-record-chip-sales | search | Oct exports $115.3B, chips $56.44B (+259.4%). Jan-Oct about $930B. $1T expected in November. No 2026 Nov 1-20 data found (not yet released) | ok\nhbm | 2026-11-05 | https://www.trendforce.com/research/download/RP261105SQ3 | search | TrendForce \"HBM Industry Analysis - 4Q26\": tight supply lifts 2027 pricing and revenue, growth moderating later. Samsung HBM4 lead may return it to No. 1 in 2027, SK hynix 2nd, Micron holding share | ok\nhbm | 2026-11-05 | https://www.trendforce.com/research/download/RP261105SQ3 | search | A Counterpoint note dated 2026-11-05 says HBM prices are catching up with conventional DRAM (per search summary) | ok\nhbm | 2026-09-29 | https://www.trendforce.com/presscenter/news/20260929-13255.html | search | Predates the row's since. TrendForce 2027 blended HBM ASP +121% YoY. No 2027 oversupply or ASP-cut forecast found | ok\ntsmc_monthly | 2026-11-10 | https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000796/tsm-revenue20261110.htm | search | TSMC Oct-2026 revenue NT$586.89B, +59.7% y/y (Oct-2025 NT$367.47B), +14.7% m/m. Jan-Oct NT$4,485.62B, +43.3% y/y. Sep NT$511.86B | ok\ntsmc_monthly | 2026-10-15 | https://letsdatascience.com/news/tsmc-says-ai-demand-still-exceeds-its-supply-capability-as-q-2fed75bf | search | TSMC Q3 call 10-15: revenue about $46.72B (+41.2% y/y), GM 66.4%. Q4 guide $52.3-54.3B, GM 65-67%. Demand above supply. No 2027 capex guide | ok\ncapex_guides | — | https://abc.xyz/investor/news/ | fetch | no item on the row (only dated item 2025-05-01, no capex content) | ok\ncapex_guides | 2026-10-28 | https://www.microsoft.com/en-us/investor | fetch | no item on the row. Newest item is 10-28 \"Microsoft Announces First Quarter Results\"; nothing dated on or after 11-05, no capex figures on the page | ok\ncapex_guides | 2026-11-09 | https://about.fb.com/news/ | fetch | no item on the row. Items 11-05 to 11-09 (Muse voice, WhatsApp Events, teen accounts) carry no capex | ok\ncapex_guides | 2026-11-11 | https://www.aboutamazon.com/news/company-news | fetch | no item on the row. Only a 11-11 \"What you need to know about Amazon today\" headline with no text. No capex | ok\ncapex_guides | 2026-10-28 | https://www.fierce-network.com/cloud/alphabet-vs-microsoft-earnings-why-investors-see-their-ai-spending-differently | search | Alphabet Q3 capex $51.4B, full-year $195-205B maintained, shares fell over 10%. MSFT capex reported $45.2B (sources conflict), below over $50B expected, due to third-party delivery slips. Before the since date | ok\ncapex_guides | 2026-10-21 | https://letsdatascience.com/news/meta-narrows-2026-capital-spending-range-to-135-billion-145-46f12e07 | search | Meta Q3 capex $34.9B. Full-year range narrowed to $135-145B from $130-145B. No 2027 capex number given. Before the since date | ok\ncapex_guides | 2026-11-05 | https://datacenterfrontier.com/machine-learning/article/55278175/microsoft-hits-pause-coreweave-retreats-what-it-means-for-ai-data-center-growth-and-hyperscalers | search | Bloomberg 11-05: Microsoft declined an option that would have more than doubled its lease at Nscale's Ward County, Texas site. Microsoft says it added over $200B in lease commitments in the past year. Article date unverified | ok\ncapex_guides | — | https://datacenterdynamics.com/en/news/moodys-hyperscaler-capex-forecasts-marked-up-by-85bn-to-close-in-on-1trn-by-2027/ | search | No company-issued 2027 capex guidance found for the Oct/Nov round. S&P projections for 2027: Alphabet $357B, Amazon $319.1B, Meta $164B, Microsoft $189B. Projections, not guidance | ok\ncapex_guides | 2026-10-29 | https://www.intc.com/news-events/press-releases/detail/1786/intel-reports-third-quarter-2026-financial-results | search | Intel Q3-26 revenue $16.5B (+21%), client $8.1B (-5%), data center and AI $7.3B (+78%). Q4 guide $15-16B, non-GAAP GM 38.0%. Before the since date | ok\npc_demand | — | https://www.counterpointresearch.com/ | fetch | no item on the row. Four undated items: Q3-26 DRAM $200B (Samsung 38%), smartphone SoC -21% YoY. No PC shipment item, no dates | ok\npc_demand | — | https://www.idc.com/ | fetch | no item on the row. No dated items at all, nothing on PC shipments or memory | FAILED\npc_demand | 2026-11-03 | https://www.jonpeddie.com/news/will-the-memory-suppliers-kill-the-golden-goose/ | search | AMD CEO on 11-03 call warned of a double-digit % decline in 2027 PC shipments on memory costs. Intel sees PC shipments about -10% in 2027 after -12% in 2026. Gartner Q3 -22.4% to 55.4M, IDC -20.1% to 62.7M | ok\npc_demand | 2026-10-29 | https://hothardware.com/news/intel-data-center-surges-78-lingering-pc-slump-crushes-shares | search | Intel Q3-26: client revenue $8.1B (-5% y/y, -9% q/q), blamed on memory prices. Expects Q4 client revenue down more than 20% q/q. CEO Tan: persists until memory availability and prices normalize. Shares fell over 20% | ok\npc_demand | 2026-11-05 | https://eetimes.itmedia.co.jp/ee/spv/2611/05/news059_2.html | search | Counterpoint (via EE Times Japan): Q3 global PC shipments -21% y/y to 57M units, Q4 forecast a further -27% | ok\n\nSources:\n- https://www.trendforce.com/presscenter/news/20260730-13158.html\n- https://www.trendforce.com/presscenter/news/20260929-13255.html\n- https://www.mt.co.kr/en/economy/2026/10/21/2026102108331616913\n- https://eetimes.itmedia.co.jp/ee/spv/2611/05/news043.html\n- https://www.koreatimes.co.kr/economy/20261101/koreas-monthly-exports-hit-1153-bil-in-oct-on-record-chip-sales",
+    "row | date | url | fetch or search | fact | ok or FAILED\nkorea_exports | 2026-11-11 | https://www.koreatimes.co.kr/economy/others/20261111/exports-more-than-double-in-1st-10-days-of-november | search | Korea Times headline: exports more than double in Nov 1-10. Search summary says chips were 49.7% of total exports. | ok\nkorea_exports | — | https://www.koreaittimes.com/news/articleView.html?idxno=159070 | search | Nov 1-10 total exports $33.5B, +111.9% y/y. Chips $16.6B, +331.2% y/y, a record for the period. Working days 7.5, up 0.5 y/y. | ok\nkorea_exports | — | https://www.koreajoongangdaily.com/business/exports-more-than-double-in-1st-10-days-of-november/12966595 | search | Title only: South Korea exports more than double in first 10 days of November. Snippet had no figures. | ok\nkorea_exports | — | (Businesskorea, cited in the search summary; no URL returned) | search | Average daily exports (all goods) +97.7% to $4.46B. No chip per-working-day figure reported. $16.6B / 7.5 days is about $2.2B per day (my arithmetic). | ok\nmu_dio | — | https://finance.yahoo.com/markets/stocks/articles/micron-technology-inc-mu-q4-090022460.html | search | Latest DIO is FQ4-26: inventory $10.4B, 129 days, up 9 days q/q. Management expects days of inventory to decline. FQ1-27 guide is revenue $61.5B ± $1.5B. No FQ1-27 DIO exists yet. | ok\nmu_dio | 2026-11-01 | https://www.fool.com/investing/2026/11/01/why-micron-stock-looks-cheap-after-a-record-year/ | search | Dated before the 11-05 window. No item on or after 2026-11-05 on Micron inventory or DIO. | ok\ncapex_guides | 2025-03-28 | https://datacenterfrontier.com/machine-learning/article/55278175/microsoft-hits-pause-coreweave-retreats-what-it-means-for-ai-data-center-growth-and-hyperscalers | fetch | The article is dated 2025-03-28, not 2026. It never mentions Nscale or a Texas lease option. It mentions only \"lease cancellations at multiple data center sites\" and has no Microsoft quote on pacing or lease commitments. | ok\npc_demand / Intel Q3-26 | — | https://hothardware.com/news/intel-data-center-surges-78-lingering-pc-slump-crushes-shares | fetch | HTTP 403 Forbidden. No content retrieved, so the Q4 client outlook, data-center outlook and article date are unconfirmed. | FAILED\n\nSources:\n- [Korea Times](https://www.koreatimes.co.kr/economy/others/20261111/exports-more-than-double-in-1st-10-days-of-november)\n- [Korea IT Times](https://www.koreaittimes.com/news/articleView.html?idxno=159070)\n- [Korea JoongAng Daily](https://www.koreajoongangdaily.com/business/exports-more-than-double-in-1st-10-days-of-november/12966595)\n- [Yahoo Finance](https://finance.yahoo.com/markets/stocks/articles/micron-technology-inc-mu-q4-090022460.html)\n- [Motley Fool](https://www.fool.com/investing/2026/11/01/why-micron-stock-looks-cheap-after-a-record-year/)\n- [Data Center Frontier](https://datacenterfrontier.com/machine-learning/article/55278175/microsoft-hits-pause-coreweave-retreats-what-it-means-for-ai-data-center-growth-and-hyperscalers)\n- [HotHardware](https://hothardware.com/news/intel-data-center-surges-78-lingering-pc-slump-crushes-shares)"
+   ],
+   "applied": {
+    "real_yield": {
+     "label": "UNCHANGED 11-11"
+    },
+    "dram_contract": {
+     "label": "UNCHANGED 10-31"
+    },
+    "mu_dio": {
+     "label": "UNSOURCED"
+    },
+    "mu_gm": {
+     "label": "STALE 09-30",
+     "sources": [
+      {
+       "date": "2026-09-30",
+       "url": "https://www.asktraders.com/?p=255274"
+      }
+     ]
+    },
+    "korea_exports": {
+     "label": "CHANGED",
+     "sources": [
+      {
+       "date": "2026-11-11",
+       "url": "https://www.koreaittimes.com/news/articleView.html?idxno=159070"
+      },
+      {
+       "date": "2026-11-11",
+       "url": "https://www.koreatimes.co.kr/economy/others/20261111/exports-more-than-double-in-1st-10-days-of-november"
+      }
+     ]
+    },
+    "hbm": {
+     "label": "UNCHANGED 11-05"
+    },
+    "tsmc_monthly": {
+     "label": "UNCHANGED 11-10",
+     "sources": [
+      {
+       "date": "2026-11-10",
+       "url": "https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000796/tsm-revenue20261110.htm"
+      }
+     ]
+    },
+    "capex_guides": {
+     "label": "UNCHANGED 11-06"
+    },
+    "pc_demand": {
+     "label": "CHANGED",
+     "sources": [
+      {
+       "date": "2026-10-29",
+       "url": "https://hothardware.com/news/intel-data-center-surges-78-lingering-pc-slump-crushes-shares"
+      },
+      {
+       "date": "2026-11-03",
+       "url": "https://www.jonpeddie.com/news/will-the-memory-suppliers-kill-the-golden-goose/"
+      },
+      {
+       "date": "2026-11-05",
+       "url": "https://eetimes.itmedia.co.jp/ee/spv/2611/05/news059_2.html"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "98c848e7-f82b-49ad-ac7d-aa1d3c5dbe68",
+   "today": "2026-11-13",
+   "rows": [
+    {
+     "sign": "real_yield",
+     "since": "2026-11-06",
+     "held": "2026-11-11",
+     "label": "UNCHANGED 11-11 (+1d)",
+     "extended": true,
+     "measured": {
+      "asOf": "2026-11-10",
+      "text": "DFII10 2.78 % close 11-10 · Δ120 +60 bp vs +75 bp line under line",
+      "sources": [
+       {
+        "date": "2026-11-10",
+        "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10&cosd=2026-01-17"
+       }
+      ]
+     }
+    },
+    {
+     "sign": "dram_contract",
+     "since": "2026-08-14",
+     "held": "2026-10-31",
+     "label": "UNCHANGED 10-31 (+12d)",
+     "extended": true
+    },
+    {
+     "sign": "mu_gm",
+     "since": "2026-11-06",
+     "held": null,
+     "label": "STALE 09-30 (+43d)",
+     "extended": false
+    },
+    {
+     "sign": "hbm",
+     "since": "2026-10-14",
+     "held": "2026-11-05",
+     "label": "UNCHANGED 11-05 (+7d)",
+     "extended": true
+    },
+    {
+     "sign": "tsmc_monthly",
+     "since": "2026-10-14",
+     "held": "2026-11-10",
+     "label": "UNCHANGED 11-10 (+2d)",
+     "extended": true
+    },
+    {
+     "sign": "capex_guides",
+     "since": "2026-11-06",
+     "held": "2026-11-06",
+     "label": "UNCHANGED 11-06 (+6d)",
+     "extended": true
+    },
+    {
+     "sign": "pc_demand",
+     "since": "2026-10-14",
+     "held": "2026-11-05",
+     "label": "CHANGED",
+     "extended": true
+    }
+   ],
+   "tables": [
+    "Rows are in the order of your list. Every entry comes from search snippets or fetched pages; I fetched none of the cited articles individually.\n\nrow | date | url | fetch or search | fact | ok or FAILED\n---|---|---|---|---|---\nKorea Nov exports | undated | https://www.asiae.co.kr/en/article/2025120109243746920 | search | No 2026 schedule found. The 2025 pattern was the 1st of the following month, so the estimate stays 2026-12-01 and the 1–20 data around 11-21. | ok\nKorea Nov exports | 2025-12-01 | https://www.bloomberg.com/news/articles/2025-12-01/south-korea-s-exports-extend-momentum-despite-higher-us-tariffs | search | Bloomberg published the November 2025 full-month data on 12-01. This is a past-year pattern, not a 2026 date. | ok\nreal_yield | 2026-10-30 | https://fred.stlouisfed.org/graph/?id=DFII10 | search | DFII10 was 2.63 on 10-29, 2.67 on 10-28 and 2.64 on 10-27. No November readings were found. | ok\nreal_yield | 2026-09-17 | https://tipswatch.com/2026/09/17/10-year-tips-reopening-gets-real-yield-of-2-653-highest-in-nearly-18-years/ | search | The September TIPS reopening cleared at 2.653%, the highest in nearly 18 years. The post gives the next reopening as 11-19. | ok\nreal_yield | 2026-11-10 | https://investinglive.com/news/us-october-core-cpi-vs-0-2-expected/ | search | Oct core CPI was +0.3% m/m against +0.2% expected, and headline was +0.4%. No y/y was published because of the shutdown. | ok\nreal_yield (escalation) | 2026-11-10 | https://www.investmentnews.com/equities/october-cpi-comes-in-hot-raising-odds-of-a-bigger-than-expected-rate-hike/268961 | search | Core beat consensus and December hike odds rose. Sources disagree on the figure (85% to about 100% for a 25bp hike, with 50bp odds around 12%). Waller had flagged a core print around 0.3% as grounds to consider 50bp. | ok\nreal_yield (escalation) | 2026-11-10 | https://continuumeconomics.com/a/46975751/us-october-cpi-50bps-now-set-to-be-debated-at-december-fomc | search | Continuum says 50bp is now set to be debated at the December FOMC. | ok\nreal_yield (fizzle) | 2026-11-10 | https://investinglive.com/news/us-october-core-cpi-vs-0-2-expected/ | search | The only 2026 coverage shows core above consensus, so the fizzle condition is not met. | ok\ndram_contract | 2026-10-30 | https://www.trendforce.com/presscenter/news/20260709-13140.html | search | No TrendForce 1Q27 QoQ figure found. The 4Q26 conventional DRAM forecast is +10–15% QoQ, PC DRAM increases are narrowing, and mobile is flat to slightly up. | ok\ndram_contract | 2026-10-21 | https://techenclave.com/news/items/trendforce-expects-pc-ram-supply-to-contract-in-2027 | search | TrendForce expects PC DRAM supply to contract in 2027. The search summary dates the bulletin 10-21. | ok\nhbm | 2026-11-05 | https://www.trendforce.com/research/download/RP261105SQ3 | search | TrendForce's HBM 4Q26 analysis says Samsung's HBM4 lead may restore its top rank in 2027, SK hynix slips to second, and Micron holds share. | ok\nhbm | 2026-10-29 | https://trendforce.com/news/2026/10/29/news-samsung-says-hbm-share-matches-dram-standing-as-hbm4-sales-triple-ds-margin-hits-72-10-lta-clients-signed | search | Samsung Q3: HBM4 sales tripled, DS margin 72%, 10 long-term-agreement clients signed. Samsung says 2027 HBM supply is effectively sold out at target pricing. | ok\nhbm | 2026-10-29 | https://news.samsung.com/global/samsung-electronics-announces-third-quarter-2026-results | search | Samsung Q3 revenue was KRW 195.3T and operating profit KRW 107.4T. Capex was KRW 29T, up 12.2T q/q. | ok\ndram_contract (escalation) | 2026-10-30 | https://www.itiger.com/news/1136682305 | search | No slow-sharply or flat guidance found. TrendForce has 4Q26 conventional DRAM at +10–15% QoQ, moderating. Samsung warns HBM expansion could squeeze conventional DRAM supply in 2027. | ok\ndram_contract (fizzle) | 2026-10-29 | https://trendforce.com/news/2026/10/29/news-samsung-says-hbm-share-matches-dram-standing-as-hbm4-sales-triple-ds-margin-hits-72-10-lta-clients-signed | search | Contracts are still rising and 2027 HBM is sold out. No source states \"no demand destruction\". Long-term agreements cap the rise in contract prices. | ok\nmu_gm | 2026-09-30 | https://www.indmoney.com/blog/us-stocks/micron-stock-q4-earnings-analysis-mu | search | FQ1-27 guide is revenue $61.5B ±1.5B and non-GAAP GM about 86.25%, against 87.0% in FQ4. The CFO called FQ1 \"the floor\" for FY27 margins. The date is approximate, inferred from the FQ4 release. | ok\nmu_gm | undated | https://letsdatascience.com/news/micron-posts-strong-q1-revenue-raises-guidance-001da3f4 | search | No Micron re-guide or pre-announcement after 10-28 found. Hits were FQ4 and older results, and FQ1 results are due 12-16. | ok\ntsmc_monthly | 2026-10-08 | https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000680/tsm-revenue20261008.htm | search | September revenue was NT$511.86B, +54.6% y/y and -0.6% m/m. Jan–Sep was NT$3,898.73B, +41.1%. The October monthly report was not found. | ok\ntsmc_monthly | 2026-10-08 | https://focustaiwan.tw/business/202610080012 | search | Q3 revenue was NT$1.494T, +50.9% y/y and +17.6% q/q. | ok\ntsmc_monthly | 2026-10-15 | https://xenospectrum.com/en/tsmc-q3-2026-gross-margin-capex/ | search | TSMC Q3 revenue was $46.72B, +41.2% y/y, with GM 66.4%. Q4 guide is $52.3–54.3B, GM 65–67%. No 2027 capex guide was given. 2026 capex stays at $60–64B. | ok\ntsmc_monthly (escalation) | 2026-10-16 | https://www.trendforce.com/news/2026/10/16/news-after-tsmcs-3q26-earnings-key-brokerage-takeaways-as-2028-capex-forecasts-reach-us105b/ | search | Escalation is not met. The Q4 guide of $52.3–54.3B is well above $50.3–50.4B and GM is at least 65%. The UBS 2027 capex figure is $83B or about $90B depending on the source. | ok\ntsmc_monthly (fizzle) | 2026-10-15 | https://www.crnasia.com/news/2026/components-and-peripherals/tsmc-third-quarter-revenue-tops-guidance-as-ceo-says-ai-dema | search | Revenue topped guidance. FY26 growth is around 44%, but that came in an answer rather than a formal raise. 2026 capex was reaffirmed, not raised. No Q4 consensus comparison found. | ok\ncapex_guides | 2025-05-01 | https://abc.xyz/investor/news/ | fetch | No item on the row. The only dated item is from 2025-05-01 and there is nothing since 11-06. | ok\ncapex_guides | 2026-10-28 | https://www.microsoft.com/en-us/investor | fetch | No item on the row. The newest item is the 10-28 Q1 results and nothing is dated on or after 11-06. | ok\ncapex_guides | 2026-11-12 | https://about.fb.com/news/ | fetch | Nothing on 2027 capex. The 11-12 item is Meta's clean-manufacturing agreements for data-center supply chains, with no dollar figures. | ok\ncapex_guides | 2026-11-12 | https://www.aboutamazon.com/news/company-news | fetch | Only an 11-12 \"what you need to know\" headline, with no capex content. The 10-20 item is a EUR 16B Germany investment plan for 2027, not dated in window. | ok\ncapex_guides | 2026-11-08 | https://fourweekmba.com/ai-morgan-stanley-pegs-google-2027-capex-at-375b-in-1-6t-call/ | search | There is no formal 2027 guide. Morgan Stanley (11-08) has 2027 capex at $1.6T total: Google $375B, Amazon $355B, Microsoft $269B, SpaceX $236B, Meta $225B. | ok\ncapex_guides | 2026-10-28 | https://paasa.com/blog/the-capex-verdict-what-fy-2027-guidance-signals-about-ai-margins | search | Alphabet kept 2026 capex at $195–205B and said it will \"increase significantly in 2027\". Amazon expects to spend meaningfully more in 2027. Meta is still building its 2027 plan. | ok\ncapex_guides | 2026-10-29 | https://finance.technews.tw/2026/10/29/microsoft-alphabet-earnings-investors-cash-flow/ | search | MSFT and Alphabet Q3 (10-28). Alphabet fell about 10–11% on FCF of -$9.07B. Microsoft's Azure grew 48% and its capex of $45.2B was below its own forecast. Figures vary by outlet. | ok\ncapex_guides | 2026-10-21 | https://finviz.com/news/405782/meta-reports-third-quarter-2026-results | search | Meta Q3 revenue was $64.6B, +26%, with capex of $34.9B. FY26 capex guide is $135–145B. Q4 revenue guide is $73–76B. | ok\ncapex_guides | 2026-10-29 | https://www.intc.com/news-events/press-releases/detail/1786/intel-reports-third-quarter-2026-financial-results | search | Intel Q3 revenue was $16.5B, +21%. DCAI was $7.3B, +78%. Q4 guide is $15–16B with non-GAAP EPS of $0.25. Quartr dates the call 10-30. | ok\npc_demand | undated | https://www.counterpointresearch.com/ | fetch | No PC shipment items. Dated items are 2026 titles with no month: OLED/foldables, \"Q3 2026 DRAM Super-Cycle Nears $200B: Samsung Holds No. 1\", and a GSMA webinar. | ok\npc_demand | 2026-10-24 | https://247wallst.com/investing/2026/10/24/pc-sales-just-crashed-21-as-ai-eats-the-worlds-memory-chips/ | search | Q3-26 PC shipments fell about 20–22% y/y. Counterpoint has -21% to 57M, Gartner -22.4% to 55.4M. Counterpoint forecasts Q4 at -27% y/y. | ok\npc_demand | 2026-11-03 | https://www.techradar.com/pro/the-rampocalypse-has-led-global-pc-shipments-to-drop-20-percent-in-just-12-months | search | AMD planned for a double-digit PC decline in 2027 on its 11-03 call. Intel expects PCs to fall about 12% in 2026 and about 10% in 2027. HP says RAM is about 35% of PC build cost. | ok\npc_demand (escalation) | 2026-10-29 | https://hothardware.com/news/intel-data-center-surges-78-lingering-pc-slump-crushes-shares | search | Escalation is met and exceeded. Intel client (CCPG) was $8.1B, -9% q/q. Q4 client is guided down by more than 20% q/q on memory cost and availability. PC slowdown expected through at least 1H27. | ok\npc_demand (fizzle) | 2026-10-29 | https://investinglive.com/stocks/intel-beats-q3-profit-forecasts-but-weak-q4-guidance-and-pc-outlook-weigh-share-price-drops/ | search | Fizzle is not met. PC was not stable and the stock fell sharply. Only data center was raised, with the server CPU unit growth outlook above 30% for 2026 and 2027. | ok\npc_demand (IDC) | 2026-10-08 | https://idc.com/resource-center/press-releases/idc-pc-tracker-3q26 | search | IDC 3Q26 PC release: shipments -20.1% y/y to 62.7M units and -9.1% q/q. Lenovo was first with 23.8% share, HP was -30.9%. | ok\n\n**Dated upcoming items not on your list**\n- **TIPS auction 11-19:** it is already on your list, and the TipsWatch post gives the same date.\n- **Fed FOMC 12-08/09:** the CPI searches put the meeting on 12-08 to 12-09 and the November CPI on 12-10, the day after the decision. Your list shows only 12-09.\n- **Nov CPI 12-10:** this one is new. One search also mentions Continuum Economics' preview, headlined \"due December 18\", for the November CPI, so the date conflicts across sources and is unverified.\n- **Other items:** no further dated item in the next 30 days on memory pricing, hyperscaler capex, NVDA, TSMC or Taiwan/export controls turned up. TSMC's October monthly revenue (normally early to mid November) was not found in these results.\n\nSources:\n- [asiae.co.kr](https://www.asiae.co.kr/en/article/2025120109243746920)\n- [Bloomberg](https://www.bloomberg.com/news/articles/2025-12-01/south-korea-s-exports-extend-momentum-despite-higher-us-tariffs)\n- [FRED DFII10](https://fred.stlouisfed.org/graph/?id=DFII10)\n- [TipsWatch](https://tipswatch.com/2026/09/17/10-year-tips-reopening-gets-real-yield-of-2-653-highest-in-nearly-18-years/)\n- [InvestingLive core CPI](https://investinglive.com/news/us-october-core-cpi-vs-0-2-expected/)\n- [InvestmentNews](https://www.investmentnews.com/equities/october-cpi-comes-in-hot-raising-odds-of-a-bigger-than-expected-rate-hike/268961)\n- [Continuum Economics](https://continuumeconomics.com/a/46975751/us-october-cpi-50bps-now-set-to-be-debated-at-december-fomc)\n- [TrendForce 20260709](https://www.trendforce.com/presscenter/news/20260709-13140.html)\n- [Techenclave](https://techenclave.com/news/items/trendforce-expects-pc-ram-supply-to-contract-in-2027)\n- [TrendForce HBM 4Q26](https://www.trendforce.com/research/download/RP261105SQ3)\n- [TrendForce Samsung HBM](https://trendforce.com/news/2026/10/29/news-samsung-says-hbm-share-matches-dram-standing-as-hbm4-sales-triple-ds-margin-hits-72-10-lta-clients-signed)\n- [Samsung Q3 release](https://news.samsung.com/global/samsung-electronics-announces-third-quarter-2026-results)\n- [iTiger TrendForce Q4](https://www.itiger.com/news/1136682305)\n- [IndMoney Micron](https://www.indmoney.com/blog/us-stocks/micron-stock-q4-earnings-analysis-mu)\n- [LetsDataScience Micron](https://letsdatascience.com/news/micron-posts-strong-q1-revenue-raises-guidance-001da3f4)\n- [TSMC SEC 6-K](https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000680/tsm-revenue20261008.htm)\n- [Focus Taiwan](https://focustaiwan.tw/business/202610080012)\n- [Xenospectrum TSMC](https://xenospectrum.com/en/tsmc-q3-2026-gross-margin-capex/)\n- [TrendForce TSMC brokerage](https://www.trendforce.com/news/2026/10/16/news-after-tsmcs-3q26-earnings-key-brokerage-takeaways-as-2028-capex-forecasts-reach-us105b/)\n- [CRN Asia TSMC](https://www.crnasia.com/news/2026/components-and-peripherals/tsmc-third-quarter-revenue-tops-guidance-as-ceo-says-ai-dema)\n- [Alphabet IR](https://abc.xyz/investor/news/)\n- [Microsoft IR](https://www.microsoft.com/en-us/investor)\n- [Meta newsroom](https://about.fb.com/news/)\n- [Amazon news](https://www.aboutamazon.com/news/company-news)\n- [FourWeekMBA Morgan Stanley](https://fourweekmba.com/ai-morgan-stanley-pegs-google-2027-capex-at-375b-in-1-6t-call/)\n- [Paasa capex](https://paasa.com/blog/the-capex-verdict-what-fy-2027-guidance-signals-about-ai-margins)\n- [Technews MSFT/GOOGL](https://finance.technews.tw/2026/10/29/microsoft-alphabet-earnings-investors-cash-flow/)\n- [Finviz Meta Q3](https://finviz.com/news/405782/meta-reports-third-quarter-2026-results)\n- [Intel Q3 release](https://www.intc.com/news-events/press-releases/detail/1786/intel-reports-third-quarter-2026-financial-results)\n- [Counterpoint](https://www.counterpointresearch.com/)\n- [247WallSt PC sales](https://247wallst.com/investing/2026/10/24/pc-sales-just-crashed-21-as-ai-eats-the-worlds-memory-chips/)\n- [TechRadar PC shipments](https://www.techradar.com/pro/the-rampocalypse-has-led-global-pc-shipments-to-drop-20-percent-in-just-12-months)\n- [HotHardware Intel](https://hothardware.com/news/intel-data-center-surges-78-lingering-pc-slump-crushes-shares)\n- [InvestingLive Intel](https://investinglive.com/stocks/intel-beats-q3-profit-forecasts-but-weak-q4-guidance-and-pc-outlook-weigh-share-price-drops/)\n- [IDC 3Q26](https://idc.com/resource-center/press-releases/idc-pc-tracker-3q26)",
+    "real_yield | 2026-11-10 | https://www.investmentnews.com/equities/october-cpi-comes-in-hot-raising-odds-of-a-bigger-than-expected-rate-hike/268961 | fetch | Core CPI +0.3% m/m in Oct vs 0.2% expected. After the print, odds of a Dec hike to 4.25-4.5% rose to 15.3% from 1.4% earlier; the smaller move fell to 84.7% from 98.6% (hike pricing HIGHER). | ok\nreal_yield | 2026-11-10 | https://continuumeconomics.com/a/46975751/us-october-cpi-50bps-now-set-to-be-debated-at-december-fomc | fetch | Core +0.3% m/m (0.296% unrounded), third straight 0.3%. No core consensus and no market odds given. Headline CPI 0.4%, \"stronger than expected\". Waller: 0.3% core \"would justify a 50bps tightening in December\". Author keeps its 25bps call. | ok\npc_demand, capex_guides | — | https://hothardware.com/news/intel-data-center-surges-78-lingering-pc-slump-crushes-shares | fetch | HTTP 403 Forbidden, no content retrieved | FAILED\npc_demand, capex_guides | 2026-10-29 | https://www.intc.com/news-events/press-releases/detail/1786/intel-reports-third-quarter-2026-financial-results | fetch | No Q4 CCPG guide, no Q4 DCAI guide and no consensus, so no cost link or street comparison. Total Q4 revenue guide $15.0-16.0B. Q3 DCAI $7.3B, +78% y/y. CFO: PC slowdown continues \"at least through the first half of next year\". Memory shortage appears only in the risk list (\"industry-wide substrate and memory shortages\"). No share-move data. | ok"
+   ],
+   "applied": {
+    "real_yield": {
+     "label": "UNCHANGED 11-11",
+     "sources": [
+      {
+       "date": "2026-11-10",
+       "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10&cosd=2026-01-17"
+      },
+      {
+       "date": "2026-11-10",
+       "url": "https://www.investmentnews.com/equities/october-cpi-comes-in-hot-raising-odds-of-a-bigger-than-expected-rate-hike/268961"
+      },
+      {
+       "date": "2026-11-10",
+       "url": "https://continuumeconomics.com/a/46975751/us-october-cpi-50bps-now-set-to-be-debated-at-december-fomc"
+      }
+     ]
+    },
+    "dram_contract": {
+     "label": "UNCHANGED 10-31"
+    },
+    "mu_gm": {
+     "label": "STALE 09-30",
+     "sources": [
+      {
+       "date": "2026-09-30",
+       "url": "https://www.indmoney.com/blog/us-stocks/micron-stock-q4-earnings-analysis-mu"
+      }
+     ]
+    },
+    "hbm": {
+     "label": "UNCHANGED 11-05"
+    },
+    "tsmc_monthly": {
+     "label": "UNCHANGED 11-10"
+    },
+    "capex_guides": {
+     "label": "UNCHANGED 11-08",
+     "sources": [
+      {
+       "date": "2026-11-08",
+       "url": "https://fourweekmba.com/ai-morgan-stanley-pegs-google-2027-capex-at-375b-in-1-6t-call/"
+      }
+     ]
+    },
+    "pc_demand": {
+     "label": "UNCHANGED 11-05"
+    }
+   }
+  },
+  {
+   "id": "41af947d-0678-4118-a826-f97c24bd83da",
+   "today": "2026-11-14",
+   "rows": [
+    {
+     "sign": "real_yield",
+     "since": "2026-11-07",
+     "held": "2026-11-11",
+     "label": "UNCHANGED 11-11 (+2d)",
+     "extended": false,
+     "measured": {
+      "asOf": "2026-11-12",
+      "text": "DFII10 2.86 % close 11-12 · Δ120 +73 bp vs +75 bp line under line",
+      "sources": [
+       {
+        "date": "2026-11-12",
+        "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10&cosd=2026-01-18"
+       }
+      ]
+     }
+    },
+    {
+     "sign": "dram_contract",
+     "since": "2026-08-15",
+     "held": "2026-10-31",
+     "label": "UNCHANGED 10-31 (+13d)",
+     "extended": true
+    },
+    {
+     "sign": "mu_gm",
+     "since": "2026-11-07",
+     "held": null,
+     "label": "STALE 09-30 (+44d)",
+     "extended": false
+    },
+    {
+     "sign": "hbm",
+     "since": "2026-10-15",
+     "held": "2026-11-05",
+     "label": "UNCHANGED 11-05 (+8d)",
+     "extended": true
+    },
+    {
+     "sign": "tsmc_monthly",
+     "since": "2026-10-15",
+     "held": "2026-11-10",
+     "label": "UNCHANGED 11-10 (+3d)",
+     "extended": true
+    },
+    {
+     "sign": "capex_guides",
+     "since": "2026-11-07",
+     "held": "2026-11-08",
+     "label": "UNCHANGED 11-08 (+5d)",
+     "extended": true
+    },
+    {
+     "sign": "ai_funding",
+     "since": "2026-11-07",
+     "held": "2026-11-10",
+     "label": "HELD until 2026-11-14",
+     "extended": false
+    },
+    {
+     "sign": "yen_carry",
+     "since": "2026-11-07",
+     "held": null,
+     "label": "HELD until 2026-11-14",
+     "extended": true
+    },
+    {
+     "sign": "pc_demand",
+     "since": "2026-10-15",
+     "held": "2026-11-05",
+     "label": "UNCHANGED 11-05 (+8d)",
+     "extended": true
+    }
+   ],
+   "tables": [
+    "row | date | url | fetch or search | fact | status\n\n**RUNG 0**\nscan | — | https://www.semiconductor-today.com/event_calendar.htm | search | Conferences only: SC26 Chicago 2026-11-15 to 11-20; IEDM San Francisco 2026-12-12 to 12-16. No earnings or policy catalyst calendar found. | ok\nscan | 2026-11-17 | https://www.semiwiki.com/events/category/semiconductors/day/2026-11-17/ | search | SemiWiki daily event pages for Nov 2026 show no relevant scheduled events. | ok\nNVDA FQ3-27 | 2026-10-28 | https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Sets-Conference-Call-for-Third-Quarter-Financial-Results/ | search | Nvidia press release: FQ3-27 results Tue 2026-11-17, call 2pm PT / 5pm ET. Quarter ended 2026-10-25. Stored date confirmed. | ok\nNVDA FQ3-27 | 2026-11-11 | https://www.marketpulse.com/markets/nvidia-nvda-q3-earnings-preview-ai-spending-risks-and-governance-concerns-threaten-major-uptrend/ | search | MarketPulse 11-11: report 11-17. Options imply ±10.6% move. NVDA fell 4.3% on 11-09 on reports of an investigation involving Huang and an alleged Chinese intelligence link. | ok\nNVDA FQ3-27 | — | https://www.earningswhispers.com/ | search | Earnings Whispers lists 2026-11-25. This conflicts with Nvidia's own 11-17 date. | ok\nTrendForce HBM bulletin | 2026-09-22 | https://www.trendforce.com/research/download/RP260922FJ3 | search | Latest HBM Market Bulletin found is 2026-09-22. No Nov bulletin indexed. The stored ~11-17 to 11-20 date is not confirmed. | ok\nTrendForce datasheets | 2026-10-16 | https://www.trendforce.com/research-tags/industry-datasheet?tab=reports | search | DRAM Monthly Datasheet Oct 2026 dated 10-16. NAND Monthly Datasheet Oct 2026 dated 10-15. 4Q26 HBM Datasheet dated 10-16. Nov datasheets not indexed. | ok\nTrendForce HBM analysis | 2026-11-05 | https://www.trendforce.com/research/download/RP261105SQ3 | search | \"HBM Industry Analysis - 4Q26\" dated 11-05. Samsung HBM4 lead may restore its top rank in 2027. SK hynix slips to second. Micron holds share. | ok\n1Q27 DRAM forecast | 2026-10-30 | https://www.trendforce.com/research/category/DRAM | search | No 1Q27 DRAM contract QoQ figure found. TrendForce 10-30: PC DRAM keeps rising in 4Q26 but gains narrow. 1Q27 eMMC/UFS off-season prices plateau. | ok\nKorea Nov 1-20 exports | — | https://www.asiae.co.kr/en/article/2025112110252800997 | search | No 2026 calendar found. Customs usually releases on the 21st. 11-21-2026 is a Saturday, so Mon 11-23 is likely. This is inference, not confirmed. | ok\n\n**1. real_yield**\nreal_yield | 2026-10-29 | https://fred.stlouisfed.org/graph/?id=DFII10 | search | FRED DFII10 2026-10-29 = 2.63. 10-28 = 2.67, 10-27 = 2.64. Nothing dated 11-07 or later. | ok\nreal_yield | 2026-09-17 | https://tipswatch.com/2026/09/17/10-year-tips-reopening-gets-real-yield-of-2-653-highest-in-nearly-18-years/ | search | Sept TIPS reopening at 2.653%, highest in nearly 18 years. Next reopening auction listed for 11-19. Out of window. | ok\nreal_yield | 2026-11-11 | https://www.morningstar.com/news/dow-jones/202611098973/us-eurozone-bond-yields-rise-ahead-of-inflation-rates-outlook-2nd-update | search | 11-11: 10Y nominal up 13bp to 4.992%, briefly above 5%. 11-10: traders solidified bets on a Fed December hike after hot inflation. | ok\nreal_yield | 2026-11 | https://www.tradingnews.com/news/usd-jpy-targets-160-72-after-breaking-159-as-fed-hike-odds-hit-91-percent | search | Headline: Fed hike odds 91.9% and Treasury yields back at 5%. Exact date not shown. A separate item cites CME FedWatch at 91% for a December quarter-point hike (undated). | ok\n\n**2. dram_contract**\ndram_contract | 2026-10-30 | https://www.trendforce.com/research/category/DRAM | search | TrendForce 10-30: PC DRAM contract still rising in 4Q26, gains narrowing. Mobile DRAM flat to slightly up. No 1Q27 QoQ figure. | ok\ndram_contract | 2026-10-29 | https://news.samsung.com/global/samsung-electronics-announces-third-quarter-2026-results | search | Samsung Q3-26: revenue KRW 195.3T, operating profit KRW 107.4T, chip division KRW 106.5T. Memory shortage expected to persist through 2027. 2026 capex about KRW 84.4T. | ok\ndram_contract | 2026-10-29 | https://trendforce.com/news/2026/10/29/news-samsung-says-hbm-share-matches-dram-standing-as-hbm4-sales-triple-ds-margin-hits-72-10-lta-clients-signed | search | Samsung call: 2027 HBM negotiations done at target prices and volumes sold out. HBM4 revenue more than tripled QoQ in 3Q26. Plans a higher Q4 share of HBM, server DRAM and SSD sales. | ok\ndram_contract | 2026-10-08 | https://www.trendforce.com/news/2026/10/08/news-samsung-sees-3q26-operating-profit-soaring-783-to-record-krw-107-4-trillion-on-hbm4-memory/ | search | Reuters analysts via TrendForce: conventional DRAM bit shipments roughly flat QoQ in Q4. TrendForce projects conventional DRAM contract prices +10-15% QoQ in 4Q26, overall DRAM +15-20%. | ok\ndram_contract | 2026-10 | https://www.mt.co.kr/en/industry/2026/10/29/2026102911044261630 | search | DRAM prices hit another record in October 2026. NAND stopped climbing after 21 consecutive monthly increases. Secondary report. | ok\n\n**3. mu_gm**\nmu_gm | 2026-09-30 | https://finviz.com/news/397277/micron-technology-inc-reports-record-fiscal-fourth-quarter-and-full-year-2026-results | search | FQ1-27 guide: revenue $61.5B ±$1.5B, GAAP GM about 85.95%, non-GAAP about 86.25%. FQ4 non-GAAP GM was 87.0%. CFO called FQ1 the GM floor for FY27. | ok\nmu_gm | — | https://www.itiger.com/news/1111809546 | search | No Micron re-guide, pre-announcement or guidance raise dated 10-28 or later found. Latest guidance is from the 09-30 report. | ok\n\n**4. hbm**\nhbm | 2026-11-05 | https://www.trendforce.com/research/download/RP261105SQ3 | search | HBM Industry Analysis 4Q26 (11-05): Samsung's HBM4 lead may restore its top rank in 2027. SK hynix second. Micron holds share. | ok\nhbm | 2026-09-29 | https://www.trendforce.com/presscenter/news/20260929-13255.html | search | TrendForce raised its 2027 HBM blended ASP forecast to +121% YoY. Market stays supply-constrained in 2027. GPU makers weighing 8-Hi instead of 12-Hi. Dated before the 10-15 window start. | ok\nhbm | — | https://eetimes.itmedia.co.jp/ee/spv/2609/30/news066.html | search | No 2027 HBM oversupply or ASP-cut forecast found. All results show tight supply and rising prices. UBS raised 2027 HBM ASP growth to 79% from 67% (undated). | ok\n\n**5. tsmc_monthly**\ntsmc_monthly | 2026-11-10 | https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000796/tsm-revenue20261110.htm | search | TSMC Oct 2026 revenue NT$586.89B, +59.7% YoY, +14.7% MoM, a 2026 high. Jan-Oct NT$4,485.62B, +43.3%. Source: 6-K of 11-10. | ok\ntsmc_monthly | 2026-10-15 | https://www.crnasia.com/news/2026/components-and-peripherals/tsmc-third-quarter-revenue-tops-guidance-as-ceo-says-ai-dema | search | TSMC Q3-26: revenue US$46.72B, GM 66.4%. Q4 guide US$52.3-54.3B, GM 65-67%. CEO: demand exceeds supply. | ok\ntsmc_monthly | 2026-10-16 | https://www.trendforce.com/news/2026/10/16/news-after-tsmcs-3q26-earnings-key-brokerage-takeaways-as-2028-capex-forecasts-reach-us105b/ | search | mixedOwed: TSMC gave no 2027 capex figure after 10-15. 2026 capex kept at $60-64B. CFO said capex over the next three years will be significantly higher. Broker 2027 estimates: UBS about $90B, MS $83B, GS/BofA about $85B. | ok\n\n**6. capex_guides**\ncapex_guides | 2025-05-01 | https://abc.xyz/investor/news/ | fetch | no item on the row. Only dated item is 2025-05-01 (Alphabet conference presentation). | ok\ncapex_guides | 2026-10-28 | https://www.microsoft.com/en-us/investor | fetch | Newest item 2026-10-28 \"Microsoft Announces First Quarter Results\". Nothing on or after 11-07. No capex figures shown. | ok\ncapex_guides | 2026-11-12 | https://about.fb.com/news/ | fetch | Newest item 11-12 (clean-manufacturing agreements for data centers). Teen-accounts item 11-08/09. No capex or 2027 spend figure. | ok\ncapex_guides | 2026-11-13 | https://www.aboutamazon.com/news/company-news | fetch | Newest item 11-13 headline only. Oct 20: €16B Germany investment for 2027. Oct 30: Q3 earnings items. No capex figure in window. | ok\ncapex_guides | 2026-11-08 | https://fourweekmba.com/ai-morgan-stanley-pegs-google-2027-capex-at-375b-in-1-6t-call/ | search | Morgan Stanley 11-08: 2027 hyperscaler capex $1.6T. Bar labels: Google $375B, Amazon $355B, MSFT $269B, Meta $225B. Analyst estimates, not company guidance. | ok\ncapex_guides | 2026-10-28 | https://www.fierce-network.com/cloud/alphabet-vs-microsoft-earnings-why-investors-see-their-ai-spending-differently | search | 10-28: Alphabet fell over 10%, kept 2026 capex at $195-205B, Q3 capex $51.4B. MSFT FQ1 capex $45.2B, below the ~$50B expected. | ok\ncapex_guides | 2026-10 | https://letsdatascience.com/news/meta-narrows-2026-capital-spending-range-to-135-billion-145-46f12e07 | search | mixedOwed: Meta narrowed 2026 capex to $135-145B. No 2027 figure or cut after 10-21. CFO said \"upward pressure\". Amazon kept 2026 capex at about $220B (10-29). | ok\ncapex_guides | 2026-10 | https://www.intc.com/news-events/press-releases/detail/1786/intel-reports-third-quarter-2026-financial-results | search | Intel Q3-26: revenue $16.5B (+21% YoY), data center and AI $7.3B (+78%), CCPG $8.1B (-5%). Q4 guide $15.0-16.0B, non-GAAP EPS $0.25. | ok\ncapex_guides | — | https://www.itpro.com/infrastructure/data-centres/aws-data-center-lease-spending | search | No hyperscaler capex cut or lease cancellation dated Nov 2026. Results are 2025-era. | ok\ncapex_guides | 2026-11-17 | https://www.marketpulse.com/markets/nvidia-nvda-q3-earnings-preview-ai-spending-risks-and-governance-concerns-threaten-major-uptrend/ | search | Nvidia preview: FQ3 revenue and EPS forecast about +90% YoY. Stock reaction hinges on the Q4 outlook. | ok\n\n**7. ai_funding**\nai_funding | 2026-11-02 | https://octus.com/resources/articles/banks-prep-series-of-multibillion-dollar-debt-offerings-for-oracle/ | search | One source: Oracle filed an SEC registration 11-02 for $10B common stock and $10B senior notes. Shares fell over 5%. No report of pulled financing found. Thinly sourced. | ok\nai_funding | 2026-07-24 | https://aiweekly.co/alerts/oracle-nvidia-alphabet-spacex-cds-hit-records-on-ai-debt | search | Oracle 5Y CDS record 203bp on 07-24. S&P cut Oracle to BBB-. No Nov 2026 CDS level found. Undated 215bp and 295bp figures are unverified. | ok\n\n**8. yen_carry**\nyen_carry | 2026-11-11 | https://www.tradingnews.com/news/yen-firms-toward-156-as-tokyo-discloses-15t-yen-summer-intevention | search | USD/JPY 159.666 on 11-11, weakest yen in ten weeks. 160 is the intervention line. BoJ eyes a December hike to 1.50%. Tokyo disclosed ¥15.4T summer intervention. | ok\nyen_carry | 2026-11-09 | https://mufgresearch.com/fx/jpy-weekly-9-november-2026/ | search | USD/JPY opened the week of 11-09 at 157.68-158.425, struggling above 158. Traded 157.884 on 11-09. No 11-13 level found. | ok\nyen_carry | 2026-11 | https://mufgresearch.com/fx/jpy-monthly-november-2026/ | search | Title: \"USD/JPY: 160 remains elusive, risk of yen strength also in focus\". No body text. | ok\nyen_carry | 2026-09-06 | https://marketpulse.com/news/global-forex-shifts-yen-carry-trade-unwinds-amid-policy-divergence | search | September yen unwind after MoF intervention. USD/JPY fell about 6 yen from its 09-02 high just above 160. Before the 11-07 window start. | ok\n\n**9. pc_demand**\npc_demand | — | https://www.counterpointresearch.com/ | fetch | FAILED. Page shows no publication dates. Only undated \"Q3 2026 DRAM Super-Cycle Nears $200B: Samsung Holds No. 1\". | FAILED\npc_demand | 2026-10-08 | https://idc.com/resource-center/press-releases/idc-pc-tracker-3q26 | fetch | IDC prelim 3Q26 PC shipments 62.7M, -20.1% YoY, -9.1% QoQ. Lenovo 14.9M (-22.6%), HP 10.3M (-30.9%), Dell 7.6M (-25.0%), Apple 5.9M, ASUS 5.5M. | ok\npc_demand | 2026-11-03 | https://www.techradar.com/pro/the-rampocalypse-has-led-global-pc-shipments-to-drop-20-percent-in-just-12-months | search | AMD CEO 11-03: 2027 PC market planned double-digit down. Intel expects about -10% in 2027 after about -12% in 2026. Gartner 3Q26 55.4M (-22.4%). Counterpoint 57M (-21%). | ok\npc_demand | 2026-10-24 | https://247wallst.com/investing/2026/10/24/pc-sales-just-crashed-21-as-ai-eats-the-worlds-memory-chips/ | search | PC sales -21% (Counterpoint) as AI absorbs memory. | ok\n\n**Dated items ≤ 2026-11-28 (memory, Nvidia/TSMC/hyperscalers, export controls)**\ndated item | 2026-11-17 | https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Sets-Conference-Call-for-Third-Quarter-Financial-Results/ | search | NVDA FQ3-27 results after the close, call 5pm ET. | ok\ndated item | 2026-11-19 | https://tipswatch.com/2026/09/17/10-year-tips-reopening-gets-real-yield-of-2-653-highest-in-nearly-18-years/ | search | 10-year TIPS reopening auction scheduled for 11-19. | ok\ndated item | 2026-11-23 | https://www.asiae.co.kr/en/article/2025112110252800997 | search | Korea Nov 1-20 exports likely Mon 11-23 (inferred, not confirmed). | ok\ndated item | 2026-11-09 | https://www.marketpulse.com/markets/nvidia-nvda-q3-earnings-preview-ai-spending-risks-and-governance-concerns-threaten-major-uptrend/ | search | Reports of an investigation involving Huang and an alleged Chinese intelligence link; NVDA -4.3% on 11-09. No export-control item dated Nov 2026 found. | ok"
+   ],
+   "applied": {
+    "real_yield": {
+     "label": "UNCHANGED 11-12",
+     "sources": [
+      {
+       "date": "2026-11-12",
+       "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10&cosd=2026-01-18"
+      },
+      {
+       "date": "2026-11-11",
+       "url": "https://www.morningstar.com/news/dow-jones/202611098973/us-eurozone-bond-yields-rise-ahead-of-inflation-rates-outlook-2nd-update"
+      }
+     ]
+    },
+    "dram_contract": {
+     "label": "UNCHANGED 10-31"
+    },
+    "mu_gm": {
+     "label": "STALE 09-30",
+     "sources": [
+      {
+       "date": "2026-09-30",
+       "url": "https://finviz.com/news/397277/micron-technology-inc-reports-record-fiscal-fourth-quarter-and-full-year-2026-results"
+      }
+     ]
+    },
+    "hbm": {
+     "label": "UNCHANGED 11-05"
+    },
+    "tsmc_monthly": {
+     "label": "UNCHANGED 11-10",
+     "sources": [
+      {
+       "date": "2026-11-10",
+       "url": "https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000796/tsm-revenue20261110.htm"
+      }
+     ]
+    },
+    "capex_guides": {
+     "label": "UNCHANGED 11-08"
+    },
+    "ai_funding": {
+     "label": "UNCHANGED 11-10"
+    },
+    "yen_carry": {
+     "label": "CHANGED",
+     "sources": [
+      {
+       "date": "2026-11-11",
+       "url": "https://www.tradingnews.com/news/yen-firms-toward-156-as-tokyo-discloses-15t-yen-summer-intevention"
+      },
+      {
+       "date": "2026-11-09",
+       "url": "https://mufgresearch.com/fx/jpy-weekly-9-november-2026/"
+      }
+     ]
+    },
+    "pc_demand": {
+     "label": "UNCHANGED 11-05"
+    }
+   }
+  }
+ ]
+}

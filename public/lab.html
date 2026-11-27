@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Lab - Market-Methods Learning Lab</title>
+    <meta
+      name="description"
+      content="Market-Methods Learning Lab: pick a rotation method, watch it fire on the live 6-family danger board → 9-leg + Cash ladder, and read how it works and where it breaks."
+    />
+    <!-- Static shell only: vanilla ES modules, no framework/bundler/build (repo charter). -->
+    <link rel="preconnect" href="https://configrefplaceholder.supabase.co" crossorigin />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./lab.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='%235f7a5f'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <!-- Mode toggle: stable top-level markup (NOT inside #lab), so it survives the
+         loading/empty/error states that hide #lab — Scenario mode is store-free and
+         must stay reachable before the first cron run. -->
+    <!-- Control strip (Rung F2, 2026-07-16): TWO rows.
+         Row 1 (page level): underline TABS — "Lab" / "Episode replay" (#sectionStrip; the
+         board *section* is what the user calls "Families", so the page tab is "Lab" while
+         data-lab-section="families" keeps the localStorage value stable) — plus cross-page
+         LINKS far right (underline/accent, ↗), visually distinct from chips/tabs.
+         Row 2 (#labToolbar): contextual toolbar shown ONLY when the Lab tab is active —
+         MODE group (Live/Scenario/History — the last keeps data-mode="replay" so listeners +
+         persisted state stay stable) + SHOW group (visibility toggles; hidden in History mode), tiny captions.
+         The id-bearing sub-groups (#modebar / #visbar / #sectionStrip) are preserved so
+         lab.js listeners + per-mode localStorage persistence keep working; the section tabs
+         are ORTHOGONAL to the Live/Scenario/Replay mode. Stable top-level markup (NOT inside
+         #lab) so it survives #lab re-renders + the loading/empty/error states that hide
+         #lab — Scenario mode is store-free and must stay reachable before the first cron run. -->
+    <div class="modebar-outer">
+      <div class="strip-row strip-tabs-row">
+        <div class="section-strip" id="sectionStrip" role="tablist" aria-label="lab section">
+          <button class="tab-s" type="button" data-lab-section="families" role="tab" aria-selected="true" aria-current="true">Lab</button>
+          <button class="tab-s" type="button" data-lab-section="episodes" role="tab" aria-selected="false">Episode replay</button>
+        </div>
+        <nav class="strip-links" aria-label="other pages">
+          <a class="pagenav" href="/">Dashboard <span aria-hidden="true">↗</span></a>
+          <a class="pagenav pagenav-gap" href="/signin" data-auth-nav>Sign in <span aria-hidden="true">↗</span></a>
+        </nav>
+      </div>
+      <div class="strip-row strip-toolbar" id="labToolbar">
+        <div class="strip-group">
+          <span class="strip-caption" aria-hidden="true">Mode</span>
+          <div class="modeToggle" id="modebar" role="tablist" aria-label="mode">
+            <button data-mode="live" class="active" role="tab" aria-selected="true">Live</button>
+            <button data-mode="scenario" role="tab" aria-selected="false">Scenario</button>
+            <button data-mode="replay" role="tab" aria-selected="false">History</button>
+          </div>
+        </div>
+        <div class="strip-group">
+          <span class="strip-caption" aria-hidden="true">Show</span>
+          <div class="modeToggle" id="visbar" role="group" aria-label="section visibility">
+            <button data-section="familiesBoard" type="button" aria-pressed="true">Families</button>
+            <button data-section="cards" type="button" aria-pressed="false">Method cards</button>
+            <button data-section="dangerField" type="button" aria-pressed="true">Danger ledger</button>
+            <button data-section="structureMap" type="button" aria-pressed="false">Structure map</button>
+            <button data-section="rrgQuadrant" type="button" aria-pressed="false">Rotation quadrant</button>
+            <button data-section="scoreboard" type="button" aria-pressed="false">Scoreboard</button>
+            <button data-section="reentry" type="button" aria-pressed="false">Re-entry</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Centered overlay for loading / empty / error states (one at a time). -->
+    <div id="message" class="message" role="status">Loading…</div>
+
+    <!-- The instrument bench (board · reader, with the method picker atop the reader)
+         is built once by lab.js. -->
+    <main id="lab" class="lab" data-help="tap-first" hidden></main>
+
+    <!-- Episode-replay view (Slice E2): episode picker + per-episode exposure-replay
+         chart. Built by lab.js from a single /api/replay fetch on first open; switching
+         episodes re-renders client-side only. Hidden until the section toggle selects it. -->
+    <section id="episodeReplay" class="episode-replay is-hidden" aria-label="Episode replay"></section>
+
+    <!-- Shared help bar: OUTSIDE #lab so a #lab re-render can't wipe it. Same markup
+         + styles.css .help-bar the dashboard uses; wired by help-bar.js. -->
+    <aside id="help-bar" class="help-bar" role="status" hidden>
+      <p class="help-bar-text"></p>
+      <button type="button" class="help-bar-close" aria-label="Close help">×</button>
+    </aside>
+
+    <footer class="site-footer">
+      <nav class="site-footer-links" aria-label="Legal">
+        <a href="/imprint">Imprint</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/cookies">Cookies</a>
+        <a href="/attribution">Attribution</a>
+      </nav>
+      <p class="site-footer-donate">
+        Free to use. <a href="https://paypal.me/kristjanhs" rel="noopener noreferrer external">Send a gift</a>
+        - voluntary, and it buys nothing.
+      </p>
+    </footer>
+
+    <script type="module" src="./disclaimer.js"></script>
+    <script type="module" src="./auth-nav.js"></script>
+    <script type="module" src="./lab.js"></script>
+  </body>
+</html>

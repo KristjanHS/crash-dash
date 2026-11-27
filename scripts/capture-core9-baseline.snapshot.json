@@ -1,0 +1,1943 @@
+{
+  "probe": "CORE-9 Stage B module-eval census",
+  "families": {
+    "GLOBAL_FAMILIES": [
+      {
+        "desc": "Leading: HY/IG credit-spread stress - spreads widening from their trough (widening = risk-off); stress shows here first.",
+        "ids": [
+          "F1",
+          "EBP",
+          "F3",
+          "F2",
+          "F10",
+          "CQS",
+          "F13",
+          "CCC",
+          "AT1"
+        ],
+        "key": "credit",
+        "label": "Credit",
+        "note": "US$ spreads only - no EUR/EM credit."
+      },
+      {
+        "desc": "Leading: interest-rate / term-structure stress - curve inversion / rate shock + bond-vol (MOVE) (inverted polarity - lower/negative = worse).",
+        "ids": [
+          "R1",
+          "R6",
+          "R7",
+          "R4",
+          "R3",
+          "R2",
+          "R8",
+          "EURC",
+          "BUND",
+          "ESTR"
+        ],
+        "key": "rates",
+        "label": "Rates & curve",
+        "note": "US Treasury curve + MOVE bond-vol - no Bund/JGB."
+      },
+      {
+        "awaiting": "regional CAPE (EU / ex-US / EM): no keyless source. ECY covers US valuation only.",
+        "desc": "Leading: stretched equity valuation - ECY (excess-CAPE-yield, the weighted member) says a rich market has further to fall; the 5y5y forward and 10y breakeven inflation rates are rowless CONTEXT rows measuring the inflation wedge in that same discounting story, dial-inert by construction.",
+        "ids": [
+          "ECY",
+          "T5YIFR",
+          "T10YIE"
+        ],
+        "key": "valuation",
+        "label": "Valuation & inflation",
+        "note": "ECY (excess CAPE yield, GT trend-gated) - the weighted member, RED only when expensive AND trend-broken; T5YIFR/T10YIE inflation breakevens are rowless CONTEXT rows, dial-inert by construction; F7 CAPE stays a CONTEXT card."
+      },
+      {
+        "desc": "Coincident fear: the realized/implied volatility regime - VIX level and VIX term structure. Slower bubble-state warnings (which fire in CALM markets too) belong to this family but are display-only - excluded from the dial score.",
+        "ids": [
+          "VT",
+          "R5",
+          "complacency-vix",
+          "complacency-duration",
+          "complacency-high",
+          "price-accel"
+        ],
+        "key": "volatility",
+        "label": "Volatility",
+        "note": "US vol (VIX/VIX-term) + the bubble-state complacency legs - no V2X/regional. The slow legs are DISPLAY-only: shown here, excluded from the dial (DIAL_FAMILIES, B-11)."
+      },
+      {
+        "desc": "Coincident risk-on/risk-off across assets: safe-haven demand (FX haven + copper/gold) plus the breadth of a systemic, all-regions-falling move (dispersion) - havens bid + is stress broad or isolated.",
+        "ids": [
+          "F9",
+          "FXH",
+          "F11",
+          "F17",
+          "CG",
+          "DISP"
+        ],
+        "key": "cross-asset",
+        "label": "Cross-asset",
+        "note": "US proxy (copper/gold) - dispersion + FX-haven legs are global-only."
+      },
+      {
+        "desc": "Coincident: global trend + breadth (ACWI trend / Global breadth) plus the US-tech proxies (SMH / QQQ/QQQE) of a big-tech drawdown and the broad-market concentration read (SPY/RSP) - index vs trend + participation (real signal at bottoms, noisy at tops).",
+        "ids": [
+          "GT",
+          "GB",
+          "SPCONC",
+          "F6",
+          "F5",
+          "F4",
+          "F8",
+          "KBE_RS",
+          "EXSH_GATE",
+          "INS_RS"
+        ],
+        "key": "trend",
+        "label": "Trend & breadth",
+        "note": "US-tech proxies + broad-market concentration; F5/SPCONC now carry a full expanding-percentile band (RED at p95), worst-of into the trend family and the tech-confirmer dial."
+      },
+      {
+        "desc": "oil/commodity + geopolitical shock (WTI spike + OVX crude-oil implied vol + Brent ROC/level as a GEO-escalator input - Brent carries no leg weight).",
+        "ids": [
+          "G1",
+          "OVX",
+          "BRENT"
+        ],
+        "key": "geopolitics",
+        "label": "Geopolitics",
+        "note": "auto: WTI spike + oil implied vol + Brent as a GEO-escalator input"
+      }
+    ],
+    "US_FAMILIES": [
+      {
+        "desc": "Leading: HY/IG credit-spread stress - spreads widening from their trough (widening = risk-off); stress shows here first.",
+        "ids": [
+          "F1",
+          "EBP",
+          "F3",
+          "F2"
+        ],
+        "key": "credit",
+        "label": "Credit",
+        "note": "US$ spreads only - no EUR/EM credit."
+      },
+      {
+        "desc": "Leading: interest-rate / term-structure stress - curve inversion / rate shock + bond-vol (MOVE) (inverted polarity - lower/negative = worse).",
+        "ids": [
+          "R1",
+          "R6",
+          "R7",
+          "R4",
+          "R3",
+          "R2",
+          "R8"
+        ],
+        "key": "rates",
+        "label": "Rates & curve",
+        "note": "US Treasury curve + MOVE bond-vol - no Bund/JGB."
+      },
+      {
+        "awaiting": "regional CAPE (EU / ex-US / EM): no keyless source. ECY covers US valuation only.",
+        "desc": "Leading: stretched equity valuation - ECY (excess-CAPE-yield, the weighted member) says a rich market has further to fall; the 5y5y forward and 10y breakeven inflation rates are rowless CONTEXT rows measuring the inflation wedge in that same discounting story, dial-inert by construction.",
+        "ids": [
+          "ECY",
+          "T5YIFR",
+          "T10YIE"
+        ],
+        "key": "valuation",
+        "label": "Valuation & inflation",
+        "note": "ECY (excess CAPE yield, GT trend-gated) - the weighted member, RED only when expensive AND trend-broken; T5YIFR/T10YIE inflation breakevens are rowless CONTEXT rows, dial-inert by construction; F7 CAPE stays a CONTEXT card."
+      },
+      {
+        "desc": "Coincident fear: the realized/implied volatility regime - VIX level and VIX term structure. Slower bubble-state warnings (which fire in CALM markets too) belong to this family but are display-only - excluded from the dial score.",
+        "ids": [
+          "VT",
+          "R5",
+          "complacency-vix",
+          "complacency-duration",
+          "complacency-high",
+          "price-accel"
+        ],
+        "key": "volatility",
+        "label": "Volatility",
+        "note": "US vol (VIX/VIX-term) + the bubble-state complacency legs - no V2X/regional. The slow legs are DISPLAY-only: shown here, excluded from the dial (DIAL_FAMILIES, B-11)."
+      },
+      {
+        "desc": "Coincident risk-on/risk-off across assets: safe-haven demand (FX haven + copper/gold) plus the breadth of a systemic, all-regions-falling move (dispersion) - havens bid + is stress broad or isolated.",
+        "ids": [
+          "CG"
+        ],
+        "key": "cross-asset",
+        "label": "Cross-asset",
+        "note": "US proxy (copper/gold) - dispersion + FX-haven legs are global-only."
+      },
+      {
+        "desc": "Coincident: global trend + breadth (ACWI trend / Global breadth) plus the US-tech proxies (SMH / QQQ/QQQE) of a big-tech drawdown and the broad-market concentration read (SPY/RSP) - index vs trend + participation (real signal at bottoms, noisy at tops).",
+        "ids": [
+          "SPCONC",
+          "F5",
+          "F4"
+        ],
+        "key": "trend",
+        "label": "Trend & breadth",
+        "note": "US-tech proxies + broad-market concentration; F5/SPCONC now carry a full expanding-percentile band (RED at p95), worst-of into the trend family and the tech-confirmer dial."
+      },
+      {
+        "desc": "oil/commodity + geopolitical shock (WTI spike + OVX crude-oil implied vol + Brent ROC/level as a GEO-escalator input - Brent carries no leg weight).",
+        "ids": [
+          "G1",
+          "OVX",
+          "BRENT"
+        ],
+        "key": "geopolitics",
+        "label": "Geopolitics",
+        "note": "auto: WTI spike + oil implied vol + Brent as a GEO-escalator input"
+      }
+    ],
+    "DASHBOARD_FAMILIES": [
+      {
+        "desc": "Leading: HY/IG credit-spread stress - spreads widening from their trough (widening = risk-off); stress shows here first.",
+        "ids": [
+          "F1",
+          "EBP",
+          "F3",
+          "F2",
+          "F10",
+          "CQS",
+          "F13",
+          "CCC",
+          "AT1"
+        ],
+        "key": "credit",
+        "label": "Credit",
+        "note": "US$ spreads only - no EUR/EM credit."
+      },
+      {
+        "desc": "Leading: interest-rate / term-structure stress - curve inversion / rate shock + bond-vol (MOVE) (inverted polarity - lower/negative = worse).",
+        "ids": [
+          "R1",
+          "R6",
+          "R7",
+          "R4",
+          "R3",
+          "R2",
+          "R8",
+          "EURC",
+          "BUND",
+          "ESTR"
+        ],
+        "key": "rates",
+        "label": "Rates & curve",
+        "note": "US Treasury curve + MOVE bond-vol - no Bund/JGB."
+      },
+      {
+        "awaiting": "regional CAPE (EU / ex-US / EM): no keyless source. ECY covers US valuation only.",
+        "desc": "Leading: stretched equity valuation - ECY (excess-CAPE-yield, the weighted member) says a rich market has further to fall; the 5y5y forward and 10y breakeven inflation rates are rowless CONTEXT rows measuring the inflation wedge in that same discounting story, dial-inert by construction.",
+        "ids": [
+          "ECY",
+          "T5YIFR",
+          "T10YIE"
+        ],
+        "key": "valuation",
+        "label": "Valuation & inflation",
+        "note": "ECY (excess CAPE yield, GT trend-gated) - the weighted member, RED only when expensive AND trend-broken; T5YIFR/T10YIE inflation breakevens are rowless CONTEXT rows, dial-inert by construction; F7 CAPE stays a CONTEXT card."
+      },
+      {
+        "desc": "Coincident fear: the realized/implied volatility regime - VIX level and VIX term structure. Slower bubble-state warnings (which fire in CALM markets too) belong to this family but are display-only - excluded from the dial score.",
+        "ids": [
+          "VT",
+          "R5",
+          "complacency-vix",
+          "complacency-duration",
+          "complacency-high",
+          "price-accel"
+        ],
+        "key": "volatility",
+        "label": "Volatility",
+        "note": "US vol (VIX/VIX-term) + the bubble-state complacency legs - no V2X/regional. The slow legs are DISPLAY-only: shown here, excluded from the dial (DIAL_FAMILIES, B-11)."
+      },
+      {
+        "desc": "Coincident risk-on/risk-off across assets: safe-haven demand (FX haven + copper/gold) plus the breadth of a systemic, all-regions-falling move (dispersion) - havens bid + is stress broad or isolated.",
+        "ids": [
+          "F9",
+          "FXH",
+          "F11",
+          "F17",
+          "CG",
+          "DISP"
+        ],
+        "key": "cross-asset",
+        "label": "Cross-asset",
+        "note": "US proxy (copper/gold) - dispersion + FX-haven legs are global-only."
+      },
+      {
+        "desc": "Coincident: global trend + breadth (ACWI trend / Global breadth) plus the US-tech proxies (SMH / QQQ/QQQE) of a big-tech drawdown and the broad-market concentration read (SPY/RSP) - index vs trend + participation (real signal at bottoms, noisy at tops).",
+        "ids": [
+          "GT",
+          "GB",
+          "SPCONC",
+          "F6",
+          "F5",
+          "F4",
+          "F8",
+          "KBE_RS",
+          "EXSH_GATE",
+          "INS_RS"
+        ],
+        "key": "trend",
+        "label": "Trend & breadth",
+        "note": "US-tech proxies + broad-market concentration; F5/SPCONC now carry a full expanding-percentile band (RED at p95), worst-of into the trend family and the tech-confirmer dial."
+      },
+      {
+        "desc": "oil/commodity + geopolitical shock (WTI spike + OVX crude-oil implied vol + Brent ROC/level as a GEO-escalator input - Brent carries no leg weight).",
+        "ids": [
+          "G1",
+          "OVX",
+          "BRENT"
+        ],
+        "key": "geopolitics",
+        "label": "Geopolitics",
+        "note": "auto: WTI spike + oil implied vol + Brent as a GEO-escalator input"
+      }
+    ],
+    "CONFIRM_TIERS": {
+      "credit": 2,
+      "cross-asset": 2,
+      "geopolitics": 2,
+      "rates": 2,
+      "trend": 2,
+      "valuation": 2,
+      "volatility": 2
+    },
+    "SIGNAL_OF": {
+      "credit": "cr",
+      "cross-asset": "xa",
+      "geopolitics": "gp",
+      "rates": "rt",
+      "trend": "uT",
+      "valuation": "vb",
+      "volatility": "vl"
+    },
+    "FAMILY_OF_SIGNAL": {
+      "cr": "credit",
+      "gp": "geopolitics",
+      "rt": "rates",
+      "uT": "trend",
+      "vb": "valuation",
+      "vl": "volatility",
+      "xa": "cross-asset"
+    },
+    "LADDER": [
+      "Semis",
+      "S&P IT",
+      "EM",
+      "Value",
+      "S&P 500",
+      "ex-US",
+      "EU-Fin",
+      "Health",
+      "Staples"
+    ],
+    "DIAL_REGIME_CUTS": {
+      "caution": 0.25,
+      "crisis": 0.75,
+      "stress": 0.5
+    },
+    "NOTIFY_REGIME_CUTS": {
+      "caution": 0.25,
+      "crisis": 0.75,
+      "stress": 0.5
+    }
+  },
+  "dangerLadder": {
+    "DIAL_FAMILIES": [
+      {
+        "desc": "Leading: HY/IG credit-spread stress - spreads widening from their trough (widening = risk-off); stress shows here first.",
+        "ids": [
+          "F1",
+          "EBP",
+          "F3",
+          "F2",
+          "F10",
+          "CQS",
+          "F13",
+          "CCC",
+          "AT1"
+        ],
+        "key": "credit",
+        "label": "Credit",
+        "note": "US$ spreads only - no EUR/EM credit."
+      },
+      {
+        "desc": "Leading: interest-rate / term-structure stress - curve inversion / rate shock + bond-vol (MOVE) (inverted polarity - lower/negative = worse).",
+        "ids": [
+          "R1",
+          "R6",
+          "R7",
+          "R4",
+          "R3",
+          "R2",
+          "R8",
+          "EURC",
+          "BUND",
+          "ESTR"
+        ],
+        "key": "rates",
+        "label": "Rates & curve",
+        "note": "US Treasury curve + MOVE bond-vol - no Bund/JGB."
+      },
+      {
+        "awaiting": "regional CAPE (EU / ex-US / EM): no keyless source. ECY covers US valuation only.",
+        "desc": "Leading: stretched equity valuation - ECY (excess-CAPE-yield, the weighted member) says a rich market has further to fall; the 5y5y forward and 10y breakeven inflation rates are rowless CONTEXT rows measuring the inflation wedge in that same discounting story, dial-inert by construction.",
+        "ids": [
+          "ECY",
+          "T5YIFR",
+          "T10YIE"
+        ],
+        "key": "valuation",
+        "label": "Valuation & inflation",
+        "note": "ECY (excess CAPE yield, GT trend-gated) - the weighted member, RED only when expensive AND trend-broken; T5YIFR/T10YIE inflation breakevens are rowless CONTEXT rows, dial-inert by construction; F7 CAPE stays a CONTEXT card."
+      },
+      {
+        "desc": "Coincident fear: the realized/implied volatility regime - VIX level and VIX term structure. Slower bubble-state warnings (which fire in CALM markets too) belong to this family but are display-only - excluded from the dial score.",
+        "ids": [
+          "VT",
+          "R5"
+        ],
+        "key": "volatility",
+        "label": "Volatility",
+        "note": "US vol (VIX/VIX-term) + the bubble-state complacency legs - no V2X/regional. The slow legs are DISPLAY-only: shown here, excluded from the dial (DIAL_FAMILIES, B-11)."
+      },
+      {
+        "desc": "Coincident risk-on/risk-off across assets: safe-haven demand (FX haven + copper/gold) plus the breadth of a systemic, all-regions-falling move (dispersion) - havens bid + is stress broad or isolated.",
+        "ids": [
+          "F9",
+          "FXH",
+          "F11",
+          "F17",
+          "CG",
+          "DISP"
+        ],
+        "key": "cross-asset",
+        "label": "Cross-asset",
+        "note": "US proxy (copper/gold) - dispersion + FX-haven legs are global-only."
+      },
+      {
+        "desc": "Coincident: global trend + breadth (ACWI trend / Global breadth) plus the US-tech proxies (SMH / QQQ/QQQE) of a big-tech drawdown and the broad-market concentration read (SPY/RSP) - index vs trend + participation (real signal at bottoms, noisy at tops).",
+        "ids": [
+          "GT",
+          "GB",
+          "SPCONC",
+          "F6",
+          "F5",
+          "F4",
+          "F8",
+          "KBE_RS",
+          "EXSH_GATE",
+          "INS_RS"
+        ],
+        "key": "trend",
+        "label": "Trend & breadth",
+        "note": "US-tech proxies + broad-market concentration; F5/SPCONC now carry a full expanding-percentile band (RED at p95), worst-of into the trend family and the tech-confirmer dial."
+      },
+      {
+        "desc": "oil/commodity + geopolitical shock (WTI spike + OVX crude-oil implied vol + Brent ROC/level as a GEO-escalator input - Brent carries no leg weight).",
+        "ids": [
+          "G1",
+          "OVX",
+          "BRENT"
+        ],
+        "key": "geopolitics",
+        "label": "Geopolitics",
+        "note": "auto: WTI spike + oil implied vol + Brent as a GEO-escalator input"
+      }
+    ],
+    "FAMILY_MEMBERS": {
+      "cr": [
+        "F1",
+        "EBP",
+        "F3",
+        "F2",
+        "F10",
+        "CQS",
+        "F13",
+        "CCC",
+        "AT1"
+      ],
+      "gp": [
+        "G1",
+        "OVX",
+        "BRENT"
+      ],
+      "rt": [
+        "R1",
+        "R6",
+        "R7",
+        "R4",
+        "R3",
+        "R2",
+        "R8",
+        "EURC",
+        "BUND",
+        "ESTR"
+      ],
+      "uT": [
+        "GT",
+        "GB",
+        "SPCONC",
+        "F6",
+        "F5",
+        "F4",
+        "F8",
+        "KBE_RS",
+        "EXSH_GATE",
+        "INS_RS"
+      ],
+      "vb": [
+        "ECY",
+        "T5YIFR",
+        "T10YIE"
+      ],
+      "vl": [
+        "VT",
+        "R5"
+      ],
+      "xa": [
+        "F9",
+        "FXH",
+        "F11",
+        "F17",
+        "CG",
+        "DISP"
+      ]
+    },
+    "MEMBER_WEIGHT": {
+      "AT1": {
+        "EU-Fin": 0.7
+      },
+      "BRENT": {
+        "EM": 1,
+        "EU-Fin": 0.2,
+        "Health": 0.3,
+        "S&P 500": 0.5,
+        "S&P IT": 0.4,
+        "Semis": 0.4,
+        "Staples": 0.3,
+        "Value": 0.2,
+        "ex-US": 0.8
+      },
+      "BUND": {
+        "EM": 0.5,
+        "EU-Fin": 0.3,
+        "Health": 0.2,
+        "S&P 500": 0.3,
+        "S&P IT": 0.4,
+        "Semis": 0.6,
+        "Staples": 0.2,
+        "Value": 0.6,
+        "ex-US": 0.8
+      },
+      "CCC": {
+        "EM": 0.5,
+        "EU-Fin": 0.5,
+        "Health": 0.2,
+        "S&P 500": 0.4,
+        "S&P IT": 0.4,
+        "Semis": 0.5,
+        "Staples": 0.2,
+        "Value": 0.5,
+        "ex-US": 0.4
+      },
+      "CG": {
+        "EM": 1,
+        "EU-Fin": 0.2,
+        "S&P 500": 0.6,
+        "S&P IT": 0.6,
+        "Semis": 0.6,
+        "Value": 0.4,
+        "ex-US": 0.8
+      },
+      "CQS": {
+        "EM": 0.5,
+        "Health": 0.1,
+        "S&P 500": 0.4,
+        "S&P IT": 0.5,
+        "Semis": 0.7,
+        "Staples": 0.3,
+        "Value": 0.4,
+        "ex-US": 0.4
+      },
+      "DB_SMH": {
+        "S&P 500": 0.4,
+        "S&P IT": 0.8,
+        "Semis": 0.8
+      },
+      "DISP": {
+        "EM": 0.8,
+        "EU-Fin": 0.4,
+        "Health": 0.3,
+        "S&P 500": 0.6,
+        "Staples": 0.3,
+        "Value": 0.6,
+        "ex-US": 0.6
+      },
+      "EBP": {
+        "EM": 0.8,
+        "EU-Fin": 0.4,
+        "Health": 0.5,
+        "S&P 500": 0.6,
+        "S&P IT": 0.8,
+        "Semis": 1,
+        "Staples": 0.5,
+        "Value": 0.6,
+        "ex-US": 0.6
+      },
+      "ECY": {
+        "EM": 0.6,
+        "EU-Fin": 0.4,
+        "Health": 0.4,
+        "S&P 500": 0.8,
+        "S&P IT": 1,
+        "Semis": 1,
+        "Staples": 0.4,
+        "Value": 0.3,
+        "ex-US": 0.6
+      },
+      "ESTR": {
+        "EU-Fin": 0.2
+      },
+      "EURC": {
+        "EM": 0.4,
+        "EU-Fin": 0.4,
+        "Health": 0.2,
+        "S&P 500": 0.2,
+        "S&P IT": 0.3,
+        "Semis": 0.6,
+        "Staples": 0.2,
+        "Value": 0.6,
+        "ex-US": 0.8
+      },
+      "EXSH_GATE": {
+        "EU-Fin": 0.6
+      },
+      "F1": {
+        "EM": 0.8,
+        "EU-Fin": 0.5,
+        "Health": 0.6,
+        "S&P 500": 0.6,
+        "S&P IT": 1,
+        "Semis": 0.6,
+        "Staples": 0.5,
+        "Value": 0.8,
+        "ex-US": 0.6
+      },
+      "F10": {
+        "EM": 1,
+        "Health": 0.3,
+        "S&P 500": 0.4,
+        "Semis": 0.4,
+        "Staples": 0.4,
+        "Value": 0.4,
+        "ex-US": 0.6
+      },
+      "F11": {
+        "EM": 1,
+        "S&P 500": 0.4,
+        "Semis": 0.8,
+        "Value": 0.6,
+        "ex-US": 0.6
+      },
+      "F13": {
+        "EM": 0.7,
+        "EU-Fin": 0.4,
+        "Health": 0.3,
+        "S&P 500": 0.8,
+        "S&P IT": 0.4,
+        "Semis": 0.5,
+        "Staples": 0.3,
+        "Value": 1,
+        "ex-US": 0.7
+      },
+      "F17": {
+        "Value": 0.4
+      },
+      "F2": {
+        "EM": 0.6,
+        "EU-Fin": 0.4,
+        "Health": 0.5,
+        "S&P 500": 0.6,
+        "S&P IT": 0.8,
+        "Semis": 0.8,
+        "Staples": 0.5,
+        "Value": 0.4,
+        "ex-US": 0.6
+      },
+      "F3": {
+        "EM": 0.8,
+        "EU-Fin": 0.4,
+        "Health": 0.5,
+        "S&P 500": 0.7,
+        "S&P IT": 0.9,
+        "Semis": 1,
+        "Staples": 0.5,
+        "Value": 0.4,
+        "ex-US": 0.6
+      },
+      "F4": {
+        "S&P 500": 0.4,
+        "S&P IT": 0.8,
+        "Semis": 0.8,
+        "Value": 0.5
+      },
+      "F5": {
+        "S&P 500": 0.4,
+        "S&P IT": 0.4,
+        "Semis": 0.6
+      },
+      "F6": {
+        "S&P IT": 0.8,
+        "Semis": 1
+      },
+      "F8": {
+        "S&P 500": 0.2,
+        "S&P IT": 0.4,
+        "Semis": 0.6,
+        "Value": 1
+      },
+      "F9": {
+        "EM": 1,
+        "S&P 500": 0.4,
+        "S&P IT": 0.4,
+        "Semis": 0.6,
+        "Value": 1,
+        "ex-US": 0.8
+      },
+      "FXH": {
+        "EM": 0.6,
+        "EU-Fin": 0.4,
+        "Health": 0.3,
+        "S&P 500": 0.3,
+        "S&P IT": 0.5,
+        "Semis": 0.6,
+        "Staples": 0.3,
+        "Value": 0.4,
+        "ex-US": 0.5
+      },
+      "G1": {
+        "EM": 0.5,
+        "EU-Fin": 0.2,
+        "Health": 0.15,
+        "S&P 500": 0.25,
+        "S&P IT": 0.2,
+        "Semis": 0.2,
+        "Staples": 0.15,
+        "Value": 0.1,
+        "ex-US": 0.4
+      },
+      "GB": {
+        "EM": 0.8,
+        "EU-Fin": 0.4,
+        "S&P 500": 0.6,
+        "S&P IT": 0.8,
+        "Semis": 1,
+        "Value": 0.6,
+        "ex-US": 0.6
+      },
+      "GT": {
+        "EM": 0.8,
+        "EU-Fin": 0.4,
+        "Health": 0.4,
+        "S&P 500": 0.6,
+        "S&P IT": 0.8,
+        "Semis": 1,
+        "Staples": 0.3,
+        "Value": 0.6,
+        "ex-US": 0.6
+      },
+      "INS_RS": {
+        "EU-Fin": 0.6
+      },
+      "KBE_RS": {
+        "EU-Fin": 0.2
+      },
+      "NVDA": {
+        "S&P 500": 0.4,
+        "S&P IT": 0.6,
+        "Semis": 1
+      },
+      "OVX": {
+        "EM": 1,
+        "EU-Fin": 0.2,
+        "Health": 0.3,
+        "S&P 500": 0.5,
+        "S&P IT": 0.4,
+        "Semis": 0.4,
+        "Staples": 0.3,
+        "Value": 0.2,
+        "ex-US": 0.8
+      },
+      "R1": {
+        "EM": 1,
+        "EU-Fin": 0.4,
+        "Health": 0.2,
+        "S&P 500": 0.6,
+        "S&P IT": 0.8,
+        "Semis": 0.6,
+        "Staples": 0.4,
+        "Value": 0.6,
+        "ex-US": 0.6
+      },
+      "R2": {
+        "EM": 0.8,
+        "EU-Fin": 0.4,
+        "Health": 0.4,
+        "S&P 500": 0.6,
+        "S&P IT": 1,
+        "Semis": 0.6,
+        "Staples": 0.4,
+        "Value": 0.6,
+        "ex-US": 0.6
+      },
+      "R3": {
+        "EM": 1,
+        "EU-Fin": 0.4,
+        "Health": 0.4,
+        "S&P 500": 0.6,
+        "S&P IT": 0.8,
+        "Semis": 0.8,
+        "Staples": 0.4,
+        "Value": 0.4,
+        "ex-US": 0.6
+      },
+      "R4": {
+        "EM": 0.8,
+        "EU-Fin": 0.4,
+        "Health": 0.4,
+        "S&P 500": 0.6,
+        "S&P IT": 1,
+        "Semis": 1,
+        "Staples": 0.4,
+        "Value": 0.4,
+        "ex-US": 0.6
+      },
+      "R5": {
+        "EM": 0.8,
+        "EU-Fin": 0.4,
+        "Health": 0.5,
+        "S&P 500": 0.6,
+        "S&P IT": 1,
+        "Semis": 0.6,
+        "Staples": 0.3,
+        "Value": 0.6,
+        "ex-US": 0.6
+      },
+      "R6": {
+        "EM": 0.8,
+        "EU-Fin": 0.4,
+        "Health": 0.5,
+        "S&P 500": 0.6,
+        "S&P IT": 0.8,
+        "Semis": 0.8,
+        "Staples": 0.6,
+        "Value": 0.4,
+        "ex-US": 0.6
+      },
+      "R7": {
+        "EM": 1,
+        "EU-Fin": 0.4,
+        "Health": 0.1,
+        "S&P 500": 0.6,
+        "S&P IT": 0.8,
+        "Semis": 0.8,
+        "Staples": 0.3,
+        "Value": 0.6,
+        "ex-US": 0.6
+      },
+      "SPCONC": {
+        "S&P 500": 0.3,
+        "S&P IT": 0.3,
+        "Semis": 0.4
+      },
+      "VT": {
+        "EM": 0.6,
+        "EU-Fin": 0.4,
+        "S&P 500": 0.6,
+        "S&P IT": 1,
+        "Semis": 0.6,
+        "Staples": 0.3,
+        "Value": 0.6,
+        "ex-US": 0.6
+      },
+      "complacency-duration": {
+        "EM": 0.4,
+        "S&P 500": 0.6,
+        "S&P IT": 0.6,
+        "Semis": 0.6,
+        "ex-US": 0.4
+      },
+      "complacency-high": {
+        "EM": 0.6,
+        "S&P 500": 0.8,
+        "S&P IT": 1,
+        "Semis": 1,
+        "ex-US": 0.4
+      },
+      "complacency-vix": {
+        "EM": 0.6,
+        "S&P 500": 0.6,
+        "S&P IT": 0.8,
+        "Semis": 0.8,
+        "ex-US": 0.4
+      },
+      "price-accel": {
+        "EM": 0.6,
+        "S&P 500": 0.8,
+        "S&P IT": 1,
+        "Semis": 1,
+        "ex-US": 0.4
+      }
+    },
+    "FAMILY_LEG_WEIGHT": {
+      "cr": {
+        "EM": 1,
+        "EU-Fin": 1,
+        "Health": 1,
+        "S&P 500": 1,
+        "S&P IT": 0.6,
+        "Semis": 0.6,
+        "Staples": 0.85,
+        "Value": 1,
+        "ex-US": 1
+      },
+      "rt": {
+        "EM": 0.7,
+        "EU-Fin": 0.9,
+        "Health": 0.85,
+        "S&P 500": 0.9,
+        "S&P IT": 0.9,
+        "Semis": 1,
+        "Staples": 1,
+        "Value": 0.9,
+        "ex-US": 0.8
+      },
+      "uT": {
+        "EM": 0.9,
+        "EU-Fin": 0.8,
+        "Health": 0.9,
+        "S&P 500": 1,
+        "S&P IT": 0.9,
+        "Semis": 1,
+        "Staples": 0.9,
+        "Value": 1,
+        "ex-US": 1
+      },
+      "vb": {
+        "EM": 0.4,
+        "EU-Fin": 0.3,
+        "Health": 0.4,
+        "S&P 500": 0.6,
+        "S&P IT": 0.6,
+        "Semis": 0.6,
+        "Staples": 0.4,
+        "Value": 0.3,
+        "ex-US": 0.4
+      },
+      "vl": {
+        "EM": 0.8,
+        "EU-Fin": 0.6,
+        "Health": 0.4,
+        "S&P 500": 0.7,
+        "S&P IT": 1,
+        "Semis": 1,
+        "Staples": 0.4,
+        "Value": 0.7,
+        "ex-US": 0.6
+      },
+      "xa": {
+        "EM": 1,
+        "EU-Fin": 0.4,
+        "Health": 0.5,
+        "S&P 500": 0.4,
+        "S&P IT": 0.5,
+        "Semis": 0.6,
+        "Staples": 0.5,
+        "Value": 1,
+        "ex-US": 0.8
+      }
+    },
+    "MEMBER_RELEVANCE": {
+      "AT1": [
+        "EU-Fin"
+      ],
+      "BRENT": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "BUND": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "CCC": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "CG": [
+        "EM",
+        "EU-Fin",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Value",
+        "ex-US"
+      ],
+      "CQS": [
+        "EM",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "DB_SMH": [
+        "S&P 500",
+        "S&P IT",
+        "Semis"
+      ],
+      "DISP": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "EBP": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "ECY": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "ESTR": [
+        "EU-Fin"
+      ],
+      "EURC": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "EXSH_GATE": [
+        "EU-Fin"
+      ],
+      "F1": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "F10": [
+        "EM",
+        "Health",
+        "S&P 500",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "F11": [
+        "EM",
+        "S&P 500",
+        "Semis",
+        "Value",
+        "ex-US"
+      ],
+      "F13": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "F17": [
+        "Value"
+      ],
+      "F2": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "F3": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "F4": [
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Value"
+      ],
+      "F5": [
+        "S&P 500",
+        "S&P IT",
+        "Semis"
+      ],
+      "F6": [
+        "S&P IT",
+        "Semis"
+      ],
+      "F8": [
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Value"
+      ],
+      "F9": [
+        "EM",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Value",
+        "ex-US"
+      ],
+      "FXH": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "G1": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "GB": [
+        "EM",
+        "EU-Fin",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Value",
+        "ex-US"
+      ],
+      "GT": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "INS_RS": [
+        "EU-Fin"
+      ],
+      "KBE_RS": [
+        "EU-Fin"
+      ],
+      "NVDA": [
+        "S&P 500",
+        "S&P IT",
+        "Semis"
+      ],
+      "OVX": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "R1": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "R2": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "R3": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "R4": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "R5": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "R6": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "R7": [
+        "EM",
+        "EU-Fin",
+        "Health",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "SPCONC": [
+        "S&P 500",
+        "S&P IT",
+        "Semis"
+      ],
+      "VT": [
+        "EM",
+        "EU-Fin",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "Staples",
+        "Value",
+        "ex-US"
+      ],
+      "complacency-duration": [
+        "EM",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "ex-US"
+      ],
+      "complacency-high": [
+        "EM",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "ex-US"
+      ],
+      "complacency-vix": [
+        "EM",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "ex-US"
+      ],
+      "price-accel": [
+        "EM",
+        "S&P 500",
+        "S&P IT",
+        "Semis",
+        "ex-US"
+      ]
+    },
+    "MEMBER_LABEL": {
+      "AT1": "AT1 rel-strength",
+      "BRENT": "Brent",
+      "BUND": "Bund 10y−2y",
+      "CCC": "CCC OAS",
+      "CG": "Copper/Gold",
+      "CQS": "Baa−Aaa",
+      "DB_SMH": "SMH break",
+      "DISP": "Global dispersion",
+      "EBP": "EBP",
+      "ECY": "ECY",
+      "ESTR": "ESTR Δ",
+      "EURC": "Euro 10y−3m",
+      "EXSH_GATE": "EXSH gate",
+      "F1": "HY OAS",
+      "F10": "EM OAS",
+      "F11": "USD/CNY",
+      "F13": "HYG/LQD",
+      "F17": "USD/JPY",
+      "F2": "IG OAS",
+      "F3": "NFCI Risk",
+      "F4": "SMH",
+      "F5": "QQQ/QQQE",
+      "F6": "SMH/SPY",
+      "F8": "MU",
+      "F9": "Broad USD",
+      "FXH": "Haven FX",
+      "G1": "WTI",
+      "GB": "Global breadth",
+      "GT": "ACWI trend",
+      "INS_RS": "Insurers rel-strength",
+      "KBE_RS": "KBE rel-strength",
+      "NVDA": "NVDA",
+      "OVX": "OVX",
+      "R1": "10y−3m",
+      "R2": "10y Δ",
+      "R3": "2y Δ",
+      "R4": "10y RY Δ",
+      "R5": "VIX",
+      "R6": "MOVE",
+      "R7": "Bull steepener",
+      "R8": "NTFS avg",
+      "SPCONC": "SPY/RSP",
+      "T10YIE": "10y breakeven",
+      "T5YIFR": "5y5y forward",
+      "VT": "VIX/VIX3M",
+      "complacency-duration": "Calm duration",
+      "complacency-high": "Dist to 12m high",
+      "complacency-vix": "VIX %ile",
+      "price-accel": "Price accel"
+    },
+    "SIGNALS": [
+      "cr",
+      "rt",
+      "vb",
+      "vl",
+      "xa",
+      "uT",
+      "gp"
+    ],
+    "SUPER_GROUP_OF": {
+      "cr": "EARLY-WARN",
+      "gp": "EXOGENOUS",
+      "rt": "EARLY-WARN",
+      "uT": "CONFIRMING",
+      "vb": "EARLY-WARN",
+      "vl": "STRESS-NOW",
+      "xa": "STRESS-NOW"
+    },
+    "LEG_FIELD": [
+      {
+        "exposure": "Semiconductors",
+        "region": "Global-AW",
+        "rgn": "AW",
+        "risk": 1,
+        "riskClass": "cyclical",
+        "sec": "Semis",
+        "sector": "Semiconductors",
+        "sleeve": "Semis",
+        "style": "Growth / high-beta"
+      },
+      {
+        "exposure": "Info-Tech",
+        "region": "US",
+        "rgn": "US",
+        "risk": 2,
+        "riskClass": "cyclical",
+        "sec": "Tech",
+        "sector": "Info-Tech",
+        "sleeve": "S&P IT",
+        "style": "Growth"
+      },
+      {
+        "exposure": "Broad",
+        "region": "Emerging",
+        "rgn": "EM",
+        "risk": 3,
+        "riskClass": "cyclical",
+        "sec": "Broad",
+        "sector": "Broad-market",
+        "sleeve": "EM",
+        "style": "Cyclical"
+      },
+      {
+        "exposure": "Value",
+        "region": "Global-DM",
+        "rgn": "DM",
+        "risk": 4,
+        "riskClass": "cyclical",
+        "sec": "Value",
+        "sector": "Broad (Value factor)",
+        "sleeve": "Value",
+        "style": "Value"
+      },
+      {
+        "exposure": "Broad",
+        "region": "US",
+        "rgn": "US",
+        "risk": 5,
+        "riskClass": "cyclical",
+        "sec": "Broad",
+        "sector": "Broad-market",
+        "sleeve": "S&P 500",
+        "style": "Blend"
+      },
+      {
+        "exposure": "Broad",
+        "region": "Dev ex-US",
+        "rgn": "exUS",
+        "risk": 6,
+        "riskClass": "cyclical",
+        "sec": "Broad",
+        "sector": "Broad-market",
+        "sleeve": "ex-US",
+        "style": "Blend"
+      },
+      {
+        "exposure": "High-dividend / fins-heavy",
+        "region": "Europe",
+        "rgn": "EU",
+        "risk": 7,
+        "riskClass": "cyclical",
+        "sec": "HiDiv",
+        "sector": "High-div (60% fins)",
+        "sleeve": "EU-Fin",
+        "style": "Value-income"
+      },
+      {
+        "exposure": "Healthcare",
+        "region": "Global-DM",
+        "rgn": "DM",
+        "risk": 8,
+        "riskClass": "defensive",
+        "sec": "Health",
+        "sector": "Healthcare",
+        "sleeve": "Health",
+        "style": "Defensive"
+      },
+      {
+        "exposure": "Cons. staples",
+        "region": "Global-DM",
+        "rgn": "DM",
+        "risk": 9,
+        "riskClass": "defensive",
+        "sec": "Staples",
+        "sector": "Cons. staples",
+        "sleeve": "Staples",
+        "style": "Defensive"
+      }
+    ]
+  },
+  "dangerEngine": {
+    "DANGER_CUTS": {
+      "amber": 0.3362,
+      "red": 0.5435
+    },
+    "CONC_THRESHOLD": 0.3362,
+    "RERISK_DEADBAND": 0.1681,
+    "TREND_GATE_FLOOR": 0.3362
+  },
+  "confirmClosesFor": {
+    "AMAT": 2,
+    "AT1": 2,
+    "BBB": 2,
+    "BONOS": 2,
+    "BRENT": 2,
+    "BUND": 2,
+    "CCC": 2,
+    "CG": 2,
+    "COPPER": 2,
+    "CQS": 2,
+    "DB_SMH": 2,
+    "DB_XLK": 2,
+    "DEXUSEU": 2,
+    "DISP": 2,
+    "EBP": 2,
+    "ECISS": 2,
+    "ECY": 2,
+    "EPATH": 2,
+    "ESTR": 2,
+    "EURC": 2,
+    "EURGBP": 2,
+    "EXSH_GATE": 2,
+    "F1": 2,
+    "F10": 2,
+    "F11": 2,
+    "F13": 2,
+    "F17": 2,
+    "F2": 2,
+    "F3": 2,
+    "F4": 2,
+    "F5": 2,
+    "F6": 2,
+    "F7": 2,
+    "F8": 2,
+    "F9": 2,
+    "FXH": 2,
+    "G1": 2,
+    "GB": 2,
+    "GT": 2,
+    "HICP": 2,
+    "HYNIX": 2,
+    "INS_RS": 2,
+    "JPT": 2,
+    "KBE": 2,
+    "KBE_RS": 2,
+    "KRW": 2,
+    "LEGP_COMMOD": 2,
+    "LEGP_EM": 2,
+    "LEGP_EUFIN": 2,
+    "LEGP_EXUS": 2,
+    "LEGP_HEALTH": 2,
+    "LEGP_RAFI": 2,
+    "LEGP_SEMIS": 2,
+    "LEGP_SPIT": 2,
+    "LEGP_SPX": 2,
+    "LEGP_STAPLES": 2,
+    "MU_RS": 2,
+    "NG": 2,
+    "NVDA": 2,
+    "OVX": 2,
+    "R1": 2,
+    "R2": 2,
+    "R3": 2,
+    "R4": 2,
+    "R5": 2,
+    "R6": 2,
+    "R7": 2,
+    "R8": 2,
+    "RS_SMH": 2,
+    "RS_XLK": 2,
+    "SP500IT": 2,
+    "SPCONC": 2,
+    "SPY": 2,
+    "T10YIE": 2,
+    "T5YIFR": 2,
+    "VGK": 2,
+    "VIX": 2,
+    "VIX3M": 2,
+    "VT": 2,
+    "VWO": 2,
+    "XDEV": 2,
+    "complacency-duration": 2,
+    "complacency-high": 2,
+    "complacency-vix": 2,
+    "price-accel": 2
+  },
+  "perFamilyMemberCount": {
+    "dial": {
+      "cr": 9,
+      "gp": 3,
+      "rt": 10,
+      "uT": 10,
+      "vb": 3,
+      "vl": 2,
+      "xa": 6
+    },
+    "global": {
+      "credit": 9,
+      "cross-asset": 6,
+      "geopolitics": 3,
+      "rates": 10,
+      "trend": 10,
+      "valuation": 3,
+      "volatility": 6
+    },
+    "dashboard": {
+      "credit": 9,
+      "cross-asset": 6,
+      "geopolitics": 3,
+      "rates": 10,
+      "trend": 10,
+      "valuation": 3,
+      "volatility": 6
+    }
+  },
+  "memberRelevanceReachSet": [
+    "AT1|EU-Fin",
+    "BRENT|EM",
+    "BRENT|EU-Fin",
+    "BRENT|Health",
+    "BRENT|S&P 500",
+    "BRENT|S&P IT",
+    "BRENT|Semis",
+    "BRENT|Staples",
+    "BRENT|Value",
+    "BRENT|ex-US",
+    "BUND|EM",
+    "BUND|EU-Fin",
+    "BUND|Health",
+    "BUND|S&P 500",
+    "BUND|S&P IT",
+    "BUND|Semis",
+    "BUND|Staples",
+    "BUND|Value",
+    "BUND|ex-US",
+    "CCC|EM",
+    "CCC|EU-Fin",
+    "CCC|Health",
+    "CCC|S&P 500",
+    "CCC|S&P IT",
+    "CCC|Semis",
+    "CCC|Staples",
+    "CCC|Value",
+    "CCC|ex-US",
+    "CG|EM",
+    "CG|EU-Fin",
+    "CG|S&P 500",
+    "CG|S&P IT",
+    "CG|Semis",
+    "CG|Value",
+    "CG|ex-US",
+    "CQS|EM",
+    "CQS|Health",
+    "CQS|S&P 500",
+    "CQS|S&P IT",
+    "CQS|Semis",
+    "CQS|Staples",
+    "CQS|Value",
+    "CQS|ex-US",
+    "DB_SMH|S&P 500",
+    "DB_SMH|S&P IT",
+    "DB_SMH|Semis",
+    "DISP|EM",
+    "DISP|EU-Fin",
+    "DISP|Health",
+    "DISP|S&P 500",
+    "DISP|Staples",
+    "DISP|Value",
+    "DISP|ex-US",
+    "EBP|EM",
+    "EBP|EU-Fin",
+    "EBP|Health",
+    "EBP|S&P 500",
+    "EBP|S&P IT",
+    "EBP|Semis",
+    "EBP|Staples",
+    "EBP|Value",
+    "EBP|ex-US",
+    "ECY|EM",
+    "ECY|EU-Fin",
+    "ECY|Health",
+    "ECY|S&P 500",
+    "ECY|S&P IT",
+    "ECY|Semis",
+    "ECY|Staples",
+    "ECY|Value",
+    "ECY|ex-US",
+    "ESTR|EU-Fin",
+    "EURC|EM",
+    "EURC|EU-Fin",
+    "EURC|Health",
+    "EURC|S&P 500",
+    "EURC|S&P IT",
+    "EURC|Semis",
+    "EURC|Staples",
+    "EURC|Value",
+    "EURC|ex-US",
+    "EXSH_GATE|EU-Fin",
+    "F10|EM",
+    "F10|Health",
+    "F10|S&P 500",
+    "F10|Semis",
+    "F10|Staples",
+    "F10|Value",
+    "F10|ex-US",
+    "F11|EM",
+    "F11|S&P 500",
+    "F11|Semis",
+    "F11|Value",
+    "F11|ex-US",
+    "F13|EM",
+    "F13|EU-Fin",
+    "F13|Health",
+    "F13|S&P 500",
+    "F13|S&P IT",
+    "F13|Semis",
+    "F13|Staples",
+    "F13|Value",
+    "F13|ex-US",
+    "F17|Value",
+    "F1|EM",
+    "F1|EU-Fin",
+    "F1|Health",
+    "F1|S&P 500",
+    "F1|S&P IT",
+    "F1|Semis",
+    "F1|Staples",
+    "F1|Value",
+    "F1|ex-US",
+    "F2|EM",
+    "F2|EU-Fin",
+    "F2|Health",
+    "F2|S&P 500",
+    "F2|S&P IT",
+    "F2|Semis",
+    "F2|Staples",
+    "F2|Value",
+    "F2|ex-US",
+    "F3|EM",
+    "F3|EU-Fin",
+    "F3|Health",
+    "F3|S&P 500",
+    "F3|S&P IT",
+    "F3|Semis",
+    "F3|Staples",
+    "F3|Value",
+    "F3|ex-US",
+    "F4|S&P 500",
+    "F4|S&P IT",
+    "F4|Semis",
+    "F4|Value",
+    "F5|S&P 500",
+    "F5|S&P IT",
+    "F5|Semis",
+    "F6|S&P IT",
+    "F6|Semis",
+    "F8|S&P 500",
+    "F8|S&P IT",
+    "F8|Semis",
+    "F8|Value",
+    "F9|EM",
+    "F9|S&P 500",
+    "F9|S&P IT",
+    "F9|Semis",
+    "F9|Value",
+    "F9|ex-US",
+    "FXH|EM",
+    "FXH|EU-Fin",
+    "FXH|Health",
+    "FXH|S&P 500",
+    "FXH|S&P IT",
+    "FXH|Semis",
+    "FXH|Staples",
+    "FXH|Value",
+    "FXH|ex-US",
+    "G1|EM",
+    "G1|EU-Fin",
+    "G1|Health",
+    "G1|S&P 500",
+    "G1|S&P IT",
+    "G1|Semis",
+    "G1|Staples",
+    "G1|Value",
+    "G1|ex-US",
+    "GB|EM",
+    "GB|EU-Fin",
+    "GB|S&P 500",
+    "GB|S&P IT",
+    "GB|Semis",
+    "GB|Value",
+    "GB|ex-US",
+    "GT|EM",
+    "GT|EU-Fin",
+    "GT|Health",
+    "GT|S&P 500",
+    "GT|S&P IT",
+    "GT|Semis",
+    "GT|Staples",
+    "GT|Value",
+    "GT|ex-US",
+    "INS_RS|EU-Fin",
+    "KBE_RS|EU-Fin",
+    "NVDA|S&P 500",
+    "NVDA|S&P IT",
+    "NVDA|Semis",
+    "OVX|EM",
+    "OVX|EU-Fin",
+    "OVX|Health",
+    "OVX|S&P 500",
+    "OVX|S&P IT",
+    "OVX|Semis",
+    "OVX|Staples",
+    "OVX|Value",
+    "OVX|ex-US",
+    "R1|EM",
+    "R1|EU-Fin",
+    "R1|Health",
+    "R1|S&P 500",
+    "R1|S&P IT",
+    "R1|Semis",
+    "R1|Staples",
+    "R1|Value",
+    "R1|ex-US",
+    "R2|EM",
+    "R2|EU-Fin",
+    "R2|Health",
+    "R2|S&P 500",
+    "R2|S&P IT",
+    "R2|Semis",
+    "R2|Staples",
+    "R2|Value",
+    "R2|ex-US",
+    "R3|EM",
+    "R3|EU-Fin",
+    "R3|Health",
+    "R3|S&P 500",
+    "R3|S&P IT",
+    "R3|Semis",
+    "R3|Staples",
+    "R3|Value",
+    "R3|ex-US",
+    "R4|EM",
+    "R4|EU-Fin",
+    "R4|Health",
+    "R4|S&P 500",
+    "R4|S&P IT",
+    "R4|Semis",
+    "R4|Staples",
+    "R4|Value",
+    "R4|ex-US",
+    "R5|EM",
+    "R5|EU-Fin",
+    "R5|Health",
+    "R5|S&P 500",
+    "R5|S&P IT",
+    "R5|Semis",
+    "R5|Staples",
+    "R5|Value",
+    "R5|ex-US",
+    "R6|EM",
+    "R6|EU-Fin",
+    "R6|Health",
+    "R6|S&P 500",
+    "R6|S&P IT",
+    "R6|Semis",
+    "R6|Staples",
+    "R6|Value",
+    "R6|ex-US",
+    "R7|EM",
+    "R7|EU-Fin",
+    "R7|Health",
+    "R7|S&P 500",
+    "R7|S&P IT",
+    "R7|Semis",
+    "R7|Staples",
+    "R7|Value",
+    "R7|ex-US",
+    "SPCONC|S&P 500",
+    "SPCONC|S&P IT",
+    "SPCONC|Semis",
+    "VT|EM",
+    "VT|EU-Fin",
+    "VT|S&P 500",
+    "VT|S&P IT",
+    "VT|Semis",
+    "VT|Staples",
+    "VT|Value",
+    "VT|ex-US",
+    "complacency-duration|EM",
+    "complacency-duration|S&P 500",
+    "complacency-duration|S&P IT",
+    "complacency-duration|Semis",
+    "complacency-duration|ex-US",
+    "complacency-high|EM",
+    "complacency-high|S&P 500",
+    "complacency-high|S&P IT",
+    "complacency-high|Semis",
+    "complacency-high|ex-US",
+    "complacency-vix|EM",
+    "complacency-vix|S&P 500",
+    "complacency-vix|S&P IT",
+    "complacency-vix|Semis",
+    "complacency-vix|ex-US",
+    "price-accel|EM",
+    "price-accel|S&P 500",
+    "price-accel|S&P IT",
+    "price-accel|Semis",
+    "price-accel|ex-US"
+  ]
+}
