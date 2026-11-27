@@ -250,7 +250,7 @@ describe("runScoringCycle - wiring (fetch → score → persist → push)", () =
   test.each([
     { intraday: false, effect: "notify" },
     { intraday: true, effect: "trace" },
-  ])("a CAPE fetch failure on an intraday=$intraday run degrades at $effect, and ECY records no second notify", async ({ intraday, effect }) => {
+  ])("a CAPE fetch failure with no stored F7 on an intraday=$intraday run degrades at $effect, and ECY records no second notify", async ({ intraday, effect }) => {
     resetDegradeLog();
     const feeds = fakeFeeds({ fetchCape: () => Promise.reject(new Error("CAPE unavailable")) });
     const base = createRunCtx(monotonicClock(RUN_AT), { env: readEnv(), feeds, store, intraday });
@@ -259,7 +259,7 @@ describe("runScoringCycle - wiring (fetch → score → persist → push)", () =
     stage.resolveGtState("GREEN");
     await stage.scoredConfirmersP;
     const ecy = peekDegradeLog().filter((e) => /^\[ecy\]/i.test(e.scope)).map((e) => [e.scope, e.effect]);
-    expect(ecy).toEqual([["[ECY] CAPE fetch failed - ECY omitted this run", effect]]);
+    expect(ecy).toEqual([["[ECY] CAPE fetch failed, stored F7 stale/empty - ECY omitted this run", effect]]);
   });
 
   test("a full run fetches CAPE ONCE: ECY and the F7 seed share the run's memo", async () => {
@@ -267,6 +267,56 @@ describe("runScoringCycle - wiring (fetch → score → persist → push)", () =
     const own = new ReadFailStore(() => false);
     await runCycleWith(feeds, own, monotonicClock(RUN_AT));
     expect(own.readings.some((r) => r.indicatorId === "F7")).toBe(true); // premise: the F7 seed ran off that fetch
+    expect(feeds.fetchCape).toHaveBeenCalledTimes(1);
+  });
+
+  /** The confirmers stage at `runAt`, CAPE fetch refused, over stored F7 = `ecyFixture`'s CAPE (open month `estimated`): ECY's output + its events. */
+  async function ecyOffStoredF7(runAt: string, intraday = false) {
+    const { cape, dfii10, open } = ecyFixture();
+    const own = new ReadFailStore(() => false);
+    await own.recordReadings(cape.map((o) => makeStoredReading("F7", { ...o, ...(o.date === open ? { estimated: true } : {}) })), "2020-01-01T00:00:00.000Z");
+    const feeds = fakeFeeds({
+      fetchCape: () => Promise.reject(new Error("CAPE unavailable")),
+      fetchSeries: async (series, opts) => (series === "DFII10" && opts?.since !== undefined ? dfii10 : fredMock(series)),
+    });
+    resetDegradeLog();
+    const base = createRunCtx(monotonicClock(runAt), { env: readEnv(), feeds, store: own, intraday });
+    const { calib, seriesScorerFor } = await loadScoringInputs(base);
+    const stage = await startConfirmersAndTracks(Object.assign(base, { graft: createGraft(base) }), calib, seriesScorerFor);
+    stage.resolveGtState("GREEN");
+    const ecy = (await stage.scoredConfirmersP)[FAST_CONFIRMERS.findIndex((c) => c.id === "ECY")]!;
+    return { ecy, open, events: peekDegradeLog().filter((e) => /^\[ecy\]/i.test(e.scope)).map((e) => [e.scope, e.effect]) };
+  }
+
+  test("a refused CAPE fetch over fresh stored F7: ECY scores off it, estimated open month included, one trace and no notify", async () => {
+    const { ecy, open, events } = await ecyOffStoredF7(RUN_AT);
+    expect(events).toEqual([["[ECY] CAPE fetch failed - ECY scored off stored F7", "trace"]]);
+    expect(ecy.series.at(-1)?.date).toBe(open);
+    expect(ecy.estimateDates).toContain(open);
+  });
+
+  test.each([
+    { runAt: "2026-03-02T22:55:00.000Z", intraday: false, events: [["[ECY] CAPE fetch failed - ECY scored off stored F7", "trace"]], scored: true },
+    { runAt: "2026-03-03T22:55:00.000Z", intraday: false, events: [["[ECY] CAPE fetch failed, stored F7 stale/empty - ECY omitted this run", "notify"]], scored: false },
+    { runAt: "2026-03-03T22:55:00.000Z", intraday: true, events: [["[ECY] CAPE fetch failed, stored F7 stale/empty - ECY omitted this run", "trace"]], scored: false },
+  ])("stored F7 newest 2026-01-01 at $runAt (intraday=$intraday): scored=$scored, one ECY event", async ({ runAt, intraday, events, scored }) => {
+    const res = await ecyOffStoredF7(runAt, intraday);
+    expect(res.events).toEqual(events);
+    expect(res.ecy.series.length > 0).toBe(scored);
+  });
+
+  test("a full run on the stored-F7 fallback fetches CAPE ONCE, and the F7 seed writes no F7 row", async () => {
+    const { cape, dfii10 } = ecyFixture();
+    const own = new ReadFailStore(() => false);
+    await own.recordReadings(cape.map((o) => makeStoredReading("F7", o)), "2020-01-01T00:00:00.000Z");
+    const f7Before = own.readings.filter((r) => r.indicatorId === "F7").map((r) => ({ ...r }));
+    const feeds = fakeFeeds({
+      fetchCape: () => Promise.reject(new Error("CAPE unavailable")),
+      fetchSeries: async (series, opts) => (series === "DFII10" && opts?.since !== undefined ? dfii10 : fredMock(series)),
+    });
+    const alert = await runCycleWith(feeds, own, monotonicClock(RUN_AT));
+    expect((alert.degraded ?? []).filter((e) => /^\[ecy\]/i.test(e.scope)).map((e) => [e.scope, e.effect])).toEqual([["[ECY] CAPE fetch failed - ECY scored off stored F7", "trace"]]);
+    expect(own.readings.filter((r) => r.indicatorId === "F7")).toEqual(f7Before);
     expect(feeds.fetchCape).toHaveBeenCalledTimes(1);
   });
 
@@ -443,7 +493,7 @@ describe("runScoringCycle - wiring (fetch → score → persist → push)", () =
     expect(alert.degraded?.map((d) => d.scope)).toEqual(
       expect.arrayContaining([
         "[oil-nowcast] DCOILWTICO prints unavailable - estimate points omitted",
-        "[ECY] CAPE fetch failed - ECY omitted this run",
+        "[ECY] CAPE fetch failed, stored F7 stale/empty - ECY omitted this run",
       ]),
     );
     const priceFed = INDICATORS.filter((i) => FEED_OF[i.id] === "prices").map(

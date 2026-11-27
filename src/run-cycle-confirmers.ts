@@ -7,6 +7,7 @@ import { OIL_LEVEL_LOOKBACK_DAYS, VT_DESCRIPTOR } from "./family-descriptor-rows
 import { sinceDaysAgo } from "./lookback.js";
 import { degrade, recordDegrade, TRACKS } from "./tracks.js";
 import { errMsg } from "./err-msg.js";
+import { capeOrStoredF7 } from "./ecy-cape-fallback.js";
 import { markPhase } from "./fetch-budget.js";
 import { FAST_CONFIRMERS, type ConfirmerCtx } from "./confirmers.js";
 import type { DbFirstCtx } from "./series-db-first.js";
@@ -145,15 +146,16 @@ export async function startConfirmersAndTracks(
   const gtStateForEcy = new Promise<State | null>((res) => {
     resolveGtState = res;
   });
+  const ecyNow = ctx.clock().slice(0, 10);
   // Hoisted ONCE above the map (else both eager reads fire per confirmer). Pinned by run.wiring.test.ts's DFII10 call count.
   const ecyCtx = {
-    // The run's ONE CAPE fetch (memoized in `createRunCtx`; a full run's F7 seed reuses it) — the restate's ECY input. null = failed:
-    // an intraday blip is a trace (the next run re-fetches), a full/EOD run's a notify — ECY records no second, `notify` omission.
-    f7: degrade<Observation[] | null>("[ECY] CAPE fetch failed - ECY omitted this run", ctx.intraday ? "trace" : "notify", null, () => ctx.feeds.fetchCape()),
+    // The run's ONE CAPE fetch (memoized in `createRunCtx`; a full run's F7 seed reuses it) — the restate's ECY input, stored F7 on a failed
+    // fetch. null = stored F7 stale/empty too: intraday trace, full/EOD notify — ECY records no second, `notify` omission.
+    f7: capeOrStoredF7(() => ctx.feeds.fetchCape(), ctx.store, ecyNow, ctx.intraday, "CAPE"),
     // R4 deep-arm fetch → `fetchR4DeepInputs`, run-dbfirst.ts.
     dfii10: fetchR4DeepInputs(ctx.dbFirst, seriesScorerFor, ctx.runAt, ctx.env),
     gtState: gtStateForEcy,
-    now: ctx.clock().slice(0, 10),
+    now: ecyNow,
   };
   const confirmerCtx = {
     calib,

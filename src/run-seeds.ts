@@ -412,7 +412,7 @@ export function toStoredReading(r: Reading): StoredReading {
 
 
 /** CAPE probe: MUST exceed the full 1871→now monthly row count (~1866, +12/yr) or old dates re-insert every run. */
-const CAPE_PROBE_LIMIT = 5000;
+export const CAPE_PROBE_LIMIT = 5000;
 
 /** Closed CAPE months (before the run clock's UTC month) whose stored FINAL row `backfillCapeOnCron` value-repairs each run. */
 export const F7_REPAIR_MONTHS = 3;
@@ -423,7 +423,7 @@ export function capeOpenFloor(runAt: string): string {
   return isoDay(new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)));
 }
 
-/** Cron-path F7 CAPE seed (display card; ECY reads the live CAPE fetch, not F7); twin of scripts/backfill.ts `backfillCape`. Rows dated in or past the
+/** Cron-path F7 CAPE seed (display card; ECY reads the live CAPE fetch, stored F7 on a failed fetch); twin of scripts/backfill.ts `backfillCape`. Rows dated in or past the
  *  run clock's UTC month are stored `estimated`, replaced every run; closed months insert-missing + `F7_REPAIR_MONTHS` value repair.
  *  ⚠ Plain try/catch, NOT `degrade`: post-`drainDegradeLog()`, a degrade event here never persists (`logDegrade` prints it via console.error). */
 export async function backfillCapeOnCron(store: Store, clock: Clock, fetchCape: FeedPorts["fetchCape"] = realFeeds.fetchCape, signal?: AbortSignal): Promise<void> {

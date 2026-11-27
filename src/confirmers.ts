@@ -410,8 +410,8 @@ export interface ConfirmerCtx {
    * (run-cycle floats the confirmer batch and resolves `gtState` once `feedById` exists —
    * null = GT non-live this run, so `scoreEcy` omits rather than fabricating a gate verdict). */
   ecy: {
-    /** The run's live CAPE fetch — the SAME feed the restate's ECY spec reads (`backfill.ts`), never the stored F7.
-     *  null = the fetch failed, already recorded at its run-mode effect (`run-cycle-confirmers.ts`). */
+    /** The run's live CAPE fetch — the SAME feed the restate's ECY spec reads (`backfill.ts`), stored F7 on a failed fetch.
+     *  null = the fetch failed with stored F7 stale/empty, already recorded at its run-mode effect (`ecy-cape-fallback.ts`). */
     f7: Promise<Observation[] | null>;
     dfii10: Promise<Observation[]>;
     gtState: Promise<State | null>;
