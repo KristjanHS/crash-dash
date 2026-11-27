@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { capeOrStoredF7 } from "./ecy-cape-fallback.js";
+import { noFreeSource } from "./no-free-source.js";
 import { CAPE_PROBE_LIMIT } from "./run-seeds.js";
 import { peekDegradeLog, resetDegradeLog } from "./tracks.js";
 import type { SeriesPoint } from "./store.js";
@@ -51,6 +52,18 @@ describe("capeOrStoredF7", () => {
     expect(events()).toEqual([
       [OMIT, "fetch failed [ECONNREFUSED] · no stored F7", "notify"],
       [OMIT, "fetch failed [ECONNREFUSED] · stored F7 read failed: store read failed", "notify"],
+    ]);
+  });
+
+  test("a public no-free-source fetch tags both events no-free-source; an outage tags neither", async () => {
+    const publicCape = async () => noFreeSource("CAPE");
+    expect(await capeOrStoredF7(publicCape, storeOf([]), "2026-01-30", false, "CAPE")).toBeNull();
+    await capeOrStoredF7(publicCape, storeOf(STORED), "2026-01-30", false, "CAPE");
+    await capeOrStoredF7(refused, storeOf([]), "2026-01-30", false, "CAPE");
+    expect(peekDegradeLog().map((e) => [e.effect, e.kind])).toEqual([
+      ["notify", "no-free-source"],
+      ["trace", "no-free-source"],
+      ["notify", undefined],
     ]);
   });
 

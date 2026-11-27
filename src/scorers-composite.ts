@@ -1535,7 +1535,7 @@ export function ecyEstimateDates(readings: readonly Reading[], dfii10: Observati
 }
 
 /** THE ECY rows both writers persist — the cron (`confirmers.ts`, Treasury-grafted R4) and the restate (`backfill.ts`, FRED-only
- *  DFII10) — over the SAME live CAPE fetch; FRED prints in date order, so a month the cron holds `estimated` is the restate's newest. */
+ *  DFII10) — over the SAME live CAPE fetch (stored F7 on a failed fetch); FRED prints in date order, so a month the cron holds `estimated` is the restate's newest. */
 export function ecyRows(indicator: Indicator, f7: Observation[], dfii10: Observation[]): { series: Reading[]; estimateDates: string[] } {
   const series = ecyReadingSeries(indicator, f7, dfii10);
   return { series, estimateDates: ecyEstimateDates(series, dfii10) };

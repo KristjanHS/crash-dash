@@ -122,7 +122,7 @@ export async function runSeedTail(
         backfillHistory(ctx.store, b.id, b.series, BACKFILL_PROBE_LIMIT, ctx.clock, undefined, false, undefined, undefined, undefined, new Set(b.estimateDates), undefined, signal),
       ),
     ),
-    // Keep the CAPE leg (F7, a display-only card — ECY scores the run's live CAPE fetch, not F7) fresh. Best-effort, distinct run_at.
+    // Keep the CAPE leg (F7, a display-only card — ECY scores the run's live CAPE fetch, stored F7 on a failed fetch) fresh. Best-effort, distinct run_at.
     task("cape", ["F7"], () => backfillCapeOnCron(ctx.store, ctx.clock, ctx.feeds.fetchCape, signal)),
     // Persist the nine legs' EUR closes (`LEGP_*`), then cache the cross-sectional RS off them. Serial pair (ordering constraint above).
     task("legs", LEGS_TASK_IDS, async () => {

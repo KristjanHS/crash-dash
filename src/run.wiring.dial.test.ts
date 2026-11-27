@@ -48,7 +48,7 @@ installRunTestHooks((s) => {
   store = s;
 });
 
-// ECY scores only off a live CAPE + a deep DFII10 leg (the calm fixture degrades it to EMPTY, so the roster lint
+// ECY scores only off a live CAPE (stored F7 on a failed fetch) + a deep DFII10 leg (the calm fixture degrades it to EMPTY, so the roster lint
 // could never see it carried): flat CAPE × falling real yield ⇒ cheap ⇒ GREEN, months ending at FIXTURE_ASOF.
 const ECY_MONTHS = PCT_MIN_OBS + 12;
 const ecyMonth = (i: number): string => {

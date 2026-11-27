@@ -811,8 +811,8 @@ export const INDICATORS: Indicator[] = ([
  * ALL_INDICATORS (registry.ts) so `/api/indicators` emits a card meta and `/api/series` serves its
  * history, but DELIBERATELY NOT in `INDICATORS` — the cron run loop iterates `INDICATORS`, so
  * F7 is NEVER scored, confirmed, or armed. `thresholds: {}` (no scorer) → `buildIndicatorChart`
- * returns the `"context-only"` sentinel (allowlisted in chart-bands.test.ts). Its live CAPE is read
- * ONLY by the display-context `computeCapeValuation` (`valuation.ts`, consumed by /api/status and
+ * returns the `"context-only"` sentinel (allowlisted in chart-bands.test.ts). Its CAPE is read (ECY's failed-fetch fallback
+ * aside) ONLY by the display-context `computeCapeValuation` (`valuation.ts`, consumed by /api/status and
  * /api/indicators) — the dial applies NO CAPE multiplier (`mEff` retired, ruled O2 2026-08-11), so
  * F7 reaches no dial term and no firing family member. The card VALUE is
  * bridged read-time in `api/status.ts` via `computeCapeValuation` (F7's reading row rides a distinct
@@ -843,7 +843,7 @@ export const BBB: Indicator = {
 };
 
 /**
- * ECY excess CAPE yield (2026-08-11) — valuation×trend gate over live CAPE + DFII10, scored
+ * ECY excess CAPE yield (2026-08-11) — valuation×trend gate over live CAPE (stored F7 on a failed fetch) + DFII10, scored
  * bespoke by `scoreEcy` (FAST_CONFIRMERS tail; cuts on ECY_DESCRIPTOR, family-descriptor-rows.ts).
  * Persisted `level` (the stored/plotted value) is the month's ECY in **percent**; `decision`
  * carries the strict-prefix expanding rank scored against ECY_EXPENSIVE_P under the monthly

@@ -157,7 +157,7 @@ export const ALL_INDICATORS: Indicator[] = [
   CQS,
   F7, // Shiller CAPE — VALUE-ONLY context card (never in INDICATORS, so never scored); value bridged read-time in api/status.ts. Overlay: cardGroupOf("F7")="valuation" (display card under Valuation; US_FAMILIES.valuation.ids stays []).
   BBB, // BBB OAS — value-only CONTEXT card (never in INDICATORS); INPUT_SERIES seeds it, cardGroupOf("BBB")="credit".
-  ECY, // excess CAPE yield × GT trend gate — CONTEXT, scored by the FAST_CONFIRMERS tail off live CAPE + DFII10; level = trailing ECY z (2026-08-11)
+  ECY, // excess CAPE yield × GT trend gate — CONTEXT, scored by the FAST_CONFIRMERS tail off live CAPE (stored F7 on a failed fetch) + DFII10; level = trailing ECY z (2026-08-11)
   ...SLOW_INDICATORS,
   ...PENSION_INDICATORS,
   ...BOTTOM_INDICATORS,

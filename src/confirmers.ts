@@ -780,7 +780,7 @@ export const FAST_CONFIRMERS: FastConfirmer[] = [
     },
   },
   // ECY excess-CAPE-yield valuation×trend gate (2026-08-11) — appended at the TAIL (append-only
-  // ordering rule above). Reads the ctx-threaded promises: live CAPE + its own DFII10
+  // ordering rule above). Reads the ctx-threaded promises: live CAPE (stored F7 on a failed fetch) + its own DFII10
   // fetch + GT's scored state (resolved mid-run by run-cycle). `scoreEcy` returns null on a stale/
   // short window or an expensive read with GT non-live — recorded as a degrade, never a fabricated
   // GREEN or RED.
