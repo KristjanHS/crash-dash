@@ -21,6 +21,7 @@ export const MS_PER_CALENDAR_DAY = 86_400_000;
 
 // `/lab?walk=N` forward-walk clamp. Covers the idle-cash ratchet (`R4_RATCHET_DAYS`) plus a full rung
 // walk with headroom; pure in-memory `assembleRun` iterations.
+/** @internal */
 export const WALK_CAP = 90;
 
 /** Parse `?walk=N`. Absent / NaN / negative ⇒ 0. Above `WALK_CAP` REJECTS with a 400 rather than

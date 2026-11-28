@@ -173,11 +173,11 @@ export function buildFamilyChart(
   return { ...spec, renderer: CHART_DESCRIPTOR_OF[i.id]?.renderer ?? rendererForSpec(spec) };
 }
 
-/** Lookback of the display-only fast-Δ line (`DELTA5_OVERLAY`), in observations. */
+/** Lookback of the display-only fast-Δ line (`DELTA5_OVERLAY`), in observations. @internal */
 export const DELTA5_WINDOW = 5;
 /** Per-id opt-in: a display-only blue Δ5 line with NO cuts — user ask 2026-10-10. Always on its own HIDDEN
  *  `fit` scale fitted to the plot — no ticks, no margin, never sharing (so never stretching) an existing
- *  axis — with a faint zero line and its number in the hover only. Both are `single` layout. */
+ *  axis — with a faint zero line and its number in the hover only. Both are `single` layout. @internal */
 export const DELTA5_OVERLAY: ReadonlySet<string> = new Set(["F1", "CCC"]);
 function withDelta5(i: Indicator, spec: ChartSpec): ChartSpec {
   if (!DELTA5_OVERLAY.has(i.id)) return spec;
@@ -194,7 +194,7 @@ function withDelta5(i: Indicator, spec: ChartSpec): ChartSpec {
 }
 
 /** The FE's spec-shape sniff (public/detail-chart.js `genericDetailChart`), expression for
- *  expression — `chart-rail.test.ts` pins every declared `renderer` against it. */
+ *  expression — `chart-rail.test.ts` pins every declared `renderer` against it. @internal */
 export function rendererForSpec(spec: ChartSpec): "single" | "fx" | "derived" {
   const primSeries = spec.series.filter((s) => s.axis === "primary");
   const secSeries = spec.series.filter((s) => s.axis === "secondary");
@@ -266,6 +266,7 @@ function buildGbChart(i: Indicator): ChartSpec {
 // ⚠ A day whose σ is undefined (no EBP anchor / too few same-horizon Δs / sub-floor σ) emits NO key,
 // so the polyline BREAKS there rather than dropping to 0 — R5's silent-GREEN days are visibly
 // un-called, not falsely calm at a zero cut.
+/** @internal */
 export function buildCqsChart(i: Indicator): ChartSpec {
   const c = CQS_DESCRIPTOR.scorer.constants;
   return {
@@ -694,6 +695,7 @@ function buildF3Chart(i: Indicator): ChartSpec {
 // path with it — there is no borrowed bound left to invert or drop. Either way the composite IS the registry
 // level pair. Measured and pinned for both ids in `src/effective-cuts.test.ts` — F1 keeps
 // `legBands` as the structural guard should the leg ever be un-retired.
+/** @internal */
 export function dualAxisChart(i: Indicator, params: FamilyChartParams): ChartSpec {
   const unit = i.unit ?? "%"; // mirror the wire-edge unit materialization above
   const da = params.dualAxis;
@@ -885,6 +887,7 @@ function buildDispChart(i: Indicator): ChartSpec {
 // path) rather than a bogus line.
 /** Per-level resolved `valueFrom:"capePct"` cut values (api/indicators.ts). */
 export type CapeCardCuts = Readonly<Partial<Record<"amber" | "red", number>>>;
+/** @internal */
 export function contextChart(
   i: Indicator,
   params: FamilyChartParams,
@@ -973,7 +976,7 @@ function downsideChart(i: Indicator): ChartSpec {
  *  (scripts/probe-eufin-tranches.ts) and client `RV_PANEL.rvSlowWindow`, both parity-pinned in `rv-panel.test.js`. */
 export const RV20_WINDOW = 20;
 /** Trailing window per overlay hook (MAs = mean; `high60` = inclusive max) — scorer constants, never bare; mirrored by
- *  `public/detail-chart.js` `MA_WINDOWS` + `HIGH_WINDOWS`, parity-pinned in its test. */
+ *  `public/detail-chart.js` `MA_WINDOWS` + `HIGH_WINDOWS`, parity-pinned in its test. @internal */
 export const MA_OVERLAY_WINDOW = {
   ma50: PRICE_WINDOWS.maShort,
   ma200: MA_WINDOW,
@@ -986,7 +989,7 @@ type ChartTone = NonNullable<ChartSeries["tone"]>;
 type MaOverlaySpec = Readonly<{ compute: MaOverlay; tone?: ChartTone }>;
 /** Per-id opt-in: display-only trailing-MA lines on the PRICE axis of a derived-route chart, in
  *  draw order. Display-only except EXSH_GATE, whose MA50/MA200 ARE its scorer's crosses (window parity
- *  pinned in `chart-rail.test.ts`); an own-MA GATE draws via `GATES`. Tones are per id. */
+ *  pinned in `chart-rail.test.ts`); an own-MA GATE draws via `GATES`. Tones are per id. @internal */
 export const MA_OVERLAYS: Readonly<Record<string, readonly MaOverlaySpec[]>> = {
   // EU-Fin re-entry gate's three checks on the close — user ask 2026-10-06: every trend line its OWN
   // hue, in an order starting from white (MA50 white, MA200 orange; the decision line blue, below).
@@ -1021,11 +1024,12 @@ const MA200_TOGGLE: { series: readonly ChartSeries[]; lead: number } = {
   lead: MA_OVERLAY_WINDOW.ma200,
 };
 /** spit's real-yield escalation member (`SPIT_RULES.ESC_REAL_DELTA_N` / `ESC_REAL_DELTA`, scripts/probe-spit-tranches.ts)
- *  — restated because `src/` never imports `scripts/`; `scripts/probe-spit-tranches.test.ts` pins both fields to the source. */
+ *  — restated because `src/` never imports `scripts/`; `scripts/probe-spit-tranches.test.ts` pins both fields to the source. @internal */
 export const R4_ESC = { window: 120, value: 0.75 } as const;
 /** semis' move / vxsmh escalation members, off the semis source (`ladder-jobs.ts`) — never restate a literal here.
- *  sp500's `c4` (`SP500_RULES.C4_N` × `C4_K`) stays its own literal, pinned to MOVE_MEDIAN by its probe test. */
+ *  sp500's `c4` (`SP500_RULES.C4_N` × `C4_K`) stays its own literal, pinned to MOVE_MEDIAN by its probe test. @internal */
 export const MOVE_MEDIAN = SEMIS_MOVE_MEDIAN;
+/** @internal */
 export const VOL_MEDIAN = SEMIS_VOL_MEDIAN;
 /** MOVE (R6) + VXSMH — user ask 2026-10-24: display-only `mult × window`-close median behind the shared toggle. */
 const medianToggle = (m: { window: number; mult: number }): { series: readonly ChartSeries[]; lead: number } => ({
@@ -1035,7 +1039,7 @@ const medianToggle = (m: { window: number; mult: number }): { series: readonly C
 });
 /** Per-id display-only overlays riding the shared `.fit-lines` toggle (hidden by default, one legend
  *  `.fit-toggle` flips them with the Δ5 lines) + the lead they need. Value XDEV — user ask 2026-10-10: the
- *  60-close high, the three € zone lines and the −σ veto-breach days as dots (RV10 rides `RV10_OVERLAY`). */
+ *  60-close high, the three € zone lines and the −σ veto-breach days as dots (RV10 rides `RV10_OVERLAY`). @internal */
 export const TOGGLE_OVERLAYS: Readonly<Record<string, { series: readonly ChartSeries[]; lead: number }>> = {
   XDEV: ((c) => ({
     series: [
@@ -1102,11 +1106,11 @@ export const TOGGLE_OVERLAYS: Readonly<Record<string, { series: readonly ChartSe
     lead: Math.max(w, R4_ESC.window),
   }))(63),
 };
-/** Annualised realized-vol window of the `rv10` hook — the descriptor's `rvWindow` (mirrored client-side as `RV_PANEL`). */
+/** Annualised realized-vol window of the `rv10` hook — the descriptor's `rvWindow` (mirrored client-side as `RV_PANEL`). @internal */
 export const RV10_WINDOW = XDEV_GATE_DESCRIPTOR.scorer.constants.rvWindow;
 /** Per-id opt-in: a display-only RV10 line (annualised realized vol of the plotted closes) on its own hidden `fit`
  *  scale — off by default behind the shared `.fit-toggle`, its value (a percent) in the hover only. Id-agnostic:
- *  a new id opts in with one row here, no renderer change. Single layout only (`genericSingle` splits `fit` out). */
+ *  a new id opts in with one row here, no renderer change. Single layout only (`genericSingle` splits `fit` out). @internal */
 export const RV10_OVERLAY: ReadonlySet<string> = new Set(["XDEV", "LEGP_EUFIN"]);
 function withRv10(i: Indicator, spec: ChartSpec): ChartSpec {
   if (!RV10_OVERLAY.has(i.id)) return spec;
