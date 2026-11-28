@@ -7,7 +7,7 @@ import type { MemberStateMap } from "./danger-engine.js";
  *  proxy veto re-risk over-weights a single narrow leg against `indicator-loop.md` §Keep-or-cut — an indicator earns its place; the
  *  CONFIRMING gate was always meant to read the GLOBAL trend + breadth pair. Kept as an explicit
  *  subset (not a filter over the column) so a future member added to `uT` for display cannot silently
- *  re-acquire veto power. */
+ *  re-acquire veto power. @internal */
 export const CONFIRMING_TREND_MEMBERS: readonly string[] = ["GT", "GB"];
 
 /** CONFIRMING gate predicate (Stage 3.2, narrowed R4): the trend family "confirms" a re-risk when

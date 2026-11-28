@@ -13,9 +13,9 @@ import {
   type LegKey,
 } from "./danger-ladder.js";
 import { LADDER } from "./families.js";
-import { LOOKBACK } from "./danger-engine.js";
 import { MEMBER_HISTORY_WINDOW } from "./danger-member-state.js";
 import { ALL_INDICATORS } from "./registry.js";
+import { LOOKBACK } from "./danger-deadband.js";
 
 // NOTE: no exemption list, deliberately. The plan called for exempting the STUBBED `vb` row, but that
 // is both unnecessary and harmful (review 2026-07-16): `FAMILY_MEMBERS.vb` is [] ⇒ `familyReach("vb")`

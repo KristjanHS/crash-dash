@@ -17,6 +17,7 @@ import { markPhase } from "./fetch-budget.js";
 /**
  * Fail-loud guard: a ROWS-PRESENT check that the harness still EMITS the `credit/hyoas` prefix —
  * absent ⇒ throw so the cron ABORTS (never scores F1 on absent priors). Cron/scoring path only.
+ * @internal
  */
 export function assertF1VintagePresent(
   calib: ReadonlyArray<CalibParamRow>,

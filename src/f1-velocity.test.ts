@@ -4,7 +4,8 @@ import { describe, expect, test } from "vitest";
 import { ALL_INDICATORS } from "./registry.js";
 import { evaluateLegs } from "./domain-legs.js";
 import { resolveCuts, type CalibrationCuts } from "./domain-cuts.js";
-import { assertF1VintagePresent } from "./run-cycle.js";
+
+import { assertF1VintagePresent } from "./run-cycle-fred.js";
 
 /**
  * F1's 30d velocity axis — MEASURED under Stage 1.2 (D-A), HAND-SET since 2026-07-28 (`[USER]`).

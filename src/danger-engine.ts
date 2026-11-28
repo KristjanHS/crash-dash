@@ -56,17 +56,13 @@ import {
   pickHeld,
 } from "./danger-deadband.js";
 export {
-  SEV_CUTS,
   DANGER_CUTS,
   CONC_THRESHOLD,
   CONC_WEIGHT,
 } from "./danger-concentration.js";
 export type { Sev } from "./danger-concentration.js";
-export { CONFIRMING_TREND_MEMBERS, trendConfirming } from "./danger-exogenous.js";
+export { trendConfirming } from "./danger-exogenous.js";
 export {
-  LOOKBACK,
-  SN_ROC_LOOKBACK,
-  EW_ROC_LOOKBACK,
   DERISK_DEADBAND,
   RERISK_DEADBAND,
   RERISK_BASIS_EPOCH,

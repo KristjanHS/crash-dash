@@ -3,13 +3,13 @@ import {
   legRAG,
   memberScaledBand,
   scaledSevBand,
-  SEV_CUTS,
   computeCells,
   type Sev,
   type MemberStateMap,
 } from "./danger-engine.js";
 import type { SignalCell } from "./danger-cell.js";
 import { LEG_FIELD } from "./danger-ladder.js";
+import { SEV_CUTS } from "./danger-concentration.js";
 
 /** A lit (RED-severity) cell whose weighted severity is `wsev` — the only field legRAG reads.
  *  `observed` (OQ-5 Stage 5.2) is shape only: `legRAG` never consults the census. */

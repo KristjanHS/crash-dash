@@ -3,10 +3,7 @@ import type { State } from "./domain-types.js";
 import {
   pillarValue,
   computeField,
-  EW_ROC_LOOKBACK,
   DANGER_CUTS,
-  LOOKBACK,
-  SN_ROC_LOOKBACK,
   type DangerInput,
   type MemberHistoryEntry,
 } from "./danger-engine.js";
@@ -16,7 +13,7 @@ import {
   signalHoldClosesFor,
   type LegKey,
 } from "./danger-ladder.js";
-import { reriskDeadbandOf } from "./danger-deadband.js";
+import { reriskDeadbandOf, EW_ROC_LOOKBACK, LOOKBACK, SN_ROC_LOOKBACK } from "./danger-deadband.js";
 import { gf } from "./danger-engine.test-helpers.js";
 
 // Hoisted all-GREEN calm windows (Rung-3 fixture hoist): deterministic and never mutated by any

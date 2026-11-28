@@ -51,7 +51,6 @@ import { scoreGlobalFeeds, scoreCqs, startEcbFetches } from "./run-cycle-feeds.j
 // Re-exported so the moved public name stays importable here (pinned at its source in db-first-feeds.test.ts) — NAMED, never `export *`.
 ;
 ;
-export { assertF1VintagePresent } from "./run-cycle-fred.js";
 export type { RunCycleOptions } from "./run-cycle-ctx.js";
 
 

@@ -7,9 +7,10 @@ import { CQS_CUT_BANDS, CQS_DESCRIPTOR } from "./family-descriptor-rows.js";
 import type { ChartBand } from "./api/types.js";
 import { familyOf } from "./families.js";
 import { MEMBER_WEIGHT, LEG_FIELD } from "./danger-ladder.js";
-import { computeCells, SEV_CUTS } from "./danger-engine.js";
+import { computeCells } from "./danger-engine.js";
 import { buildMemberState } from "./danger-member-state.js";
 import { gf } from "./danger-engine.test-helpers.js";
+import { SEV_CUTS } from "./danger-concentration.js";
 
 // 300 consecutive calendar days from 2025-01-01. Both legs share the date array (alignByDate joins
 // on identical strings), so the spread is `baa − aaa` per day.

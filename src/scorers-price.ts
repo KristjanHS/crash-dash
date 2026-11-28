@@ -25,8 +25,6 @@ import {
   MU_AMBER,
   MU_RED,
   MU_MA_MULT,
-  BREADTH_AMBER_P,
-  BREADTH_RED_P,
   BREADTH_CUT_WINDOW,
   BREADTH_MAX_CUT_WINDOW,
   type BreadthConfig,
@@ -51,9 +49,6 @@ import {
   EXSH_GATE_DESCRIPTOR,
 } from "./family-descriptor-rows.js";
 
-// Re-exported: the RS parameter-row resolver moved beside its table (family-descriptor-rows.ts) so the
-// registry's chart bands read the same row as the scorer; existing importers keep this path.
-export { rsCuts };
 import {
   ratioReadingSeries,
   latest,
@@ -144,11 +139,6 @@ export function scoreSemis(indicator: Indicator, smh: Observation[], nvda: Obser
   const minLen = MA_WINDOW + CONFIRM_CLOSES; // enough days for ≥CONFIRM_CLOSES raw states to confirm
   return latest(indicator, semisReadingSeries(indicator, smh, nvda), minLen, s.length, "aligned closes");
 }
-
-// F5/SPCONC dynamic-band cut PROBABILITIES — the ONE source is `family-descriptor-rows.ts` (the
-// sanctioned tunable layer); imported above for `breadthReadingSeries` and re-exported so every
-// existing importer (dashboard.price-scorers.test.ts among them) still resolves the RELSTR way.
-export { BREADTH_AMBER_P, BREADTH_RED_P, BREADTH_CUT_WINDOW, BREADTH_MAX_CUT_WINDOW };
 
 /**
  * Strict-prior distance-from-high: `dist[i] = values[i] / max(values[i−HIGH_WINDOW+1 … i−1]) − 1`,

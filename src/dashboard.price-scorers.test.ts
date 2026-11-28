@@ -20,8 +20,6 @@ import {
   scoreBreadth,
   breadthReadingSeries,
   breadthDistSeries,
-  BREADTH_AMBER_P,
-  BREADTH_RED_P,
   scoreMemGate,
   memGateReadingSeries,
   scoreDownsideBreak,
@@ -29,7 +27,6 @@ import {
   downsideCuts,
   scoreRelStrengthBreak,
   relStrengthBreakReadingSeries,
-  rsCuts,
   globalTrendReadingSeries,
   scoreNvdaGate,
   nvdaGateReadingSeries,
@@ -73,7 +70,7 @@ import {
   type Reading,
 } from "./domain-types.js";
 import { G1 } from "./registry-geo.js";
-import { CG_DESCRIPTOR, EURGBP_DESCRIPTOR, EXSH_GATE_DESCRIPTOR, RS_SMH_DESCRIPTOR, type RsCuts } from "./family-descriptor-rows.js";
+import { CG_DESCRIPTOR, EURGBP_DESCRIPTOR, EXSH_GATE_DESCRIPTOR, RS_SMH_DESCRIPTOR, type RsCuts, BREADTH_AMBER_P, BREADTH_RED_P, rsCuts } from "./family-descriptor-rows.js";
 import { EURGBP } from "./registry-composite.js";
 import { EXSH_GATE } from "./registry-price.js";
 import { scoreReturnOrMaSpread, returnOrMaSpreadReadingSeries, exshGateReadingSeries, type ExshGateCuts } from "./scorers-price.js";

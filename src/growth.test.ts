@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { CellState, SignalCell } from "./danger-cell.js";
 import type { Sev } from "./danger-engine.js";
-import { SEV_CUTS } from "./danger-engine.js";
+
 import { LEG_FIELD, type LegField, type SignalKey } from "./danger-ladder.js";
 import { LADDER } from "./families.js";
 import {
@@ -11,6 +11,7 @@ import {
   growthRsReadingRows,
 } from "./growth.js";
 import type { Sleeve } from "./y1.js";
+import { SEV_CUTS } from "./danger-concentration.js";
 
 describe("growthRsReadingRows - GRS_* rows from a per-leg RS map", () => {
   it("emits no row for a null RS (never a 0 row) and length equals the non-null count", () => {

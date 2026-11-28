@@ -19,8 +19,8 @@ import type { SeriesResponse } from "../src/api/types.js";
 // The percentile warmup floor, from the zero-import leaf `src/percentile.ts` — the same spelling
 // `api/series.ts` uses, so the test cannot drift onto a different copy than the handler runs.
 import { PCT_MIN_OBS } from "../src/percentile.js";
-import { breadthCutSeries, breadthConfig, BREADTH_MAX_CUT_WINDOW, CHAIN_BREAK_RATIO, CHAIN_QUIET_RATIO } from "../src/scorers-price.js";
-import { BONOS_DESCRIPTOR, CG_DESCRIPTOR, R6_DESCRIPTOR, POINT_BAND_CUTS_OF, F3_VELOCITY_BAND } from "../src/family-descriptor-rows.js";
+import { breadthCutSeries, breadthConfig, CHAIN_BREAK_RATIO, CHAIN_QUIET_RATIO } from "../src/scorers-price.js";
+import { BONOS_DESCRIPTOR, CG_DESCRIPTOR, R6_DESCRIPTOR, POINT_BAND_CUTS_OF, F3_VELOCITY_BAND, BREADTH_MAX_CUT_WINDOW } from "../src/family-descriptor-rows.js";
 // The REAL scorer + the REAL registry row behind the CG re-score assertions: the expected
 // states are computed by the same function the handler calls, so a lattice/cut change moves
 // both together and the test can never pin a transcribed verdict.

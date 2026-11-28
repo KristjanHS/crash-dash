@@ -5,14 +5,14 @@ import { GLOBAL_FAMILIES } from "./families.js";
 import {
   computeField,
   trendConfirming,
-  CONFIRMING_TREND_MEMBERS,
   DANGER_CUTS,
-  LOOKBACK,
   type MemberHistoryEntry,
 } from "./danger-engine.js";
 import { buildMemberState } from "./danger-member-state.js";
 import { FAMILY_MEMBERS, MEMBER_WEIGHT } from "./danger-ladder.js";
 import { gf } from "./danger-engine.test-helpers.js";
+import { CONFIRMING_TREND_MEMBERS } from "./danger-exogenous.js";
+import { LOOKBACK } from "./danger-deadband.js";
 
 describe("EXOGENOUS - the weighted per-leg `gp` term", () => {
   // The ALERT-ladder side of the reconcile (G1 still counts as a geo flag in
