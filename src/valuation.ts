@@ -26,10 +26,10 @@
  *  (a partial DB degrades to m=1.0 rather than z-score against a short, untrustworthy history).
  *  First-cut / eyeball-tunable (D-E3). */
 export const VAL_Z_WINDOW = 360;
-/** z at which the multiplier reaches its floor; z beyond this clamps. First-cut / tunable (D-E3). */
+/** z at which the multiplier reaches its floor; z beyond this clamps. First-cut / tunable (D-E3). @internal */
 export const VAL_Z_CAP = 2.0;
 /** Deepest multiplier — the most a rich market amplifies within-band severity. m never drops below
- *  this, so valuation can deepen the ● but a first cut can't run away. First-cut / tunable (D-E3). */
+ *  this, so valuation can deepen the ● but a first cut can't run away. First-cut / tunable (D-E3). @internal */
 export const VAL_M_FLOOR = 0.85;
 /** Lag budget (calendar days): CAPE is a MONTHLY point dated `YYYY-MM-01`, expected ≤~31d old
  *  when the feed is kept current. Beyond this (≈2 missed monthly cycles) the feed is treated as dead
@@ -38,7 +38,7 @@ export const VAL_M_FLOOR = 0.85;
  *  CADENCE (`backfillCapeOnCron` in `run-seeds.ts`): every cron run rewrites the open month `estimated` and value-repairs
  *  the last `F7_REPAIR_MONTHS` closed months, so the budget never absorbs manual-seed gaps. It is still
  *  sized against the SOURCE's cadence, not the cron's: the source publishes ~12 CAPE points/yr, so the
- *  binding gap is the source's own ~31d month — 60d ≈ 2 missed monthly publications. Budget STANDS. */
+ *  binding gap is the source's own ~31d month — 60d ≈ 2 missed monthly publications. Budget STANDS. @internal */
 export const VAL_MAX_STALE_DAYS = 60;
 
 /** Minimal shape shared by `Observation` (the CAPE feed) and `SeriesPoint` (store.ts). */

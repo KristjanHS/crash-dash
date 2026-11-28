@@ -15,7 +15,7 @@ const MIN_ROWS = 7000;
 
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
-/** Parse + validate vintage CSV text. Exported as a seam so tests never touch data/. */
+/** Parse + validate vintage CSV text. Exported as a seam so tests never touch data/. @internal */
 export function parseVintageCsv(
   text: string,
   checks: { firstDate?: string; minRows?: number } = {},
@@ -51,7 +51,7 @@ export function parseVintageCsv(
 }
 
 /** The file's text, or `undefined` when it is ABSENT (ENOENT — the only swallowed error; any other read
- *  failure throws). `url` is the test seam for the absent path. */
+ *  failure throws). `url` is the test seam for the absent path. @internal */
 export function readVintageText(url: URL = VINTAGE_URL): string | undefined {
   try {
     return readFileSync(url, "utf8");

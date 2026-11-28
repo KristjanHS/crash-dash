@@ -53,6 +53,7 @@
  */
 import type { Thresholds, Direction, Cadence, DerivedView } from "./domain-types.js";
 
+/** @internal */
 export type FamilyId =
   | "fred-level-velocity" // generic FRED/velocity classify family
   | "price-derived" // bespoke price scorers
@@ -62,15 +63,15 @@ export type FamilyId =
 export type FamilyTag = FamilyId | "raw" | "context"; // raw/context = charted/persisted, never scored by a family scorer
 
 /** ESCAPE HATCH (design §3.1/§3.2): a bespoke scorer or chart builder is NAMED here, and its
- *  tunable constants live in `constants` (registry/descriptor-resident) — never module-level. */
+ *  tunable constants live in `constants` (registry/descriptor-resident) — never module-level. @internal */
 export interface BespokeRef {
   ref: string; // exported fn name, e.g. "scoreDownsideBreak", "buildFxhChart"
   constants: Readonly<Record<string, number | null>>; // null = an absent cut leg (F6 amber)
 }
-/** Δ unit `oatVelocityZ` z-scores: `"log"` (Δlog, scale-free) or `"bp"` (the raw change). */
+/** Δ unit `oatVelocityZ` z-scores: `"log"` (Δlog, scale-free) or `"bp"` (the raw change). @internal */
 export const VELOCITY_MEASURES = ["log", "bp"] as const;
 export type VelocityMeasure = (typeof VELOCITY_MEASURES)[number];
-/** A composite's `BespokeRef`, whose constants may also carry a velocity leg's `measure`. */
+/** A composite's `BespokeRef`, whose constants may also carry a velocity leg's `measure`. @internal */
 export interface CompositeScorerRef {
   ref: string;
   constants: Readonly<Record<string, number | null | VelocityMeasure>>;

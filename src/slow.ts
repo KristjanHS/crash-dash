@@ -62,7 +62,7 @@ export const PERSIST_M = 15;
 export const PERSIST_N = 21;
 /** VIX "bottom decile" cut. */
 export const VIX_LOW_PCTILE = 0.1;
-/** Need a usable window for a 10th-percentile VIX cut. */
+/** Need a usable window for a 10th-percentile VIX cut. @internal */
 export const MIN_VIX_OBS = 60;
 
 /**
@@ -173,6 +173,7 @@ export { quantile, PCT_MIN_OBS, expandingPercentile, percentileRank } from "./pe
  * momentum is late-cycle fuel. 0 if `<80th`, 1 if `≥80th`, 2 if `≥95th`. The
  * latest return is included in its own reference distribution ("its own
  * percentile over the available window"). Pure: no IO.
+ * @internal
  */
 export function scorePriceAccel(qqq: Observation[]): SlowComponent {
   if (qqq.length < MIN_ACCEL_OBS) {
@@ -211,6 +212,7 @@ export function scorePriceAccel(qqq: Observation[]): SlowComponent {
  * its trailing 252d high, ∈(0,1], →1 = at the high) is surfaced top-level as the SAME
  * value the near-high leg's `metric` carries (single-sourced) — the D-B divergence
  * escalator (alert-band.ts) reads it, so it must not be dredged from the leg by id.
+ * @internal
  */
 export function scoreComplacency(
   qqq: Observation[],
@@ -292,6 +294,7 @@ export function scoreComplacency(
  *
  * Pure: no IO, no time. Returns the observability `leg` (never scored into the band) and
  * the `fragileCalm` boolean the fast verdict will later floor on (Stage 5 — NOT here).
+ * @internal
  */
 export function scoreDurationOfCalm(vix: Observation[]): {
   leg: SlowComponent;
@@ -383,6 +386,7 @@ export function scoreSlow(
  * DE-RISK requires the score at the active max (ALL active indicators at 2),
  * reverting to the plain `≥0.75` ratio once enough indicators exist. No active
  * indicators → CALM (degraded slow track). Pure.
+ * @internal
  */
 export function classifyBand(score: number, activeCount: number): SlowBand {
   if (activeCount <= 0) return "CALM";
@@ -460,6 +464,7 @@ function isoMinusDays(iso: string, days: number): string {
  * The live-equivalent windows as of date `t`: QQQ trailing ~2 calendar years, VIX the
  * full history ≤ t. Shared by the backfill and its parity test so they cannot drift.
  * Both inputs must be oldest→newest; outputs preserve that order.
+ * @internal
  */
 export function windowAsOf(
   qqq: Observation[],

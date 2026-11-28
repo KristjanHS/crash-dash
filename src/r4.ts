@@ -57,9 +57,9 @@ const R4_EXIT_RUNG = 6;
 export const R4_EXIT_HY = 3.2;
 /** EXIT (OR-leg b): …VT < 1.00 (both tails clear). */
 export const R4_EXIT_VT = 1.0;
-/** idle-cash ratchet: days-in-cash ≥ 20 → snap to target (gated on `targetRung ≤ R4_EXIT_RUNG`). */
+/** idle-cash ratchet: days-in-cash ≥ 20 → snap to target (gated on `targetRung ≤ R4_EXIT_RUNG`). @internal */
 export const R4_RATCHET_DAYS = 20;
-/** laddered re-entry begins at the most-defensive on-ladder rung (staples), walks toward target. */
+/** laddered re-entry begins at the most-defensive on-ladder rung (staples), walks toward target. @internal */
 export const R4_REENTRY_START = 9;
 
 const MS_PER_CALENDAR_DAY = 86_400_000;

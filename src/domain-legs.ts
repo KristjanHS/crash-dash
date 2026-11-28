@@ -24,6 +24,7 @@ import { CALIB_MAP, type CalibrationCuts } from "./domain-cuts.js";
  * `vel-cusum` — the one-sided CUSUM PERSISTENCE leg — joined 2026-08-08
  * and sits LAST: it is the slowest-moving
  * leg, so on a day where a single-window shock also fires, attribution should name the shock.
+ * @internal
  */
 export const LEG_ORDER = ["op", "vel-op", "evt", "z", "vel-evt", "vel-z", "vel-z-fast", "vel-z-slow", "vel-cusum"] as const;
 export type LegId = (typeof LEG_ORDER)[number];
@@ -214,6 +215,7 @@ interface LegBound {
  * bound in `legBounds` below, and the amber band the detail chart draws on the S⁺ axis
  * (`chart-rail.ts`). Trivial by design: its whole job is to be the single `cusumH` READ in the
  * tree, so a grep for the field returns exactly this line.
+ * @internal
  */
 export function cusumAlarmBound(
   cfg: NonNullable<Thresholds["velocitySigma"]>,
@@ -227,6 +229,7 @@ export function cusumAlarmBound(
  * recurrence itself (`velocityCusumSeries`, domain-fold.ts, FIR-restarts `S⁺` to `h/2` on this crossing). A reset
  * keyed off a second copy of the number would let the accumulator re-arm on a day the RED leg did
  * not fire (or ratchet through one it did), with every test green.
+ * @internal
  */
 export function cusumRedBound(
   cfg: NonNullable<Thresholds["velocitySigma"]>,
@@ -430,6 +433,7 @@ export function activeLegBounds(
  * (`flip` negates orientation for a LOW-polarity LEVEL pair; velocity pairs never
  * flip). Rules out the degenerate amber==red collapse and any inversion, so an
  * unusable pair falls WHOLE to convention — never blended leg-by-leg.
+ * @internal
  */
 export function operativePairUsable(
   amber: number | undefined,

@@ -240,7 +240,7 @@ export function synthCutSeries(
   };
 }
 
-/** Cuts-only view of `computeSynthCutsDetailed` — the shape every scoring site wants. */
+/** Cuts-only view of `computeSynthCutsDetailed` — the shape every scoring site wants. @internal */
 export function computeSynthCuts(
   history: readonly number[],
   prior: Thresholds,

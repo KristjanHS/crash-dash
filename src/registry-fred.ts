@@ -83,26 +83,30 @@ export const F9_SIGMA_MIN_OBS = 252;
  * ⚠ It does NOT size the read any more — a blended id's EWMA arm is unbounded, so both read sites
  * go through `velocitySigmaDepth` (domain-fold.ts). Shortening this constant alone would have cut
  * the EWMA's burn-in with it (measured: σ 5.44% low at a 564-obs read).
+ * @internal
  */
 export const F11_SIGMA_WINDOW = 504;
-/** F11's σ depth floor — mirrors `F9_SIGMA_MIN_OBS`/`PCT_MIN_OBS` (252). Below it the day degrades. */
+/** F11's σ depth floor — mirrors `F9_SIGMA_MIN_OBS`/`PCT_MIN_OBS` (252). Below it the day degrades. @internal */
 export const F11_SIGMA_MIN_OBS = 252;
 
 /**
  * F11's BLENDED σ:
  * σ = `max(EWMA hl, floor × rect F11_SIGMA_WINDOW)`. F9 keeps the rectangular estimator.
+ * @internal
  */
 export const F11_SIGMA_EWMA_HALF_LIFE = 125;
 /**
  * The rect arm's floor multiple under the blend — 0 would leave the EWMA unfloored. MEASURED (ruling 6):
  * fitted so the floor wins the max on 11.9% of diag-era days, matching the 11.3% the retired rect-1260
  * floor won on the same instrument (`npm run probe:sigma-response -- --id=F11 --floor=`).
+ * @internal
  */
 export const F11_SIGMA_FLOOR = 0.9;
 
 /**
  * F11's FAST Δ horizon — the `vel-z-fast` OR-arm over `max(z@Δ30, z@Δ60)` at the held σ pair
  * (`[USER]` 2026-08-11 off the discharged re-measure gate).
+ * @internal
  */
 export const F11_FAST_VELOCITY_WINDOW = 30;
 
@@ -228,12 +232,14 @@ export const R8_MEAN_POST_INVERSION: PostInversionCooldown = {
  * channel (RATE leading-rate + COINCIDENT vol) share the level+velocity shape,
  * so they all score through the same function. Scope per v4 §11 Path B:
  * F1, F2 (financing) + R1, R2, R3 (leading-rate) + R5 (coincident modifier).
+ * @internal
  */
 // F1 rise-from-trailing-low (Iran playbook Stage-3 credit leg, S3-b ruling 2026-08-15):
 // DISPLAY-ONLY derived block — never scored; `decisionAt`
 // persists its kind/window as the `decision` column.
 export const F1_LOW_RISE_WINDOW = 90;
 // HAND-SET off the plan's measured in-span base (`[USER]` 2026-08-15); in F1 LEVEL units (pct points).
+/** @internal */
 export const F1_LOW_RISE_AMBER = 1.5;
 
 export const INDICATORS: Indicator[] = ([

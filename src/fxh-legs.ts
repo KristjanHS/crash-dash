@@ -22,7 +22,7 @@ import type { Store } from "./store.js";
 
 export type FxhLegs = { usEur: Observation[]; chfUsd: Observation[]; jpyUsd: Observation[] };
 
-/** The three `CMP_FXH_*` store ids in leg order (EURUSD=X, CHF=X, JPY=X). */
+/** The three `CMP_FXH_*` store ids in leg order (EURUSD=X, CHF=X, JPY=X). @internal */
 export const FXH_LEG_IDS = CHART_DESCRIPTOR_OF.FXH!.seriesIds! as readonly [string, string, string];
 
 /**

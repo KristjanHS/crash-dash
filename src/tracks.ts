@@ -22,7 +22,7 @@ import { INDICATORS } from "./registry-fred.js";
 import { dbFirstOrDirect, deepArmSince, needRowsForSeedDepth, tailSince14, type DbFirstCtx, type DbFirstFeedSpec } from "./series-db-first.js";
 
 /** The slow track's R5/VIXCLS DB-first feed spec (stage 4.2, R4/R7 template) — spread into
- *  `scoreSlowTrack`'s `dbFirstOrDirect` ask; the direct arm tests drive `resolveDbFirstArm` with it. */
+ *  `scoreSlowTrack`'s `dbFirstOrDirect` ask; the direct arm tests drive `resolveDbFirstArm` with it. @internal */
 export const R5_SLOW_DB_FIRST_FEED: DbFirstFeedSpec = { id: "R5", needRows: needRowsForSeedDepth() };
 import type { NtfyMessage } from "./ntfy.js";
 import type { AlertRecord, BandField, StoredReading, Store, DegradeEvent, DegradeEffect, CoverageDegrade } from "./store.js";
@@ -236,7 +236,7 @@ function scoreBottomTrack(front: Observation[], back: Observation[]): BottomVerd
 
 /** Context the IO shell passes to each track's `score()` (pension needs the store;
  *  slow needs the run's QQQ closes; bottom needs the shared VIXCLS/VXVCLS legs the run
- *  fetches once via fetchVixTermLegs and threads to both the bottom track AND VT). */
+ *  fetches once via fetchVixTermLegs and threads to both the bottom track AND VT). @internal */
 export interface TrackCtx {
   store: Store;
   qqq: Observation[];

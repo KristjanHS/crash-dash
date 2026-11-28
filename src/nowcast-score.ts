@@ -20,7 +20,7 @@ export function estimatorOf<K extends Estimator["kind"]>(id: string, kind: K): E
   return e as Extract<Estimator, { kind: K }>;
 }
 
-/** The oil ids scored off the extended grid intraday and persisted as estimate rows at EOD (E8: F1 out). */
+/** The oil ids scored off the extended grid intraday and persisted as estimate rows at EOD (E8: F1 out). @internal */
 export const NOWCAST_SCORED_IDS: readonly string[] = idsWhere((e) => e.kind === "carry-log");
 /** Every id that writes `estimated` rows — the EOD sweeps (L4, E3) read this roster. */
 export const ESTIMATE_ROW_IDS: readonly string[] = [...ESTIMATORS.keys()];

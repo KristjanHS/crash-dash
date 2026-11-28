@@ -94,6 +94,7 @@ if (MA_WINDOW <= RET_WINDOW) {
 // and a violation is SILENT: negative index → undefined → d20 = NaN → every `NaN <= cut` is false
 // → the id scores GREEN forever with no throw and a green suite. Assert PER DESCRIPTOR at load, so
 // a second id (FDX) on this route inherits the guard rather than adding a second module `throw`.
+/** @internal */
 export function assertRatioVsMaWindows(id: string, cfg: RatioVsMaConfig): void {
   if (cfg.maWindow <= cfg.retWindow) {
     throw new Error(`[${id}] maWindow (${cfg.maWindow}) must exceed retWindow (${cfg.retWindow})`);
@@ -271,6 +272,7 @@ export function breadthBandRanked(qqq: Observation[], qqqe: Observation[]): bool
   return alignByDate(qqq, qqqe).a.length >= BREADTH_MIN_CLOSES;
 }
 
+/** @internal */
 export function scoreBreadth(indicator: Indicator, qqq: Observation[], qqqe: Observation[]): Reading {
   const { a: q } = alignByDate(qqq, qqqe);
   // Below the rankable window the band cannot form; throw the "need N aligned closes" guard rather
@@ -314,6 +316,7 @@ export function hcxBasketSeries(bySymbol: Record<string, Observation[]>): Observ
  * ratio), so even a 1987-scale −23% market day moves it well under 1.5× — every REAL daily step is
  * below 4×, while a base re-anchor is an order of magnitude above it (17.75×). 4× is thus safely
  * above any session move and far below any base break; no real chained-index return can reach it.
+ * @internal
  */
 export const CHAIN_BREAK_RATIO = 4;
 
@@ -481,7 +484,7 @@ export function scoreRatioVsMa(indicator: Indicator, hyg: Observation[], lqd: Ob
   return latest(indicator, ratioVsMaReadingSeries(indicator, hyg, lqd), minLen, h.length, "aligned closes");
 }
 
-/** Resolve a return-or-MA config off the indicator id (throws on an unregistered id — `hasOwn` pattern). */
+/** Resolve a return-or-MA config off the indicator id (throws on an unregistered id — `hasOwn` pattern). @internal */
 export function returnOrMaConfig(id: string): ReturnOrMaConfig {
   if (!Object.hasOwn(RETURN_OR_MA_CONFIG_OF, id)) {
     throw new Error(`[returnOrMa] no RETURN_OR_MA_CONFIG_OF entry for id "${id}"`);

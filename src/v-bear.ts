@@ -163,6 +163,7 @@ function tailRedRun(points: SeriesPoint[]): number {
  * GREEN and F2 29 closes ALL RED, it reported "credit RED only 0 closes" and classified
  * `v-shaped` — the behaviour-changing state, on evidence that says the opposite. F1/F2 backfill
  * depth can legitimately diverge, so that was reachable, not theoretical.
+ * @internal
  */
 export function creditDwellCloses(f1: SeriesPoint[], f2: SeriesPoint[]): number | null {
   if (f1.length < BEAR_DWELL_CLOSES || f2.length < BEAR_DWELL_CLOSES) return null;
@@ -259,6 +260,7 @@ export function classifyFallShape(
  * The VALUE is the list and the TYPE is derived from it (the `LEG_ATTRIBUTION_DECLINED_REASONS`
  * pattern in `families.ts`), so a fifth key cannot be added without `FALL_SHAPE_CONFIDENCE_COPY`
  * (a total `Record`) and the wire enum's contract pin noticing.
+ * @internal
  */
 export const FALL_SHAPE_CONFIDENCE_VALUES = ["measured", "conflicting", "no-fall", "dark"] as const;
 

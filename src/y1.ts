@@ -104,7 +104,7 @@ export const Y1_MIN_LEGS = 3;
 /** D4's "one leg below the band floor" — how far MORE DEFENSIVE than `band.hi` the pick may reach.
  *  There is no symmetric aggression reach: `band.lo` is a hard ceiling on aggression. Pinned by
  *  `y1.test.ts` "the candidate set never contains a rung below band.lo and never exceeds band.hi +
- *  Y1_REACH". */
+ *  Y1_REACH". @internal */
 export const Y1_REACH = 1;
 
 /** Switch bar, in cross-sectional standard deviations. Half an sd is the "much-stronger" gate: large
@@ -141,7 +141,7 @@ export const Y1_PERSIST = 5;
  *  (too small degrades spuriously, too large is silent), which is why it is set generous rather than
  *  tight. Methodological, not fitted. Pinned by `y1.test.ts` "an axis spanning more than
  *  Y1_MAX_SPAN_DAYS degrades; at the bound it computes" and, for the pro-rata half, "a short axis is
- *  gated pro-rata — 64 dates over 500 days degrades". */
+ *  gated pro-rata — 64 dates over 500 days degrades". @internal */
 export const Y1_MAX_SPAN_DAYS = 520;
 
 /** Ties in RS below this are treated as equal, and the MORE DEFENSIVE (higher) rung wins —
@@ -304,7 +304,7 @@ const VAM_SKIP = 5;
 
 /** Minimum closes a leg needs to yield a defined `volAdjMom` = `VAM_SKIP + VAM_LOOKBACK + 1` = 69:
  *  the oldest close consulted is `close[t − VAM_SKIP − VAM_LOOKBACK]`, so its index `n − 69` must be
- *  ≥ 0. A leg with fewer closes → `null`, EXCLUDED (never imputed), exactly like `computeLegRs`. */
+ *  ≥ 0. A leg with fewer closes → `null`, EXCLUDED (never imputed), exactly like `computeLegRs`. @internal */
 export const VAM_MIN_OBS = VAM_SKIP + VAM_LOOKBACK + 1;
 
 interface VolAdjMomResult {

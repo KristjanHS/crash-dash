@@ -44,6 +44,7 @@ export { ECDF_WINDOW };
  * exceeds a 20% uncomparable rate inside the span the cell degrades to `warmup` — short-sample-rank
  * is never the fallback — and `npm run probe:leg-percentile-depth` exits 1 first, since it
  * measures the non-null count over exactly this span.
+ * @internal
  */
 export const ECDF_READ_SLACK = 100;
 
@@ -171,6 +172,7 @@ function pillarFingerprintInput(sg: PillarSuperGroup): unknown {
  * EXPORTED FOR TEST, not for callers: the order-insensitivity is the load-bearing half of the
  * vintage's determinism and cannot be observed through `LEG_PILLAR_GENERATOR` (one fixed input,
  * one fixed digest — a hash over insertion-ordered JSON would pin exactly the same literal).
+ * @internal
  */
 export function canonicalJson(value: unknown): string {
   if (Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;

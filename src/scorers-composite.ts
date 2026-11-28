@@ -196,7 +196,7 @@ export function levelBandCuts(
 }
 
 /** ONE source of the per-date `cutKind` fold — `x−y` for "spread", `x/y` otherwise, inner-joined on
- *  date; a spread `meanWindow` then trails the mean, dropping its `meanWindow − 1` head. The unit `readings.value` stores. */
+ *  date; a spread `meanWindow` then trails the mean, dropping its `meanWindow − 1` head. The unit `readings.value` stores. @internal */
 export function ratioSpreadValues(
   desc: RatioSpreadDescriptor,
   a: Observation[],
@@ -217,7 +217,7 @@ export function ratioSpreadValues(
   return { dates: dates.slice(m - 1), values: means };
 }
 
-/** The trailing-mean span `ratioSpreadValues` applies — 1 (identity) unless a spread carries `meanWindow`. */
+/** The trailing-mean span `ratioSpreadValues` applies — 1 (identity) unless a spread carries `meanWindow`. @internal */
 export function ratioSpreadMeanWindow(desc: RatioSpreadDescriptor): number {
   const m = desc.cutKind === "spread" ? (desc.meanWindow ?? 1) : 1;
   if (!Number.isInteger(m) || m < 1) throw new Error(`ratio-spread meanWindow must be a positive integer, got ${m}`);
@@ -345,7 +345,7 @@ export function cgRows(indicator: Indicator, points: Observation[]): Reading[] {
 /** The ONE expression of `ratioSpreadReadingSeries`' `baseOffset`: covers desc.window (a "return"
  *  window > VELOCITY_WINDOW) AND `levelBandHead(lb)` when present — else v[i-w] / NaN cuts read past the
  *  start → silent GREEN. Widened only for level-leg ids, so VT/EURC keep their start dates
- *  byte-for-byte. `ratioSpreadMinLen` derives from it; never restate the max inline. */
+ *  byte-for-byte. `ratioSpreadMinLen` derives from it; never restate the max inline. @internal */
 export function ratioSpreadBaseOffset(desc: RatioSpreadDescriptor): number {
   return Math.max(desc.window ?? VELOCITY_WINDOW, VELOCITY_WINDOW, desc.levelBand ? levelBandHead(desc.levelBand) : 0);
 }
@@ -600,6 +600,7 @@ export interface OatConstants {
  * z states and its leg TOKEN, index-aligned (`undefined` below `base`, the σ warm-up). THE ONE OWNER
  * of the velocity leg's per-day semantics. LEG TOKEN: `vel-z` when the velWindow arm carries the day's state
  * (a tie included), else `vel-z-slow`; none on GREEN. A read-time recompute needs no second feed.
+ * @internal
  */
 export function oatLegSeries(
   values: readonly number[],
@@ -651,7 +652,7 @@ export function moveScoreRows(): number {
 // `scorer.constants`) OR the absolute pair off the indicator's `thresholds` (`fixedLevelState`, the R6 leg).
 // LEG TOKEN: `vel-z`/`vel-z-slow` when velocity carries the day's state (a tie included), else `level`; none on GREEN.
 
-/** Per-day two-leg spread state + leg token off an already-bp series, index-aligned (`undefined` below `base`). */
+/** Per-day two-leg spread state + leg token off an already-bp series, index-aligned (`undefined` below `base`). @internal */
 export function btpLegSeries(
   indicator: Indicator,
   values: readonly number[],
@@ -710,6 +711,7 @@ export function scoreBonosSpread(indicator: Indicator, es10y: Observation[], de1
  * First scored ^MOVE day — shared by `moveLegSeries`/`latestMove`/`readPathHeadRows`/the fixture.
  * Equals `moveScoreRows()` minus CONFIRM_CLOSES, but NOT defined off it: one is a STORED-ROW floor,
  * this a SCORED-DAY offset, and a future leg moves one without the other. The absolute leg never binds.
+ * @internal
  */
 export function moveLegBase(): number {
   const { velWindow, velSigmaWindow } = R6_DESCRIPTOR.scorer.constants;
@@ -719,6 +721,7 @@ export function moveLegBase(): number {
 /**
  * Per-day MOVE state off the raw level series — worst-of the OR'd legs, index-aligned (`undefined`
  * below `base`). The absolute leg rides the same `base`. `oatVelocityZ` owns the velocity offset.
+ * @internal
  */
 export function moveLegSeries(
   indicator: Indicator,
@@ -814,7 +817,7 @@ export function backwardationStreak(vix: Observation[], vix3m: Observation[]): n
   return streak;
 }
 
-/** Streak → State: 10+ RED, 5+ AMBER, else GREEN (EW-11/12). */
+/** Streak → State: 10+ RED, 5+ AMBER, else GREEN (EW-11/12). @internal */
 export function vixTermPersistenceState(streak: number): State {
   return streak >= VT_STREAK_RED ? "RED" : streak >= VT_STREAK_AMBER ? "AMBER" : "GREEN";
 }
@@ -888,7 +891,7 @@ export interface BundConstants {
   escWindow: number;
 }
 
-/** Leg (a): the slope's Δ (pp), two-sided — AMBER at |Δ| ≥ `velAmber`, RED at ≥ `velRed` (both inclusive). */
+/** Leg (a): the slope's Δ (pp), two-sided — AMBER at |Δ| ≥ `velAmber`, RED at ≥ `velRed` (both inclusive). @internal */
 export function bundVelocityState(delta: number, c: BundConstants = BUND_DESCRIPTOR.scorer.constants): State {
   const d = Math.abs(delta);
   if (d >= c.velRed) return "RED";
@@ -896,12 +899,12 @@ export function bundVelocityState(delta: number, c: BundConstants = BUND_DESCRIP
   return "GREEN";
 }
 
-/** Leg (b): ONE cut — AMBER below the RESOLVED `amber` (strict `<`, `ratioSpreadState`'s spread edge), else GREEN. */
+/** Leg (b): ONE cut — AMBER below the RESOLVED `amber` (strict `<`, `ratioSpreadState`'s spread edge), else GREEN. @internal */
 export function bundLevelState(slope: number, amber: number): State {
   return slope < amber ? "AMBER" : "GREEN";
 }
 
-/** Leg (c): RED when the 2y Δ ≤ −`escDrop2y` and the slope was < 0 at most `escWindow` obs ago (today = 0). */
+/** Leg (c): RED when the 2y Δ ≤ −`escDrop2y` and the slope was < 0 at most `escWindow` obs ago (today = 0). @internal */
 export function bundResteepState(d2y: number, obsSinceInversion: number, c: BundConstants = BUND_DESCRIPTOR.scorer.constants): State {
   return d2y <= -c.escDrop2y && obsSinceInversion <= c.escWindow ? "RED" : "GREEN";
 }
@@ -980,6 +983,7 @@ export function scoreCurve(indicator: Indicator, d: CurveDescriptor, y10: Observ
 /**
  * Raw FX-haven state from the worst-of 20d haven-bid move. Direction HIGH: Red ≥ FXH_RED, Amber ≥
  * FXH_AMBER, both edges inclusive (matching scoreOil's return bands).
+ * @internal
  */
 export function fxHavenState(
   havenMove: number,
@@ -1072,6 +1076,7 @@ export function scoreFxHaven(
 /**
  * Raw GB state from the participation fraction (0..1). Direction LOW (thin participation = danger):
  * Red < GB_RED, Amber < GB_AMBER, both edges strict `<`.
+ * @internal
  */
 export function globalBreadthState(
   participation: number,
@@ -1516,6 +1521,7 @@ function* ecyJoinWalk(
  * the expanding percentile RANK in its STRICT-PREFIX history; `level` = ECY ×100 (%). `state` is the
  * GATE-LESS base (expensive→AMBER) — GT's trend gate applies only at the live tail (`scoreEcy`). Rows
  * under ECY_MIN_OBS prior months emit nothing. Pure; [] on empty/disjoint.
+ * @internal
  */
 export function ecyReadingSeries(indicator: Indicator, f7: Observation[], dfii10: Observation[]): Reading[] {
   const out: Reading[] = [];
@@ -1528,7 +1534,7 @@ export function ecyReadingSeries(indicator: Indicator, f7: Observation[], dfii10
 }
 
 /** The ECY rows a run stores `estimated`: the newest (open) month always, a closed one while its last DFII10 obs is a
- *  Treasury head — the gap-fill writes a closed month FINAL once that obs is official (`GAP_FILL_DAYS_OF`). */
+ *  Treasury head — the gap-fill writes a closed month FINAL once that obs is official (`GAP_FILL_DAYS_OF`). @internal */
 export function ecyEstimateDates(readings: readonly Reading[], dfii10: Observation[]): string[] {
   const byMonth = lastPerMonth(dfii10);
   return readings.filter((r, i) => i === readings.length - 1 || byMonth.get(r.date.slice(0, 7))?.estimated === true).map((r) => r.date);
@@ -1545,6 +1551,7 @@ export function ecyRows(indicator: Indicator, f7: Observation[], dfii10: Observa
  * The exact AMBER boundary of `ecyBaseState` over an ASCENDING strict-prefix history — found with the
  * SAME `count / n ≤ p` comparison the rank uses, so a float edge can't split the two. NOT a type-7
  * `quantile` (interpolation would draw the line a fraction above the real boundary). Empty → NaN.
+ * @internal
  */
 export function ecyExpensiveCut(sorted: readonly number[]): number {
   const n = sorted.length;

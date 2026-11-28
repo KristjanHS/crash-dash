@@ -130,6 +130,7 @@ function stableStringify(v: unknown): string {
  * bands/labels stripped), first 12 hex chars.
  * `logicVersion` is also stripped — it is its own vintage axis (the `logic_version` column),
  * and an absent value must hash identically to an explicit 1.
+ * @internal
  */
 export function configHashFor(i: Indicator): string {
   const hashed: Record<string, unknown> = { ...i };

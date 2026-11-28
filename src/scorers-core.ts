@@ -632,7 +632,7 @@ export function maxOf(values: number[], start: number, end: number): number {
   return m;
 }
 
-/** Min of values[start..end] inclusive. */
+/** Min of values[start..end] inclusive. @internal */
 export function minOf(values: number[], start: number, end: number): number {
   let m = at(values, start);
   for (let i = start + 1; i <= end; i++) if (at(values, i) < m) m = at(values, i);
@@ -946,6 +946,7 @@ export function combineLevelVelocity(
  * every quiet short-history stretch (the first ~3 years of a backfill). RED therefore requires a
  * RESOLVABLE peak; a red run-up on short history caps at the AMBER the velocity leg carries. A
  * future `"and"` + trailing-peak id must NOT use this helper's degrade — it needs `levelGateOn`'s.
+ * @internal
  */
 export function levelGateState(values: number[], i: number, window: number, proximity = 1): State {
   if (i - window < 0) return "GREEN";
@@ -1136,6 +1137,7 @@ export function scoreOil(indicator: Indicator, observations: Observation[]): Rea
 /**
  * Post-inversion floor rung (R1/R8 shared): per-day AMBER-floor flags over the RAW closes. Runs count
  * PRESENT obs — a date gap neither breaks nor extends a run; the knob values live on the registry object.
+ * @internal
  */
 export function postInversionFloorSeries(values: number[], cfg: PostInversionCooldown, dates: string[]): boolean[] {
   const cuts = postInversionCutSeries(values, cfg, dates);
@@ -1221,7 +1223,7 @@ export function postInversionCutSeries(
 
 /** The R8 mean-space cut pair (null = unarmed/released; red also null during warm-up) — the ONE
  *  expression the scorer AND the drawn /lab lines (`api/series.ts` `bandCuts`) read, over the SAME
- *  means, so score and line cannot drift. `means`/`meanDates` are the trailing-mean series. */
+ *  means, so score and line cannot drift. `means`/`meanDates` are the trailing-mean series. @internal */
 export function meanLevelCutSeries(
   means: number[],
   meanDates: string[],
@@ -1258,7 +1260,7 @@ export function steepenerBullSeries(
 /** The short leg's SIGNED change over the trailing `w` obs (`shorts[i] - shorts[i-w]`), null until
  *  the window has filled. Negative = the short leg FELL (bull steepening). The ONE window walk: the
  *  gate flags above compare it, and the detail chart plots it as its own line so the escalation and
- *  drawdown gates are a visible crossing rather than an invisible AND-condition. */
+ *  drawdown gates are a visible crossing rather than an invisible AND-condition. @internal */
 export function signedShortMoveSeries(shorts: number[], w: number): Array<number | null> {
   return shorts.map((v, i) => (i < w ? null : v - at(shorts, i - w)));
 }
@@ -1332,7 +1334,7 @@ export function drawdownCutSeries(values: number[], cfg: DrawdownLeg): Array<num
 /** ALWAYS-ON drawdown-leg AMBER flags aligned to `observations` — the close below the cut above AND
  *  the short leg moved ≥ `gateBp` bp in EITHER direction over `gateWindow` obs (the shared gate walk,
  *  run direction-agnostically). Independent of the post-inversion rung's arming by construction, and
- *  AMBER-only: it is fed to `withPostInversionFloor` as `amberFires`, which no escalation reads. */
+ *  AMBER-only: it is fed to `withPostInversionFloor` as `amberFires`, which no escalation reads. @internal */
 export function drawdownLegSeries(
   observations: Observation[],
   shortLeg: Observation[] | undefined,

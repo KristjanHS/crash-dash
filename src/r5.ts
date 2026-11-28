@@ -46,7 +46,7 @@ import type { SeriesPoint } from "./store.js";
 /** Lookback windows, in OBSERVATIONS (closes), evaluated as an ensemble and reduced by `max` — never
  *  a single lookback, per the repo's E1/S4 discipline, and biased toward the more cautious (higher)
  *  read. The method card's own stated "~20–60d" span. Pinned by `r5.test.ts` "a series calm for 60d
- *  but violent in the last 20 uses the 20d (higher) vol". */
+ *  but violent in the last 20 uses the 20d (higher) vol". @internal */
 export const R5_WINDOWS = [20, 60] as const;
 
 /** Target annualized volatility. 15%/yr ≈ the long-run realized vol of a broad global equity book,
@@ -65,7 +65,7 @@ const R5_MAX_GROSS = 1.0;
 
 /** Quantization step for `gross`. Coarsening the output means a 1%-vol wiggle cannot produce a daily
  *  sizing decision — the card's named failure mode ("every day a sizing decision → more override
- *  opportunities"). Pinned by `r5.test.ts` "gross is always a multiple of R5_GROSS_STEP". */
+ *  opportunities"). Pinned by `r5.test.ts` "gross is always a multiple of R5_GROSS_STEP". @internal */
 export const R5_GROSS_STEP = 0.05;
 
 /** Minimum observations before R5 may emit a number, = `max(R5_WINDOWS)`: the longest window must be
@@ -83,7 +83,7 @@ export const R5_MIN_OBS = Math.max(...R5_WINDOWS);
  *  multi-week stretch does. ONE-SIDED-VERIFIABLE (too small warms up spuriously, too large is
  *  silent), which is why it is set generous rather than tight. Methodological, not fitted
  *  ("no backtest as arbiter"). Pinned by `r5.test.ts` "a 60-close series spanning more than
- *  R5_MAX_SPAN_DAYS degrades; at the bound it sizes". */
+ *  R5_MAX_SPAN_DAYS degrades; at the bound it sizes". @internal */
 export const R5_MAX_SPAN_DAYS = 120;
 
 const MS_PER_DAY = 86_400_000;

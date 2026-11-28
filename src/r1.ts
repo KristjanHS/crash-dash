@@ -34,7 +34,7 @@ const R1_STEP_UP = 1;
  *  the repo's existing `CONFIRM_CLOSES = 2` leg-level convention (`danger-engine.ts`), so R1 does
  *  not introduce a third confirmation speed. Pinned by `r1.test.ts` "re-risk holds at priorRung
  *  while reriskConfirmCount < R1_UP_CONFIRM and advances at exactly R1_UP_CONFIRM" — it asserts the
- *  literal counts 1 (hold) and 2 (advance), so a value of 3 goes red on the advance half. */
+ *  literal counts 1 (hold) and 2 (advance), so a value of 3 goes red on the advance half. @internal */
 export const R1_UP_CONFIRM = 2;
 
 /** The most-defensive ON-ladder rung — `LADDER.length` = 9 (Staples). The retreat's destination is
