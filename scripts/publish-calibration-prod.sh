@@ -62,7 +62,11 @@ export SUPABASE_URL SUPABASE_SERVICE_KEY
 # `[publish-calibration] wrote|skipped|::warning:: stale` line on every path, so a run that
 # produced none (entry guard stopped firing, zero params mapped, output swallowed) FAILS here
 # instead of reading as a green publish in the ship chain.
-out="$(npx tsx scripts/backtest/publish-calibration.ts "$@" 2>&1)"; rc=$?
+# The tree's own tsx bin when installed: `npx` loads npm's install/registry stack (~200 modules, ~350 ms)
+# before it ever looks in node_modules/.bin. No install → `npx tsx`.
+TSX=("$PWD/node_modules/.bin/tsx")
+[ -x "${TSX[0]}" ] || TSX=(npx tsx)
+out="$("${TSX[@]}" scripts/backtest/publish-calibration.ts "$@" 2>&1)"; rc=$?
 printf '%s\n' "$out"
 [ "$rc" -eq 0 ] || exit "$rc"
 printf '%s\n' "$out" | grep -qE '^\[publish-calibration\] (wrote|skipped|::warning:: stale)' || {

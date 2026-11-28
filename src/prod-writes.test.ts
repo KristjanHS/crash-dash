@@ -199,7 +199,7 @@ describe("switch location under git", () => {
 // End to end over COPIES of the wired scripts in the scratch checkout (no git; PROD_CONFIG_DIR = a scratch prod config
 // whose .env.prod holds the stamp's three keys, plus a fake Vercel link): a refused run must stop before the Vercel CLI (a
 // stub that records each call) is ever invoked. The deploy stamps its payload before the CLI, so the scratch checkout
-// carries the real stamp script (+ this repo's node_modules for `npx tsx`), every run gets a fresh placeholder payload,
+// carries the real stamp script (+ this repo's node_modules, whose tsx bin it runs), every run gets a fresh placeholder payload,
 // and `STAMP_ENV` is the fake prod config it stamps from — written to the file, and also the runs' default env (an env
 // value equal to the file's passes; the deploy reads all three from the file alone).
 describe("wired prod writers", () => {
@@ -228,6 +228,11 @@ describe("wired prod writers", () => {
     const stub = join(tmp, "vercel-stub");
     writeFileSync(stub, `#!/usr/bin/env bash\necho "$*" >> "${calls}"\nexit 1\n`);
     chmodSync(stub, 0o755);
+    // A failing `npx` first on PATH: the checkout has node_modules, so the stamp must run its tsx bin directly —
+    // an `npx tsx` fallback would fail the stamp ("stamp refused") instead of paying npm's ~350 ms load per deploy.
+    mkdirSync(join(tmp, "npx-bin"));
+    writeFileSync(join(tmp, "npx-bin", "npx"), `#!/usr/bin/env bash\necho "npx called: $*" >&2\nexit 1\n`);
+    chmodSync(join(tmp, "npx-bin", "npx"), 0o755);
   });
   /** The deploy tree (the checkout itself refuses), rebuilt per run: a stamped one would refuse its second stamp. */
   const payload = () => {
@@ -244,7 +249,7 @@ describe("wired prod writers", () => {
     setSwitch(file);
     const r = spawnSync("bash", [join(repo, "scripts", script), ...(arg ? [arg] : [])], {
       cwd,
-      env: { ...baseEnv(prodWrites), PROD_CONFIG_DIR: cfg, ...env, VERCEL_BIN: join(tmp, "vercel-stub"), GIT_CEILING_DIRECTORIES: tmp },
+      env: { ...baseEnv(prodWrites), PATH: `${join(tmp, "npx-bin")}:${process.env.PATH ?? ""}`, PROD_CONFIG_DIR: cfg, ...env, VERCEL_BIN: join(tmp, "vercel-stub"), GIT_CEILING_DIRECTORIES: tmp },
       encoding: "utf8",
       timeout: 20_000,
     });
@@ -257,7 +262,7 @@ describe("wired prod writers", () => {
     expect(refused).toMatchObject({ status: 1, cliCalled: false });
   });
 
-  // One run per test: each spawns the real stamp (`npx tsx`), ~0.5 s.
+  // One run per test: each spawns the real stamp (the tsx bin), ~0.2 s.
   it.each<[string, string | null, string | undefined]>([
     ["file `on`", "on\n", undefined],
     ["no file", null, undefined],

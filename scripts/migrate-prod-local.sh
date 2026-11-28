@@ -108,7 +108,11 @@ if [ -z "$gate_versions" ]; then
   if [ -n "${SHIP_APPLIED_MIGRATIONS:-}" ]; then : > "$SHIP_APPLIED_MIGRATIONS"; fi
   echo "✓ nothing pending — prod already up to date"; exit 0
 fi
-npx tsx scripts/check-destructive-migrations.ts "${files[@]}"
+# The checkout's own tsx bin when installed: `npx` loads npm's install/registry stack (~200 modules, ~350 ms)
+# before it ever looks in node_modules/.bin. No install → `npx tsx`.
+TSX=("$REPO/node_modules/.bin/tsx")
+[ -x "${TSX[0]}" ] || TSX=(npx tsx)
+"${TSX[@]}" scripts/check-destructive-migrations.ts "${files[@]}"
 
 echo "▶ Apply pending migrations to prod"
 npx --yes supabase db push --include-all --yes --password "$SUPABASE_DB_PASSWORD"

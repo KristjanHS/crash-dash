@@ -77,8 +77,12 @@ echo "▶ deploying from $SRC, linked via $CFG_DIR/.vercel"
 # Stamp the checkout's prod config over the payload's placeholders — after ship.sh's bundle + minify, and before
 # any network call (CLI resolve, whoami, roster). Refuses (nothing written) on a missing key or any placeholder
 # left: never ships one.
+# The checkout's own tsx bin when installed: `npx` loads npm's install/registry stack (~200 modules, ~350 ms)
+# before it ever looks in node_modules/.bin. No install → `npx tsx`.
+TSX=("$REPO/node_modules/.bin/tsx")
+[ -x "${TSX[0]}" ] || TSX=(npx tsx)
 SUPABASE_URL="$CFG_SUPABASE_URL" SUPABASE_ANON_KEY="$CFG_SUPABASE_ANON_KEY" PROD_ALIAS="$CFG_PROD_ALIAS" \
-  npx tsx "$REPO/scripts/stamp-deploy-config.ts" "$SRC" || { echo "::error:: deploy config stamp refused — nothing was deployed." >&2; exit 1; }
+  "${TSX[@]}" "$REPO/scripts/stamp-deploy-config.ts" "$SRC" || { echo "::error:: deploy config stamp refused — nothing was deployed." >&2; exit 1; }
 
 # ── Deploy, then wait in the open ─────────────────────────────────────────────────────────
 # A blocking `vercel deploy` prints "Building…" the instant the upload lands — even while the
@@ -323,7 +327,7 @@ echo "✓ deployed to Vercel prod — $DEPLOY_URL → $PROD_ALIAS"
 # one is 5–10 s). Touch `warmUrls()` (scripts/probe-load-budget.ts — the one list: the public /overview
 # set only, signed-in pages are not warmed), paced, non-fatal; only the deploy host's region warms.
 if [ -n "$PROD_ALIAS" ] && [ "${SKIP_WARM:-0}" != "1" ]; then
-  WARM_URLS="$(cd "$REPO" && npx tsx scripts/probe-load-budget.ts --print-urls)" || WARM_URLS=""
+  WARM_URLS="$(cd "$REPO" && "${TSX[@]}" scripts/probe-load-budget.ts --print-urls)" || WARM_URLS=""
   [ -n "$WARM_URLS" ] || echo "  warm ✗ --print-urls failed (non-fatal)" >&2
   while IFS= read -r path; do
     [ -n "$path" ] || continue
