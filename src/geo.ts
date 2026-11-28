@@ -11,6 +11,7 @@
 
 import geoConfig from "../config.json" with { type: "json" };
 
+/** @internal */
 export interface GeoFlag {
   id: string; // e.g. "G4-hormuz"
   label: string; // human-readable, for logs / future payload

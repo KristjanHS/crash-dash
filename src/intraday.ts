@@ -17,6 +17,7 @@ import { isoDay } from "./dates.js";
  * earlier. At/after it every daily bar this repo fetches is
  * final — the scheduled 22:00 cron is always a full EOD run (a feed whose own session closes earlier: `SESSION_CLOSE_UTC_MIN`). The sovereign-quote cards' daily bars lag to D+1, so their
  * EOD reading is scored off today's live-quote head and stored `estimated` (`stampEstimateSourced`) until the bar lands.
+ * @internal
  */
 export const INTRADAY_CUTOFF_UTC_MIN = 21 * 60 + 5; // 21:05 UTC
 
@@ -118,7 +119,7 @@ export function intradayOverlay<P extends { date: string; runAt?: string }>(newe
  */
 export const GAP_FILL_DAYS = 14;
 
-/** Relative tolerance of the official write-back's value compare: prod rows differ from a re-derived value by ~1e-14. */
+/** Relative tolerance of the official write-back's value compare: prod rows differ from a re-derived value by ~1e-14. @internal */
 export const VALUE_EPS = 1e-9;
 export const sameValue = (a: number, b: number): boolean => Math.abs(a - b) <= VALUE_EPS * Math.max(1, Math.abs(b));
 

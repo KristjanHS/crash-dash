@@ -36,7 +36,7 @@ export interface SvenssonParams {
   t2: number;
 }
 
-/** Svensson zero-coupon yield z(m), m in years, continuously compounded (GSW eq. 22). */
+/** Svensson zero-coupon yield z(m), m in years, continuously compounded (GSW eq. 22). @internal */
 export function svenssonZero(p: SvenssonParams, m: number): number {
   const term = (tau: number): number => (1 - Math.exp(-m / tau)) / (m / tau);
   return (
@@ -47,7 +47,7 @@ export function svenssonZero(p: SvenssonParams, m: number): number {
   );
 }
 
-/** The near-term forward leg: the implied 1.5y→1.75y forward rate off one date's params. */
+/** The near-term forward leg: the implied 1.5y→1.75y forward rate off one date's params. @internal */
 export function nearTermForward(p: SvenssonParams): number {
   return (1.75 * svenssonZero(p, 1.75) - 1.5 * svenssonZero(p, 1.5)) / 0.25;
 }
@@ -62,6 +62,7 @@ const GSW_PARAM_COLUMNS = ["BETA0", "BETA1", "BETA2", "BETA3", "TAU1", "TAU2"] a
  * `Date,BETA0,…` header — locate the header line, then the param columns BY NAME. Throws on a
  * missing header/column or zero parseable rows (fail-loud ruling above); rows with NA params or
  * a non-finite fwd are skipped.
+ * @internal
  */
 export function parseGswCsv(csv: string): Observation[] {
   const lines = csv.split("\n");
@@ -105,7 +106,7 @@ export function parseGswCsv(csv: string): Observation[] {
   return observationsByDate(byDate);
 }
 
-/** Full-history `fwd` series off the live CSV. Throws on non-OK / parse failure — never imputes. */
+/** Full-history `fwd` series off the live CSV. Throws on non-OK / parse failure — never imputes. @internal */
 export async function fetchGswForward({ fetchImpl }: { fetchImpl?: FetchLike } = {}): Promise<Observation[]> {
   const csv = await fetchText(GSW_CSV_URL, {
     fetchImpl,
@@ -116,7 +117,7 @@ export async function fetchGswForward({ fetchImpl }: { fetchImpl?: FetchLike } =
   return parseGswCsv(csv);
 }
 
-/** NTFS = fwd − DGS3MO, inner-joined per date (a date missing either leg drops). */
+/** NTFS = fwd − DGS3MO, inner-joined per date (a date missing either leg drops). @internal */
 export function ntfsFromLegs(fwd: Observation[], dgs3mo: Observation[]): Observation[] {
   const { dates, a, b } = alignByDate(fwd, dgs3mo);
   return dates.map((date, i) => ({ date, value: a[i]! - b[i]! }));

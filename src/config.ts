@@ -8,7 +8,7 @@
  */
 import { createHash, timingSafeEqual } from "node:crypto";
 
-/** Every env var the app, its handlers and its scripts read. Mirrors the `KEY=` lines of `.env.example`. */
+/** Every env var the app, its handlers and its scripts read. Mirrors the `KEY=` lines of `.env.example`. @internal */
 export const ENV_KEYS = [
   "SUPABASE_URL",
   // NOT a typo — do NOT "fix" to `_ROLE_`: the app reads SUPABASE_SERVICE_KEY (the manual Vercel-prod var).

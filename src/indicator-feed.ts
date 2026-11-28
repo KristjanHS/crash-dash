@@ -51,6 +51,7 @@ export const fetchesFromFred = (ind: Indicator): boolean => FEED_OF[ind.id] !== 
  * The feed and the exact options one indicator's fetch takes — pure, so the wiring is assertable
  * without a network seam. `lookbackDays` rides the DEEP arm only (prices.ts): a shallow call would
  * silently clamp a σ id to the 2y default window.
+ * @internal
  */
 export function indicatorFetchPlan(ind: Indicator, now: Date, opts: { fullHistory?: boolean } = {}): IndicatorFetchPlan {
   if (FEED_OF[ind.id] === "ntfs") return { feed: "ntfs", opts: undefined };

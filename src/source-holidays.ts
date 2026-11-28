@@ -14,7 +14,7 @@ const legIdsOn = (onVenue: (ticker: string) => boolean): string[] => legCloseQuo
 
 /** The static tables (`market-closures.ts`, the registry-free leaf the slot-lag path reads) plus the venue-derived
  *  display lines: `LEGP_*` legs on their ticker's exchange and the SB NAV pair, which links only on an ACWI close
- *  (`chainLinkDate`). An id listed in two calendars closes on their union. */
+ *  (`chainLinkDate`). An id listed in two calendars closes on their union. @internal */
 export const MARKET_CALENDARS: Record<Market, { holidays: readonly string[]; ids: readonly string[] }> = {
   ...MARKET_CLOSURES,
   US: { ...MARKET_CLOSURES.US, ids: [...MARKET_CLOSURES.US.ids, ...legIdsOn((t) => !/\.(DE|L)$/.test(t)), SB_STRAT_ID, SB_BENCH_ID] },

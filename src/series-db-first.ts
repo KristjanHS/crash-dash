@@ -81,7 +81,7 @@ export const seamRunAt = (runAt: string): string => new Date(Date.parse(runAt) -
  *  call, so the direct arm tests (`db-first-feeds.test.ts`) and the site read ONE object. */
 export type DbFirstFeedSpec = Pick<DbFirstOpts, "id" | "needRows" | "minRows" | "warmup" | "readOnly" | "holdFinal">;
 
-/** The arm's store-read cap in rows: `needRows`, widened by `minRows`. */
+/** The arm's store-read cap in rows: `needRows`, widened by `minRows`. @internal */
 export const dbFirstReadCap = (feed: DbFirstFeedSpec): number => Math.max(feed.needRows, feed.minRows ?? 0);
 
 /** What one arm resolution read: the decision, the stored-date count behind it (`have=` of the §4.2
@@ -116,6 +116,7 @@ export async function resolveDbFirstArm(store: ReadStore, feed: DbFirstFeedSpec,
   return { arm: have < feed.needRows ? "deep" : "tail", have, merged, stored };
 }
 
+/** @internal */
 export async function dbFirstSeries(store: Store, opts: DbFirstOpts): Promise<DbFirstResult> {
   const { arm, have, merged, stored } = await resolveDbFirstArm(store, opts, opts.intraday === true);
   const fetched = arm === "deep" ? await opts.fetchDeep() : await opts.fetchTail();

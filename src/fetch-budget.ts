@@ -19,7 +19,7 @@
 
 import { setMaxListeners } from "node:events";
 
-/** `vercel.json` `functions["api/cron/*.ts"].maxDuration` × 1000 — pinned by `api/deploy-budget.test.ts`. */
+/** `vercel.json` `functions["api/cron/*.ts"].maxDuration` × 1000 — pinned by `api/deploy-budget.test.ts`. @internal */
 export const RUN_MAX_DURATION_MS = 300_000;
 
 /**
@@ -41,10 +41,10 @@ export const BUDGET_ABORT_SCOPE = "[fetch-budget] run-wide fetch deadline fired"
 /** Anchor + this = the cron's last moment for any DB call, 5 s inside the `RUN_MAX_DURATION_MS` kill. */
 export const RUN_HARD_DEADLINE_MS = RUN_MAX_DURATION_MS - 5_000;
 
-/** The post-tail trace write's own deadline (`openTraceWindow`) — 1 s inside the kill. */
+/** The post-tail trace write's own deadline (`openTraceWindow`) — 1 s inside the kill. @internal */
 export const RUN_TRACE_DEADLINE_MS = RUN_MAX_DURATION_MS - 1_000;
 
-/** Ceiling on the cold-start offset `process.uptime()` may charge (observed cold start ~9 s). */
+/** Ceiling on the cold-start offset `process.uptime()` may charge (observed cold start ~9 s). @internal */
 export const MAX_COLD_OFFSET_MS = 15_000;
 
 let deadline: AbortSignal | null = null;

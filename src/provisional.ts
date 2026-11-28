@@ -60,6 +60,7 @@ import type { NtfyMessage } from "./ntfy.js";
  * reached this set. (It also LOST its `CARD_ONLY_GROUPS` "credit" display row on 2026-08-06 to
  * `CQS` — but that row was only ever a card
  * overlay and never made it a family member either way.)
+ * @internal
  */
 export const PROVISIONAL_IDS: ReadonlySet<string> = new Set(
   [
@@ -92,6 +93,7 @@ const PROVISIONAL_PRIORITY = 3;
  * OMITTED at zero (a symmetric-zero vintage rendered the gibberish "awaiting 0-close confirm")
  * and renders the tier for ids carrying one — unreachable today either way: under instant-up
  * (2026-08-26) no candidate exists to message.
+ * @internal
  */
 export function buildProvisionalMessage(reading: Reading, asOf: string): NtfyMessage {
   const id = reading.indicator.id;

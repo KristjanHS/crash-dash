@@ -90,7 +90,7 @@ export function isLicensedSource(source: string): boolean {
 }
 
 /** R6: does this indicator's served value carry a licensed series? A composite: exactly one of its ≥2
- *  declared inputs is licensed; one declaring no inputs fails closed ⇒ licensed. */
+ *  declared inputs is licensed; one declaring no inputs fails closed ⇒ licensed. @internal */
 export function isLicensed(ind: Indicator): boolean {
   const source = levelSourceOf(ind);
   if (source !== null) return isLicensedSource(source);

@@ -53,6 +53,7 @@ function toIsoEbpDate(raw: string): string {
  * format is NOT stable). We resolve the `date` and `ebp` columns BY
  * HEADER NAME — not fixed indices — so a column reorder upstream can't silently
  * map us onto gz_spread or est_prob. Non-numeric / short rows are dropped.
+ * @internal
  */
 export function parseEbpCsv(csv: string): Observation[] {
   const lines = csv.trim().split("\n");

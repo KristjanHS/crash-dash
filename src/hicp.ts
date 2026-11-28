@@ -20,7 +20,7 @@ function byMonth(obs: readonly Observation[]): Map<string, number> {
   return new Map(obs.map((o) => [monthOf(o.date), o.value]));
 }
 
-/** y/y % change, dated the reference month's 1st (FRED's own dating). */
+/** y/y % change, dated the reference month's 1st (FRED's own dating). @internal */
 export function hicpYoY(index: readonly Observation[]): Observation[] {
   const m = byMonth(index);
   return [...m].flatMap(([ym, v]) => {

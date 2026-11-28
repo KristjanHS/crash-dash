@@ -29,6 +29,7 @@ export function isoDay(d: Date): string {
  * its own calendar agrees. Per-source overrides go on the indicator (`feedTimeZone`), for feeds on
  * a genuinely different national calendar — the European-published ones (ECB, sovereign-quote Bund)
  * carry `Europe/Berlin`; the enumeration test in `registry.test.ts` pins that population.
+ * @internal
  */
 export const FEED_CALENDAR_TZ = "America/Chicago";
 

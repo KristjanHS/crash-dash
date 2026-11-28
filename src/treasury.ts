@@ -65,6 +65,7 @@ function usDateToIso(cell: string): string | undefined {
  * Treasury curve CSV → one `Observation[]` per tenor, oldest→newest, keyed by the UPPERCASED column
  * header. Holidays are absent rows and discontinued/unpublished tenors are blank or `N/A` cells — both
  * are skipped per-cell, so one gap never truncates a sibling tenor. Zero rate rows throws.
+ * @internal
  */
 export function parseTreasuryCurveCsv(text: string): Map<string, Observation[]> {
   const lines = text.split(/\r?\n/).filter((l) => l.trim() !== "");
@@ -143,6 +144,7 @@ export function stopTreasuryMemo(): void {
  * A REJECTED fetch is evicted from the memo (`fredMemo`'s contract) — caching the failure would forfeit
  * same-day freshness for every remaining id that run, on one blip, with no retry. The returned map is a
  * fresh copy down to the `Observation`s, so no caller can poison the memo.
+ * @internal
  */
 export async function fetchTreasuryCurveSafe(
   curve: TreasuryCurve,

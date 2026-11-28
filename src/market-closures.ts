@@ -70,7 +70,7 @@ const weekdayClosures = (years: readonly number[], closed: (iso: string) => bool
 
 /** US federal holidays (OPM) 2026–2027, observed weekdays — the days FRED posts nothing (the St. Louis Fed is
  *  closed), i.e. `PUBLISHER_CLOSURES.FRED`. SIFMA's full closes (`US_RATES` below) are this list MINUS
- *  {@link SIFMA_OPEN_FEDERAL}: Columbus + Veterans Day in, Good Friday out, but not a Saturday-New-Year Friday. */
+ *  {@link SIFMA_OPEN_FEDERAL}: Columbus + Veterans Day in, Good Friday out, but not a Saturday-New-Year Friday. @internal */
 export const US_FEDERAL_HOLIDAYS: readonly string[] = [
   "2026-01-01", "2026-01-19", "2026-02-16", "2026-05-25", "2026-06-19", "2026-07-03", "2026-09-07", "2026-10-12",
   "2026-11-11", "2026-11-26", "2026-12-25",
@@ -165,6 +165,7 @@ export const MARKET_CLOSURES: Record<Market, { holidays: readonly string[]; ids:
  * closure EXCEPT a Saturday-New-Year Friday (2027-12-31: Treasuries trade, FRED posts nothing), so for it the entry
  * matters only on that day — it matters every holiday for ICE BofA (prints Columbus Day, posted a day late), Henry
  * Hub and the weekly NFCI.
+ * @internal
  */
 export const PUBLISHER_CLOSURES: Record<"FRED", { holidays: readonly string[]; ids: readonly string[] }> = {
   FRED: {
@@ -174,7 +175,7 @@ export const PUBLISHER_CLOSURES: Record<"FRED", { holidays: readonly string[]; i
   },
 };
 
-/** True when `id`'s publisher posts nothing on `date` (FRED on a US federal holiday). */
+/** True when `id`'s publisher posts nothing on `date` (FRED on a US federal holiday). @internal */
 export function isPublisherClosed(id: string, date: string): boolean {
   return Object.values(PUBLISHER_CLOSURES).some((c) => c.ids.includes(id) && c.holidays.includes(date));
 }

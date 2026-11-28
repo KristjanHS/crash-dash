@@ -59,6 +59,7 @@ export const MIN_CALENDAR_SOURCES = 2;
  * fresh. A thin candidate set or no rows is an absence to REPORT, never coalesced to 0. `independentSources`
  * is the count of contributing feeds that fetch on their own (a composite leg shares its parent's fetch
  * and is not one), derived by the caller off the registry.
+ * @internal
  */
 export function publicationCalendar(
   cohort: string,
@@ -101,6 +102,7 @@ export const CONTAINMENT_TOLERANCE = 0;
 export interface CalendarKnobs {
   readonly containmentTolerance: number;
 }
+/** @internal */
 export const CALENDAR_KNOBS: CalendarKnobs = { containmentTolerance: CONTAINMENT_TOLERANCE };
 
 /** Observations per feed to scan when deriving a publication calendar or measuring a feed's OWN

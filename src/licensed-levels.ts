@@ -126,7 +126,7 @@ const CLOSE_WORDS: ReadonlySet<string> = new Set(
   ].filter((w) => !INDEX_WORDS.has(w) && (w.includes("/") || proseWord(w))),
 );
 
-/** Every word the matcher treats as a licensed series (INDEX ∪ CLOSE). */
+/** Every word the matcher treats as a licensed series (INDEX ∪ CLOSE). @internal */
 export const LICENSED_ALIASES: ReadonlySet<string> = new Set([...INDEX_WORDS, ...CLOSE_WORDS]);
 
 /** Is `subject` a CLOSE series (a price: a % / bp / signed number on it is a move, never a level)? */
@@ -274,12 +274,12 @@ function hitsOf(text: string, ctx: LevelContext): Hit[] {
   return hits;
 }
 
-/** Each observed licensed level in `text`, as `"<subject> <token>"` (e.g. `"CCC 13.16 %"`). */
+/** Each observed licensed level in `text`, as `"<subject> <token>"` (e.g. `"CCC 13.16 %"`). @internal */
 export function findLicensedLevels(text: string, ctx: LevelContext = {}): string[] {
   return hitsOf(text, ctx).map((h) => `${h.subject} ${h.token}`);
 }
 
-/** `text` with every observed licensed level rewritten to `—` (a `<mult>×<level>` threshold to its product); thresholds, ✓/✗ and words stay. */
+/** `text` with every observed licensed level rewritten to `—` (a `<mult>×<level>` threshold to its product); thresholds, ✓/✗ and words stay. @internal */
 export function scrubLicensedLevels(text: string, ctx: LevelContext = {}): string {
   let out = text;
   for (const h of hitsOf(text, ctx).reverse()) out = `${out.slice(0, h.start)}${h.replacement}${out.slice(h.end)}`;

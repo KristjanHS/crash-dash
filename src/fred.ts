@@ -64,6 +64,7 @@ const FRED_UA = "crash-dash/0.1 (+https://github.com/KristjanHS/crash-dash)";
 // which is why the fix is per-call-site. A future FRED indicator needing a multi-year
 // window must do the same or pass fullHistory — bounded is the default, so silent
 // truncation is the failure mode to watch for.
+/** @internal */
 export const FRED_LOOKBACK_DAYS = 800;
 
 // TWO keyless-FRED data quirks to know before debugging depth/lag:
@@ -317,7 +318,7 @@ export function drainKeyedFallbacks(): KeyedFallback[] {
   return keyedFallbacks.splice(0);
 }
 
-/** Outage = ≥ this many FRED series failed on EVERY path, and at least half the series this run fetched. */
+/** Outage = ≥ this many FRED series failed on EVERY path, and at least half the series this run fetched. @internal */
 export const FRED_OUTAGE_MIN_FAILED = 3;
 
 // series → its failure summary once any FRED call for it failed on every path; null = served. Reset by `startFredMemo`.
@@ -491,6 +492,7 @@ export function parseFredCsv(csv: string, series = "?"): Observation[] {
  * parseFredCsv's drop behavior so keyed and keyless paths are byte-equivalent downstream.
  * Also mirrors the CSV path's dedup-by-date (last wins) + ascending sort so a keyed run is
  * byte-equivalent to a keyless one even under out-of-order / revised observations.
+ * @internal
  */
 export function parseFredJson(json: unknown): Observation[] {
   const byDate = new Map<string, number>();

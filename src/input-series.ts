@@ -235,7 +235,7 @@ export function inputSeriesSymbolOf(id: string): string {
   return spec?.symbol ?? id;
 }
 
-/** The `INPUT_SERIES` store id a price-feed symbol persists under (`XDEV.DE`→`XDEV`), or undefined when unrostered. */
+/** The `INPUT_SERIES` store id a price-feed symbol persists under (`XDEV.DE`→`XDEV`), or undefined when unrostered. @internal */
 export function inputSeriesIdOf(symbol: string): string | undefined {
   return INPUT_SERIES.find((s) => s.feed === "price" && (s.symbol ?? s.id) === symbol)?.id;
 }

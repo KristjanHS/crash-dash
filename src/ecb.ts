@@ -53,12 +53,14 @@ export type EcbSeriesKey = keyof typeof SERIES_KEYS;
 
 // Per-consumer scorer floors (EURC/ECISS velocity, ESTR's `change` window, EPATH's mean window, EURGBP's MA
 // leg); ecb.test.ts scores each consumer at its OWN floor. Bounded trailing window = the MAX + a history buffer.
+/** @internal */
 export const ECB_SCORER_FLOORS = {
   velocity: VELOCITY_WINDOW + 1 + CONFIRM_CLOSES,
   ESTR: ESTR_DESCRIPTOR.scorer.constants.window + CONFIRM_CLOSES,
   EPATH: VELOCITY_WINDOW + EPATH_DESCRIPTOR.meanWindow + CONFIRM_CLOSES,
   EURGBP: Math.max(VELOCITY_WINDOW, EURGBP_DESCRIPTOR.scorer.constants.maWindow - 1) + 1 + CONFIRM_CLOSES,
 } as const;
+/** @internal */
 export const ECB_LAST_N = Math.max(...Object.values(ECB_SCORER_FLOORS)) + 38;
 
 // Per-attempt timeouts. A CDN-miss ECB answer is slow, not absent: ECB_TIMEOUT_MS must clear ECB_COLD_P100_MS; every
@@ -66,12 +68,17 @@ export const ECB_LAST_N = Math.max(...Object.values(ECB_SCORER_FLOORS)) + 38;
 // A `startPeriod` URL gets its own deep timeout and only ECB_DEEP_ATTEMPTS: the backfill runs 7 deep fetches serially.
 /** Slowest cache-busted cold answer measured (curl TTFB, 2026-11-20). */
 export const ECB_COLD_P100_MS = 10_900;
+/** @internal */
 export const ECB_TIMEOUT_MS = 15_000;
+/** @internal */
 export const ECB_DEEP_TIMEOUT_MS = 45_000;
+/** @internal */
 export const ECB_MAX_ATTEMPTS = 2;
+/** @internal */
 export const ECB_DEEP_ATTEMPTS = 2;
 const ECB_RETRY_BACKOFF_MS = 250;
 
+/** @internal */
 export function ecbTimeoutFor(opts?: { startPeriod?: string }): number {
   return opts?.startPeriod ? ECB_DEEP_TIMEOUT_MS : ECB_TIMEOUT_MS;
 }
@@ -126,6 +133,7 @@ export async function fetchEcbSeries(
  * by NAME, drop any row whose OBS_VALUE is non-numeric / "." / empty (Number("")
  * === 0 is finite — the same spurious-0 trap fred.ts guards), and sort
  * oldest→newest (the endpoint's `lastNObservations` returns newest-first).
+ * @internal
  */
 export function parseEcbCsv(csv: string): Observation[] {
   const lines = csv.trim().split("\n");

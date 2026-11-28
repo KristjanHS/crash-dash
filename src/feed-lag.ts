@@ -481,7 +481,7 @@ export function explicitRegistrationIndex(): Map<string, boolean> {
  *  already reads as {@link FEED_CALENDAR_TZ} — so the map stores the registry's answer verbatim
  *  rather than baking the default in, and an id that gains a `feedTimeZone` needs no change here.
  *  Exists so `/lab` resolves "today" per feed exactly as `/api/status` does; a single UTC date across
- *  all ids is the phantom-stale-day bug on that constant's docblock. */
+ *  all ids is the phantom-stale-day bug on that constant's docblock. @internal */
 export function feedTimeZoneIndex(): Map<string, string | undefined> {
   return new Map([...freshnessScoredIndicators()].map(([id, ind]) => [id, ind.feedTimeZone]));
 }
@@ -512,7 +512,7 @@ export const LAG_CUT_OF = lagCutIndex();
 /** id → did the registry ASSERT its release rhythm (a `cadence` key or a `lagAfterDays`)? Third
  *  companion off the SAME registry walk. Gates the DEEP-LAG arm's `max(p90Gap, LAG_THRESHOLDS[registered])`
  *  rhythm — the cadence TIER, not the id's resolved cut (E7 §Stage 4.7-R2) — and silences
- *  `shouldCorrect` — E7 §Stage 4 fork; without it the board paints a false RED on G1/BRENT. */
+ *  `shouldCorrect` — E7 §Stage 4 fork; without it the board paints a false RED on G1/BRENT. @internal */
 export const EXPLICIT_OF = explicitRegistrationIndex();
 
 /** id → its `feedTimeZone` (undefined ⇒ the `FEED_CALENDAR_TZ` default), fourth companion off the

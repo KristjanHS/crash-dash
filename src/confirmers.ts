@@ -115,11 +115,12 @@ import type { Env } from "./config.js";
  * check. Do NOT re-cut it toward the new floor: the extra depth is what makes a future band possible
  * to MEASURE before it is shipped, which is the step both deleted level legs skipped.
  * The single touch point; never restate the literal.
+ * @internal
  */
 export const R6_MOVE_LOOKBACK_DAYS = 900;
 
 /** R6's DB-first feed spec — the arm inputs its site spreads into `dbFirstOrDirect`; the direct
- *  arm tests (`db-first-feeds.test.ts`) drive `resolveDbFirstArm` with this same object. */
+ *  arm tests (`db-first-feeds.test.ts`) drive `resolveDbFirstArm` with this same object. @internal */
 export const R6_DB_FIRST_FEED: DbFirstFeedSpec = {
   id: R6.id,
   needRows: needRowsForCalendarDays(R6_MOVE_LOOKBACK_DAYS),
@@ -352,6 +353,7 @@ export function bandCutsUsed(cuts: ReturnType<typeof resolveCuts>): Record<strin
  *
  * `onDegrade` is the injection seam the tests drive (the `danger-engine.ts` `onDegrade` precedent);
  * live callers take the default. Returns whether it fired, so a caller/test can assert on it.
+ * @internal
  */
 export function checkOilLevelDepth(
   indicator: Indicator,
@@ -492,6 +494,7 @@ export function scoreVixTermIndicator(
  * BOTH map to [] (leg omitted, fail-safe) — the first by the length guard, the second by the
  * empty-SERIES guard in the body (scoreVixTermPersistence's `date: ""` fallback would otherwise be
  * persisted as a fabricated 0-day calm). Pinned in `vix-term-persistence.test.ts`.
+ * @internal
  */
 export function scoreVixTermPersistenceIndicator(front: Observation[], back: Observation[]): Reading[] {
   if (front.length === 0 || back.length === 0) return []; // a VIX leg is down — persistence leg omitted
@@ -526,7 +529,7 @@ export function scoreVixTermPersistenceIndicator(front: Observation[], back: Obs
  */
 export const R7_LEG_IDS = ["R1", "R3", "R2"] as const;
 
-/** One R7 leg's DB-first feed spec: the leg's own registry id at seed depth. */
+/** One R7 leg's DB-first feed spec: the leg's own registry id at seed depth. @internal */
 export const r7LegFeed = (id: (typeof R7_LEG_IDS)[number]): DbFirstFeedSpec => ({
   id,
   needRows: needRowsForSeedDepth(),

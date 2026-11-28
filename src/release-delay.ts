@@ -37,9 +37,10 @@ export interface ReleaseDelaySnapshot {
   unmeasured: string[];
 }
 
+/** @internal */
 export const RELEASE_DELAY_SNAPSHOT_TYPED: ReleaseDelaySnapshot = RELEASE_DELAY_SNAPSHOT;
 
-/** id → measured release delay in slots. Built once at module load off the committed snapshot. */
+/** id → measured release delay in slots. Built once at module load off the committed snapshot. @internal */
 export const RELEASE_DELAY_OF: ReadonlyMap<string, number> = new Map(
   Object.entries(RELEASE_DELAY_SNAPSHOT_TYPED.delays).map(([id, d]) => [id, Math.max(0, Math.trunc(d))]),
 );

@@ -26,7 +26,7 @@ const levelAt = (carry: CarryWindow, beta: number): LevelNowcast => ({
   fromDate: carry.print.date,
 });
 
-/** The date-joined difference `a − b` (a yield spread from two legs, e.g. sovereign-quote US10Y − US3M for T10Y3M). */
+/** The date-joined difference `a − b` (a yield spread from two legs, e.g. sovereign-quote US10Y − US3M for T10Y3M). @internal */
 export function levelSpread(a: readonly Observation[], b: readonly Observation[]): Observation[] {
   const bByDate = new Map(b.map((o) => [o.date, o.value]));
   return a.flatMap((o) => {
