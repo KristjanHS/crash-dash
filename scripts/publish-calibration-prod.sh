@@ -66,7 +66,10 @@ export SUPABASE_URL SUPABASE_SERVICE_KEY
 # before it ever looks in node_modules/.bin. No install → `npx tsx`.
 TSX=("$PWD/node_modules/.bin/tsx")
 [ -x "${TSX[0]}" ] || TSX=(npx tsx)
-out="$("${TSX[@]}" scripts/backtest/publish-calibration.ts "$@" 2>&1)"; rc=$?
+# `|| rc=$?`, never `; rc=$?`: under `set -e` a failing substitution in an assignment exits on the spot, so the
+# printf below — the failure's only route into the ship log — would never run.
+rc=0
+out="$("${TSX[@]}" scripts/backtest/publish-calibration.ts "$@" 2>&1)" || rc=$?
 printf '%s\n' "$out"
 [ "$rc" -eq 0 ] || exit "$rc"
 printf '%s\n' "$out" | grep -qE '^\[publish-calibration\] (wrote|skipped|::warning:: stale)' || {

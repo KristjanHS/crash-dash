@@ -148,7 +148,7 @@ function run(w: Writer, prodWrites: "on" | "off") {
   }
   spawnSync("git", ["init", "-q", checkout]); // deploy-prod-local.sh reads `git status` (a read, never a stub)
   for (const s of STUBS) {
-    writeFileSync(join(bin, s), `#!/usr/bin/env bash\nprintf '%s\\n' "${s} $*" >> "${log}"\nexit 1\n`);
+    writeFileSync(join(bin, s), `#!/usr/bin/env bash\nprintf '%s\\n' "${s} $*" >> "${log}"\necho "${s} stub failed" >&2\nexit 1\n`);
     chmodSync(join(bin, s), 0o755);
   }
   const r = spawnSync(w.cmd[0], w.cmd.slice(1), {
@@ -159,7 +159,7 @@ function run(w: Writer, prodWrites: "on" | "off") {
     timeout: 30_000,
   });
   const calls = existsSync(log) ? readFileSync(log, "utf8").split("\n").filter(Boolean) : [];
-  return { status: r.status, err: r.stderr, calls };
+  return { status: r.status, out: r.stdout, err: r.stderr, calls };
 }
 
 describe.each(WRITERS)("$name", (w) => {
@@ -175,6 +175,16 @@ describe.each(WRITERS)("$name", (w) => {
     expect(r.err).not.toContain("refusing");
     expect(r.calls[0]).toMatch(w.firstCall);
   });
+});
+
+// The publish captures its run's stdout+stderr to assert on it; a failed run must still print that capture, or the
+// failure's reason never reaches the ship log (`set -e` used to exit on the failed substitution before the printf).
+it("publish-calibration-prod.sh: a failed publish exits non-zero and still prints the run's own output", () => {
+  const publish = WRITERS.find((w) => w.name === "publish-calibration-prod.sh");
+  if (!publish) throw new Error("publish-calibration-prod.sh missing from WRITERS");
+  const r = run(publish, "on");
+  expect(r.status).toBe(1);
+  expect(r.out).toContain("npx stub failed");
 });
 
 // An env file must never carry the override: the writer loads the prod config's `.env.prod` into its env, so a
