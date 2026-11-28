@@ -192,8 +192,12 @@ function analyse(ts: typeof TS, f: SrcFile, resolve: (spec: string) => string | 
  *  (b) TAG SCOPE — an `@internal` export needs live in-module use, ≥1 importer, only test importers.
  *  (c) BAN — `@public`/`@beta`/`@alias` on a src/api export; `@internal` in `src/api/types.ts` or on an `export { … }`.
  *  Live in-module use is a fixed point: a reference counts when its top-level owner runs, is a prod-imported
- *  export (neither a row nor tagged), or is itself live — so a row used only by another dead row stays dead. */
-function seamReport(ts: typeof TS, files: readonly SrcFile[], baseline: readonly string[]): string[] {
+ *  export (neither a row nor tagged), or is itself live — so a row used only by another dead row stays dead.
+ *  `tagged` counts the in-scope `@internal` exports analysed and `importedBy` exposes the importer walk: the
+ *  real-tree run's vacuity anchors (a clean report over an empty or unresolved tree reads as a pass). */
+interface ImportedBy { by: string[]; testOnly: boolean; nonTest: string[] }
+interface SeamReport { lines: string[]; tagged: number; importedBy: (file: string, name: string) => ImportedBy }
+function seamReport(ts: typeof TS, files: readonly SrcFile[], baseline: readonly string[]): SeamReport {
   const paths = new Set(files.map((f) => f.file));
   const resolver = (from: string) => (spec: string): string | undefined => {
     if (!spec.startsWith(".")) return undefined;
@@ -234,7 +238,7 @@ function seamReport(ts: typeof TS, files: readonly SrcFile[], baseline: readonly
     seen.add(file);
     return [...(fileImporters.get(file) ?? [])].flatMap((i) => classOf(i, seen));
   };
-  const importedBy = (file: string, name: string): { by: string[]; testOnly: boolean; nonTest: string[] } => {
+  const importedBy = (file: string, name: string): ImportedBy => {
     const by = [...(importers.get(key(file, name)) ?? [])].sort();
     const nonTest = by.filter((b) => classOf(b).some((c) => c !== "test"));
     return { by, nonTest, testOnly: nonTest.length === 0 && by.some((b) => classOf(b).length > 0) };
@@ -264,6 +268,7 @@ function seamReport(ts: typeof TS, files: readonly SrcFile[], baseline: readonly
     return e?.via ? defOf(e.via.target, e.via.name) : file;
   };
   const out: string[] = [];
+  let tagged = 0;
   for (const row of baseline) {
     const [, file = "", name = ""] = /^(\S+) \[(?:exports|types)\] (\S+)$/.exec(row) ?? [];
     const m = mods.get(file);
@@ -278,12 +283,13 @@ function seamReport(ts: typeof TS, files: readonly SrcFile[], baseline: readonly
     for (const [name, e] of m.exports) {
       for (const t of BANNED_TAGS) if (e.tags.has(t)) out.push(`${file} [ban] ${name} - \`@${t}\` silences both knip arms`);
       if (!e.tags.has("internal")) continue;
+      tagged++;
       if (file === "src/api/types.ts") out.push(`${file} [ban] ${name} - \`@internal\` on a read-API contract type (src/api/contract.test.ts reads this file)`);
       else if (e.specifierStmt) out.push(`${file} [ban] ${name} - \`@internal\` on an \`export { … }\` statement: tag the declaration`);
       else {
         const { by, nonTest } = importedBy(file, name);
         const why = [
-          e.local && liveLocals(file, m).has(e.local) ? "" : "no live in-module use (test-only code: test through the public seam and drop `export`, or keep the row)",
+          e.local && liveLocals(file, m).has(e.local) ? "" : "no live in-module use (test-only code: test through the public seam and drop `export`, or restore the row)",
           by.length ? "" : "no importer (drop `export`)",
           nonTest.length ? `a non-test importer: ${nonTest.join(", ")} (drop the tag; a script seam keeps its row)` : "",
         ].filter(Boolean);
@@ -291,7 +297,7 @@ function seamReport(ts: typeof TS, files: readonly SrcFile[], baseline: readonly
       }
     }
   }
-  return out.sort();
+  return { lines: out.sort(), tagged, importedBy };
 }
 
 /** Every importer the checks can see: src, api, scripts (minus knip's ignored archive), public. */
@@ -329,9 +335,15 @@ const PROD_MSG: FailMessage = {
   never: "add a re-export, or move the symbol into a *.test-helpers.ts to silence this; `@public`/`@beta`/`@alias`, a knip.json exclusion",
 };
 
-/** In-memory tree: each check's failure line once, plus three decoys only a correct walker leaves clean —
+/** In-memory tree: each check's failure line once, plus decoys only a correct walker leaves clean —
  *  a row used only by a dead row (fixed point), a seam reached via a `[files]` row (class inheritance),
- *  and a prod namespace import that names one member. */
+ *  and a prod namespace import that names one member. Each importer-resolution path owes a line that moves
+ *  when it breaks: a destructured `await import(…)` and its `Promise.all([…])` element (`DYN`/`ARR`, with
+ *  `DYNSAFE` beside them proving the pick names only what it binds), a 2-hop `export { … } from` chain
+ *  (`HOP`), an `export *` barrel (`STAR`), an `import("…").T` type node (`Shape`), a `src/goldens/` file
+ *  inheriting its test importer's class (`GOLD`), a bare top-level call as a row's only live user
+ *  (`RUNNER`), the `src/api/types.ts` row exemption (`Wire`), and a test's `...ns` spread that never
+ *  reaches a type (`Opts`). */
 const SEAM_FIXTURE: readonly SrcFile[] = [
   { file: "src/run.ts", text: 'import * as M from "./m.js";\nM.go();\n' },
   {
@@ -355,10 +367,40 @@ const SEAM_FIXTURE: readonly SrcFile[] = [
   { file: "src/p.ts", text: 'export { SEAM2 } from "./q.js";\n' },
   { file: "src/fake.ts", text: 'import { VIAFAKE } from "./m.js";\nexport const fake = VIAFAKE;\n' },
   { file: "src/m.test.ts", text: 'import { ROW, GOOD, NOUSE, DEADROW, DEADUSER } from "./m.js";\nimport { SEAM2 } from "./p.js";\nimport { fake } from "./fake.js";\n' },
-  { file: "src/api/types.ts", text: "/** @internal */ export interface Contract { a: number }\n" },
+  { file: "src/api/types.ts", text: "/** @internal */ export interface Contract { a: number }\nexport interface Wire { b: number }\nexport type Pair = [Wire, Wire];\n" },
   { file: "scripts/s.ts", text: 'import { SCRIPTED } from "../src/m.js";\n' },
+  {
+    file: "src/d.ts",
+    text: "/** @internal */ export const DYN = 1;\n/** @internal */ export const ARR = 2;\n/** @internal */ export const DYNSAFE = 3;\nexport const sum = (): number => DYN + ARR + DYNSAFE;\n",
+  },
+  { file: "src/z.ts", text: "export const ZERO = 0;\n" },
+  { file: "src/dyn.ts", text: 'const { DYN } = await import("./d.js");\nconst [{ ZERO }, { ARR }] = await Promise.all([import("./z.js"), import("./d.js")]);\nexport const dyn = DYN + ZERO + ARR;\n' },
+  { file: "src/h0.ts", text: "/** @internal */ export const HOP = 1;\nexport const useHop = (): number => HOP;\n" },
+  { file: "src/h1.ts", text: 'export { HOP } from "./h0.js";\n' },
+  { file: "src/h2.ts", text: 'export { HOP } from "./h1.js";\n' },
+  { file: "src/star.ts", text: "/** @internal */ export const STAR = 1;\nexport const useStar = (): number => STAR;\n" },
+  { file: "src/bar.ts", text: 'export * from "./star.js";\n' },
+  { file: "src/ty.ts", text: "/** @internal */ export interface Shape { a: number }\nexport const mk = (): Shape => ({ a: 1 });\n" },
+  { file: "src/edges.ts", text: 'import { HOP } from "./h2.js";\nimport { STAR } from "./bar.js";\nexport type Edge = import("./ty.js").Shape;\nexport const edges = HOP + STAR;\n' },
+  { file: "src/gm.ts", text: "/** @internal */ export const GOLD = 1;\nexport const useGold = (): number => GOLD;\n" },
+  { file: "src/goldens/g.ts", text: 'import { GOLD } from "../gm.js";\nexport const golden = GOLD;\n' },
+  { file: "src/main.ts", text: "export const RUNNER = (): number => 1;\nRUNNER();\n" },
+  { file: "src/tyrow.ts", text: "export interface Opts { a: number }\nexport const make = (o: Opts): number => o.a;\n" },
+  {
+    file: "src/n.test.ts",
+    text: 'import { DYNSAFE } from "./d.js";\nimport { RUNNER } from "./main.js";\nimport type { Wire } from "./api/types.js";\nimport { golden } from "./goldens/g.js";\nimport * as TR from "./tyrow.js";\nconst all = { ...TR };\n',
+  },
 ];
-const SEAM_FIXTURE_ROWS = ["src/m.ts [exports] ROW", "src/m.ts [exports] DEADROW", "src/m.ts [exports] DEADUSER", "src/p.ts [exports] SEAM2", "src/fake.ts [files] src/fake.ts"];
+const SEAM_FIXTURE_ROWS = [
+  "src/m.ts [exports] ROW",
+  "src/m.ts [exports] DEADROW",
+  "src/m.ts [exports] DEADUSER",
+  "src/p.ts [exports] SEAM2",
+  "src/fake.ts [files] src/fake.ts",
+  "src/main.ts [exports] RUNNER",
+  "src/api/types.ts [types] Wire",
+  "src/tyrow.ts [types] Opts",
+];
 
 describe("unused exports (knip)", () => {
   // knip runs in beforeAll: the spawns are fixture work, outside TEST_CEILING_MS.
@@ -367,7 +409,7 @@ describe("unused exports (knip)", () => {
   let repo: KnipHit[] = [];
   let prod: KnipHit[] = [];
   let ts: typeof TS;
-  let seams: string[] = [];
+  let seams: SeamReport;
   beforeAll(async () => {
     const dir = mkdtempSync(join(tmpdir(), "knip-fx-"));
     try {
@@ -408,20 +450,32 @@ describe("unused exports (knip)", () => {
     expectClean(baselineReport(prod, JSON.parse(readFileSync(BASELINE, "utf8")) as string[]), PROD_MSG);
   });
 
-  test("seam fixture: each check fires its exact line; the fixed-point, [files] and namespace decoys stay clean", () => {
-    expect(seamReport(ts, SEAM_FIXTURE, SEAM_FIXTURE_ROWS).map((l) => l.replace(/ - .*/, ""))).toEqual([
-      "src/api/types.ts [ban] Contract",
-      "src/m.ts [ban] PUB",
-      "src/m.ts [ban] local",
-      "src/m.ts [class] ROW",
-      "src/m.ts [scope] NOIMP",
-      "src/m.ts [scope] NOUSE",
-      "src/m.ts [scope] SCRIPTED",
-      "src/p.ts [class] SEAM2",
+  test("seam fixture: each check and each importer-resolution path fires its exact line; every decoy stays clean", () => {
+    const nonTest = (by: string): string => `\`@internal\` but a non-test importer: ${by} (drop the tag; a script seam keeps its row)`;
+    expect(seamReport(ts, SEAM_FIXTURE, SEAM_FIXTURE_ROWS).lines).toEqual([
+      "src/api/types.ts [ban] Contract - `@internal` on a read-API contract type (src/api/contract.test.ts reads this file)",
+      `src/d.ts [scope] ARR - ${nonTest("src/dyn.ts")}`,
+      `src/d.ts [scope] DYN - ${nonTest("src/dyn.ts")}`,
+      `src/h0.ts [scope] HOP - ${nonTest("src/edges.ts")}`,
+      "src/m.ts [ban] PUB - `@public` silences both knip arms",
+      "src/m.ts [ban] local - `@internal` on an `export { … }` statement: tag the declaration",
+      "src/m.ts [class] ROW - a test seam: tag it `/** @internal */`, delete the row",
+      "src/m.ts [scope] NOIMP - `@internal` but no importer (drop `export`)",
+      "src/m.ts [scope] NOUSE - `@internal` but no live in-module use (test-only code: test through the public seam and drop `export`, or restore the row)",
+      `src/m.ts [scope] SCRIPTED - ${nonTest("scripts/s.ts")}`,
+      "src/main.ts [class] RUNNER - a test seam: tag it `/** @internal */`, delete the row",
+      "src/p.ts [class] SEAM2 - only tests import it: import it from `src/q.ts`, drop the re-export and the row",
+      `src/star.ts [scope] STAR - ${nonTest("src/edges.ts")}`,
+      `src/ty.ts [scope] Shape - ${nonTest("src/edges.ts")}`,
     ]);
   });
 
   test("seams: every test seam is tagged `@internal` (no row), and every tag sits on a test seam", () => {
-    expectClean({ hits: [], unrostered: seams, stale: [], badReason: [] }, SEAM_MSG);
+    expectClean({ hits: [], unrostered: seams.lines, stale: [], badReason: [] }, SEAM_MSG);
+  });
+
+  test("seams: the real-tree walk is not vacuous — it analyses ≥1 tagged export, and a script's import of src/ resolves", () => {
+    expect(seams.tagged).toBeGreaterThan(0);
+    expect(seams.importedBy("src/alert-band.ts", "computeAlertBand").nonTest).toContain("scripts/simulate-notify.ts");
   });
 });
