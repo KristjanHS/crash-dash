@@ -51,7 +51,6 @@ rotation ladder's band-selection axis.
 - **Triage output-visible follow-ups as bugs:** a documented follow-up / review "nice-to-have" that manifests on a notify/output-visible path (a push, an alert, a wrong number on screen) is a real bug — surface it for prioritization; don't defer it behind a "documented / intentional-conservative" label (that label describes the code's caution, not the user's experience).
 - **Drive the Vercel CLI for logs and inspection** rather than sending the user to the dashboard — but **deploys go through `make ship`** (a blocking `vercel deploy` is indistinguishable from a hang, and a `READY` deploy that never took the alias leaves prod on the old build — `deploy-prod-local.sh` exists for both), and **env vars are write-only** — a secret you didn't save is unrecoverable; rotate, never read back (→ `docs/reference.md` §[prod] Credentials).
 - **Run prod-key commands via `bash scripts/with-prod-config.sh --only FRED_API_KEY <cmd>`** (the checkout's prod config, `PROD_CONFIG_DIR`); without them the run uses degraded inputs and overwrites stored rows.
-- **New design/spec/plan docs go in `docs/plans/`**: decisions + why stay strategic; formulas, knobs, and impl steps live in the plan.
 
 ## Rules
 Path-gated conventions live in `.claude/rules/`, each auto-loaded by its own `paths:` frontmatter.

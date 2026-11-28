@@ -4,6 +4,8 @@ paths:
 ---
 # Plan / Doc Hygiene
 
+New design/spec/plan docs go in `docs/plans/`: decisions + why stay strategic; formulas, knobs and impl steps live in the plan.
+
 ## Archiving and deleting a plan doc
 
 - **Archive at ship** — every stage committed, only a USER-owed manual/eye/live confirm left. User-owed
