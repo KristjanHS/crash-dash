@@ -34,10 +34,16 @@ export type Episode = { shockStart: string; exit: string; end: string; open: boo
 
 /** Annualised sample sd of the `n` daily log returns ending at close `i`; null short of `n` returns. */
 export function sigmaAt(c: Pt[], i: number, n: number): number | null {
-  if (i < n) return null;
-  const r = Array.from({ length: n }, (_, j) => Math.log(v(c, i - j) / v(c, i - j - 1)));
-  const m = r.reduce((a, b) => a + b, 0) / n;
-  return Math.sqrt(r.reduce((a, b) => a + (b - m) ** 2, 0) / (n - 1)) * Math.sqrt(252);
+  return i < n ? null : annualSd(n, (j) => Math.log(v(c, i - j) / v(c, i - j - 1)));
+}
+/** Annualised sample sd of `r(0..n-1)`, summed in index order — `sigmaAt` and `episodes`' cached-return read stay bit-identical. */
+function annualSd(n: number, r: (j: number) => number): number {
+  let m = 0;
+  for (let j = 0; j < n; j++) m += r(j);
+  m /= n;
+  let q = 0;
+  for (let j = 0; j < n; j++) q += (r(j) - m) ** 2;
+  return Math.sqrt(q / (n - 1)) * Math.sqrt(252);
 }
 
 /** Running high (from close `VOL_N`, restarted at each end close) → exit on the first close ≤ (1 − drop) × it; end on the first close ≥ it or
@@ -47,11 +53,13 @@ export function episodes(px: Pt[], k: ReplayKnobs = REPLAY): Episode[] {
   const c = closes(px);
   const out: Episode[] = [];
   let h = k.VOL_N;
-  /** σ at the high, recomputed only when the high moves — the per-close O(VOL_N) recompute made every walk O(n·VOL_N). */
+  /** σ at the high, recomputed only when the high moves — the per-close O(VOL_N) recompute made every walk O(n·VOL_N) — over log returns
+   *  taken once per walk (`lr[t]` = close t over t−1), not once per high: a rising stretch moves the high every close. */
   let [sigH, sigma] = [-1, 0];
+  const lr = c.map((p, t) => (t === 0 ? 0 : Math.log(p.value! / v(c, t - 1))));
   for (let i = h + 1; i < c.length; i++) {
     if (v(c, i) > v(c, h)) h = i;
-    if (h !== sigH) [sigH, sigma] = [h, sigmaAt(c, h, k.VOL_N)!];
+    if (h !== sigH) [sigH, sigma] = [h, annualSd(k.VOL_N, (j) => lr[h - j]!)];
     const drop = k.DROP_K * sigma * Math.sqrt(21 / 252);
     if (!(drop > 0) || v(c, i) > (1 - drop) * v(c, h)) continue;
     const rise = k.RISE_K * sigma;
