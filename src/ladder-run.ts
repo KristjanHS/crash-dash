@@ -108,7 +108,7 @@ const DRAFT_SUFFIX = " (draft)";
  */
 const PRESS_SUFFIX = " (press only)";
 const SINGLE_SUFFIX = " (single-source)";
-/** A URL's host, lowercased, leading `www.` dropped; an unparsable URL counts as its own lowercased text. */
+/** A URL's host, lowercased, leading `www.` dropped; an unparsable URL counts as its own lowercased text. @internal */
 export const hostOf = (url: string): string => {
   try {
     return new URL(url).hostname.toLowerCase().replace(/^www\./, "");
@@ -116,10 +116,10 @@ export const hostOf = (url: string): string => {
     return url.toLowerCase();
   }
 };
-/** The leg's primary tier: the hosts on ANY row's `primary[]` ∪ `brief.primaryTier[].hosts` ([USER 2026-10-16], order row 13b); an unknown host is press. */
+/** The leg's primary tier: the hosts on ANY row's `primary[]` ∪ `brief.primaryTier[].hosts` ([USER 2026-10-16], order row 13b); an unknown host is press. @internal */
 export const primaryHosts = (live: Pick<LadderLive, "signs" | "brief">): Set<string> =>
   new Set([...live.signs.flatMap((s) => s.primary.map(hostOf)), ...(live.brief?.primaryTier ?? []).flatMap((t) => t.hosts.map((h) => h.toLowerCase().replace(/^www\./, "")))]);
-/** A host is primary-tier when it or a parent domain is in the tier, on a dot boundary: `tsmc.com` admits `investor.tsmc.com`, never `faketsmc.com`. */
+/** A host is primary-tier when it or a parent domain is in the tier, on a dot boundary: `tsmc.com` admits `investor.tsmc.com`, never `faketsmc.com`. @internal */
 export const inTier = (host: string, tier: ReadonlySet<string>): boolean => host.split(".").some((_, i, parts) => tier.has(parts.slice(i).join(".")));
 /** ` (press only)` when `pressGate` holds and no source is primary-tier (none at all counts), then ` (single-source)` when `singleGate` holds and < 2 distinct hosts. */
 const gradeTags = (sources: readonly LadderSource[], tier: ReadonlySet<string>, pressGate: boolean, singleGate: boolean): string =>
@@ -594,6 +594,7 @@ export function planRun(live: LadderLive, today: string, leg: LadderLegId = "euf
 /** `measurableDraft` only on a `thresholdless` row: `<lean> = … ; <lean> = …` in the leg's lean words — lands as `measurable`'s ` · draft: ` segment; apply suffixes the lean ` (draft)` itself; `unblocking` = the UNBLOCKING clause body a new `block: true` needs, or a `contractOwed` row's rewrite (`withUnblocking` replaces its clause), `pin` = the date a holding block's reach holds through, `causeFalse` = the block's cause sourced false at a neutral lean (`vetBlockSet`, `causeFalseLifts`). */
 /** `searchNext` = one better month-less stem for the next run's `more` — never printed for the user. */
 type RowPatch = { label: string; finding?: string; lean?: string; sources?: LadderSource[]; block?: boolean; failed?: string[]; primary?: string[]; measurableDraft?: string; searchNext?: string; unblocking?: string; pin?: string; causeFalse?: true; measuredOnly?: true };
+/** @internal */
 export const SEARCH_NEXT_MAX = 2;
 /** A stem dated to now goes stale (the plan appends the month): a year ≤ today's (a forward "2027 capex" stays), a full month name ("May" left out — a common verb), an MM-DD; a fiscal-quarter token names a report and stays. */
 const datedStem = (q: string, today: string): boolean =>
@@ -616,7 +617,7 @@ export type LadderPatch = {
   situation?: Partial<LadderSlots>;
 };
 
-/** A row's tag: `BLOCK` (its `block` flag) · `MIXED (<event>)` (a `mixed:` holding event — landed, never DELAY) · `DELAY until <d> (<event>)` / `DELAY — outcome unsourced (<event>)` (a pending holding event) · `CLEAR`. */
+/** A row's tag: `BLOCK` (its `block` flag) · `MIXED (<event>)` (a `mixed:` holding event — landed, never DELAY) · `DELAY until <d> (<event>)` / `DELAY — outcome unsourced (<event>)` (a pending holding event) · `CLEAR`. @internal */
 export function tagOf(live: LadderLive, s: LadderSign, today: string): string {
   if (s.block && !isReleased(s, allEvents(live))) return "BLOCK";
   const mixed = linked(live, s.sign).find((e) => e.holds.length && outcomeOf(e) === "mixed");
@@ -626,7 +627,7 @@ export function tagOf(live: LadderLive, s: LadderSign, today: string): string {
   return pending.date <= today ? `DELAY — outcome unsourced (${pending.event})` : `DELAY until ${day(pending.date)} (${pending.event})`;
 }
 
-/** Per tranche: probe ✗ → ✗; ✓ + a BLOCK row on a `blockReach: "all"` leg → HELD (BLOCK: sign) — T2·T3 only once demoted (`blocked.reach: "T2T3"`); ✓ + an escalated holding event → HELD (ESCALATION: event); ✓ + a `mixed:` holding event → HELD (MIXED: event); ✓ + a pending holding event → HELD until its latest date (or outcome unsourced once passed); else ✓. */
+/** Per tranche: probe ✗ → ✗; ✓ + a BLOCK row on a `blockReach: "all"` leg → HELD (BLOCK: sign) — T2·T3 only once demoted (`blocked.reach: "T2T3"`); ✓ + an escalated holding event → HELD (ESCALATION: event); ✓ + a `mixed:` holding event → HELD (MIXED: event); ✓ + a pending holding event → HELD until its latest date (or outcome unsourced once passed); else ✓. @internal */
 export function afterHolds(live: LadderLive, today: string, t: LadderTranche, leg: LadderLegId = "eufin"): string {
   if (!t.ok) return "✗";
   const block = LEGS[leg].blockReach === "all" && live.signs.find((s) => s.block && !isReleased(s, allEvents(live)) && (s.blocked?.reach !== "T2T3" || t.id !== "T1"));
@@ -692,7 +693,7 @@ const SIGN_KEYS = ["label", "finding", "lean", "sources", "block", "failed", "pr
 const EVENT_KEYS = ["date", "event", "signs", "escalationIf", "fizzleIf", "holds", "secondary", "status", "sources", "verified", "dateNote", "preRead", "at", "liftBy", "spares"] as const;
 /** Quote-aggregator hosts a new citation may not point at (cite the primary source instead) — data publishers, issuers and central banks are primaries, never listed here. */
 const UNCITABLE_HOSTS = ["yahoo.com", "cnbc.com", "onvista.de"] as const;
-/** The uncitable domain `url`'s host is on or under (dot boundary, trailing root dot ignored), else undefined. */
+/** The uncitable domain `url`'s host is on or under (dot boundary, trailing root dot ignored), else undefined. @internal */
 export const uncitable = (url: string): string | undefined => {
   const h = hostOf(url).replace(/\.$/, "");
   return UNCITABLE_HOSTS.find((d) => h === d || h.endsWith(`.${d}`));
@@ -1257,6 +1258,7 @@ const CLIP_AT = 160;
 /**
  * Under `NTFY_BODY_MAX` or the phone gets an attachment, not text — degrade in order: Watch → a pointer, was/now clipped
  * to `CLIP_AT`, then whole change items cut from the end; the tranche impact is never dropped.
+ * @internal
  */
 export function fitBody(change: string[], impact: string[], watch: string[], md: string): string[] {
   const watched = watch.length ? ["Watch:", ...watch] : [];
@@ -1269,7 +1271,7 @@ export function fitBody(change: string[], impact: string[], watch: string[], md:
   return [...kept.flat(), ...more(), ...impact];
 }
 
-/** `<leg>:apply`'s stdout cap (SKILL.md step 5) — the final turn caches what it prints (ladder-token-waste). */
+/** `<leg>:apply`'s stdout cap (SKILL.md step 5) — the final turn caches what it prints (ladder-token-waste). @internal */
 export const APPLY_ECHO_MAX = 600;
 /** The bytes the head line leaves the push line when the delta does not fit whole. */
 const PUSH_ROOM = 80;
