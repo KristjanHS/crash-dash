@@ -501,7 +501,7 @@ in_head() { ( cd "$CHECK_DIR" && exec "$@" ); }
 # Binaries straight out of the symlinked node_modules: `npx` re-resolves the package tree on
 # every call (0.32 s vs 0.06 s, measured 2026-08-20) and the chain makes several.
 BIN="$CHECK_DIR/node_modules/.bin"
-{ [ -x "$BIN/tsc" ] && [ -x "$BIN/vitest" ] && [ -x "$BIN/eslint" ]; } || die "no tsc/vitest/eslint under $BIN — §0b symlinks the repo's node_modules into the check tree, so this means the repo itself has no install; run \`npm ci\` in $REPO."
+{ [ -x "$BIN/tsc" ] && [ -x "$BIN/vitest" ] && [ -x "$BIN/eslint" ] && [ -x "$BIN/tsx" ]; } || die "no tsc/vitest/eslint/tsx under $BIN — §0b symlinks the repo's node_modules into the check tree, so this means the repo itself has no install; run \`npm ci\` in $REPO."
 
 # ── 1. Typecheck — BACKGROUND, joined at §4 ────────────────────────────────────────────
 # --incremental against a buildinfo cached OUTSIDE the per-run check tree: 8.1 s → 2.0 s
@@ -635,13 +635,13 @@ bg_wait oracle || die "notify-band oracle mismatch"
 
 # Same lint the pre-push hook runs — here it blocks before migrate/deploy, not after.
 git diff -U0 -M --no-color --no-ext-diff --src-prefix=a/ --dst-prefix=b/ "origin/main...$SHIP_SHA" -- src api scripts public \
-  | (cd "$REPO" && npx --no-install tsx scripts/check-ruling-ids.ts) || die "net-new plan-local ruling IDs in code prose (see above)"
+  | (cd "$REPO" && "$BIN/tsx" scripts/check-ruling-ids.ts) || die "net-new plan-local ruling IDs in code prose (see above)"
 
 # Same strict clone-group gate `npm run check` runs — `ACCEPTED` in scripts/lint-ladder-reads.ts is its single owner.
-(cd "$REPO" && npx --no-install tsx scripts/lint-ladder-reads.ts --strict >/dev/null) || die "ladder-reads clone groups changed — share the form or update ACCEPTED in scripts/lint-ladder-reads.ts"
+(cd "$REPO" && "$BIN/tsx" scripts/lint-ladder-reads.ts --strict >/dev/null) || die "ladder-reads clone groups changed — share the form or update ACCEPTED in scripts/lint-ladder-reads.ts"
 
 # Same stale-literal gate `npm run check` runs — a line naming a backfill-depth constant beside a year-numeral.
-(cd "$REPO" && npx --no-install tsx scripts/lint-backfill-years.ts) || die "a line restates a backfill-depth constant's value (see above) — cite the constant"
+(cd "$REPO" && "$BIN/tsx" scripts/lint-backfill-years.ts) || die "a line restates a backfill-depth constant's value (see above) — cite the constant"
 
 if [ "$MODE" = "verify" ]; then
   printf '\n\033[1;32m✓ verify passed — nothing pushed.\033[0m\n'
