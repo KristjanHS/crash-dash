@@ -34,7 +34,9 @@ export type Episode = { shockStart: string; exit: string; end: string; open: boo
 
 /** Annualised sample sd of the `n` daily log returns ending at close `i`; null short of `n` returns. */
 export function sigmaAt(c: Pt[], i: number, n: number): number | null {
-  return i < n ? null : annualSd(n, (j) => Math.log(v(c, i - j) / v(c, i - j - 1)));
+  if (i < n) return null;
+  const r = Array.from({ length: n }, (_, j) => Math.log(v(c, i - j) / v(c, i - j - 1)));
+  return annualSd(n, (j) => r[j]!);
 }
 /** Annualised sample sd of `r(0..n-1)`, summed in index order — `sigmaAt` and `episodes`' cached-return read stay bit-identical. */
 function annualSd(n: number, r: (j: number) => number): number {
