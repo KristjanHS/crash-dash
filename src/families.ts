@@ -138,6 +138,7 @@ export const LADDER = [
  * `alert_log.held_sleeve`; only rendered text (the push body/title) routes through `sleeveLabel`.
  * Mirrored by `public/sleeve-label.js` (a browser module can't import `src/`) and pinned equal by
  * `public/picker-groups.test.js`.
+ * @internal
  */
 export const SLEEVE_LABEL: Readonly<Partial<Record<(typeof LADDER)[number], string>>> = {
   Semis: "Semis SEC0",
@@ -246,7 +247,7 @@ export interface FamilyPanel {
 
 /** The ONLY trend members whose depth the DIAL's `coincidentP` band-lever may read (§3) — the broad,
  *  slow, coincident global regime. The fast proxies (F4/F5/F6) add no `coincidentP` DEPTH — they still
- *  fire trend's band role (`BAND_DRIVING.trend`) and so reach `fired`/shockFloor; depth only is restricted. */
+ *  fire trend's band role (`BAND_DRIVING.trend`) and so reach `fired`/shockFloor; depth only is restricted. @internal */
 export const COINCIDENT_TREND_MEMBERS: readonly string[] = ["GT", "GB"];
 
 /** [USER] 2026-09-24 (+AT1; EXSH_GATE took the EXSH rel-strength seat 2026-10-06; +INS_RS 2026-10-08;
@@ -361,7 +362,7 @@ function coverageRosterFor(f: FamilyDef, bandIds: readonly string[]): readonly s
 /** Damping on the TREND family's `coincidentP` contribution — and ONLY there (the per-leg path is
  *  untouched), because GT/GB enter both the dial's band-depth lever and per-leg trend danger.
  *  Single touch point — never restate this number in a comment, fixture or doc; derive from the
- *  symbol. Re-run `npm run probe:top2` all three arms (undamped / shipped / half) before moving it. */
+ *  symbol. Re-run `npm run probe:top2` all three arms (undamped / shipped / half) before moving it. @internal */
 export const TREND_COINCIDENT_DAMPING = 0.75;
 
 /** A coincident family's contribution to the DIAL's `coincidentP`: full worst-of `contribution`
@@ -441,7 +442,7 @@ export interface OverlayView {
  * says WHY. See `attributeLeg` (src/lab-attribution.ts) for the per-reason semantics.
  */
 /** The reason list is the VALUE; the type derives from it. `public/leg-attribution.js` renders one
- *  muted note per reason and its test imports this array — a hand-copied FE mirror would drift silently. */
+ *  muted note per reason and its test imports this array — a hand-copied FE mirror would drift silently. @internal */
 export const LEG_ATTRIBUTION_DECLINED_REASONS = [
   "no-history",
   "mid-confirm",

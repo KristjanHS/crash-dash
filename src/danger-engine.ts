@@ -142,7 +142,7 @@ export function pillarValue(p: PillarScore): number | null {
 export type Regime = "calm" | "deter" | "stress" | "recov";
 
 /** A per-close pillar pair (each super-group's live sub-danger) — the input the regime fold quantizes
- *  then confirms. */
+ *  then confirms. @internal */
 export interface PillarPair {
   ew: { value: number; live: boolean };
   sn: { value: number; live: boolean };
@@ -255,7 +255,7 @@ export function legRAG(cells: SignalCell[]): State {
  *  severity — that would strand `DANGER_CUTS`. */
 const MOMENTUM_DIVISOR = Math.sqrt(DANGER_CUTS.amber);
 
-/** State-keyed severity ∈ [0,1] (numeric scale identical to `SEV_NUM`); unscaled linear scale. */
+/** State-keyed severity ∈ [0,1] (numeric scale identical to `SEV_NUM`); unscaled linear scale. @internal */
 export const STATE_SEV: Record<State, number> = { RED: 1, AMBER: 0.5, GREEN: 0 };
 /** Weight-scaled RAG band for ONE member across `legs`: the legRAG cut over `max` of
  *  `memberWeight·severity`. Per-member so the tech confirmer stays tech-ONLY. */
@@ -399,7 +399,7 @@ function sharePillarScore(value: number | null): PillarScore {
 }
 
 /** Quantize one close's pillar pair to the raw 2×2 regime at `DANGER_CUTS.amber` (non-live pillar = LOW):
- *  CALM=both low / DETER=EW hi / STRESS=both hi / RECOV=SN hi. */
+ *  CALM=both low / DETER=EW hi / STRESS=both hi / RECOV=SN hi. @internal */
 export function quantizeRegime(p: PillarPair): Regime {
   const ewHi = p.ew.live && p.ew.value >= DANGER_CUTS.amber;
   const snHi = p.sn.live && p.sn.value >= DANGER_CUTS.amber;
@@ -410,7 +410,7 @@ export function quantizeRegime(p: PillarPair): Regime {
 }
 
 /** Confirmed regime over per-close pillar pairs (oldest→newest): quantize each, then the shared 2-close
- *  fold (`confirmedSeries`) so a border blip can't flip it. Empty ⇒ `calm`. Keeps `CONFIRM_CLOSES=2`, not CONFIRM_TIERS. */
+ *  fold (`confirmedSeries`) so a border blip can't flip it. Empty ⇒ `calm`. Keeps `CONFIRM_CLOSES=2`, not CONFIRM_TIERS. @internal */
 export function confirmedRegime(series: PillarPair[]): Regime {
   if (series.length === 0) return "calm";
   return confirmedSeries(series.map(quantizeRegime), CONFIRM_CLOSES).at(-1)!;

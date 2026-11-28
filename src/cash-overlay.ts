@@ -90,7 +90,7 @@ export const CASH_ACCEL_WINDOW = 3;
  *
  *  **The asymmetry is deliberate and one-directional:** too SMALL only discards a usable prior, so
  *  the window seeds empty ⇒ `rise = 0` ⇒ `off` — a missed fire, which is safe. Too LARGE re-admits
- *  the false cash call. When in doubt, shrink it. */
+ *  the false cash call. When in doubt, shrink it. @internal */
 export const CASH_PRIOR_MAX_AGE_DAYS = 7;
 
 /** ENTER persistence, in closes. **1 — derived from DEC-1's geometry, and it deliberately INVERTS

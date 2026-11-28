@@ -17,7 +17,7 @@ import {
 
 /** Lit / gp-cap / trend-knee cuts; every share-path read takes them as a parameter, default `DANGER_CUTS`. */
 export type ShareCuts = Readonly<{ amber: number; red: number }>;
-/** gp alone caps at this fraction of `cuts.amber` — strictly below it, so oil alone never sets a band or #R2 (USER 2026-10-25). */
+/** gp alone caps at this fraction of `cuts.amber` — strictly below it, so oil alone never sets a band or #R2 (USER 2026-10-25). @internal */
 export const GP_CAP_FRACTION = 0.95;
 /** Breadth boost κ on `computeField`'s default arm (USER 2026-10-25) — 0 ⇒ `familiesLit` is display only. */
 export const SYSTEMIC_KAPPA = 0;
@@ -84,7 +84,7 @@ function weightedSeverity(family: SignalKey, sleeve: string, state: ShareMemberS
   return den === 0 ? null : { num, den };
 }
 
-/** Σ w·sev / Σ w over the family's observed members — the weights are RELATIVE only. */
+/** Σ w·sev / Σ w over the family's observed members — the weights are RELATIVE only. @internal */
 export function familyShare(family: SignalKey, sleeve: string, state: ShareMemberState): number | null {
   const s = weightedSeverity(family, sleeve, state);
   return s === null ? null : s.num / s.den;
@@ -143,7 +143,7 @@ export function familiesLit(sleeve: string, state: ShareMemberState, cuts: Share
 }
 
 /** Leg danger = max(EW, SN, `trendShare` × `trendGateFactor`(EW, SN, cuts.amber), min(gp share, `GP_CAP_FRACTION` × cuts.amber));
- *  an unobserved term is 0. */
+ *  an unobserved term is 0. @internal */
 export function legDangerShare(
   sleeve: string,
   state: ShareMemberState,

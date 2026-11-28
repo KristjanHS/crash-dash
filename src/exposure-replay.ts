@@ -104,9 +104,10 @@ export const EPISODES: readonly Episode[] = [
 ] as const;
 
 /** Server-authored honesty labels (rendered verbatim by the FE), the `computeReplay`
- *  notes[] idiom. Named so Stage 6 (api/replay.ts) can compose them per episode. */
+ *  notes[] idiom. Named so Stage 6 (api/replay.ts) can compose them per episode. @internal */
 export const GSPC_PROVENANCE_NOTE =
   "Price before the ACWI splice is ^GSPC (S&P 500); the two series are spliced by their own-MA200 trend reading, never mixed inside one moving average.";
+/** @internal */
 export const FIRE_RAW_SPREAD_NOTE =
   "FIRE reads the raw ACWI/^GSPC MA200 spread (the GT decision variable), matching the value the live GT leg persists - no confirmation-buffer divergence to hide.";
 

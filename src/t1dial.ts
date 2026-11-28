@@ -123,16 +123,16 @@ export function earlyWarnFires(readings: readonly { id: string; state: State }[]
 /** Ladder geometry — the three numbers the graded floor is an expression OVER. `positionP` scales the
  *  ● within `[lo, lo + POSITION_SPAN]`, so a full ARM set may floor no deeper than
  *  `LADDER_MAX − POSITION_SPAN` without the band top overflowing the ladder. That bound is what forces
- *  the floor's slope (see `lo` in computeT1Dial) — it is derived there, never typed in. */
+ *  the floor's slope (see `lo` in computeT1Dial) — it is derived there, never typed in. @internal */
 export const LADDER_MIN = 1;
 /** Exported so a fixture can clamp its hand-passed rung to the SAME bound `computeT1Dial`'s tail
- *  applies (`rung = Math.min(rung, LADDER_MAX)`) instead of emitting an unreachable rung. */
+ *  applies (`rung = Math.min(rung, LADDER_MAX)`) instead of emitting an unreachable rung. @internal */
 export const LADDER_MAX = 9;
 export const POSITION_SPAN = 2;
 
 /** Bubble-arming K1: `slowArmed` scales the notify
  *  cuts ×this via `notifyRegimeFor(dangerScore / ARMED_CUT_SCALE)`. ONE definition — derive fixtures
- *  from it, never restate the value. */
+ *  from it, never restate the value. @internal */
 export const ARMED_CUT_SCALE = 0.9;
 
 /** Two-key caps (L1 Stage 2): with no FIRE family firing the dial can't exceed rung 5; with no ARM
@@ -498,6 +498,7 @@ export function applyCrisisGate(r: FamilyRegime, creditFiring: boolean, volatili
  * DERIVE a dial's `targetRung` by calling what production calls, instead of re-typing the formula
  * (`src/test-helpers.ts` `makeDial`). `computeT1Dial` is the only production caller — there is no
  * inline copy left in this file.
+ * @internal
  */
 export function targetRungFor(dangerScore: number): number {
   return 1 + Math.round(dangerScore * 8);
@@ -509,6 +510,7 @@ export function targetRungFor(dangerScore: number): number {
  * `hi − lo + 1 ∈ {3,4}` legs ALWAYS — the contract `danger-deadband`'s in-band field leans on.
  * At calm targets the band extends UP off `hi`, so `hi` is NO LONGER the ● — read `targetRung` for the ●.
  * Exported for fixture derivation (`makeDial`); the width arithmetic exists exactly once.
+ * @internal
  */
 export function dialBandFor(targetRung: number, split: number): Band {
   const width = POSITION_SPAN + Math.round(split); // 2 or 3 rungs → 3 or 4 legs (the fixed-width contract)

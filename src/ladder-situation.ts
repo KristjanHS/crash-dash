@@ -47,7 +47,7 @@ const rangeEnd = (start: string, m2: string | undefined, d2: string): string => 
   const year = y + (month > 12 || (m2 !== undefined && `${m2}-${d2}` < start.slice(5)) ? 1 : 0);
   return `${year}-${String(((month - 1) % 12) + 1).padStart(2, "0")}-${d2}`;
 };
-/** Each date token a slot names as ISO days: `[day]`, or a range's `[start, end]` (`rangeEnd`; an unreal or not-later end keeps `[start]`); an unreal start drops the token. */
+/** Each date token a slot names as ISO days: `[day]`, or a range's `[start, end]` (`rangeEnd`; an unreal or not-later end keeps `[start]`); an unreal start drops the token. @internal */
 export const slotDates = (text: string, today: string): string[][] =>
   [...text.matchAll(SLOT_DATE)].flatMap(([, y, m, d, m2, d2]) => {
     const start = y === undefined ? nearestDay(`${m}-${d}`, today) : isDay(`${y}-${m}-${d}`) ? `${y}-${m}-${d}` : undefined;

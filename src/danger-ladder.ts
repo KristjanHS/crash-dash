@@ -381,6 +381,7 @@ export const MEMBER_WEIGHT: Record<
  *  in `danger-ladder.test.ts` ("TIMING_CLASS is keyed exactly by the MEMBER_WEIGHT ∪ FAMILY_MEMBERS
  *  union"). Seating a new member means editing this table in the same commit. */
 export type TimingClass = "lead" | "coin" | "lag";
+/** @internal */
 export const TIMING_CLASS: Record<string, TimingClass> = {
   // --- credit (cr) — EARLY-WARN by family, but the realized-SPREAD reads are coincident ---
   // 📜 EVERY row's class grounds live in `docs/member-weight-provenance.md` §TC.<member> (the
@@ -490,7 +491,7 @@ export const TIMING_CLASS: Record<string, TimingClass> = {
  *  ⚠ `0` and `1` denote the SAME window — the member's own close alone. The value counts closes the
  *  fire is VISIBLE for, and a fire is always visible on the close it prints. `0` is written for `lag`
  *  because it reads as "no hold", and `signalHoldClosesFor(m) === 0` is exactly the pre-Stage-2.1 behaviour
- *  (identity), which `danger-engine.growth-hold.test.ts` pins. */
+ *  (identity), which `danger-engine.growth-hold.test.ts` pins. @internal */
 export const SIGNAL_HOLD_CLOSES: Record<TimingClass, number> = { lead: 10, coin: 3, lag: 0 };
 
 /** The hold window for ONE member — the single lookup every consumer uses, so `SIGNAL_HOLD_CLOSES` stays the

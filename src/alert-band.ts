@@ -58,8 +58,10 @@ export const DE_ESCALATION_DAYS = 2;
  * Exported because four test sites assert this copy — `src/alert-band.floors.test.ts` and
  * `public/band-panel.test.js`, the latter including an ABSENCE assertion, which goes vacuous the
  * moment a hand-typed literal drifts from the string the code emits. Import it; never re-type it.
+ * @internal
  */
 export const EW_HALF_MET_BREAK = "break past cut; rel-strength intact - pair quiet";
+/** @internal */
 export const EW_HALF_MET_RS = "rel-strength breakdown; break not past cut - pair quiet";
 
 /**
@@ -86,6 +88,7 @@ const CREDIT_FIRED_FLOOR: AlertLevel = "CRITICAL";
  * So the credit escalator can no longer put the band anywhere the dial couldn't
  * have put it for the same world — which is exactly what "behind the two-key model" means.
  * Pinned against drift by the derivation test in alert-band.compose.test.ts.
+ * @internal
  */
 export const CREDIT_UNFIRED_FLOOR: AlertLevel = "WARNING";
 
@@ -127,7 +130,7 @@ export function regimeToBand(regime: FamilyRegime): AlertLevel {
   return REGIME_BAND[regime];
 }
 
-/** max over a set of bands (OK over an empty set), by ALERT_RANK. */
+/** max over a set of bands (OK over an empty set), by ALERT_RANK. @internal */
 export function maxBand(...bands: AlertLevel[]): AlertLevel {
   return bands.reduce<AlertLevel>((a, b) => (ALERT_RANK[a] >= ALERT_RANK[b] ? a : b), "OK");
 }
@@ -279,7 +282,7 @@ export function escalatorFloor(
  *  (`escalatorFloorBreakdown` picks with strict `>`), so `buildLabBand` reads this array rather
  *  than re-typing it. It is also the enumeration the band-reason coverage guard in
  *  `alert-band.floors.test.ts` derives its expected set from — adding a source here without an arm there
- *  goes red. */
+ *  goes red. @internal */
 export const FLOOR_SOURCES = ["credit", "r4", "geo", "rate", "ew", "coverage"] as const;
 
 export type FloorSource = (typeof FLOOR_SOURCES)[number];
@@ -566,7 +569,7 @@ const R4_PHASE_TONE: Record<R4Phase, State> = {
  *  (4 / `R4_ENTER_RUNG`), families firing (1 / `R4_ENTER_FAMILIES`) and the HY-OAS tail
  *  (2.77 / `R4_HY_TAIL`) stay green. The numerators are that day's measurements; every denominator
  *  is the SYMBOL, so a retune cannot strand a stale ratio here (`indicator-loop.md` §A retune is a ONE-place edit —
- *  the HY one did, at the retired 6.0, until the E8 review caught it 2026-07-31). */
+ *  the HY one did, at the retired 6.0, until the E8 review caught it 2026-07-31). @internal */
 export const R4_PROXIMITY_AMBER = 0.8;
 
 /** r4 row tone — how close THIS row's live value sits to THIS row's gate, superseding the
@@ -583,7 +586,7 @@ export const R4_PROXIMITY_AMBER = 0.8;
  *
  *  A `null` value (feed hiccup — HY-OAS/VT) has no readable proximity and tones GREEN: the row still
  *  renders `n/a vs <gate>` with no margin bar, so the absence is visible without a colour claiming
- *  stress that was never measured. */
+ *  stress that was never measured. @internal */
 export function r4ProximityTone(value: number | null, threshold: number): State {
   if (value === null || threshold === 0) return "GREEN";
   return value / threshold >= R4_PROXIMITY_AMBER ? "AMBER" : "GREEN";

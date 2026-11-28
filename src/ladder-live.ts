@@ -142,10 +142,10 @@ export const makeTagOf =
 /** Structural check for the "every row tagged" test (`scripts/ladder-read-tags.test.ts`): all four fields present, enums honoured, `series` non-empty unless `manual`, `variant` (a named variant of the job's shared form) non-empty when present. */
 export const isReadTag = (t: unknown): t is ReadTag =>
   !!t && typeof t === "object" && typeof (t as ReadTag).indicator === "string" && (t as ReadTag).indicator.length > 0 && Array.isArray((t as ReadTag).series) && (t as ReadTag).series.every((s) => typeof s === "string" && s.length > 0) && (READ_JOBS as readonly string[]).includes((t as ReadTag).job) && (READ_AGGS as readonly string[]).includes((t as ReadTag).agg) && ((t as ReadTag).series.length > 0 || (t as ReadTag).job === "manual") && ((t as ReadTag).variant === undefined || (typeof (t as ReadTag).variant === "string" && (t as ReadTag).variant!.length > 0));
-/** `tip` = the expected cell's anchor what + why — a `/lab` tooltip only, never in the md. `foot` = a clause shared across rows, a numbered footnote on the expected cell (`footer`). `tag` = the read schema above (absent on rows stored before stage 1). */
+/** `tip` = the expected cell's anchor what + why — a `/lab` tooltip only, never in the md. `foot` = a clause shared across rows, a numbered footnote on the expected cell (`footer`). `tag` = the read schema above (absent on rows stored before stage 1). @internal */
 export type VerdictLeg = Reading & { key: string; tranche: TrancheId; leg: string; rule: string; tip?: string; foot?: string; gate: boolean; live: Reading; tag?: ReadTag };
 /** One escalation-box family in `VerdictLeg` cell grammar: `unmet` = TRIPPED, `na` = no close read and no sign row; `near` = untripped but close; `live` = the same read over the latest prints (absent = the close cell repeats); `signs` = the rows feeding it. */
-/** A clustered box row (`boxOf`): each member's `rule` / `value` / `live` are the probe's display cells, `—` when absent; `tag.series` = the ids its ruled read fills its cells from; `signs` = the rows it carries (`boardRows`); `near` = untripped but close (the hot cadence). */
+/** A clustered box row (`boxOf`): each member's `rule` / `value` / `live` are the probe's display cells, `—` when absent; `tag.series` = the ids its ruled read fills its cells from; `signs` = the rows it carries (`boardRows`); `near` = untripped but close (the hot cadence). @internal */
 export type ClusterView = Omit<ClusterRead, "members"> & { members: (ClusterRead["members"][number] & { rule?: string; value?: string; live?: string; liveCell?: Cell; tag?: ReadTag; signs?: LadderFamily["signs"]; near?: boolean })[] };
 export type LadderFamily = { name: string; rule: string; value: string; verdict: Mark; near?: boolean; live?: { value: string; verdict: Mark }; signs: { sign: string; lean: string; block: boolean }[]; tag?: ReadTag };
 /** Leg-agnostic row builder: `close` null = no close read (`—`); a `block: true` sign forces `unmet` on both cells; a `na` close with sign rows reads off them (`met` unless blocked). */
@@ -263,7 +263,7 @@ export const probeTrancheCell = (t: ProbeTranche): string => trancheCell(tranche
 const fixed = (x: number, d: number): string => x.toFixed(d).replace(/^-(?=[0.]+$)/, "");
 /** The probes' value-cell number: `d` decimals, `—` when absent or non-finite, never `-0.00`. */
 export const fixNum = (x: number | null | undefined, d = 2): string => (x === null || x === undefined || !Number.isFinite(x) ? "—" : fixed(x, d));
-/** Decimals ≥ d at which a value and its expected print apart; a true tie (within 1e-9) stays at d. */
+/** Decimals ≥ d at which a value and its expected print apart; a true tie (within 1e-9) stays at d. @internal */
 export const dpApart = (a: number, b: number, d = 2): number => {
   while (d < 6 && Math.abs(a - b) > 1e-9 && fixed(a, d) === fixed(b, d)) d++;
   return d;
@@ -324,7 +324,7 @@ const trancheCriteria = (legs: Leg[], h: [string, string], feet: Footer): string
   ];
 };
 /** Gate rows identical across ≥ 2 tranches (same label, rule and both readings) render once in the "shared gates" block, labelled with their tranches
- *  when fewer than three (`HY OAS no new high (T2·T3)`); the tranche tables keep only their own rows — mirrored by `splitGates` in public/lab-reentry.js. */
+ *  when fewer than three (`HY OAS no new high (T2·T3)`); the tranche tables keep only their own rows — mirrored by `splitGates` in public/lab-reentry.js. @internal */
 export const splitGates = <L extends Pick<Leg, "tranche" | "leg" | "rule" | "foot" | "value" | "verdict" | "count" | "live" | "gate">>(legs: L[]): { shared: { leg: L; label: string }[]; own: L[] } => {
   const keyOf = (l: L): string => [l.leg, l.rule, l.foot, l.value, l.verdict, l.count?.got, l.count?.need, l.live.value, l.live.verdict, l.live.count?.got, l.live.count?.need].join("\u0000");
   const tranches = new Map<string, L["tranche"][]>();
@@ -352,7 +352,7 @@ const familyCell = (c: { value: string; verdict: Mark }, near = false): string =
 /** One Grid row: `kind` box = a `BOX_INDICATOR` leg row, read = every other tagged leg row (families add no rows since 2026-10-13). */
 type GridRow = { indicator: string; series: string[]; first: boolean; job: ReadJob; variant?: string; kind: "read" | "box"; open: boolean; scope: TrancheId[]; cells: Record<TrancheId, string> };
 type GridView = { untagged: boolean; rows: GridRow[] };
-/** The `tag.indicator` every probe sets on its `*-esc` gate row. */
+/** The `tag.indicator` every probe sets on its `*-esc` gate row. @internal */
 export const BOX_INDICATOR = BOX_INDICATOR_JS as string;
 const gridRows = gridRowsJs as (v: LadderVerdict) => GridView;
 /** One Blockers tranche: rows routed by the close verdict (`unmet` / `passing` / `unread`), the close box beside them. */
@@ -361,6 +361,7 @@ type BlockerTranche = { id: TrancheId; close: LadderTranche; live: LadderTranche
 type BlockersView = { tranches: BlockerTranche[]; held: boolean };
 const blockers = blockersJs as (v: LadderVerdict, opts?: { naGateHolds?: boolean }) => BlockersView;
 const blockersSummary = blockersSummaryJs as (b: BlockersView) => string;
+/** @internal */
 export const HELD_NOTE = HELD_NOTE_JS as string;
 const foldText = foldTextJs as (t: BlockerTranche) => string;
 const boxHoldsText = boxHoldsTextJs as (box: BlockerBox) => string;
@@ -474,7 +475,7 @@ const loneCalendar = (live: LadderLive): SignItem[] => {
 const held = (run: string, s: LadderSign): string => (s.due && s.due > run ? `held → ${s.due.slice(5)}` : "—");
 const dayGap = (from: string, to: string): number => Math.round((Date.parse(to) - Date.parse(from)) / 864e5);
 export const newestSource = (s: LadderSign): string | undefined => s.sources.map((x) => x.date).sort().at(-1);
-/** ` (+Nd)` — the finding's age (run − newest source) once that source predates the window; empty while fresh or unsourced. */
+/** ` (+Nd)` — the finding's age (run − newest source) once that source predates the window; empty while fresh or unsourced. @internal */
 export const findingAge = (run: string, s: LadderSign): string => {
   const newest = newestSource(s);
   return newest !== undefined && newest < sourceWindowStart(s, run) ? ` (+${dayGap(newest, run)}d)` : "";
@@ -524,7 +525,7 @@ const signsSection = (live: LadderLive, feet: Footer): string[] => {
   ];
 };
 
-/** `runAt` → `16:37 EEST` in `timeZone` (default: the process's own) — mirrored by `runTime` in public/lab-reentry.js. */
+/** `runAt` → `16:37 EEST` in `timeZone` (default: the process's own) — mirrored by `runTime` in public/lab-reentry.js. @internal */
 export const runTime = (at: string, timeZone?: string): string =>
   new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", hourCycle: "h23", timeZoneName: "short", timeZone }).format(new Date(at));
 

@@ -75,6 +75,7 @@ export const EXPOSURE_GT_LIMIT = 10;
  * miss narrowed from 232 days (26% of 880) to 36 (4%). UNREACHABLE still holds literally (the probe prints
  * "NO cut in [0, 1] reaches 880"), so the like-for-like read stays void — but on a narrow floor, not a wide
  * one. Do not quote "the latch floors the count" as a large effect.
+ * @internal
  */
 export const ARM_LEVEL_PCT = 0.85;
 /**
@@ -106,13 +107,14 @@ export const ARM_LEVEL_PCT = 0.85;
  * the lower edge can neither delay onset (every armed run starts on a raw-rule day) nor
  * advance it. 0.80 is a round number in the measured direction, NOT a fitted optimum; the
  * house rule against fitting a constant to the six episodes is unchanged.
+ * @internal
  */
 export const ARM_RELEASE_PCT = 0.8;
 /** Trading days (~6w) for the ARM widening rate-of-change — defined in `registry-fred.ts` (re-exported here), shared with F1's `velocityWindow`. */
 export { ARM_ROC_WINDOW };
-/** Armed when value[last] − value[last−30] ≥ this (F1 value is OAS in %, so 0.50 = +50bp). */
+/** Armed when value[last] − value[last−30] ≥ this (F1 value is OAS in %, so 0.50 = +50bp). @internal */
 export const ARM_ROC_BP = 0.5;
-/** Approaching (pre-alert) when not armed but the 30d ROC is already ≥ this (+28bp). */
+/** Approaching (pre-alert) when not armed but the 30d ROC is already ≥ this (+28bp). @internal */
 export const ARM_ROC_APPROACH_BP = 0.28;
 /**
  * Approaching (pre-alert) when not fired but the maSpread cushion is within this much of
@@ -121,6 +123,7 @@ export const ARM_ROC_APPROACH_BP = 0.28;
  * edge is GT's amber, so the pre-alert rides 4pp above THAT — same 4pp of cushion, measured
  * from the cut that now fires. Left absolute it would be dead code: today's resolved amber
  * (0.059) sits ABOVE 0.04, so every maSpread ≤ 0.04 already fires.
+ * @internal
  */
 export const FIRE_MA_APPROACH_SPREAD = 0.04;
 /**
@@ -133,6 +136,7 @@ export const FIRE_MA_APPROACH_SPREAD = 0.04;
  * the constant advertised. A rank over a trailing window shorter than 504 is
  * still a valid rank of the available window, so the rule-swap that finding
  * objected to dissolves rather than needing the floor raised.
+ * @internal
  */
 export const ARM_MIN_OBS = 252;
 
@@ -187,6 +191,7 @@ export type Posture = "Full" | "Core" | "Reduced" | "Defensive";
  * At `Defensive` the non-equity 85% is bond-rung-primary (D6 as amended by D-E2), NOT cash.
  * Anything rendering `100 - equityPct` as a CASH number is a false number on a
  * notify-visible surface.
+ * @internal
  */
 export const EQUITY_PCT: Record<Posture, number> = {
   Full: 100,
@@ -209,6 +214,7 @@ export const EQUITY_PCT: Record<Posture, number> = {
  * compute, which is exactly why it was chosen — but it is not evidence about relative leg risk.
  * Say so wherever the number is rendered or documented, and do not "validate" it against returns
  * without a plan.
+ * @internal
  */
 export function effectiveEquityRisk(equityPct: number, riskRank: number): number {
   return (equityPct * (10 - riskRank)) / 9;
@@ -232,6 +238,7 @@ export function effectiveEquityRisk(equityPct: number, riskRank: number): number
  *
  * ⚠ **There is NO free posture×rung occupancy series** — `/api/replay` runs `replayExposure`, the posture
  * axis only. `COMPOUND_RISK_FLOOR` is a judgement call; never re-describe it as measured.
+ * @internal
  */
 export const COMPOUND_RISK_FLOOR = 10;
 
@@ -240,6 +247,7 @@ export const COMPOUND_RISK_FLOOR = 10;
  * a time. The rung axis keeps its danger-driven answer untouched — the dial's leg pick is the read
  * with direct market evidence behind it, and relaxing posture is the direction that fights idle
  * cash against the ACWI benchmark.
+ * @internal
  */
 export const POSTURE_RELAX_ORDER = ["Defensive", "Reduced", "Core", "Full"] as const;
 
