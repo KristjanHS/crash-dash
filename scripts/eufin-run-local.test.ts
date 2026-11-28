@@ -1,5 +1,5 @@
 import { type ChildProcess, spawn, spawnSync } from "node:child_process";
-import { chmodSync, copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { chmodSync, copyFileSync, cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
@@ -169,12 +169,13 @@ const WRAPS = {
     `(cd "$wt" && TMPDIR="$(mktemp -d)" "$@")`, ""],
 } as const;
 interface LegRun { wrap?: boolean | keyof typeof WRAPS; protectedList?: string | null; unshipped?: boolean; env?: Record<string, string> }
-function runLeg(name: string, { wrap = false, protectedList, unshipped = false, env: extra = {} }: LegRun) {
-  const root = join(tmp, name);
-  const repo = join(root, "repo");
-  const bin = join(root, "bin");
-  const cfg = join(root, "cfg");
-  for (const d of [bin, join(cfg, "crash-dash"), join(root, "tmp"), repo]) mkdirSync(d, { recursive: true });
+/** The base repo + its bare `origin` (pushed), built once in the describe's `beforeAll` and copied into each run: the per-run
+ *  init/commit/push spawns cost ~270 ms of every `runLeg` against the 1 000 ms T1 ceiling. Only the copy's `origin` URL is per-run. */
+let template: { dir: string; base: string } | undefined;
+function buildBaseRepo(): void {
+  const dir = join(tmp, "_template");
+  const repo = join(dir, "repo");
+  mkdirSync(repo, { recursive: true });
   for (const f of LEG_FILES) {
     mkdirSync(dirname(join(repo, f)), { recursive: true });
     copyFileSync(join(REAL, f), join(repo, f));
@@ -190,15 +191,26 @@ function runLeg(name: string, { wrap = false, protectedList, unshipped = false, 
     writeFileSync(join(repo, `public/${leg}.json`), "{}\n");
     writeFileSync(join(repo, `docs/${leg}.md`), `# ${leg}\n`);
   }
-  git(root, "init", "-q", "--bare", "-b", "main", "origin.git");
+  git(dir, "init", "-q", "--bare", "-b", "main", "origin.git");
   git(repo, "init", "-q", "-b", "main");
   git(repo, "config", "user.name", "t");
   git(repo, "config", "user.email", "t@t.invalid");
   git(repo, "add", "-A");
   git(repo, "commit", "-q", "-m", "base");
-  git(repo, "remote", "add", "origin", join(root, "origin.git"));
+  git(repo, "remote", "add", "origin", join(dir, "origin.git"));
   git(repo, "push", "-q", "origin", "main");
-  const base = git(repo, "rev-parse", "HEAD");
+  template = { dir, base: git(repo, "rev-parse", "HEAD") };
+}
+
+function runLeg(name: string, { wrap = false, protectedList, unshipped = false, env: extra = {} }: LegRun) {
+  const root = join(tmp, name);
+  const repo = join(root, "repo");
+  const bin = join(root, "bin");
+  const cfg = join(root, "cfg");
+  const { dir, base } = template!;
+  cpSync(dir, root, { recursive: true });
+  for (const d of [bin, join(cfg, "crash-dash"), join(root, "tmp")]) mkdirSync(d, { recursive: true });
+  git(repo, "remote", "set-url", "origin", join(root, "origin.git"));
 
   const makeLog = join(root, "make.log");
   const npmLog = join(root, "npm.log");
@@ -272,6 +284,7 @@ git -C "${repo}" worktree remove --force "$wt"; exit $rc`);
 }
 
 describe("eufin-run-local.sh LADDER_LEG_WRAP / LADDER_PROTECTED_PATHS", { timeout: 60_000 }, () => {
+  beforeAll(buildBaseRepo);
   it("(a) wrap set → the leg runs in the wrapper's worktree and the repo fast-forwards to its commit", () => {
     const r = runLeg("wrap", { wrap: true, protectedList: "# protected\n\n  src/prices.ts\nscripts/x.ts\n" });
     expect(r.stderr).not.toMatch(/::error::/);
