@@ -454,6 +454,7 @@ async function fetchKeyedJson(
  * (mirrors store.ts's byDate revision semantics); (3) sort ascending — FRED serves ascending
  * today, but any ordering hiccup would silently corrupt every downstream velocity window.
  * `series` is "?" only in legacy/test call sites; the live path (fetchKeylessCsv) names it.
+ * @internal
  */
 export function parseFredCsv(csv: string, series = "?"): Observation[] {
   const lines = csv.trim().split("\n");

@@ -34,7 +34,6 @@ type SleeveId = "SPY" | "VEA" | "SP500IT" | "EU-Fin" | "SMH" | "VWO" | "VGK" | "
  * Portfolio weights as a sleeve→fraction map; the fractions of ONE dated segment sum
  * to 1 (validated in `pension_holdings.ts`). Partial: a segment names only the sleeves
  * it actually holds, and an absent sleeve is weight 0, not a hole.
- * @internal
  */
 export type PensionWeights = Partial<Record<SleeveId, number>>;
 
@@ -59,7 +58,6 @@ export type DatedWeights = DatedWeightSegment[];
  * ⚠ The key set VARIES by day (Stage 9 / R1): only the sleeves WEIGHTED on `date` are
  * guaranteed present — unweighted ones left-join and are simply absent on a day their feed
  * does not cover. Never index `eur` without an `undefined` check.
- * @internal
  */
 export interface PensionLeg {
   date: string;

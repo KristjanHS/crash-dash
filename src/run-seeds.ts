@@ -209,7 +209,7 @@ export async function backfillHistory(
 }
 
 
-export { QUOTE_GRAFT_CARDS, quoteRepairIds } from "./estimated.js";
+export { quoteRepairIds } from "./estimated.js";
 
 /** A run's scored series per persisted id, oldest→newest — the gap-fill carrier (`gapFillSweep`). */
 export type SeriesById = Map<string, readonly StoredReading[]>;

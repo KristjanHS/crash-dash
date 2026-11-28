@@ -51,7 +51,7 @@ const anchorFinals = (id: string, rows: readonly AnchorRow[], oldest?: string): 
   new Set(anchorRows(id, rows, oldest).map((p) => p.date));
 
 /** Sovereign cards whose row past the newest close is a sovereign-quote quote head stored `estimated`; + CMP_ legs = `quoteRepairIds`, the
- *  persist roster and (via `QUOTE_HEAD_IDS`) the anchor exemption. */
+ *  persist roster and (via `QUOTE_HEAD_IDS`) the anchor exemption. @internal */
 export const QUOTE_GRAFT_CARDS = ["BONOS", "BUND"] as const;
 export const quoteRepairIds = (): ReadonlySet<string> =>
   new Set(QUOTE_GRAFT_CARDS.flatMap((id) => [id, ...(COMPOSITE_COMPONENTS[id] ?? []).map((c) => c.id)]));

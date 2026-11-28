@@ -20,7 +20,7 @@ import { InMemoryStore } from "./store-memory.js";
 import { makeAlert, makeStoredReading } from "./test-helpers.js";
 import { ESTIMATE_ROW_IDS } from "./nowcast-score.js";
 import { CHART_ONLY_IDS } from "./registry-composite.js";
-import { QUOTE_GRAFT_CARDS } from "./run-seeds.js";
+import { QUOTE_GRAFT_CARDS } from "./estimated.js";
 import type { SeriesPoint, Store, StoredReading } from "./store.js";
 
 /** Weekdays from `from`, `n` of them — a dense daily window every peer shares. */

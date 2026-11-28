@@ -79,7 +79,7 @@ export function offHigh(c: readonly Dated[], n: number): { dd: number; high: num
   return { dd: w.at(-1)!.value! / top.value! - 1, high: top.value!, highDate: top.date };
 }
 
-/** A shock's peak and pre-shock base — `scripts/ladder-shock.ts` `Shock` satisfies it. @internal */
+/** A shock's peak and pre-shock base — `scripts/ladder-shock.ts` `Shock` satisfies it. */
 export type Peaked = { peak: number; base: number };
 /** `recovery` form A: the close a `frac` retrace of the shock reaches. */
 export const retraceLine = (sh: Peaked, frac: number): number => sh.peak - frac * (sh.peak - sh.base);

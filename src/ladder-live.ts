@@ -119,6 +119,7 @@ type Reading = { value: string; verdict: Mark; count?: { got: number; need: numb
  * single-comparand rule whose wording fits two labels takes the fixed precedence `recovery` (vs a named shock/peak) > `regime` (vs a moving average) > `relative` (vs a recent-window high/percentile) >
  * `speed` (Δ over N closes, z of Δ included) > `level` (absolute); `manual` = a sign row or a sign-only box family (no close read, `series: []`); `agg` = the row's one aggregation role (`kOfN` criterion, `allOf` gate, `box` family).
  * Lives on each probe's static def (`LegDef` / family def), set at the row-factory CALL SITE, copied onto the row by the emit path.
+ * @internal
  */
 export const READ_JOBS = ["speed", "relative", "recovery", "regime", "level", "manual", "composite"] as const;
 type ReadJob = (typeof READ_JOBS)[number];
@@ -352,7 +353,7 @@ const familyCell = (c: { value: string; verdict: Mark }, near = false): string =
 /** One Grid row: `kind` box = a `BOX_INDICATOR` leg row, read = every other tagged leg row (families add no rows since 2026-10-13). */
 type GridRow = { indicator: string; series: string[]; first: boolean; job: ReadJob; variant?: string; kind: "read" | "box"; open: boolean; scope: TrancheId[]; cells: Record<TrancheId, string> };
 type GridView = { untagged: boolean; rows: GridRow[] };
-/** The `tag.indicator` every probe sets on its `*-esc` gate row. @internal */
+/** The `tag.indicator` every probe sets on its `*-esc` gate row. */
 export const BOX_INDICATOR = BOX_INDICATOR_JS as string;
 const gridRows = gridRowsJs as (v: LadderVerdict) => GridView;
 /** One Blockers tranche: rows routed by the close verdict (`unmet` / `passing` / `unread`), the close box beside them. */

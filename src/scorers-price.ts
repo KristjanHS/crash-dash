@@ -432,7 +432,7 @@ export function scoreHcx(indicator: Indicator, bySymbol: Record<string, Observat
 
 /** Resolve a ratio-vs-MA config off the indicator id (throws on an unregistered id — only F13,
  *  and later FDX, route here). The `breadthConfig`/`hasOwn` prototype-safety pattern. */
-export function ratioVsMaConfig(id: string): RatioVsMaConfig {
+function ratioVsMaConfig(id: string): RatioVsMaConfig {
   if (!Object.hasOwn(RATIO_VS_MA_CONFIG_OF, id)) {
     throw new Error(`[ratioVsMa] no RATIO_VS_MA_CONFIG_OF entry for id "${id}"`);
   }

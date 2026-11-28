@@ -44,6 +44,7 @@ export type LegId = (typeof LEG_ORDER)[number];
  * well-formed composite by mapping its parts through this table, so a future AND-folded id
  * costs no entry on either side. `"op+vel-op"` carries a hand-ruled phrase only because that
  * exact wording was ruled (R3).
+ * @internal
  */
 export const LEG_PHRASE: Readonly<Record<string, string>> = {
   op: "level cut",

@@ -973,7 +973,7 @@ function downsideChart(i: Indicator): ChartSpec {
 }
 
 /** The EU-Fin re-entry ladder's slow realized-vol window (`rv20` hook) — mirrors the probe's `RV_SLOW_N`
- *  (scripts/probe-eufin-tranches.ts) and client `RV_PANEL.rvSlowWindow`, both parity-pinned in `rv-panel.test.js`. */
+ *  (scripts/probe-eufin-tranches.ts) and client `RV_PANEL.rvSlowWindow`, both parity-pinned in `rv-panel.test.js`. @internal */
 export const RV20_WINDOW = 20;
 /** Trailing window per overlay hook (MAs = mean; `high60` = inclusive max) — scorer constants, never bare; mirrored by
  *  `public/detail-chart.js` `MA_WINDOWS` + `HIGH_WINDOWS`, parity-pinned in its test. @internal */
