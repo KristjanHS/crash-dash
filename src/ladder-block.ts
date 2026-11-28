@@ -95,7 +95,7 @@ const stampedLift = (s: LadderSign, lifts: readonly LadderMeasuredLift[] | undef
   lifts?.find((l) => l.sign === s.sign && liftTaken(s, l, bindings?.[s.sign]));
 /** A researched row's own reading this run — a `STALE` finding, a `QUIET` listing or `UNSOURCED` is none (SKILL.md: not a sourced reversal). */
 export const SOURCED_LABEL = /^(CHANGED|UNCHANGED( \d{2}-\d{2})?)$/;
-/** A second vetted `causeFalse` ≥ this after `blocked.causeFalseOn` lifts the block. */
+/** A second vetted `causeFalse` ≥ this after `blocked.causeFalseOn` lifts the block. @internal */
 export const NEUTRAL_LIFT_GAP_DAYS = 7;
 type CauseFalsePatch = { label: string; lean?: string; sources?: readonly LadderSource[]; causeFalse?: unknown } | undefined;
 type SourcedRow = { lean: string; sources: readonly LadderSource[]; blocked?: LadderSign["blocked"]; cadence?: number };
@@ -223,7 +223,7 @@ export const resolveBlocks = (next: LadderLive, patch: { signs: Record<string, {
   }
   return lines;
 };
-/** The review date: a block's earliest dated lift + `REVIEW_GRACE_DAYS`, else its `on` + `REVIEW_FALLBACK_DAYS`. */
+/** The review date: a block's earliest dated lift + `REVIEW_GRACE_DAYS`, else its `on` + `REVIEW_FALLBACK_DAYS`. @internal */
 export const REVIEW_GRACE_DAYS = 7;
 export const REVIEW_FALLBACK_DAYS = 21;
 const addDays = (d: string, n: number): string => new Date(Date.parse(d) + n * 864e5).toISOString().slice(0, 10);
@@ -248,9 +248,9 @@ export const STALE_REVIEW_DAYS = 11;
 type Reach = "all" | "T2T3" | "released";
 const reachNow = (c: BlockContract): Reach => (c.released ? "released" : c.demoted ? "T2T3" : "all");
 const TIER_DOWN = { all: "T2T3", T2T3: "released", released: "released" } as const;
-/** Consecutive stale reviews (`blocked.staleReviews`) that release a block outright — a live pin holds it ([USER 2026-11-13]). */
+/** Consecutive stale reviews (`blocked.staleReviews`) that release a block outright — a live pin holds it ([USER 2026-11-13]). @internal */
 export const STALE_REVIEW_CAP = 2;
-/** A patch `pin` date is ≤ today + this ([USER 2026-11-13]). */
+/** A patch `pin` date is ≤ today + this ([USER 2026-11-13]). @internal */
 export const PIN_MAX_DAYS = 21;
 /** The day a block was last reviewed — a source dated after it is fresh. Apply reads it after this run's lift / demotion mutations and before its stamp; the pin vet and a probe read the row as stored. */
 const lastReview = (b: NonNullable<LadderSign["blocked"]>): string => b.reviewed ?? b.setRun ?? b.on;
