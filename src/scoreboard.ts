@@ -22,17 +22,17 @@ import { isoDay } from "./dates.js";
 export const NAV_BASE = 100;
 /** Read-window over SB rows: last N points fed to the metrics (>1 trading year). Provisional. */
 export const SCOREBOARD_WINDOW = 400;
-/** Ulcer index is `n/a yet` below this many runs. Provisional. */
+/** Ulcer index is `n/a yet` below this many runs. Provisional. @internal */
 export const MIN_UI_RUNS = 10;
-/** Calmar is `n/a yet` below this many runs. Provisional. */
+/** Calmar is `n/a yet` below this many runs. Provisional. @internal */
 export const MIN_CALMAR_RUNS = 60;
 /** Gate (a): PASS iff `UI_strat <= UI_bench * ULCER_GATE_RATIO` (equality passes). Provisional. */
 const ULCER_GATE_RATIO = 1.0;
-/** Gate (b): PASS iff trailing-365d override count `<= B1_OVERRIDES_PER_YEAR` (D7 B1). Provisional. */
+/** Gate (b): PASS iff trailing-365d override count `<= B1_OVERRIDES_PER_YEAR` (D7 B1). Provisional. @internal */
 export const B1_OVERRIDES_PER_YEAR = 3;
 /** Return-vs-fund RETUNE flag threshold, in pp/yr (custody drag). Provisional. */
 const CUSTODY_DRAG_PP = 0.09;
-/** Return-vs-fund KILL-FLOOR flag threshold, in pp/yr (feeds D7 M2 — display only). Provisional. */
+/** Return-vs-fund KILL-FLOOR flag threshold, in pp/yr (feeds D7 M2 — display only). Provisional. @internal */
 export const M2_RETURN_LAG_PP = 2;
 
 /** Synthetic `readings` indicator id for the strategy NAV chain (Fork 4 write path). */
@@ -40,7 +40,7 @@ export const SB_STRAT_ID = "SB_STRAT";
 /** Synthetic `readings` indicator id for the benchmark NAV chain (Fork 4 write path). */
 export const SB_BENCH_ID = "SB_BENCH";
 
-/** Fork 1 honesty label, verbatim (swapped only if the Pensionikeskus NAV probe succeeds). */
+/** Fork 1 honesty label, verbatim (swapped only if the Pensionikeskus NAV probe succeeds). @internal */
 export const YARDSTICK_LABEL = "yardstick: ACWI ETF proxy (USD→EUR) - not Tuleva EUR NAV";
 
 // --- Leg → scored-series ticker map ------------------------------------------------
@@ -337,6 +337,7 @@ function eurPoints(obs: Observation[], fx: Observation[], currency: "USD" | "EUR
 /**
  * Calendar-day cap between the run's date and the newest close every chain input shares: a weekend plus
  * a venue holiday (Fri → Tue) is 4, so past this a feed has stopped and the SB block degrades.
+ * @internal
  */
 export const SB_MAX_CLOSE_LAG_DAYS = 5;
 
@@ -347,6 +348,7 @@ export const SB_MAX_CLOSE_LAG_DAYS = 5;
  * published yet — every intraday run, and (2026-09-18..26) days on end. FX is not an input: `eurCloseAt`
  * already takes its nearest prior rate. THROWS (→ the SB degrade) when no common date exists or it trails
  * `asOf` by more than `SB_MAX_CLOSE_LAG_DAYS`, so a stopped feed still surfaces. Pure.
+ * @internal
  */
 export function chainLinkDate(closes: Observation[][], asOf: string): string {
   const dateSets = closes.map((series) => new Set(series.filter((o) => o.date <= asOf).map((o) => o.date)));
@@ -503,6 +505,7 @@ export function nextNav(
  * the trailing peak WITHIN the window (`drawdownSeries`), `UI = sqrt(Σ D_t² / N)`.
  * ≥ 0; 0 for a monotone-rising series. Throws nothing; empty input → NaN guard by
  * caller (computeScoreboard gates on MIN_UI_RUNS first). Pure.
+ * @internal
  */
 export function ulcerIndex(navs: number[]): number {
   const dd = drawdownSeries(navs);
@@ -513,6 +516,7 @@ export function ulcerIndex(navs: number[]): number {
 /**
  * Max drawdown in percent (≤ 0): `min_t D_t` with `D_t = 100 × (NAV_t / peak_t − 1)`,
  * trailing peak within the window. Pure.
+ * @internal
  */
 export function maxDrawdown(navs: number[]): number {
   return 100 * Math.min(...drawdownSeries(navs));
@@ -554,6 +558,7 @@ function calmar(navs: number[], dates: string[]): number | null {
  * Recovery time: run count from the max-DD trough to the FIRST later point with
  * `NAV ≥` the pre-trough peak. Returns null when unrecovered or `maxDD = 0`
  * (rendered "n/a yet"). Ties break to the earliest trough. Pure.
+ * @internal
  */
 export function recoveryRuns(navs: number[]): number | null {
   if (navs.length === 0) return null;

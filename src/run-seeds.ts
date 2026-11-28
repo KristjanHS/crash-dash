@@ -68,7 +68,7 @@ export const PRE_FIRST_PRUNE_MAX_SHARE = 0.1;
  *  nothing written — a truncated official fetch, not gaps (prod: 5 of ~290 sessions ≈ 1.7%). */
 const OFFICIAL_GAP_MAX_SHARE = 0.05;
 
-/** Restate tail grace (calendar days): stored dates more than this past the rebuilt newest bar are pruned; dates within it stay. */
+/** Restate tail grace (calendar days): stored dates more than this past the rebuilt newest bar are pruned; dates within it stay. @internal */
 export const RESTATE_TAIL_GRACE_DAYS = 7;
 
 /** Restate tail-prune staleness allowance (calendar days): a fetch whose newest bar is older refuses the tail prune.
@@ -414,7 +414,7 @@ export function toStoredReading(r: Reading): StoredReading {
 /** CAPE probe: MUST exceed the full 1871→now monthly row count (~1866, +12/yr) or old dates re-insert every run. */
 export const CAPE_PROBE_LIMIT = 5000;
 
-/** Closed CAPE months (before the run clock's UTC month) whose stored FINAL row `backfillCapeOnCron` value-repairs each run. */
+/** Closed CAPE months (before the run clock's UTC month) whose stored FINAL row `backfillCapeOnCron` value-repairs each run. @internal */
 export const F7_REPAIR_MONTHS = 3;
 
 /** The open CAPE month's floor: the 1st of `runAt`'s UTC month — F7 rows dated on/after it are stored `estimated` (both CAPE writers). */
@@ -583,7 +583,7 @@ function rsAxisNewest(legSeries: Map<Sleeve, SeriesPoint[]>): string | null {
   return shared.at(-1) ?? null;
 }
 
-/** Input catch-up probe: must cover every date a non-full fetch returns (FRED default window ≈ 550 trading rows), or stored dates re-insert. */
+/** Input catch-up probe: must cover every date a non-full fetch returns (FRED default window ≈ 550 trading rows), or stored dates re-insert. @internal */
 export const INPUT_CATCHUP_PROBE = 600;
 
 /** Raw FRED id → the indicator id whose Treasury same-day head covers it, DERIVED from `TREASURY_HEAD_OF` — never hand-write a second roster. */

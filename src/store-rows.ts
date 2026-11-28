@@ -465,6 +465,7 @@ type PersistedPanelRow = Omit<PersistedPanel, "cissHistory"> & { cissHistory: Pe
 const STATE_CHAR: Record<State, string> = { GREEN: "G", AMBER: "A", RED: "R" };
 const CHAR_STATE: Record<string, State> = { G: "GREEN", A: "AMBER", R: "RED" };
 
+/** @internal */
 export function encodeCissHistory(history: readonly MemberHistoryEntry[]): PersistedCissEntry[] {
   return history.map((h) => ({
     id: h.id,
@@ -479,7 +480,7 @@ export function encodeCissHistory(history: readonly MemberHistoryEntry[]): Persi
 }
 
 /** The wire shape is `{id, states}` only — `20260905150000` rewrote every legacy full-point row on prod.
- *  A non-G/A/R char throws rather than shifting later closes. */
+ *  A non-G/A/R char throws rather than shifting later closes. @internal */
 export function decodeCissHistory(entries: readonly PersistedCissEntry[]): MemberHistoryEntry[] {
   return entries.map((e) => ({
     id: e.id,

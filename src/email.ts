@@ -16,12 +16,14 @@ import { brevoApiKey, dashboardUrl, emailFrom, emailSendEnabled, type Env } from
 import { type FetchLike, fetchOk } from "./feed-http.js";
 import type { NtfyMessage } from "./ntfy.js";
 
+/** @internal */
 export const BREVO_SEND_URL = "https://api.brevo.com/v3/smtp/email";
 
 /**
  * Message versions (= recipients) per Brevo call. Brevo documents 2000 recipients per request
  * (developers.brevo.com/reference/sendtransacemail, 2026-09-05); 99 keeps a failed chunk small
  * and matches the shape the plan ruled. With ≤99 subscribers this is exactly one call.
+ * @internal
  */
 export const EMAIL_CHUNK = 99;
 
@@ -37,12 +39,13 @@ function unsubscribeUrl(dashboard: string): string {
 /**
  * Per-recipient unsubscribe link. ⚠ The address rides the FRAGMENT (`#email=`), NEVER the query —
  * path + query reach Vercel's request log. Prefill only (`subscribe-view.js`); pure.
+ * @internal
  */
 export function unsubscribeLink(dashboard: string, email: string): string {
   return `${unsubscribeUrl(dashboard)}#email=${encodeURIComponent(email)}`;
 }
 
-/** Split into consecutive groups of at most `size` (last group may be shorter). Pure. */
+/** Split into consecutive groups of at most `size` (last group may be shorter). Pure. @internal */
 export function chunk<T>(items: readonly T[], size: number): T[][] {
   if (size < 1) throw new Error(`chunk size must be >= 1, got ${size}`);
   const out: T[][] = [];
@@ -56,6 +59,7 @@ export function chunk<T>(items: readonly T[], size: number): T[][] {
  * address's prefilled link; without it the generic one (the payload's top-level fallback). `dashboard`
  * undefined (`dashboardUrl` resolved nothing) ⇒ no footer — no Dashboard and no Unsubscribe line; the mail still
  * sends. Pure.
+ * @internal
  */
 export function emailBody(msg: NtfyMessage, dashboard: string | undefined, recipient?: string): string {
   const footer =
@@ -88,6 +92,7 @@ export interface BrevoPayload {
  * `to` and its own body, so no subscriber's address ever reaches another's mail. No top-level
  * `to` (Brevo ignores it when versions are present) and no BCC. Pure — header/body policy is
  * unit-tested without a live fetch.
+ * @internal
  */
 export function brevoPayload(
   msg: NtfyMessage,

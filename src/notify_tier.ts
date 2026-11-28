@@ -74,6 +74,7 @@ export function decideUpward<Band extends string>(
  * Notify-on-upward-band-change over a tier spec's rank map. `last === null`
  * (first run / degraded prior) is the calmest baseline, so a first run already
  * elevated pushes. Pure.
+ * @internal
  */
 export function decideTierNotify<Band extends string, V>(
   spec: NotifyTierSpec<Band, V>,

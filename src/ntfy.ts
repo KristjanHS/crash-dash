@@ -19,6 +19,7 @@ export interface NtfyMessage {
  * header policy — which fields are present/omitted — is unit-testable without
  * a live `fetch`. Omitted optional fields produce no header (no "undefined").
  * `dashboard` (`dashboardUrl(env)`) is the tap target (`Click`); undefined ⇒ no `Click`, the push still sends.
+ * @internal
  */
 export function ntfyHeaders(msg: NtfyMessage, dashboard: string | undefined): Record<string, string> {
   const headers: Record<string, string> = { Title: msg.title };

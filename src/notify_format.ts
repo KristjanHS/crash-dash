@@ -55,6 +55,7 @@ const DEGRADE_ANNOTATE_MIN = 2;
  * only on NEW information (a changed reason is new information and re-fires). A null
  * `previous` (first run / no prior trace) treats everything as new. Every event but `effect: "trace"` counts —
  * fail open: an un-normalized event (a legacy `run_inputs.degradeEvents` on rederive) has no `effect`.
+ * @internal
  */
 export function newDegradeEvents(current: DegradeEvent[], previous: DegradeEvent[] | null): DegradeEvent[] {
   const notify = current.filter((c) => c.effect !== "trace");
@@ -68,6 +69,7 @@ export function newDegradeEvents(current: DegradeEvent[], previous: DegradeEvent
  * Scope of the `trace` marker a run records for EACH prior late-notify event its push logic saw on `last`, surfaced
  * or suppressed (`reason` = `lateNotifyKey` of that event). `trace` arms nothing: `newDegradeEvents` drops it on both
  * sides, and it carries no `late`, so `priorLateNotifyEvents` never reads it as an event of its own.
+ * @internal
  */
 export const LATE_NOTIFY_SEEN_SCOPE = "[seed-tail] late-notify seen";
 /**
@@ -125,6 +127,7 @@ function priorLateNotifyEvents(previous: DegradeEvent[] | null, lastPushFailed =
  *
  * Fail open (a missed alert is worse than a duplicate): a null `previous` — a pre-migration
  * row, a first run, or any run that never persisted the set — is NEWS.
+ * @internal
  */
 export function nonLiveSetChanged(current: string[], previous: string[] | null): boolean {
   if (previous == null) return true;
@@ -164,6 +167,7 @@ function renderHoldNote(held: string, dialSleeve: string): string {
  * is a tautology carrying zero information — the same structural exclusion `/lab`'s
  * `dualAxisFiringIds` applies. An unattributed reading (`leg` undefined: raw ≠ confirmed, or
  * a hand-built/unscored reading) stays bare, exactly as today.
+ * @internal
  */
 export function driverAxisNote(r: Reading): string {
   if (!DUAL_AXIS_ID_SET.has(r.indicator.id) || r.leg === undefined) return "";
@@ -217,6 +221,7 @@ export const PUSH_LABEL: Record<BandField, string> = {
 // well. Tiny ratios — CG's HG÷GC ≈ 0.0019 — collapse to a false "0.00" at 2dp, so
 // widen to ~3 significant figures ONLY when 2dp would lose all signal (|v| < 0.005).
 // Every other reading keeps its familiar 2-decimal render.
+/** @internal */
 export function formatMagnitude(value: number): string {
   if (value !== 0 && Math.abs(value) < 0.005) {
     return value.toFixed(2 - Math.floor(Math.log10(Math.abs(value))));
@@ -224,11 +229,12 @@ export function formatMagnitude(value: number): string {
   return value.toFixed(2);
 }
 
+/** @internal */
 export function formatDelta(delta: number, unit: string): string {
   return `${delta >= 0 ? "+" : ""}${formatMagnitude(delta)}${unit}`;
 }
 
-/** `delta20` as pushed: a `velocityMode: "relative"` id's fraction renders as a signed percentage (`+6.8%`). */
+/** `delta20` as pushed: a `velocityMode: "relative"` id's fraction renders as a signed percentage (`+6.8%`). @internal */
 export function formatVelocityDelta(delta: number, unit: string, mode: "relative" | undefined): string {
   return mode === "relative" ? `${delta >= 0 ? "+" : ""}${(delta * 100).toFixed(1)}%` : formatDelta(delta, unit);
 }
@@ -355,6 +361,7 @@ export const NOTIFY_ANCHOR_IDS = ["F1", "R1", "R5"] as const;
  *
  * The ids drop out of the body with the `Drivers:` line (labels only now), matching the Step-3
  * short-name direction: the label IS the identifier in primary visible text.
+ * @internal
  */
 export function compactBodyBlock(
   readings: Reading[],

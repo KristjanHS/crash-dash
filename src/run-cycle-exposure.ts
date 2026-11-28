@@ -22,6 +22,7 @@ import { errMsg } from "./err-msg.js";
  * session past it that is on or before `firedDateIso` and anchored on a final print — never a chained later one.
  * `storedPrints` are capped strictly below the reading's date, so the newest print IS its level, and the
  * walk-back can reach an earlier print when the future has no close on the newest date (S2a). No print ⇒ null.
+ * @internal
  */
 export function oilNowcastHead(
   id: "BRENT" | "G1",

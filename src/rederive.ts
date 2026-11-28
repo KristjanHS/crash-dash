@@ -31,7 +31,7 @@ const key = (id: string, date: string) => `${id}|${date}`;
 const verdictView = (a: AlertRecord) => JSON.parse(JSON.stringify({ level: a.level, dialBand: a.dialBand, dialState: a.dialState ?? null, displayDialState: a.displayDialState ?? null })) as unknown;
 // The panel's states only: `cissHistory` holds raw values + vintage stamps, so any swap would differ there.
 const states = (p: PersistedPanel | null | undefined) => p && { globalPanel: p.globalPanel, displayPanel: p.displayPanel, heldMemberState: p.heldMemberState };
-/** The twins agree iff band, notify dial + panel AND display dial + panel all match. */
+/** The twins agree iff band, notify dial + panel AND display dial + panel all match. @internal */
 export const twinsAgree = (a: AlertRecord, b: AlertRecord): boolean =>
   a.level === b.level && a.dialBand === b.dialBand && isDeepStrictEqual(a.dialState, b.dialState) && isDeepStrictEqual(a.displayDialState ?? null, b.displayDialState ?? null) &&
   isDeepStrictEqual(states(a.panelState), states(b.panelState)) && isDeepStrictEqual(states(a.displayPanelState), states(b.displayPanelState));
@@ -130,7 +130,7 @@ const frozenFields = (o: AlertRecord): Partial<AlertRecord> => ({
   slowScore: o.slowScore, slowBand: o.slowBand, slowMaxScore: o.slowMaxScore, bottomState: o.bottomState, vix: o.vix, vix3m: o.vix3m, ratio: o.ratio,
 });
 
-/** The superseding row's fired_at: +1 ms is the run's own estimate/carry stamp (`persistRun`'s `stampAt`). */
+/** The superseding row's fired_at: +1 ms is the run's own estimate/carry stamp (`persistRun`'s `stampAt`). @internal */
 export const supersedingFiredAt = (firedAt: string): string => new Date(Date.parse(firedAt) + 2).toISOString();
 
 /** What a re-derive reads of `orig`'s run: its row, its readings, and the estimate heads its dials folded. */
@@ -302,7 +302,7 @@ const NOT_WRITTEN = "superseding verdict not written - served row keeps the esti
 /** The `[rederive]` degrade scope of a failed step (`run-cycle-dial.ts`): a run that recorded it checked no verdict. */
 export const REDERIVE_STEP_FAILED_SCOPE = `[rederive] ${NOT_WRITTEN}`;
 /** The `[rederive]` degrade scope of one verdict's failed check or re-derive (recorded by `rederiveOnWrite`), keyed by its ORIGINAL's
- *  fired_at (stable across a superseding row coming or going): a run that recorded it never checked that verdict. */
+ *  fired_at (stable across a superseding row coming or going): a run that recorded it never checked that verdict. @internal */
 export const rederiveFailedScope = (origFiredAt: string): string => `[rederive] ${origFiredAt}: ${NOT_WRITTEN}`;
 
 /** The EOD cron trigger, writer-agnostic: every ORIGINAL row of the newest `GAP_FILL_DAYS` fired-dates whose estimated (id, date)s

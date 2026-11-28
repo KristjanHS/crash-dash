@@ -60,7 +60,7 @@ export interface StoredReading {
   estimated?: boolean;
 }
 
-/** One `readings_warmup` row in domain shape — see `Store.getWarmup`. */
+/** One `readings_warmup` row in domain shape — see `Store.getWarmup`. @internal */
 export interface WarmupRow {
   indicatorId: string;
   date: string; // YYYY-MM-DD
@@ -103,7 +103,7 @@ export interface SeriesRange {
 export type BandField = "slowBand" | "bottomState";
 
 /** getLastBand also serves the de-escalation-lag baseline: last non-null raw `dial_band` (skip-degraded
- *  = the "dial-less run must not defeat the N=2 hold" fix). `dialBand` widened only here, not BandField. */
+ *  = the "dial-less run must not defeat the N=2 hold" fix). `dialBand` widened only here, not BandField. @internal */
 export type LastBandField = BandField | "dialBand";
 
 /** One degrade event in a run (audit rank 6): a feed/track that fell back through `degrade()` (tracks.ts)
@@ -277,13 +277,13 @@ export interface CalibrationParam {
 }
 
 /** One recorded manual override (D9 gate (b), Fork 2 `overrides`): user acted against the prescribed leg.
- *  Read-only from the app (writes are manual, service-role); assignable to scoreboard.ts's `OverrideRow`. */
+ *  Read-only from the app (writes are manual, service-role); assignable to scoreboard.ts's `OverrideRow`. @internal */
 export interface StoredOverride {
   obsDate: string; // YYYY-MM-DD
   note: string | null;
 }
 
-/** The alert-row slice the D9 time-in-cash guardrail reads (assignable to scoreboard.ts's `ScoreboardAlertRow`). */
+/** The alert-row slice the D9 time-in-cash guardrail reads (assignable to scoreboard.ts's `ScoreboardAlertRow`). @internal */
 export interface AlertSlice {
   date: string; // alert obs_date, YYYY-MM-DD
   r4Phase: R4Phase | null;
@@ -304,7 +304,7 @@ export interface LegPillarRow {
 }
 
 /** One point of a (sleeve, super_group, generator) pillar series, oldest→newest — the Stage 4.3 rolling
- *  ECDF input. Uses `date` not `obsDate` (caller knows the series), so the key columns aren't repeated. */
+ *  ECDF input. Uses `date` not `obsDate` (caller knows the series), so the key columns aren't repeated. @internal */
 export interface LegPillarPoint {
   date: string; // YYYY-MM-DD
   value: number | null;
@@ -312,7 +312,7 @@ export interface LegPillarPoint {
   basis: string;
 }
 
-/** Opt-in read flags for the alert reads (P-1). */
+/** Opt-in read flags for the alert reads (P-1). @internal */
 export interface AlertReadOpts {
   /** Select the `panel_state` jsonb blob too. Default false — only /api/lab consumes it. */
   withPanel?: boolean;
@@ -509,7 +509,7 @@ const LEG_PILLAR_CONFLICT = [
   LEG_PILLAR_COLS.generator,
 ].join(",");
 
-/** Rows per putLegPillars upsert round trip (~16k rows/job; same order as the readings backfill). */
+/** Rows per putLegPillars upsert round trip (~16k rows/job; same order as the readings backfill). @internal */
 export const LEG_PILLAR_CHUNK = 1000;
 
 const READINGS_COLUMNS = Object.values(READINGS_COLS).join(",");
@@ -546,9 +546,9 @@ export const BACKFILL_PRUNE_RETAIN_DAYS = 3;
 /** Per-call row cap for getSeriesBulk: ids are chunked so each RPC fetches ≤ this; only a `limit` above it
  *  alone takes the per-id (paginating) path. */
 const SERIES_BULK_MAX_ROWS = POSTGREST_MAX_ROWS;
-/** Per-call id cap for readings_newest_n — a statement-time budget: 161 ids in one call hit the 8s timeout (2026-11-07). */
+/** Per-call id cap for readings_newest_n — a statement-time budget: 161 ids in one call hit the 8s timeout (2026-11-07). @internal */
 export const SERIES_BULK_MAX_IDS_PER_CALL = 40;
-/** Max readings_newest_n chunks in flight per getSeriesBulk — the statement timeout is shared under DB load. */
+/** Max readings_newest_n chunks in flight per getSeriesBulk — the statement timeout is shared under DB load. @internal */
 export const SERIES_BULK_CONCURRENCY = 3;
 
 /** Map one `readings_latest` row to a `SeriesPoint` — shared by getSeries + getSeriesBulk. */

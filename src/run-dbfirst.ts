@@ -70,7 +70,7 @@ export async function resolveBreadthCloses(
 }
 
 /** Symbols consumed ONLY by `soft` PRICE_SCORERS rows — any hard row, DOWNSIDE_DETECTOR or RS_LEG
- *  consumer keeps a symbol hard (its failure still degrades the whole batch). */
+ *  consumer keeps a symbol hard (its failure still degrades the whole batch). @internal */
 export const SOFT_PRICE_SYMBOLS: ReadonlySet<string> = (() => {
   const hard = new Set([
     ...PRICE_SCORERS.filter((s) => !s.soft).flatMap((s) => s.inputs),
@@ -219,7 +219,7 @@ export async function scorePriceIndicators(runAt: string, env: Env, ctx?: DbFirs
 
 /** One deep breadth symbol's DB-first feed spec (§6.2): its minted BR_* id — SPY its own id,
  *  READ-ONLY (its dedicated cron writer owns the id). Spread by `resolveBreadthCloses`; the direct
- *  arm tests drive `resolveDbFirstArm` with the same object. */
+ *  arm tests drive `resolveDbFirstArm` with the same object. @internal */
 export const breadthFeed = (sym: string): DbFirstFeedSpec => ({
   id: BREADTH_STORE_IDS[sym]!.id,
   needRows: needRowsForCalendarDays(BREADTH_LOOKBACK_DAYS),
@@ -232,6 +232,7 @@ export const breadthFeed = (sym: string): DbFirstFeedSpec => ({
  * to DFII10's whole history as of `runAt` — NOT the shared seed depth: a seed-depth read cap joined
  * ~3y of months against the `ECY_MIN_OBS` floor and ECY was omitted on EVERY run (2026-09-05 → 2026-09-29).
  * `minRows` must cover every stored weekday from the origin; `needRows` (the deep-arm trigger) must stay under DFII10's real row count.
+ * @internal
  */
 export const r4DbFirstFeed = (runAt: string): DbFirstFeedSpec => {
   const days = (Date.parse(runAt.slice(0, 10)) - Date.parse(DFII10_ORIGIN)) / 86_400_000;
@@ -245,6 +246,7 @@ export const FRED_FALLBACK_READ = 800;
 
 // Core-loop ids whose DEEP (`fullHistory`) fetch is served DB-first (§6.1): the stored series + a
 // `TAIL_DAYS` tail. Never a `SMOOTHED_LEVEL_OF` id (its stored value is the mean — `db-first-feeds.test.ts` pins ∅).
+/** @internal */
 export const CORE_LOOP_DB_FIRST: ReadonlySet<string> = new Set([]);
 
 /**

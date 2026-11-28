@@ -57,7 +57,7 @@ export type { RunCycleOptions } from "./run-cycle-ctx.js";
 
 
 /** The persisted-alert-row columns one side of the exposure comparator reads to bound a posture.
- *  Structural (not an `AlertRecord` import): `AlertRecord` is structurally assignable, no cast. */
+ *  Structural (not an `AlertRecord` import): `AlertRecord` is structurally assignable, no cast. @internal */
 export interface ExposureBoundRow {
   /** The rung axis — the sleeve actually held that close (`rungOfSleeve` maps it to 1..9). */
   heldSleeve: string | null;
@@ -72,6 +72,7 @@ export interface ExposureBoundRow {
  * step-down keyed off the PUBLISHED cash level. A missing/sleeve-less row is rung-BLIND (identity
  * this side), so never call this directly on the notify path — go through `exposurePushPair`, whose
  * SYMMETRY is what keeps a blind read push-suppressing rather than a phantom transition.
+ * @internal
  */
 export function boundExposureForPush(raw: ExposureResult, row: ExposureBoundRow | null): ExposureResult {
   const floored = applyCompoundFloor(raw, rungOfSleeve(row?.heldSleeve ?? null));
@@ -88,6 +89,7 @@ export function boundExposureForPush(raw: ExposureResult, row: ExposureBoundRow 
  * `posture`): the comparator reads the DIFFERENCE, so bounding one side while the other stays raw
  * would invent a transition. Deliberate cost: a genuine bounded-only move goes unpushed on a
  * rung-blind run — suppressing a real transition is the safe direction, a contradicted push is not.
+ * @internal
  */
 export function exposurePushPair(
   currRaw: ExposureResult,
@@ -110,7 +112,7 @@ export function exposurePushPair(
 }
 
 /** The prior-run reads for one cycle: scoring prev-state (`getLastAlertBefore`/`getLastBandBefore`) and the
- *  notify baselines (`getLastAlert`/`getLastPush`/`getLastBand`), issued as one concurrent batch by `runScoringCycle`. */
+ *  notify baselines (`getLastAlert`/`getLastPush`/`getLastBand`), issued as one concurrent batch by `runScoringCycle`. @internal */
 export async function readPriorContext(store: Store, firedDateIso: string) {
   const [last, prevDay, lastPush, recentAlerts, lastBands, lastDialBandRaw] = await Promise.all([
     store.getLastAlert({ notifyBaseline: true }),

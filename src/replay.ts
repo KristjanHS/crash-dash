@@ -48,7 +48,7 @@ const r4WarmupNote = (tradingDays: number): string =>
 /** Emitted whenever the caller supplies a NON-EMPTY `hyOasLevels` — the SEMANTICS label for E8 item 2.
  *  Without it the widening is silent, which is worse than the dark window it replaces: a null at least
  *  announced itself. Exported so `api/lab.test.ts` pins the served note against THIS string rather than
- *  restating it (a restated copy is a second source that cannot see a drift). */
+ *  restating it (a restated copy is a second source that cannot see a drift). @internal */
 export const HY_STITCHED_NOTE =
   "R4's HY-OAS input is the STITCHED HY-OAS history (committed vintage + live FRED tail), not the stored F1 rows - so R4 is replayable before F1's stored coverage begins. The credit family's F1 STATE is still stored-only, so the replayed band/regime is unchanged.";
 

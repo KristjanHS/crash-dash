@@ -10,6 +10,7 @@ import type { RunBase } from "./run-cycle-ctx.js";
 import { errMsg } from "./err-msg.js";
 import type { FredOutage } from "./fred.js";
 
+/** @internal */
 export function fredOutageMessage(o: FredOutage): NtfyMessage {
   // Clipped + capped: a keyless summary embeds the HTML page's first line, and ntfy turns a body past NTFY_BODY_MAX into an attachment.
   const causes = o.summaries.slice(0, 3).map((s) => (s.length > 160 ? `${s.slice(0, 157)}...` : s));

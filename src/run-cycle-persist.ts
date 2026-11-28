@@ -22,7 +22,7 @@ import type { RunBase } from "./run-cycle-ctx.js";
 import { runIntradaySeedTail } from "./run-cycle-seed-tail.js";
 import { errMsg } from "./err-msg.js";
 
-/** Hard-deadline headroom the cron prune needs: its own worst case + recordRun's, each one `DB_CALL_TIMEOUT_MS` call. */
+/** Hard-deadline headroom the cron prune needs: its own worst case + recordRun's, each one `DB_CALL_TIMEOUT_MS` call. @internal */
 export const PRUNE_MIN_HEADROOM_MS = 2 * DB_CALL_TIMEOUT_MS;
 
 /** The newest FINAL SB row + the `estimated` rows after it dated before `asOf`, oldest→newest; no FINAL row ⇒ no tail. */
@@ -39,7 +39,7 @@ export interface StoredRows {
   sbStoredReadings: StoredReading[];
 }
 
-/** Mail the band only after a DELIVERED push (a suppressed or failed one cleared `pushedAt`); `force` bypasses that gate. */
+/** Mail the band only after a DELIVERED push (a suppressed or failed one cleared `pushedAt`); `force` bypasses that gate. @internal */
 export const bandMailDue = (push: boolean, pushedAt: string | null, force: boolean | undefined): boolean =>
   (push && pushedAt !== null) || force === true;
 
@@ -158,7 +158,7 @@ export async function buildStoredRows(
 
 type DegradeNote = Pick<DegradeEvent, "scope" | "reason">;
 
-/** One persisted degrade event per provenance hop (keyed→keyless FRED, price provider→provider), ids listed, summaries deduped. */
+/** One persisted degrade event per provenance hop (keyed→keyless FRED, price provider→provider), ids listed, summaries deduped. @internal */
 export function provenanceDegradeEvents(keyedFallbacks: readonly KeyedFallback[], providerHops: readonly ProviderFallback[]): DegradeNote[] {
   const events: DegradeNote[] = [];
   if (keyedFallbacks.length > 0) {
@@ -185,12 +185,12 @@ export function provenanceDegradeEvents(keyedFallbacks: readonly KeyedFallback[]
   return events;
 }
 
-/** E3, in place: an id whose stored newest is `estimated` (no print) is guarded against the newest PRINT beneath it. */
+/** E3, in place: an id whose stored newest is `estimated` (no print) is guarded against the newest PRINT beneath it. @internal */
 export async function printsBeneathEstimates(store: Pick<Store, "getSeries">, newestStored: Map<string, SeriesPoint[]>): Promise<void> {
   for (const [id, pts] of newestStored) if (pts[0]?.estimated === true) newestStored.set(id, await getPrintSeries(store, id, 1));
 }
 
-/** A row OLDER than its id's stored newest print is replaced by that print (one event each); a provisional newest is never carried. */
+/** A row OLDER than its id's stored newest print is replaced by that print (one event each); a provisional newest is never carried. @internal */
 export function carryRegressedRows(rows: readonly StoredReading[], newestStored: ReadonlyMap<string, readonly SeriesPoint[]>): { rows: StoredReading[]; events: DegradeNote[] } {
   const events: DegradeNote[] = [];
   const out = rows.map((r) => {
